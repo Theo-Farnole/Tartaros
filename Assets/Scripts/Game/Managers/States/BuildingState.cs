@@ -25,7 +25,17 @@ public class BuildingState : OwnerState<GameManager>
 
         if (Input.GetMouseButtonDown(0))
         {
-            CreateCurrentBuilding();
+            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(_currentBuilding.transform.position);
+            GameObject tile = TileSystem.Instance.GetTile(coords);
+
+            if (tile == null)
+            {
+                CreateCurrentBuilding(coords);
+            }
+            else
+            {
+                Debug.LogWarning("Can't build on non-empty tile");
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -38,7 +48,10 @@ public class BuildingState : OwnerState<GameManager>
     public void SetCurrentBuilding(Building building)
     {
         var prefab = BuildingsRegister.Instance.GetBuildingPrefab(building);
+
         _currentBuilding = Object.Instantiate(prefab);
+        DynamicsObjects.Instance.SetToParent(_currentBuilding.transform, "Building");
+
         UpdateCurrentBuildingPosition();
     }
 
@@ -52,9 +65,11 @@ public class BuildingState : OwnerState<GameManager>
         }
     }
 
-    void CreateCurrentBuilding()
+    void CreateCurrentBuilding(Vector2Int coords)
     {
-        // just leave
+        TileSystem.Instance.SetTile(coords, _currentBuilding);
+
+        // then leave
         _owner.State = null;
     }
     #endregion

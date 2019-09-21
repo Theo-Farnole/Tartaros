@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Tile
   m_EditorClassIdentifier: 
   _cellCount: 9
-  _cellSize: 0.5
+  _cellSize: 1

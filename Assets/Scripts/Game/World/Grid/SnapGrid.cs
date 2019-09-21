@@ -25,9 +25,11 @@ public class SnapGrid : MonoBehaviour
         plane.transform.rotation = Quaternion.identity;
 
         plane.layer = LayerMask.NameToLayer("Grid");
+        plane.name = "Grid Plane";
+        plane.transform.parent = transform;
 
         // update Scale
-        Vector3 scale = new Vector3(1, 0, 1);
+        Vector3 scale = Vector3.one;
         scale *= _data.CellCount * _data.CellSize / 10;
 
         plane.transform.localScale = scale;
@@ -43,13 +45,12 @@ public class SnapGrid : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMask))
         {
             result = hit.point;
+            return GetNearestPointOnGrid(result);
         }
         else
         {
             return null;
         }
-
-        return GetNearestPointOnGrid(result);
     }
 
     public Vector3 GetNearestPointOnGrid(Vector3 position)

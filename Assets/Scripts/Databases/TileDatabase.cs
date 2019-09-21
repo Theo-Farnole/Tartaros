@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Leonidas Legacy/Tile")]
 public class TileDatabase : ScriptableObject
 {
-    [SerializeField, Range(1, 101)] private int _cellCount = 50;
+    [SerializeField, Range(1, 101)] private int _cellCount = 51;
     public int CellCount { get => _cellCount; }
 
     [SerializeField] private float _cellSize = 1f;

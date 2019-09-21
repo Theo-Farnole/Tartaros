@@ -28,6 +28,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 5709913129139140481}
   - {fileID: 5388979676174037122}
   m_Father: {fileID: 7282021461264339349}
   m_RootOrder: 0
@@ -56,7 +57,7 @@ GameObject:
   - component: {fileID: 5388979676174037122}
   - component: {fileID: 5129434999720798641}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: SnapGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +75,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4869645855700072645}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5129434999720798641
 MonoBehaviour:
@@ -88,7 +89,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c76d3a2e76ff4e46bbc37e00bb17e70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cellSize: 1
+  _data: {fileID: 11400000, guid: cec9b11254a888f41b35a2d0a91e718d, type: 2}
+  _debugDrawGrid: 1
+  _gridColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+--- !u!1 &6817439203239203684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5709913129139140481}
+  - component: {fileID: 3299572278041130863}
+  m_Layer: 0
+  m_Name: TileSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5709913129139140481
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6817439203239203684}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4869645855700072645}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3299572278041130863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6817439203239203684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f1d6bd4358eff04183f18c0d04356cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: cec9b11254a888f41b35a2d0a91e718d, type: 2}
 --- !u!1 &7282021461264339350
 GameObject:
   m_ObjectHideFlags: 0
