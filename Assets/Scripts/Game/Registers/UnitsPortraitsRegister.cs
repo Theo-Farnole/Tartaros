@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Unit
-{
-    Alexios,
-    Kassandra
-}
-
 public class UnitsPortraitsRegister : Register<Sprite, Unit>
 {
     [EnumNamedArray(typeof(Unit))]

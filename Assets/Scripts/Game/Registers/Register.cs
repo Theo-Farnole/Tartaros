@@ -11,10 +11,10 @@ public class Register<TPrefab, TEnum> : Singleton<Register<TPrefab, TEnum>> wher
 
     #region Properties
     protected virtual TPrefab[] Prefabs { get => _prefabs; set => _prefabs = value; }
+    protected virtual int DeltaIndex { get => 0; }
     #endregion
 
     #region Methods   
-
     // force array to be the size of TEnum
     void OnValidate()
     {
@@ -35,10 +35,12 @@ public class Register<TPrefab, TEnum> : Singleton<Register<TPrefab, TEnum>> wher
         Array.Copy(oldValues, Prefabs, copyLength);
     }
 
-    public TPrefab GetBuildingPrefab(TEnum buildingType)
+    public TPrefab GetItem(TEnum itemEnum)
     {
-        int index = (int)(object)buildingType;
+        int index = (int)(object)itemEnum;
+        index -= DeltaIndex;
 
+        Debug.Log("Prefab length = " + Prefabs.Length + " index = " + index);
         return Prefabs[index];
     }
     #endregion

@@ -8,4 +8,5 @@ public class BuildingsPortraitsRegister : Register<Sprite, Building>
     [SerializeField] private Sprite[] _buildingsPortraits;
 
     protected override Sprite[] Prefabs { get => _buildingsPortraits; set => _buildingsPortraits = value; }
+    protected override int DeltaIndex { get => 1000; }
 }

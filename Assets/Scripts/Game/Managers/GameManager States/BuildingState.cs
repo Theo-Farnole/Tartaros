@@ -47,7 +47,7 @@ public class BuildingState : OwnerState<GameManager>
 
     public void SetCurrentBuilding(Building building)
     {
-        var prefab = BuildingsRegister.Instance.GetBuildingPrefab(building);
+        var prefab = BuildingsRegister.Instance.GetItem(building);
 
         _currentBuilding = Object.Instantiate(prefab);
         DynamicsObjects.Instance.SetToParent(_currentBuilding.transform, "Building");

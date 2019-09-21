@@ -60,8 +60,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingsPortraits:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: b11faa8133635174a88521dd3ac836b8, type: 3}
+  - {fileID: 21300000, guid: b11faa8133635174a88521dd3ac836b8, type: 3}
 --- !u!1 &8292011921064858217
 GameObject:
   m_ObjectHideFlags: 0
