@@ -1,0 +1,6 @@
+[submodule "Assets/Scripts/"]
+	path = Assets/Scripts/
+	url = https://github.com/Lortedo29/Utils
+[submodule "Assets/Scripts/Utils"]
+	path = Assets/Scripts/Utils
+	url = https://github.com/Lortedo29/Utils
