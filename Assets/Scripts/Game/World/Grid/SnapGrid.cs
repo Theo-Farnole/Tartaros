@@ -1,17 +1,13 @@
 ﻿using UnityEngine;
 
-// from
-// https://unity3d.college/2017/10/08/simple-unity3d-snap-grid-system/
-//
-public class Grid : MonoBehaviour
+public class SnapGrid : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private float _cellSize = 1f;
+    [SerializeField] private TileDatabase _data;
     [Space]
     [Header("Debug")]
-    [SerializeField] private bool _drawDebug = false;
+    [SerializeField] private bool _debugDrawGrid = false;
     [SerializeField] private Color _gridColor = Color.yellow;
-    [SerializeField, Range(5, 25)] private int _debugGridCount = 5;
 
     private LayerMask _layerMask;
     #endregion
@@ -24,11 +20,17 @@ public class Grid : MonoBehaviour
 
     void Start()
     {
-        GameObject plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        var plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
         plane.transform.position = Vector3.zero;
         plane.transform.rotation = Quaternion.identity;
 
         plane.layer = LayerMask.NameToLayer("Grid");
+
+        // update Scale
+        Vector3 scale = new Vector3(1, 0, 1);
+        scale *= _data.CellCount * _data.CellSize / 10;
+
+        plane.transform.localScale = scale;
     }
 
     public Vector3? GetNearestPointFromMouse()
@@ -52,47 +54,37 @@ public class Grid : MonoBehaviour
 
     public Vector3 GetNearestPointOnGrid(Vector3 position)
     {
-        float xCount = Mathf.Round(position.x / _cellSize);
-        float yCount = Mathf.Round(position.y / _cellSize);
-        float zCount = Mathf.Round(position.z / _cellSize);
+        float xCount = Mathf.Round(position.x / _data.CellSize);
+        float yCount = Mathf.Round(position.y / _data.CellSize);
+        float zCount = Mathf.Round(position.z / _data.CellSize);
 
         Vector3 result = new Vector3(
-             xCount * _cellSize,
-             yCount * _cellSize,
-             zCount * _cellSize);
-
-        Vector3 delta = Vector3.zero;
-
-        if (position.x / _cellSize > xCount) delta.x = 1;
-        else delta.x = -1;
-
-        if (position.z / _cellSize > zCount) delta.z = 1;
-        else delta.z = -1;
-
-
-        result += delta * (_cellSize / 2);
+             xCount * _data.CellSize,
+             yCount * _data.CellSize,
+             zCount * _data.CellSize);
 
         return result;
     }
 
     void OnDrawGizmos()
     {
-        if (_drawDebug == false)
+        if (_debugDrawGrid == false)
             return;
 
         Gizmos.color = _gridColor;
-
-        int midGridCount = _debugGridCount / 2;
+        int midGridCount = _data.CellCount / 2;
 
         for (int x = -midGridCount; x <= midGridCount; x++)
         {
             for (int z = -midGridCount; z <= midGridCount; z++)
             {
-                var point = new Vector3(x * _cellSize, 0, z * _cellSize);
-                Gizmos.DrawSphere(point, 0.1f);
+                var point = new Vector3(x * _data.CellSize, 0, z * _data.CellSize);
+                Gizmos.DrawSphere(point, 0.05f);
             }
-
         }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(Vector3.zero, 0.15f);
     }
     #endregion
 }

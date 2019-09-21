@@ -22,6 +22,17 @@ public class BuildingState : OwnerState<GameManager>
             return;
 
         UpdateCurrentBuildingPosition();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            CreateCurrentBuilding();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Object.Destroy(_currentBuilding.gameObject);
+            _owner.State = null;
+        }
     }
 
     public void SetCurrentBuilding(Building building)
@@ -39,6 +50,12 @@ public class BuildingState : OwnerState<GameManager>
         {
             _currentBuilding.transform.position = (Vector3)newPosition;
         }
+    }
+
+    void CreateCurrentBuilding()
+    {
+        // just leave
+        _owner.State = null;
     }
     #endregion
 }

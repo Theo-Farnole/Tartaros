@@ -5,13 +5,13 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     #region Fields
-    [SerializeField] private Grid _grid;
+    [SerializeField] private SnapGrid _grid;
 
     private OwnerState<GameManager> _state = null;
     #endregion
 
     #region Properties
-    public Grid Grid { get => _grid; }
+    public SnapGrid Grid { get => _grid; }
     public OwnerState<GameManager> State
     {
         get
@@ -22,10 +22,7 @@ public class GameManager : Singleton<GameManager>
         set
         {
             _state?.OnStateExit();
-
             _state = value;
-            Debug.Log("GameManager # New state : " + _state);
-
             _state?.OnStateEnter();
         }
     }
@@ -33,11 +30,6 @@ public class GameManager : Singleton<GameManager>
 
     #region Methods
     #region MonoBehaviour Callbacks
-    void Start()
-    {
-        State = new BuildingState(this);
-    }
-
     void Update()
     {
         CheckForStateChangement();
