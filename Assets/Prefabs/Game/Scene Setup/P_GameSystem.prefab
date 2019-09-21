@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: cec9b11254a888f41b35a2d0a91e718d, type: 2}
-  _debugDrawGrid: 1
+  _debugDrawGrid: 0
   _gridColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &6817439203239203684
 GameObject:
