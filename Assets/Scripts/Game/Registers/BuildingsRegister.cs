@@ -9,32 +9,10 @@ public enum Building
     Barracks
 }
 
-public class BuildingsRegister : Singleton<BuildingsRegister>
+public class BuildingsRegister : Register<GameObject, Building>
 {
     [EnumNamedArray(typeof(Building))]
-    [SerializeField] private GameObject[] _prefab;
+    [SerializeField] private GameObject[] _prefabsBuildings;
 
-    private Dictionary<Building, GameObject> _dictionnary = new Dictionary<Building, GameObject>();
-
-    #region Methods
-    void Awake()
-    {
-        for (int i = 0; i < _prefab.Length; i++)
-        {
-            Building index = (Building)i;
-            _dictionnary.Add(index, _prefab[i]);
-        }
-    }
-
-    public GameObject GetBuildingPrefab(Building buildingType)
-    {
-        if (_dictionnary.ContainsKey(buildingType) == false)
-        {
-            Debug.LogError(buildingType + " prefab isn't linked in BuildingRegister");
-            return null;
-        }
-
-        return _dictionnary[buildingType];
-    }
-    #endregion
+    protected override GameObject[] Prefabs { get => _prefabsBuildings; set => _prefabsBuildings = value; }
 }
