@@ -9,11 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5734333928557051869}
+  - component: {fileID: 3440605979536404756}
   - component: {fileID: 5734333928557051868}
   - component: {fileID: 5268361831999893359}
   - component: {fileID: 3815054155288226953}
-  - component: {fileID: 5734333928557051871}
   - component: {fileID: 1049413910}
+  - component: {fileID: 5734333928557051871}
   m_Layer: 10
   m_Name: P_proto_unit_Alexios
   m_TagString: Untagged
@@ -36,6 +37,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3440605979536404756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5734333928557051870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f509756853dd19d4a944546232614905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entityData: {fileID: 11400000, guid: 58635f56ffece4f4c8e2a3bce58a8962, type: 2}
+  isInvincible: 0
+  _hideHealthSliderIfFull: 1
+  _healthSlider: {fileID: 0}
 --- !u!114 &5734333928557051868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,20 +91,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 753b00e861a1f0447b8d42e838dead07, type: 2}
---- !u!136 &5734333928557051871
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5734333928557051870}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &1049413910
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -110,6 +113,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &5734333928557051871
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5734333928557051870}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &5734333930189911003
 GameObject:
   m_ObjectHideFlags: 0

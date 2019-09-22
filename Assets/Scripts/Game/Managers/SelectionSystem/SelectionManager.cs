@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class Group
 {
-    public Entity type;
+    public EntityType type;
 
     public List<SelectableEntity> selectableEntities = new List<SelectableEntity>();
 
-    public Group(Entity type, SelectableEntity selectableEntity) : this(type, new List<SelectableEntity>() { selectableEntity })
+    public Group(EntityType type, SelectableEntity selectableEntity) : this(type, new List<SelectableEntity>() { selectableEntity })
     { }
 
-    public Group(Entity type, List<SelectableEntity> selectableEntities)
+    public Group(EntityType type, List<SelectableEntity> selectableEntities)
     {
         this.type = type;
 
@@ -178,7 +178,7 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region Selected groups Modifier
-    public void AddEntity(Entity type, SelectableEntity selectableEntity)
+    public void AddEntity(EntityType type, SelectableEntity selectableEntity)
     {
         for (int i = 0; i < _selectedGroups.Count; i++)
         {
@@ -207,7 +207,7 @@ public class SelectionManager : Singleton<SelectionManager>
         UpdatePortrait();
     }
 
-    public void RemoveEntity(Entity type, SelectableEntity selectableEntity)
+    public void RemoveEntity(EntityType type, SelectableEntity selectableEntity)
     {
         for (int i = 0; i < _selectedGroups.Count; i++)
         {
@@ -232,7 +232,7 @@ public class SelectionManager : Singleton<SelectionManager>
     {
         if (_selectedGroups.Count > 0)
         {
-            Entity firstItemType = _selectedGroups[0].type;
+            EntityType firstItemType = _selectedGroups[0].type;
             UIManager.Instance.SetSelectedPortrait(firstItemType);
         }
         else

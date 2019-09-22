@@ -10,7 +10,7 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region Methods
-    public void SetSelectedPortrait(Entity ent)
+    public void SetSelectedPortrait(EntityType ent)
     {
         Sprite sprite = null;
 

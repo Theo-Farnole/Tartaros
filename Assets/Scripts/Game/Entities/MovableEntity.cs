@@ -14,11 +14,12 @@ public class MovableEntity : MonoBehaviour
 
     public void GoTo(Vector3 target)
     {
+        _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(target);
     }
 
     public void Stop()
     {
-        _navMeshAgent.Stop();
+        _navMeshAgent.isStopped = true;
     }
 }

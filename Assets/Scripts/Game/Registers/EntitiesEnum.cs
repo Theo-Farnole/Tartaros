@@ -1,6 +1,6 @@
 ﻿using System;
 
-public enum Entity
+public enum EntityType
 {
     // units
     Alexios = 0,
@@ -13,19 +13,19 @@ public enum Entity
 
 public enum Building
 {
-    House = Entity.House,
-    Barracks = Entity.Barracks
+    House = EntityType.House,
+    Barracks = EntityType.Barracks
 }
 
 public enum Unit
 {
-    Alexios = Entity.Alexios,
-    Kassandra = Entity.Kassandra
+    Alexios = EntityType.Alexios,
+    Kassandra = EntityType.Kassandra
 }
 
-public static class EntityExtension
+public static class EntityTypeExtension
 {
-    public static Unit? IsUnitType(this Entity e)
+    public static Unit? IsUnitType(this EntityType e)
     {
         foreach (Unit item in Enum.GetValues(typeof(Unit)))
         {
@@ -38,7 +38,7 @@ public static class EntityExtension
         return null;
     }
 
-    public static Building? IsBuildingType(this Entity e)
+    public static Building? IsBuildingType(this EntityType e)
     {
         foreach (Building item in Enum.GetValues(typeof(Building)))
         {

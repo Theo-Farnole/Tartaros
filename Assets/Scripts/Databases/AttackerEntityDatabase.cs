@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leonidas Legacy/Attack Data")]
+[CreateAssetMenu(menuName = "Leonidas Legacy/Entity Attack Data")]
 public class AttackerEntityDatabase : ScriptableObject
 {
     [SerializeField] private float _attackRange = 3f;

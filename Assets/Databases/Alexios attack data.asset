@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0102814774a8a547a72b5fac3a25e1c, type: 3}
-  m_Name: Alexios
+  m_Name: Alexios attack data
   m_EditorClassIdentifier: 
   _attackRange: 3
   _attackSpeed: 1

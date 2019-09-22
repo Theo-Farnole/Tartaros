@@ -5,7 +5,7 @@ using UnityEngine;
 public class SelectableEntity : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private Entity _type;
+    [SerializeField] private EntityType _type;
 
     private GameObject _selectionCircle = null;
     private MovableEntity _movableEntity;
@@ -13,7 +13,7 @@ public class SelectableEntity : MonoBehaviour
     #endregion
 
     #region Properties
-    public Entity Type { get => _type; }
+    public EntityType Type { get => _type; }
     public MovableEntity MovableEntity { get => _movableEntity; }
     public AttackerEntity AttackEntity { get => _attackEntity; }
     #endregion
@@ -29,6 +29,11 @@ public class SelectableEntity : MonoBehaviour
     void OnMouseDown()
     {
         SelectionManager.Instance.AddEntity(_type, this);
+    }
+
+    void OnDestroy()
+    {
+        SelectionManager.Instance?.RemoveEntity(_type, this);
     }
     #endregion
 
