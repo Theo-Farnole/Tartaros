@@ -22,7 +22,12 @@ public class MoveCommand : Command
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
         {
             target = hit.point;
-            _navMeshAgent.SetDestination(target);
+            Execute(target);
         }
+    }
+
+    public void Execute(Vector3 target)
+    {
+        _navMeshAgent.SetDestination(target);
     }
 }

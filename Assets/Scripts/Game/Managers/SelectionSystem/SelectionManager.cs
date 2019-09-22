@@ -35,7 +35,7 @@ public class SelectionManager : Singleton<SelectionManager>
     void Update()
     {
         ManageSelectionInput();
-        ManageMovementSystem();
+        ManageCommandsExecuter();
     }
 
     void OnGUI()
@@ -124,19 +124,29 @@ public class SelectionManager : Singleton<SelectionManager>
     }
     #endregion
 
-    #region Movement System
+    #region Commands Executer
     /// <summary>
     /// Must be called in Update()
     /// </summary>
-    void ManageMovementSystem()
+    void ManageCommandsExecuter()
     {
         if (Input.GetMouseButton(1))
         {
-            for (int i = 0; i < _selectedGroups.Count; i++)
+            Vector3 target = Vector3.zero;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
             {
-                for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+                target = hit.point;
+
+                for (int i = 0; i < _selectedGroups.Count; i++)
                 {
-                    _selectedGroups[i].selectableEntities[j].MoveCommand?.Execute();
+                    for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+                    {
+                        _selectedGroups[i].selectableEntities[j].MoveCommand?.Execute(target);
+                    }
                 }
             }
         }
