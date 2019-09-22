@@ -5,26 +5,25 @@ using UnityEngine;
 public class SelectableEntity : MonoBehaviour
 {
     #region Fields
-
     [SerializeField] private Entity _type;
 
     private GameObject _selectionCircle = null;
-    private MoveCommand _moveCommand;
+    private MovableEntity _movableEntity;
+    private AttackerEntity _attackEntity;
     #endregion
 
     #region Properties
     public Entity Type { get => _type; }
-    public MoveCommand MoveCommand { get => _moveCommand; }
+    public MovableEntity MovableEntity { get => _movableEntity; }
+    public AttackerEntity AttackEntity { get => _attackEntity; }
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        if (_type.IsUnitType() != null)
-        {
-            _moveCommand = new MoveCommand(gameObject);
-        }
+        _movableEntity = GetComponent<MovableEntity>();
+        _attackEntity = GetComponent<AttackerEntity>();
     }
 
     void OnMouseDown()

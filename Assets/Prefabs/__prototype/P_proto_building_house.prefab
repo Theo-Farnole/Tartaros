@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5641369574472572894}
   - component: {fileID: 3604238582275363029}
   - component: {fileID: 7047882055721182251}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 1802008223}
   - component: {fileID: 3410488083495169125}
   - component: {fileID: 1988078812}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: P_proto_building_house
   m_TagString: Untagged
   m_Icon: {fileID: 0}

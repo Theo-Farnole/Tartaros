@@ -145,20 +145,31 @@ public class SelectionManager : Singleton<SelectionManager>
     {
         if (Input.GetMouseButton(1))
         {
-            Vector3 target = Vector3.zero;
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
             {
-                target = hit.point;
+                Transform target = hit.transform;
 
                 for (int i = 0; i < _selectedGroups.Count; i++)
                 {
                     for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
                     {
-                        _selectedGroups[i].selectableEntities[j].MoveCommand?.Execute(target);
+                        _selectedGroups[i].selectableEntities[j].AttackEntity?.StartAttacking(target);
+                    }
+                }
+            }
+            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
+            {
+                Vector3 target = hit.point;
+
+                for (int i = 0; i < _selectedGroups.Count; i++)
+                {
+                    for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+                    {
+                        _selectedGroups[i].selectableEntities[j].AttackEntity?.StopAttack();
+                        _selectedGroups[i].selectableEntities[j].MovableEntity?.GoTo(target);
                     }
                 }
             }

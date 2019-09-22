@@ -10,9 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5734333928557051869}
   - component: {fileID: 5734333928557051868}
+  - component: {fileID: 5268361831999893359}
+  - component: {fileID: 3815054155288226953}
   - component: {fileID: 5734333928557051871}
   - component: {fileID: 1049413910}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: P_proto_unit_Alexios
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +49,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 0
+--- !u!114 &5268361831999893359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5734333928557051870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1f624625a14dc84bacf53b3900558cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3815054155288226953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5734333928557051870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27bcee65be8dad84fb24733a610e37bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: 753b00e861a1f0447b8d42e838dead07, type: 2}
 --- !u!136 &5734333928557051871
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -94,7 +121,7 @@ GameObject:
   - component: {fileID: 5734333930189911000}
   - component: {fileID: 5734333930189911006}
   - component: {fileID: 5734333930189911001}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
