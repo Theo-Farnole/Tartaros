@@ -154,6 +154,7 @@ public class SelectionManager : Singleton<SelectionManager>
                 // if gameObject isn't already in gameObjects list
                 if (_selectedGroups[i].selectableEntities.Contains(selectableEntity) == false)
                 {
+                    selectableEntity.OnSelected();
                     _selectedGroups[i].selectableEntities.Add(selectableEntity);
                     UpdatePortrait();
                     return;
@@ -167,7 +168,7 @@ public class SelectionManager : Singleton<SelectionManager>
         }
 
         // group with same unit doesn't exist, so we're creating one
-        //Debug.Log("SelectionManager # Add " + gameObject + " of " + type);
+        selectableEntity.OnSelected();
         _selectedGroups.Add(new Group(type, selectableEntity));
         UpdatePortrait();
     }
@@ -179,7 +180,7 @@ public class SelectionManager : Singleton<SelectionManager>
             // if find a selectedGroup of same unit
             if (_selectedGroups[i].type == type)
             {
-                //Debug.Log("SelectionManager # Remove " + gameObject + " of " + type);
+                selectableEntity.OnDeselect();
                 _selectedGroups[i].selectableEntities.Remove(selectableEntity);
 
                 if (_selectedGroups[i].selectableEntities.Count == 0)
