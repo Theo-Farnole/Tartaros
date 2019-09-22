@@ -40,7 +40,6 @@ public class Register<TPrefab, TEnum> : Singleton<Register<TPrefab, TEnum>> wher
         int index = (int)(object)itemEnum;
         index -= DeltaIndex;
 
-        Debug.Log("Prefab length = " + Prefabs.Length + " index = " + index);
         return Prefabs[index];
     }
     #endregion

@@ -5,20 +5,28 @@ using UnityEngine;
 public class SelectableEntity : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private Entity _entityType;
+    [SerializeField] private Entity _type;
+
+    private MoveCommand _moveCommand;
+    #endregion
+
+    #region Properties
+    public Entity Type { get => _type; }
+    public MoveCommand MoveCommand { get => _moveCommand; }
     #endregion
 
     #region Methods
-    void OnMouseDown()
+    void Awake()
     {
-        Debug.Log("OnMouseDown");
-        SelectionManager.Instance.AddEntity(_entityType, gameObject);
+        if (_type.IsUnitType() != null)
+        {
+            _moveCommand = new MoveCommand(gameObject);
+        }
     }
 
-    void OnMouseUp()
+    void OnMouseDown()
     {
-        Debug.Log("OnMouseUp");
-        SelectionManager.Instance.RemoveEntity(_entityType, gameObject);
+        SelectionManager.Instance.AddEntity(_type, this);
     }
     #endregion
 }

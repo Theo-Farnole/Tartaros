@@ -7,16 +7,16 @@ public class Group
 {
     public Entity type;
 
-    public List<GameObject> gameObjects = new List<GameObject>();
+    public List<SelectableEntity> selectableEntities = new List<SelectableEntity>();
 
-    public Group(Entity type, GameObject gameObject) : this(type, new List<GameObject>() { gameObject })
+    public Group(Entity type, SelectableEntity selectableEntity) : this(type, new List<SelectableEntity>() { selectableEntity })
     { }
 
-    public Group(Entity type, List<GameObject> gameObject)
+    public Group(Entity type, List<SelectableEntity> selectableEntities)
     {
         this.type = type;
 
-        gameObjects = gameObject;
+        this.selectableEntities = selectableEntities;
     }
 }
 
@@ -26,10 +26,125 @@ public class SelectionManager : Singleton<SelectionManager>
     [SerializeField] private bool _displaySelectionOnUI = true;
 
     private List<Group> _selectedGroups = new List<Group>();
+    private bool _isSelecting = false;
+    private Vector3 _originPositionRect;
     #endregion
 
     #region Methods
-    public void AddEntity(Entity type, GameObject gameObject)
+    #region MonoBehaviour Callback
+    void Update()
+    {
+        ManageSelectionInput();
+        ManageMovementSystem();
+    }
+
+    void OnGUI()
+    {
+        DrawSelectionRect();
+
+#if UNITY_EDITOR
+        if (_displaySelectionOnUI == false)
+            return;
+
+        StringBuilder o = new StringBuilder();
+        o.AppendLine("~ Selection ~");
+
+        for (int i = 0; i < _selectedGroups.Count; i++)
+        {
+            o.AppendLine(_selectedGroups[i].selectableEntities.Count + " " + _selectedGroups[i].type);
+        }
+
+        Rect rect2 = new Rect(15, 45, 150, 400);
+        GUI.Label(rect2, o.ToString());
+#endif
+    }
+    #endregion
+
+    #region Selection Rect
+    /// <summary>
+    /// Must be called in OnGUI()
+    /// </summary>
+    void DrawSelectionRect()
+    {
+        if (_isSelecting)
+        {
+            // Create a rect from both mouse positions
+            Rect rect = Utils.GetScreenRect(_originPositionRect, Input.mousePosition);
+            Utils.DrawScreenRect(rect, new Color(0.8f, 0.8f, 0.95f, 0.25f));
+            Utils.DrawScreenRectBorder(rect, 2, new Color(0.8f, 0.8f, 0.95f));
+        }
+    }
+
+    /// <summary>
+    /// Must be called in Update()
+    /// </summary>
+    void ManageSelectionInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Input.GetKey(KeyCode.LeftShift) == false)
+            {
+                _selectedGroups.Clear();
+            }
+
+            _isSelecting = true;
+            _originPositionRect = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            var selectableEntities = FindObjectsOfType<SelectableEntity>();
+
+            for (int i = 0; i < selectableEntities.Length; i++)
+            {
+                if (IsWithinSelectionBounds(selectableEntities[i].gameObject))
+                {
+                    AddEntity(selectableEntities[i].Type, selectableEntities[i]);
+                }
+            }
+
+            _isSelecting = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _selectedGroups.Clear();
+        }
+    }
+
+    private bool IsWithinSelectionBounds(GameObject gameObject)
+    {
+        if (!_isSelecting)
+            return false;
+
+        var camera = Camera.main;
+        var viewportBounds = Utils.GetViewportBounds(camera, _originPositionRect, Input.mousePosition);
+
+        return viewportBounds.Contains(camera.WorldToViewportPoint(gameObject.transform.position));
+    }
+    #endregion
+
+    #region Movement System
+    /// <summary>
+    /// Must be called in Update()
+    /// </summary>
+    void ManageMovementSystem()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            for (int i = 0; i < _selectedGroups.Count; i++)
+            {
+                for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+                {
+                    _selectedGroups[i].selectableEntities[j].MoveCommand?.Execute();
+                }
+            }
+        }
+    }
+    #endregion
+
+    #region Selected groups Modifier
+    public void AddEntity(Entity type, SelectableEntity selectableEntity)
     {
         for (int i = 0; i < _selectedGroups.Count; i++)
         {
@@ -37,15 +152,15 @@ public class SelectionManager : Singleton<SelectionManager>
             if (_selectedGroups[i].type == type)
             {
                 // if gameObject isn't already in gameObjects list
-                if (_selectedGroups[i].gameObjects.Contains(gameObject) == false)
+                if (_selectedGroups[i].selectableEntities.Contains(selectableEntity) == false)
                 {
-                    _selectedGroups[i].gameObjects.Add(gameObject);
+                    _selectedGroups[i].selectableEntities.Add(selectableEntity);
                     UpdatePortrait();
                     return;
                 }
                 else
                 {
-                    Debug.Log("Selection Manager # " + gameObject + " can't be added because is already selected");
+                    Debug.Log("Selection Manager # " + selectableEntity + " can't be added because is already selected");
                     return;
                 }
             }
@@ -53,11 +168,11 @@ public class SelectionManager : Singleton<SelectionManager>
 
         // group with same unit doesn't exist, so we're creating one
         //Debug.Log("SelectionManager # Add " + gameObject + " of " + type);
-        _selectedGroups.Add(new Group(type, gameObject));
+        _selectedGroups.Add(new Group(type, selectableEntity));
         UpdatePortrait();
     }
 
-    public void RemoveEntity(Entity type, GameObject gameObject)
+    public void RemoveEntity(Entity type, SelectableEntity selectableEntity)
     {
         for (int i = 0; i < _selectedGroups.Count; i++)
         {
@@ -65,9 +180,9 @@ public class SelectionManager : Singleton<SelectionManager>
             if (_selectedGroups[i].type == type)
             {
                 //Debug.Log("SelectionManager # Remove " + gameObject + " of " + type);
-                _selectedGroups[i].gameObjects.Remove(gameObject);
+                _selectedGroups[i].selectableEntities.Remove(selectableEntity);
 
-                if (_selectedGroups[i].gameObjects.Count == 0)
+                if (_selectedGroups[i].selectableEntities.Count == 0)
                 {
                     _selectedGroups.RemoveAt(i);
                 }
@@ -78,7 +193,7 @@ public class SelectionManager : Singleton<SelectionManager>
         }
     }
 
-    public void UpdatePortrait()
+    void UpdatePortrait()
     {
         if (_selectedGroups.Count > 0)
         {
@@ -90,22 +205,6 @@ public class SelectionManager : Singleton<SelectionManager>
             UIManager.Instance.ResetSelectedPortrait();
         }
     }
-
-    public void OnGUI()
-    {
-        if (_displaySelectionOnUI == false)
-            return;
-
-        StringBuilder o = new StringBuilder();
-        o.AppendLine("~ Selection ~");
-
-        for (int i = 0; i < _selectedGroups.Count; i++)
-        {
-            o.AppendLine(_selectedGroups[i].gameObjects.Count + " " + _selectedGroups[i].type);
-        }
-
-        Rect rect = new Rect(15, 45, 150, 400);
-        GUI.Label(rect, o.ToString());
-    }
+    #endregion
     #endregion
 }

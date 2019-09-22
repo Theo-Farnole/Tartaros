@@ -33,6 +33,8 @@ public class SnapGrid : MonoBehaviour
         scale *= _data.CellCount * _data.CellSize / 10;
 
         plane.transform.localScale = scale;
+
+        Destroy(plane.GetComponent<MeshRenderer>()); // hide plane
     }
 
     public Vector3? GetNearestPointFromMouse()
