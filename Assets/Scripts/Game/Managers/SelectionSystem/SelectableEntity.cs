@@ -34,7 +34,7 @@ public class SelectableEntity : MonoBehaviour
     #endregion
 
     public void OnSelected()
-    { 
+    {
         if (_selectionCircle == null)
         {
             Vector3 pos = transform.position + Vector3.up * 0.78f;
@@ -47,8 +47,11 @@ public class SelectableEntity : MonoBehaviour
 
     public void OnDeselect()
     {
-        ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
-        _selectionCircle = null;
+        if (_selectionCircle != null)
+        {
+            ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
+            _selectionCircle = null;
+        }
     }
     #endregion
 }

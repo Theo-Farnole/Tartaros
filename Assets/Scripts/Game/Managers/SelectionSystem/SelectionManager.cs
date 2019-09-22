@@ -108,6 +108,14 @@ public class SelectionManager : Singleton<SelectionManager>
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            for (int i = 0; i < _selectedGroups.Count; i++)
+            {
+                for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+                {
+                    _selectedGroups[i].selectableEntities[j].OnDeselect();
+                }
+            }
+
             _selectedGroups.Clear();
         }
     }
