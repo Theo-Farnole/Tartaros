@@ -84,7 +84,7 @@ public class SelectionManager : Singleton<SelectionManager>
         {
             if (Input.GetKey(KeyCode.LeftShift) == false)
             {
-                _selectedGroups.Clear();
+                ClearSelection();
             }
 
             _isSelecting = true;
@@ -108,19 +108,11 @@ public class SelectionManager : Singleton<SelectionManager>
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            for (int i = 0; i < _selectedGroups.Count; i++)
-            {
-                for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
-                {
-                    _selectedGroups[i].selectableEntities[j].OnDeselect();
-                }
-            }
-
-            _selectedGroups.Clear();
+            ClearSelection();
         }
     }
 
-    private bool IsWithinSelectionBounds(GameObject gameObject)
+    bool IsWithinSelectionBounds(GameObject gameObject)
     {
         if (!_isSelecting)
             return false;
@@ -129,6 +121,19 @@ public class SelectionManager : Singleton<SelectionManager>
         var viewportBounds = Utils.GetViewportBounds(camera, _originPositionRect, Input.mousePosition);
 
         return viewportBounds.Contains(camera.WorldToViewportPoint(gameObject.transform.position));
+    }
+
+    void ClearSelection()
+    {
+        for (int i = 0; i < _selectedGroups.Count; i++)
+        {
+            for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+            {
+                _selectedGroups[i].selectableEntities[j].OnDeselect();
+            }
+        }
+
+        _selectedGroups.Clear();
     }
     #endregion
 
