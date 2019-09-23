@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,9 +9,31 @@ public class UIManager : Singleton<UIManager>
 {
     #region Fields
     [SerializeField] private Image _selectedPortrait;
+    [SerializeField] private TextMeshProUGUI _waveIndicator;
     #endregion
 
     #region Methods
+    void Awake()
+    {
+        _waveIndicator.gameObject.SetActive(false);
+    }
+
+    public void SetWaveText(int waveCount, float remainingTime)
+    {
+        int remainingMinutes = Mathf.FloorToInt(remainingTime / 60);
+        int remainingSeconds = Mathf.FloorToInt(remainingTime % 60);
+
+        string stringTime = remainingMinutes.ToString();
+
+        if (remainingMinutes <= 5)
+        {
+            stringTime = string.Format("{0}:{1:00}", remainingMinutes, remainingSeconds);
+        }
+
+        _waveIndicator.gameObject.SetActive(true);
+        _waveIndicator.text = "Wave #" + waveCount + " in " + stringTime + " minutes"; 
+    }
+
     public void SetSelectedPortrait(EntityType ent)
     {
         Sprite sprite = null;
