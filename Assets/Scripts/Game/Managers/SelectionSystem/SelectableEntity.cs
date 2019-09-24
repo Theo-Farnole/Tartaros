@@ -53,7 +53,6 @@ public class SelectableEntity : MonoBehaviour
 
     public void OnSelected()
     {
-        Debug.Log("OnSelected");
         if (_selectionCircle == null)
         {
             Vector3 pos = transform.position + Vector3.up * 0.78f;

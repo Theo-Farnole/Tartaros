@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 public class SelectionManager : Singleton<SelectionManager>
@@ -27,11 +26,13 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region Fields
-    [SerializeField] private bool _displaySelectionOnUI = true;
-
     private Dictionary<SelectionKey, List<SelectableEntity>> _selectedGroups = new Dictionary<SelectionKey, List<SelectableEntity>>();
     private bool _isSelecting = false;
     private Vector3 _originPositionRect;
+    #endregion
+
+    #region Properties
+    public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SelectedGroups { get => _selectedGroups.ToArray();}
     #endregion
 
     #region Methods
@@ -45,23 +46,6 @@ public class SelectionManager : Singleton<SelectionManager>
     void OnGUI()
     {
         DrawSelectionRect();
-
-#if UNITY_EDITOR
-        if (_displaySelectionOnUI == false)
-            return;
-
-        StringBuilder o = new StringBuilder();
-        o.AppendLine("~ Selection ~");
-
-        var selectedGroupsArray = _selectedGroups.ToArray();
-        for (int i = 0; i < selectedGroupsArray.Length; i++)
-        {
-            o.AppendLine(selectedGroupsArray[i].Value.Count + " " + selectedGroupsArray[i].Key.type);
-        }
-
-        Rect rect = new Rect(15, 45, 150, 400);
-        GUI.Label(rect, o.ToString());
-#endif
     }
     #endregion
 

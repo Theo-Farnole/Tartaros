@@ -36,20 +36,6 @@ public class GameManager : Singleton<GameManager>
 
         _state?.Tick();
     }
-
-#if UNITY_EDITOR
-    void OnGUI()
-    {
-        Rect rect = new Rect(15, 0, 150, 30);
-        string label = "Current state: " + _state;
-        GUIStyle style = new GUIStyle
-        {
-            fontSize = 30,
-        };
-
-        GUI.Label(rect, label, style);
-    }
-#endif
     #endregion
 
     void CheckForStateChangement()
