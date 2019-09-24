@@ -10,10 +10,23 @@ public class SelectableEntity : MonoBehaviour
     private GameObject _selectionCircle = null;
     private MovableEntity _movableEntity;
     private AttackerEntity _attackEntity;
+    private OwnedEntity _ownedEntity;
     #endregion
 
     #region Properties
     public EntityType Type { get => _type; }
+    public Owner Owner
+    {
+        get
+        {
+            if (_ownedEntity == null)
+            {
+                Debug.LogWarning("SelectableEntity doesn't own a OwnedEntity!");
+            }
+
+            return _ownedEntity.Owner;
+        }
+    }
     public MovableEntity MovableEntity { get => _movableEntity; }
     public AttackerEntity AttackEntity { get => _attackEntity; }
     #endregion
@@ -24,21 +37,23 @@ public class SelectableEntity : MonoBehaviour
     {
         _movableEntity = GetComponent<MovableEntity>();
         _attackEntity = GetComponent<AttackerEntity>();
+        _ownedEntity = GetComponent<OwnedEntity>();
     }
 
     void OnMouseDown()
     {
-        SelectionManager.Instance.AddEntity(_type, this);
+        SelectionManager.Instance.AddEntity(this);
     }
 
     void OnDestroy()
     {
-        SelectionManager.Instance?.RemoveEntity(_type, this);
+        SelectionManager.Instance?.RemoveEntity(this);
     }
     #endregion
 
     public void OnSelected()
     {
+        Debug.Log("OnSelected");
         if (_selectionCircle == null)
         {
             Vector3 pos = transform.position + Vector3.up * 0.78f;
@@ -46,6 +61,7 @@ public class SelectableEntity : MonoBehaviour
 
             _selectionCircle = ObjectPooler.Instance.SpawnFromPool("selection_circle", pos, rot);
             _selectionCircle.transform.parent = transform;
+            _selectionCircle.GetComponent<SelectionCircle>()?.SetCircleOwner(_ownedEntity.Owner);
         }
     }
 
@@ -53,9 +69,11 @@ public class SelectableEntity : MonoBehaviour
     {
         if (_selectionCircle != null)
         {
+            _selectionCircle.transform.parent = transform;
             ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
-            _selectionCircle = null;
         }
+
+        _selectionCircle = null;
     }
     #endregion
 }

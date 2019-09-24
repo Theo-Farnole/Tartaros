@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 75726643763961422}
   - component: {fileID: 75726643763961421}
+  - component: {fileID: 2207463542009257204}
   m_Layer: 0
   m_Name: P_selection_circle
   m_TagString: Untagged
@@ -50,3 +51,19 @@ Projector:
   m_IgnoreLayers:
     serializedVersion: 2
     m_Bits: 1335
+--- !u!114 &2207463542009257204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75726643763961423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a91cc57125de854c9a26f0d73b9a731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _materials:
+  - {fileID: 2100000, guid: 6e424db08ff9abd42a80bdb2f74d3ead, type: 2}
+  - {fileID: 2100000, guid: df40b40e14944c14cb79f0bc9eb4b8e2, type: 2}
+  - {fileID: 2100000, guid: 755020f3b89e35b428bf0acc36850c82, type: 2}

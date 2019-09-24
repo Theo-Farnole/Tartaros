@@ -18,21 +18,7 @@ public class Register<TPrefab, TEnum> : Singleton<Register<TPrefab, TEnum>> wher
     // force array to be the size of TEnum
     void OnValidate()
     {
-        int tEnumLength = Enum.GetValues(typeof(TEnum)).Length;
-
-        // save old values
-        if (Prefabs == null) Prefabs = new TPrefab[tEnumLength];
-        TPrefab[] oldValues = Prefabs;
-
-        // create a new TEnum
-        Prefabs = new TPrefab[tEnumLength];
-
-        // find copy length
-        int copyLength = oldValues.Length;
-        if (copyLength > Prefabs.Length)  copyLength = Prefabs.Length; 
-
-        // then copy
-        Array.Copy(oldValues, Prefabs, copyLength);
+        Prefabs = Utils.ForceArraySize<TPrefab, TEnum>(Prefabs);
     }
 
     public TPrefab GetItem(TEnum itemEnum)

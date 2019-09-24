@@ -24,10 +24,9 @@ public class WaveManager : MonoBehaviour
     #region Methods
     void Update()
     {
-        Debug.Log("RemainingTime > " + RemainingTime);
-        UIManager.Instance.SetWaveText(_waveCount, RemainingTime);
-
         _timer += Time.deltaTime;
+
+        UIManager.Instance.SetWaveText(_waveCount, RemainingTime);
 
         if (RemainingTime <= 0)
         {

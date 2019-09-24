@@ -1,31 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class Group
-{
-    public EntityType type;
-
-    public List<SelectableEntity> selectableEntities = new List<SelectableEntity>();
-
-    public Group(EntityType type, SelectableEntity selectableEntity) : this(type, new List<SelectableEntity>() { selectableEntity })
-    { }
-
-    public Group(EntityType type, List<SelectableEntity> selectableEntities)
-    {
-        this.type = type;
-
-        this.selectableEntities = selectableEntities;
-    }
-}
-
 public class SelectionManager : Singleton<SelectionManager>
 {
+    #region Struct
+    public struct SelectionKey
+    {
+        public EntityType type;
+        public Owner owner;
+
+        public SelectionKey(EntityType type, Owner owner)
+        {
+            this.type = type;
+            this.owner = owner;
+        }
+
+        public SelectionKey(SelectableEntity selectableEntity)
+        {
+            type = selectableEntity.Type;
+            owner = selectableEntity.Owner;
+        }
+    }
+    #endregion
+
     #region Fields
     [SerializeField] private bool _displaySelectionOnUI = true;
 
-    private List<Group> _selectedGroups = new List<Group>();
+    private Dictionary<SelectionKey, List<SelectableEntity>> _selectedGroups = new Dictionary<SelectionKey, List<SelectableEntity>>();
     private bool _isSelecting = false;
     private Vector3 _originPositionRect;
     #endregion
@@ -49,13 +53,14 @@ public class SelectionManager : Singleton<SelectionManager>
         StringBuilder o = new StringBuilder();
         o.AppendLine("~ Selection ~");
 
-        for (int i = 0; i < _selectedGroups.Count; i++)
+        var selectedGroupsArray = _selectedGroups.ToArray();
+        for (int i = 0; i < selectedGroupsArray.Length; i++)
         {
-            o.AppendLine(_selectedGroups[i].selectableEntities.Count + " " + _selectedGroups[i].type);
+            o.AppendLine(selectedGroupsArray[i].Value.Count + " " + selectedGroupsArray[i].Key.type);
         }
 
-        Rect rect2 = new Rect(15, 45, 150, 400);
-        GUI.Label(rect2, o.ToString());
+        Rect rect = new Rect(15, 45, 150, 400);
+        GUI.Label(rect, o.ToString());
 #endif
     }
     #endregion
@@ -99,7 +104,7 @@ public class SelectionManager : Singleton<SelectionManager>
             {
                 if (IsWithinSelectionBounds(selectableEntities[i].gameObject))
                 {
-                    AddEntity(selectableEntities[i].Type, selectableEntities[i]);
+                    AddEntity(selectableEntities[i]);
                 }
             }
 
@@ -125,15 +130,16 @@ public class SelectionManager : Singleton<SelectionManager>
 
     void ClearSelection()
     {
-        for (int i = 0; i < _selectedGroups.Count; i++)
+        foreach (var item in _selectedGroups)
         {
-            for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+            for (int j = 0; j < item.Value.Count; j++)
             {
-                _selectedGroups[i].selectableEntities[j].OnDeselect();
+                item.Value[j].OnDeselect();
             }
         }
 
         _selectedGroups.Clear();
+        UpdatePortrait();
     }
     #endregion
 
@@ -146,30 +152,37 @@ public class SelectionManager : Singleton<SelectionManager>
         if (Input.GetMouseButton(1))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
+            // check if entities should ATTACK
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
             {
                 Transform target = hit.transform;
 
-                for (int i = 0; i < _selectedGroups.Count; i++)
+                foreach (var item in _selectedGroups)
                 {
-                    for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+                    if (item.Key.owner != Owner.Sparta)
+                        continue;
+
+                    for (int j = 0; j < item.Value.Count; j++)
                     {
-                        _selectedGroups[i].selectableEntities[j].AttackEntity?.StartAttacking(target);
+                        item.Value[j].AttackEntity?.StartAttacking(target);
                     }
                 }
             }
+            // check if entities should MOVE
             else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
             {
                 Vector3 target = hit.point;
 
-                for (int i = 0; i < _selectedGroups.Count; i++)
+                foreach (var item in _selectedGroups)
                 {
-                    for (int j = 0; j < _selectedGroups[i].selectableEntities.Count; j++)
+                    if (item.Key.owner != Owner.Sparta)
+                        continue;
+
+                    for (int j = 0; j < item.Value.Count; j++)
                     {
-                        _selectedGroups[i].selectableEntities[j].AttackEntity?.StopAttack();
-                        _selectedGroups[i].selectableEntities[j].MovableEntity?.GoTo(target);
+                        item.Value[j].AttackEntity?.StopAttack();
+                        item.Value[j].MovableEntity?.GoTo(target);
                     }
                 }
             }
@@ -178,53 +191,47 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region Selected groups Modifier
-    public void AddEntity(EntityType type, SelectableEntity selectableEntity)
+    public void AddEntity(SelectableEntity selectableEntity)
     {
-        for (int i = 0; i < _selectedGroups.Count; i++)
+        SelectionKey selectionKey = new SelectionKey(selectableEntity);
+
+        if (_selectedGroups.ContainsKey(selectionKey))
         {
-            // if find a selectedGroup of same unit
-            if (_selectedGroups[i].type == type)
+            if (_selectedGroups[selectionKey].Contains(selectableEntity) == false)
             {
-                // if gameObject isn't already in gameObjects list
-                if (_selectedGroups[i].selectableEntities.Contains(selectableEntity) == false)
-                {
-                    selectableEntity.OnSelected();
-                    _selectedGroups[i].selectableEntities.Add(selectableEntity);
-                    UpdatePortrait();
-                    return;
-                }
-                else
-                {
-                    Debug.Log("Selection Manager # " + selectableEntity + " can't be added because is already selected");
-                    return;
-                }
+                Debug.Log("Selection Manager # " + selectableEntity + " can't be added because is already selected");
+                return;
             }
+
+            _selectedGroups[selectionKey].Add(selectableEntity);
+        }
+        else
+        {
+            // create entry in the dictionary
+            _selectedGroups.Add(selectionKey, new List<SelectableEntity> { selectableEntity });
         }
 
-        // group with same unit doesn't exist, so we're creating one
         selectableEntity.OnSelected();
-        _selectedGroups.Add(new Group(type, selectableEntity));
         UpdatePortrait();
     }
 
-    public void RemoveEntity(EntityType type, SelectableEntity selectableEntity)
+    public void RemoveEntity(SelectableEntity selectableEntity)
     {
-        for (int i = 0; i < _selectedGroups.Count; i++)
+        SelectionKey selectionKey = new SelectionKey(selectableEntity);
+
+        if (_selectedGroups.ContainsKey(selectionKey) == false)
         {
-            // if find a selectedGroup of same unit
-            if (_selectedGroups[i].type == type)
-            {
-                selectableEntity.OnDeselect();
-                _selectedGroups[i].selectableEntities.Remove(selectableEntity);
+            Debug.LogWarning("Can't delete " + selectionKey + " because it isn't selected");
+            return;
+        }
 
-                if (_selectedGroups[i].selectableEntities.Count == 0)
-                {
-                    _selectedGroups.RemoveAt(i);
-                }
+        selectableEntity.OnDeselect();
+        _selectedGroups[selectionKey].Remove(selectableEntity);
+        UpdatePortrait();
 
-                UpdatePortrait();
-                return;
-            }
+        if (_selectedGroups[selectionKey].Count == 0)
+        {
+            _selectedGroups.Remove(selectionKey);
         }
     }
 
@@ -232,7 +239,7 @@ public class SelectionManager : Singleton<SelectionManager>
     {
         if (_selectedGroups.Count > 0)
         {
-            EntityType firstItemType = _selectedGroups[0].type;
+            EntityType firstItemType = _selectedGroups.ToArray()[0].Key.type;
             UIManager.Instance.SetSelectedPortrait(firstItemType);
         }
         else

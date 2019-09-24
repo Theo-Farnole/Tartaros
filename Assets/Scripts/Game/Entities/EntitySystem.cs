@@ -1,10 +1,18 @@
 ﻿using System;
 
+public static class EntitySystem
+{
+    public static readonly int STARTING_INDEX_UNIT = 0;
+    public static readonly int STARTING_INDEX_BUILDING = 1000;
+}
+
 public enum EntityType
 {
     // units
     Alexios = 0,
     Kassandra = 1,
+    Xerxes = 2,
+    Deer = 3,
 
     // building
     House = 1000,

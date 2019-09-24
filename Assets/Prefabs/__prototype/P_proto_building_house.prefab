@@ -86,7 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8575780219574164861}
-  - component: {fileID: 6436689377752337030}
+  - component: {fileID: 6629413351310699851}
   - component: {fileID: 1802008223}
   - component: {fileID: 1988078812}
   - component: {fileID: 3410488083495169125}
@@ -112,7 +112,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6436689377752337030
+--- !u!114 &6629413351310699851
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,13 +121,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 8575780219574164860}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f509756853dd19d4a944546232614905, type: 3}
+  m_Script: {fileID: 11500000, guid: 985525e7e550107419a31419e7a872c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 407e009080f37774eafbda97feb90802, type: 2}
   isInvincible: 0
-  _hideHealthSliderIfFull: 1
   _healthSlider: {fileID: 0}
+  _hideHealthSliderIfFull: 1
+  _owner: 0
 --- !u!114 &1802008223
 MonoBehaviour:
   m_ObjectHideFlags: 0
