@@ -21,6 +21,13 @@ public class UIManager : Singleton<UIManager>
         _waveIndicator.gameObject.SetActive(false);
     }
 
+    public void UpdateResourcesLabel(ResourcesWrapper currentResources)
+    {
+        _resourcesLabel[(int)Resource.Food].text = "food " + currentResources.food;
+        _resourcesLabel[(int)Resource.Wood].text = "wood " + currentResources.wood;
+        _resourcesLabel[(int)Resource.Gold].text = "gold " + currentResources.gold;
+    }
+
     public void SetWaveText(int waveCount, float remainingTime)
     {
         int remainingMinutes = Mathf.FloorToInt(remainingTime / 60);

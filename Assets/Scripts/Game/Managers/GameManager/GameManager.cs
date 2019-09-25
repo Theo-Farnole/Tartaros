@@ -37,6 +37,8 @@ public class GameManager : Singleton<GameManager>
 
     void Update()
     {
+        UIManager.Instance.UpdateResourcesLabel(_resources);
+
         CheckForStateChangement();
 
         _state?.Tick();
