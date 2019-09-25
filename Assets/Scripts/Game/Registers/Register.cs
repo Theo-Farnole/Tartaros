@@ -18,7 +18,9 @@ public class Register<TPrefab, TEnum> : Singleton<Register<TPrefab, TEnum>> wher
     // force array to be the size of TEnum
     void OnValidate()
     {
-        Prefabs = Utils.ForceArraySize<TPrefab, TEnum>(Prefabs);
+        var prefabs = Prefabs;
+        Array.Resize(ref prefabs, Enum.GetValues(typeof(TEnum)).Length);
+        Prefabs = prefabs;
     }
 
     public TPrefab GetItem(TEnum itemEnum)

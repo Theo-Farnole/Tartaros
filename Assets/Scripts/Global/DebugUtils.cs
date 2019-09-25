@@ -11,6 +11,7 @@ public class DebugUtils : MonoBehaviour
     #endregion
 
     #region Methods
+    #region MonoBehaviour Callbacks
     void Awake()
     {
 #if !UNITY_EDITOR
@@ -31,9 +32,10 @@ public class DebugUtils : MonoBehaviour
         if (!_active)
             return;
 
-        DrawGameManagerState();
+        //DrawGameManagerState();
         DrawSelectedGroups();
     }
+    #endregion
 
     private void DrawGameManagerState()
     {

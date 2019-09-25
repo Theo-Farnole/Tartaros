@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
     #region Fields
+    [SerializeField] private GameManagerData _data;
     [SerializeField] private SnapGrid _grid;
 
     private OwnerState<GameManager> _state = null;
+    private ResourcesWrapper _resources = new ResourcesWrapper();
     #endregion
 
     #region Properties
@@ -30,6 +30,11 @@ public class GameManager : Singleton<GameManager>
 
     #region Methods
     #region MonoBehaviour Callbacks
+    void Start()
+    {
+        _resources = _data.StartingResources;
+    }
+
     void Update()
     {
         CheckForStateChangement();

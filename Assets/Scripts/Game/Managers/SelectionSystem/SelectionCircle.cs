@@ -26,7 +26,7 @@ public class SelectionCircle : MonoBehaviour
     // force array to be the size of TEnum
     void OnValidate()
     {
-        _materials = Utils.ForceArraySize<Material, Owner>(_materials);
+        Array.Resize(ref _materials, Enum.GetValues(typeof(Owner)).Length);
     }
     #endregion
 }

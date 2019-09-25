@@ -44,7 +44,7 @@ public class SelectableEntity : MonoBehaviour
     {
         SelectionManager.Instance.AddEntity(this);
     }
-
+     
     void OnDestroy()
     {
         SelectionManager.Instance?.RemoveEntity(this);
@@ -69,7 +69,7 @@ public class SelectableEntity : MonoBehaviour
         if (_selectionCircle != null)
         {
             _selectionCircle.transform.parent = transform;
-            ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
+            ObjectPooler.Instance?.EnqueueGameObject("selection_circle", _selectionCircle);
         }
 
         _selectionCircle = null;

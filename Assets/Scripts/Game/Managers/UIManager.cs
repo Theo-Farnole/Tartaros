@@ -10,6 +10,9 @@ public class UIManager : Singleton<UIManager>
     #region Fields
     [SerializeField] private Image _selectedPortrait;
     [SerializeField] private TextMeshProUGUI _waveIndicator;
+    [Space]
+    [EnumNamedArray(typeof(Resource))]
+    [SerializeField] private TextMeshProUGUI[] _resourcesLabel;
     #endregion
 
     #region Methods
@@ -41,7 +44,7 @@ public class UIManager : Singleton<UIManager>
         var entUnitType = ent.IsUnitType();
         if (entUnitType != null)
         {
-            sprite = UnitsPortraitsRegister.Instance.GetItem((Unit)entUnitType);
+            sprite = UnitsPortraitsRegister.Instance?.GetItem((Unit)entUnitType);
         }
         else
         {
@@ -49,7 +52,7 @@ public class UIManager : Singleton<UIManager>
 
             if (entBuildingType != null)
             {
-                sprite = BuildingsPortraitsRegister.Instance.GetItem((Building)entBuildingType);
+                sprite = BuildingsPortraitsRegister.Instance?.GetItem((Building)entBuildingType);
             }
         }
 
@@ -59,6 +62,14 @@ public class UIManager : Singleton<UIManager>
     public void ResetSelectedPortrait()
     {
         _selectedPortrait.sprite = null;
+    }
+
+    void OnValidate()
+    {
+        if (_resourcesLabel.Length != Enum.GetValues(typeof(Resource)).Length)
+        {
+            Array.Resize(ref _resourcesLabel, Enum.GetValues(typeof(Resource)).Length);
+        }
     }
     #endregion
 }
