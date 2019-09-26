@@ -28,7 +28,9 @@ public enum Building
 public enum Unit
 {
     Alexios = EntityType.Alexios,
-    Kassandra = EntityType.Kassandra
+    Kassandra = EntityType.Kassandra,
+    Xerxes = EntityType.Xerxes,
+    Deer = EntityType.Deer
 }
 
 public static class EntityTypeExtension

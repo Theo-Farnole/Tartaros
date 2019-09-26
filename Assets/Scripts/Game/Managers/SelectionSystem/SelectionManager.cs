@@ -8,18 +8,18 @@ public class SelectionManager : Singleton<SelectionManager>
     #region Struct
     public struct SelectionKey
     {
-        public EntityType type;
+        public EntityType entityType;
         public Owner owner;
 
         public SelectionKey(EntityType type, Owner owner)
         {
-            this.type = type;
+            this.entityType = type;
             this.owner = owner;
         }
 
         public SelectionKey(SelectableEntity selectableEntity)
         {
-            type = selectableEntity.Type;
+            entityType = selectableEntity.Type;
             owner = selectableEntity.Owner;
         }
     }
@@ -33,6 +33,8 @@ public class SelectionManager : Singleton<SelectionManager>
 
     #region Properties
     public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SelectedGroups { get => _selectedGroups.ToArray(); }
+    public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SpartanGroups { get => (from x in _selectedGroups where x.Key.owner == Owner.Sparta select x).ToArray(); }
+    public 
     #endregion
 
     #region Methods
@@ -123,7 +125,7 @@ public class SelectionManager : Singleton<SelectionManager>
         }
 
         _selectedGroups.Clear();
-        UpdatePortrait();
+        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
     }
     #endregion
 
@@ -146,15 +148,11 @@ public class SelectionManager : Singleton<SelectionManager>
                     return;
 
                 // order attack
-                var spartanGroups = from x in _selectedGroups
-                                    where x.Key.owner == Owner.Sparta
-                                    select x.Value;
-
-                foreach (var group in spartanGroups)
+                foreach (var group in SpartanGroups)
                 {
-                    for (int i = 0; i < group.Count; i++)
+                    for (int i = 0; i < group.Value.Count; i++)
                     {
-                        group[i].AttackEntity?.StartAttacking(target);
+                        group.Value[i].AttackEntity?.StartAttacking(target);
                     }
                 }
             }
@@ -198,7 +196,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
         selectableEntity.OnSelected();
         _selectedGroups[selectionKey].Add(selectableEntity);
-        UpdatePortrait();
+        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
     }
 
     public void RemoveEntity(SelectableEntity selectableEntity)
@@ -211,27 +209,13 @@ public class SelectionManager : Singleton<SelectionManager>
             return;
         }
 
+
         selectableEntity.OnDeselect();
+
         _selectedGroups[selectionKey].Remove(selectableEntity);
-        UpdatePortrait();
+        if (_selectedGroups[selectionKey].Count == 0) _selectedGroups.Remove(selectionKey);
 
-        if (_selectedGroups[selectionKey].Count == 0)
-        {
-            _selectedGroups.Remove(selectionKey);
-        }
-    }
-
-    void UpdatePortrait()
-    {
-        if (_selectedGroups.Count > 0)
-        {
-            EntityType firstItemType = _selectedGroups.ToArray()[0].Key.type;
-            UIManager.Instance.SetSelectedPortrait(firstItemType);
-        }
-        else
-        {
-            UIManager.Instance.ResetSelectedPortrait();
-        }
+        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
     }
     #endregion
     #endregion

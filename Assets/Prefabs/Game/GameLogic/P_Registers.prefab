@@ -47,6 +47,8 @@ MonoBehaviour:
   _unitsPortraits:
   - {fileID: 21300000, guid: b6f0dbbeaac11b6458da5818f795668b, type: 3}
   - {fileID: 21300000, guid: 3968e96966b82274594aef90285ee9a9, type: 3}
+  - {fileID: 21300000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
+  - {fileID: 21300000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
 --- !u!114 &6093436272857011603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,8 +62,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingsPortraits:
-  - {fileID: 21300000, guid: b11faa8133635174a88521dd3ac836b8, type: 3}
-  - {fileID: 21300000, guid: b11faa8133635174a88521dd3ac836b8, type: 3}
+  - {fileID: 21300000, guid: 45311b0b06f498c4c800b7599452127b, type: 3}
+  - {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
 --- !u!1 &8292011921064858217
 GameObject:
   m_ObjectHideFlags: 0

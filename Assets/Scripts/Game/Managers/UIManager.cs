@@ -13,12 +13,18 @@ public class UIManager : Singleton<UIManager>
     [Space]
     [EnumNamedArray(typeof(Resource))]
     [SerializeField] private TextMeshProUGUI[] _resourcesLabel;
+    [SerializeField] private UISelectedGroupWrapper[] _selectedGroupWrapper = new UISelectedGroupWrapper[5];
     #endregion
 
     #region Methods
     void Awake()
     {
         _waveIndicator.gameObject.SetActive(false);
+
+        for (int i = 0; i < _selectedGroupWrapper.Length; i++)
+        {
+            _selectedGroupWrapper[i].gameObject.SetActive(false);
+        }
     }
 
     public void UpdateResourcesLabel(ResourcesWrapper currentResources)
@@ -26,6 +32,22 @@ public class UIManager : Singleton<UIManager>
         _resourcesLabel[(int)Resource.Food].text = "food " + currentResources.food;
         _resourcesLabel[(int)Resource.Wood].text = "wood " + currentResources.wood;
         _resourcesLabel[(int)Resource.Gold].text = "gold " + currentResources.gold;
+    }
+
+    public void UpdateSelectedGroups(KeyValuePair<SelectionManager.SelectionKey, List<SelectableEntity>>[] selectedGroups)
+    {
+        for (int i = 0; i < _selectedGroupWrapper.Length; i++)
+        {
+            if (i >= selectedGroups.Length)
+            {
+                _selectedGroupWrapper[i].gameObject.SetActive(false);
+                continue;
+            }
+
+            _selectedGroupWrapper[i].gameObject.SetActive(true);
+            _selectedGroupWrapper[i].portrait.sprite = PortraitsManager.GetPortrait(selectedGroups[i].Key.entityType);
+            _selectedGroupWrapper[i].unitsCount.text = selectedGroups[i].Value.Count.ToString();
+        }
     }
 
     public void SetWaveText(int waveCount, float remainingTime)
@@ -41,34 +63,7 @@ public class UIManager : Singleton<UIManager>
         }
 
         _waveIndicator.gameObject.SetActive(true);
-        _waveIndicator.text = "Wave #" + waveCount + " in " + stringTime + " minutes"; 
-    }
-
-    public void SetSelectedPortrait(EntityType ent)
-    {
-        Sprite sprite = null;
-
-        var entUnitType = ent.IsUnitType();
-        if (entUnitType != null)
-        {
-            sprite = UnitsPortraitsRegister.Instance?.GetItem((Unit)entUnitType);
-        }
-        else
-        {
-            var entBuildingType = ent.IsBuildingType();
-
-            if (entBuildingType != null)
-            {
-                sprite = BuildingsPortraitsRegister.Instance?.GetItem((Building)entBuildingType);
-            }
-        }
-
-        _selectedPortrait.sprite = sprite;
-    }
-
-    public void ResetSelectedPortrait()
-    {
-        _selectedPortrait.sprite = null;
+        _waveIndicator.text = "Wave #" + waveCount + " in " + stringTime + " minutes";
     }
 
     void OnValidate()
