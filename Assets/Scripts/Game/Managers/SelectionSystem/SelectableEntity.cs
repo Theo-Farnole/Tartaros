@@ -47,7 +47,12 @@ public class SelectableEntity : MonoBehaviour
      
     void OnDestroy()
     {
-        SelectionManager.Instance?.RemoveEntity(this);
+        if (_selectionCircle != null)
+        {
+            ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
+        }
+
+        SelectionManager.Instance.RemoveEntity(this);
     }
     #endregion
 
@@ -60,7 +65,7 @@ public class SelectableEntity : MonoBehaviour
 
             _selectionCircle = ObjectPooler.Instance.SpawnFromPool("selection_circle", pos, rot);
             _selectionCircle.transform.parent = transform;
-            _selectionCircle.GetComponent<SelectionCircle>()?.SetCircleOwner(_ownedEntity.Owner);
+            _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(_ownedEntity.Owner);
         }
     }
 
@@ -68,8 +73,7 @@ public class SelectableEntity : MonoBehaviour
     {
         if (_selectionCircle != null)
         {
-            _selectionCircle.transform.parent = transform;
-            ObjectPooler.Instance?.EnqueueGameObject("selection_circle", _selectionCircle);
+            ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
         }
 
         _selectionCircle = null;

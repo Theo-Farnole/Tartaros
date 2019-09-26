@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionCircle : MonoBehaviour
+public class SelectionCircle : MonoBehaviour, IPooledObject
 {
     #region Fields
     [EnumNamedArray(typeof(Owner))]
@@ -27,6 +27,11 @@ public class SelectionCircle : MonoBehaviour
     void OnValidate()
     {
         Array.Resize(ref _materials, Enum.GetValues(typeof(Owner)).Length);
+    }
+
+    public void OnObjectSpawn()
+    {
+        _projector.enabled = true;
     }
     #endregion
 }

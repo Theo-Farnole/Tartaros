@@ -6,6 +6,11 @@ public class BuildingState : OwnerState<GameManager>
 {
     #region Fields
     private GameObject _currentBuilding = null;
+    private Building _currentBuildingType;
+    #endregion
+
+    #region Properties
+    private ResourcesWrapper CurrentBuildingCost { get => BuildingConstructionCostRegister.Instance.GetItem(_currentBuildingType).ResourcesWrapper; }
     #endregion
 
     #region Methods
@@ -41,13 +46,25 @@ public class BuildingState : OwnerState<GameManager>
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Object.Destroy(_currentBuilding.gameObject);
+            _owner.Resources += CurrentBuildingCost;
             _owner.State = null;
         }
     }
 
     public void SetCurrentBuilding(Building building)
     {
-        var prefab = BuildingsRegister.Instance.GetItem(building);
+        _currentBuildingType = building;
+
+        if (_owner.Resources <= CurrentBuildingCost)
+        {
+            Debug.LogWarning("GameManager doesn't have enought resources to build " + building);
+            _owner.State = null;
+            return;
+        }
+
+        _owner.Resources -= CurrentBuildingCost;
+
+        var prefab = BuildingsPrefabRegister.Instance.GetItem(building);
 
         _currentBuilding = Object.Instantiate(prefab);
         DynamicsObjects.Instance.SetToParent(_currentBuilding.transform, "Building");

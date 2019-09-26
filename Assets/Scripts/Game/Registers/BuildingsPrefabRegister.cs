@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BuildingsRegister : Register<GameObject, Building>
+public class BuildingsPrefabRegister : Register<GameObject, Building>
 {
     [EnumNamedArray(typeof(Building))]
     [SerializeField] private GameObject[] _prefabsBuildings;

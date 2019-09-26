@@ -45,3 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parentsTag:
   - Building
+  - selection_circle

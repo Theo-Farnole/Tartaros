@@ -72,8 +72,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8292011921064858223}
   - component: {fileID: 8292011921064858216}
+  - component: {fileID: 75674126694212700}
   m_Layer: 0
-  m_Name: BuildingRegister
+  m_Name: Buildings Register
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,6 +109,21 @@ MonoBehaviour:
   _prefabsBuildings:
   - {fileID: 8575780219574164860, guid: 42145dcd78308834bbe553c6818f24fc, type: 3}
   - {fileID: 8575780219574164860, guid: 42145dcd78308834bbe553c6818f24fc, type: 3}
+--- !u!114 &75674126694212700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292011921064858217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d75740a922d5b4493e8ffca72f07c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _constructionCost:
+  - {fileID: 11400000, guid: b3f75408717203f40ba4d2491351600d, type: 2}
+  - {fileID: 11400000, guid: b3f75408717203f40ba4d2491351600d, type: 2}
 --- !u!1 &8292011921921854876
 GameObject:
   m_ObjectHideFlags: 0

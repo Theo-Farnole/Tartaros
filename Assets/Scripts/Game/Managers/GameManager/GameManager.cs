@@ -12,6 +12,18 @@ public class GameManager : Singleton<GameManager>
 
     #region Properties
     public SnapGrid Grid { get => _grid; }
+    public ResourcesWrapper Resources
+    {
+        get
+        {
+            return _resources;
+        }
+        set
+        {
+            _resources = value;
+            UIManager.Instance.UpdateResourcesLabel(_resources);
+        }
+    }
     public OwnerState<GameManager> State
     {
         get
@@ -29,16 +41,14 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Methods
-    #region MonoBehaviour Callbacks
+    #region MonoBehaviour Callbacks.
     void Start()
     {
-        _resources = _data.StartingResources;
+        Resources = _data.StartingResources;
     }
 
     void Update()
     {
-        UIManager.Instance.UpdateResourcesLabel(_resources);
-
         CheckForStateChangement();
 
         _state?.Tick();
