@@ -32,7 +32,7 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region Properties
-    public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SelectedGroups { get => _selectedGroups.ToArray();}
+    public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SelectedGroups { get => _selectedGroups.ToArray(); }
     #endregion
 
     #region Methods
@@ -142,14 +142,19 @@ public class SelectionManager : Singleton<SelectionManager>
             {
                 Transform target = hit.transform;
 
-                foreach (var item in _selectedGroups)
-                {
-                    if (item.Key.owner != Owner.Sparta)
-                        continue;
+                if (target.GetComponent<OwnedEntity>().Owner == Owner.Sparta)
+                    return;
 
-                    for (int j = 0; j < item.Value.Count; j++)
+                // order attack
+                var spartanGroups = from x in _selectedGroups
+                                    where x.Key.owner == Owner.Sparta
+                                    select x.Value;
+
+                foreach (var group in spartanGroups)
+                {
+                    for (int i = 0; i < group.Count; i++)
                     {
-                        item.Value[j].AttackEntity?.StartAttacking(target);
+                        group[i].AttackEntity?.StartAttacking(target);
                     }
                 }
             }
@@ -179,23 +184,20 @@ public class SelectionManager : Singleton<SelectionManager>
     {
         SelectionKey selectionKey = new SelectionKey(selectableEntity);
 
-        if (_selectedGroups.ContainsKey(selectionKey))
+        // create entry in the dictionary
+        if (_selectedGroups.ContainsKey(selectionKey) == false)
         {
-            if (_selectedGroups[selectionKey].Contains(selectableEntity) == false)
-            {
-                Debug.Log("Selection Manager # " + selectableEntity + " can't be added because is already selected");
-                return;
-            }
-
-            _selectedGroups[selectionKey].Add(selectableEntity);
+            _selectedGroups.Add(selectionKey, new List<SelectableEntity>());
         }
-        else
+
+        if (_selectedGroups[selectionKey].Contains(selectableEntity))
         {
-            // create entry in the dictionary
-            _selectedGroups.Add(selectionKey, new List<SelectableEntity> { selectableEntity });
+            Debug.Log("Selection Manager # " + selectableEntity + " can't be added because is already selected");
+            return;
         }
 
         selectableEntity.OnSelected();
+        _selectedGroups[selectionKey].Add(selectableEntity);
         UpdatePortrait();
     }
 
