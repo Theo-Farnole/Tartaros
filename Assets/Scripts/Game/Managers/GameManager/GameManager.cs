@@ -8,6 +8,8 @@ public class GameManager : Singleton<GameManager>
 
     private OwnerState<GameManager> _state = null;
     private ResourcesWrapper _resources = new ResourcesWrapper();
+
+    private static bool _applicationIsQuitting = false;
     #endregion
 
     #region Properties
@@ -38,6 +40,8 @@ public class GameManager : Singleton<GameManager>
             _state?.OnStateEnter();
         }
     }
+
+    public static bool ApplicationIsQuitting { get => _applicationIsQuitting; }
     #endregion
 
     #region Methods
@@ -52,6 +56,11 @@ public class GameManager : Singleton<GameManager>
         CheckForStateChangement();
 
         _state?.Tick();
+    }
+
+    void OnApplicationQuit()
+    {
+        _applicationIsQuitting = true;        
     }
     #endregion
 

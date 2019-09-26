@@ -47,6 +47,9 @@ public class SelectableEntity : MonoBehaviour
      
     void OnDestroy()
     {
+        if (GameManager.ApplicationIsQuitting)
+            return;
+
         if (_selectionCircle != null)
         {
             ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
