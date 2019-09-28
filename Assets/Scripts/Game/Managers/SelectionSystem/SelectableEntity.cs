@@ -8,9 +8,10 @@ public class SelectableEntity : MonoBehaviour
     [SerializeField] private EntityType _type;
 
     private GameObject _selectionCircle = null;
-    private MovableEntity _movableEntity;
-    private AttackerEntity _attackEntity;
+
+    // cache variables
     private OwnedEntity _ownedEntity;
+    private CommandReceiverEntity _commandReceiverEntity;
     #endregion
 
     #region Properties
@@ -27,24 +28,23 @@ public class SelectableEntity : MonoBehaviour
             return _ownedEntity.Owner;
         }
     }
-    public MovableEntity MovableEntity { get => _movableEntity; }
-    public AttackerEntity AttackEntity { get => _attackEntity; }
+
+    public CommandReceiverEntity CommandReceiverEntity { get => _commandReceiverEntity; }
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        _movableEntity = GetComponent<MovableEntity>();
-        _attackEntity = GetComponent<AttackerEntity>();
         _ownedEntity = GetComponent<OwnedEntity>();
+        _commandReceiverEntity = GetComponent<CommandReceiverEntity>();
     }
 
     void OnMouseDown()
     {
         SelectionManager.Instance.AddEntity(this);
     }
-     
+
     void OnDestroy()
     {
         if (GameManager.ApplicationIsQuitting)

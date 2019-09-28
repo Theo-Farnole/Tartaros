@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 5658998944144009802}
   - component: {fileID: 80149849990437922}
   - component: {fileID: 5658998944144009803}
-  - component: {fileID: 5188222573708262136}
-  - component: {fileID: 3885889973014657310}
+  - component: {fileID: 1097767165804314393}
   - component: {fileID: 80149849958489217}
   - component: {fileID: 5658998944144009800}
   m_Layer: 10
@@ -49,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 985525e7e550107419a31419e7a872c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entityData: {fileID: 11400000, guid: 58635f56ffece4f4c8e2a3bce58a8962, type: 2}
+  _entityData: {fileID: 11400000, guid: 407e009080f37774eafbda97feb90802, type: 2}
   isInvincible: 0
   _healthSlider: {fileID: 0}
   _hideHealthSliderIfFull: 1
@@ -67,7 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 2
---- !u!114 &5188222573708262136
+--- !u!114 &1097767165804314393
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,22 +75,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5658998944144009801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1f624625a14dc84bacf53b3900558cc, type: 3}
+  m_Script: {fileID: 11500000, guid: b6dfcc952945c8a41aa62681f9109591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3885889973014657310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5658998944144009801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27bcee65be8dad84fb24733a610e37bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _data: {fileID: 11400000, guid: 753b00e861a1f0447b8d42e838dead07, type: 2}
+  _data: {fileID: 11400000, guid: a069d5c19f2dfdc4ebf43e295a39980e, type: 2}
 --- !u!195 &80149849958489217
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -185,7 +172,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 79de92c9077d43147a56ca26d264e812, type: 2}
+  - {fileID: 2100000, guid: 25b4fed5bab22ca4a82b277b46ea85f3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

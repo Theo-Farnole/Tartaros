@@ -152,7 +152,7 @@ public class SelectionManager : Singleton<SelectionManager>
                 {
                     for (int i = 0; i < group.Value.Count; i++)
                     {
-                        group.Value[i].AttackEntity?.StartAttacking(target);
+                        group.Value[i].CommandReceiverEntity.Attack(target);
                     }
                 }
             }
@@ -168,8 +168,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
                     for (int j = 0; j < item.Value.Count; j++)
                     {
-                        item.Value[j].AttackEntity?.StopAttack();
-                        item.Value[j].MovableEntity?.GoTo(target);
+                        item.Value[j].CommandReceiverEntity.Move(target);
                     }
                 }
             }
