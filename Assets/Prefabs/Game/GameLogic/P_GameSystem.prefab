@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3303996174599234274}
   - component: {fileID: 8442452408310657369}
+  - component: {fileID: 7783362829672886101}
   m_Layer: 0
   m_Name: SelectionManager
   m_TagString: Untagged
@@ -43,7 +44,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0d6f8b623df6946959cbda8e850b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _displaySelectionOnUI: 1
+  _selectionRect: {fileID: 7783362829672886101}
+--- !u!114 &7783362829672886101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918495662815790534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18d9e2c94483eb04d97014d3bc9048ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2778067576834065317
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba096bb5fc79874baf6bca2286788ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _data: {fileID: 11400000, guid: 18e0ace1bc99010459f3962f36bf8e4f, type: 2}
   _grid: {fileID: 5129434999720798641}
 --- !u!1 &5069166888738723386
 GameObject:

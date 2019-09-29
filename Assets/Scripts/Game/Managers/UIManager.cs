@@ -50,6 +50,16 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    public void UpdateHighlightGroup(int highlightGroupIndex)
+    {
+        for (int i = 0; i < _selectedGroupWrapper.Length; i++)
+        {
+            bool isHighlight = (i == highlightGroupIndex);
+
+            _selectedGroupWrapper[i].SetHighlight(isHighlight);
+        }
+    }
+
     public void SetWaveText(int waveCount, float remainingTime)
     {
         int remainingMinutes = Mathf.FloorToInt(remainingTime / 60);

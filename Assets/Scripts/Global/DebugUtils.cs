@@ -6,6 +6,7 @@ using UnityEngine;
 public class DebugUtils : MonoBehaviour
 {
     #region Fields
+    [SerializeField] private bool _activeOnStart = false;
     [SerializeField] private KeyCode _toggleKey;
     private bool _active = true;
     #endregion
@@ -14,6 +15,8 @@ public class DebugUtils : MonoBehaviour
     #region MonoBehaviour Callbacks
     void Awake()
     {
+        _active = _activeOnStart;
+
 #if !UNITY_EDITOR
         _active = false;
 #endif

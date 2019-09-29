@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38584bfa730fd7e4aae8e2250e447cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _activeOnStart: 0
   _toggleKey: 283
 --- !u!4 &994698239
 Transform:
@@ -591,6 +592,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 395910838297740186, guid: ee9e876fc48aace4d91cd28e6a3d37bc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee9e876fc48aace4d91cd28e6a3d37bc, type: 3}
 --- !u!1001 &7282021461376917111
@@ -660,16 +666,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 510037679, guid: c044e0d14f394f546ba63ede1edad838, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8126128920527405288, guid: c044e0d14f394f546ba63ede1edad838,
-        type: 3}
-      propertyPath: _data
-      value: 
-      objectReference: {fileID: 11400000, guid: 18e0ace1bc99010459f3962f36bf8e4f,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c044e0d14f394f546ba63ede1edad838, type: 3}
 --- !u!1001 &8292011921620122659

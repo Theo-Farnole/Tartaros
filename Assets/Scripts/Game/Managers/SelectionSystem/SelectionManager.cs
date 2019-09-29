@@ -26,106 +26,73 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region Fields
+    [SerializeField] private SelectionRect _selectionRect;
+
     private Dictionary<SelectionKey, List<SelectableEntity>> _selectedGroups = new Dictionary<SelectionKey, List<SelectableEntity>>();
-    private bool _isSelecting = false;
-    private Vector3 _originPositionRect;
+    private int _highlightGroupIndex = -1;
     #endregion
 
     #region Properties
     public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SelectedGroups { get => _selectedGroups.ToArray(); }
     public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SpartanGroups { get => (from x in _selectedGroups where x.Key.owner == Owner.Sparta select x).ToArray(); }
-    public 
     #endregion
 
     #region Methods
     #region MonoBehaviour Callback
     void Update()
     {
-        ManageSelectionInput();
         ManageCommandsExecuter();
-    }
-
-    void OnGUI()
-    {
-        DrawSelectionRect();
-    }
-    #endregion
-
-    #region Selection Rect
-    /// <summary>
-    /// Must be called in OnGUI()
-    /// </summary>
-    void DrawSelectionRect()
-    {
-        if (_isSelecting)
-        {
-            // Create a rect from both mouse positions
-            Rect rect = Utils.GetScreenRect(_originPositionRect, Input.mousePosition);
-            Utils.DrawScreenRect(rect, new Color(0.8f, 0.8f, 0.95f, 0.25f));
-            Utils.DrawScreenRectBorder(rect, 2, new Color(0.8f, 0.8f, 0.95f));
-        }
-    }
-
-    /// <summary>
-    /// Must be called in Update()
-    /// </summary>
-    void ManageSelectionInput()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (Input.GetKey(KeyCode.LeftShift) == false)
-            {
-                ClearSelection();
-            }
-
-            _isSelecting = true;
-            _originPositionRect = Input.mousePosition;
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            var selectableEntities = FindObjectsOfType<SelectableEntity>();
-
-            for (int i = 0; i < selectableEntities.Length; i++)
-            {
-                if (IsWithinSelectionBounds(selectableEntities[i].gameObject))
-                {
-                    AddEntity(selectableEntities[i]);
-                }
-            }
-
-            _isSelecting = false;
-        }
+        ManageHighlightGroupInput();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             ClearSelection();
         }
-    }
 
-    bool IsWithinSelectionBounds(GameObject gameObject)
-    {
-        if (!_isSelecting)
-            return false;
-
-        var camera = Camera.main;
-        var viewportBounds = Utils.GetViewportBounds(camera, _originPositionRect, Input.mousePosition);
-
-        return viewportBounds.Contains(camera.WorldToViewportPoint(gameObject.transform.position));
-    }
-
-    void ClearSelection()
-    {
-        foreach (var item in _selectedGroups)
+        if (Input.GetMouseButtonUp(0) && !_selectionRect.IsSelecting)
         {
-            for (int j = 0; j < item.Value.Count; j++)
-            {
-                item.Value[j].OnDeselect();
-            }
+            SwitchEntityUnderMouse();
+        }
+    }
+    #endregion
+
+    #region Mouse Click
+    public void SwitchEntityUnderMouse()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) == false)
+        {
+            ClearSelection();
         }
 
-        _selectedGroups.Clear();
-        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        // check if entities should ATTACK
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
+        {
+            SelectableEntity hittedSelectableEntity = hit.transform.GetComponent<SelectableEntity>();
+
+            if (hittedSelectableEntity)
+            {
+                SwitchEntity(hittedSelectableEntity);
+            }
+        }
+    }
+    #endregion
+
+    #region Highlight Group Manager
+    void ManageHighlightGroupInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            _highlightGroupIndex++;
+
+            if (_highlightGroupIndex >= _selectedGroups.Count)
+            {
+                _highlightGroupIndex = 0;
+            }
+
+            UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
+        }
     }
     #endregion
 
@@ -176,7 +143,7 @@ public class SelectionManager : Singleton<SelectionManager>
     }
     #endregion
 
-    #region Selected groups Modifier
+    #region SelectedGroups Manager
     public void AddEntity(SelectableEntity selectableEntity)
     {
         SelectionKey selectionKey = new SelectionKey(selectableEntity);
@@ -195,6 +162,8 @@ public class SelectionManager : Singleton<SelectionManager>
 
         selectableEntity.OnSelected();
         _selectedGroups[selectionKey].Add(selectableEntity);
+
+        UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
     }
 
@@ -208,12 +177,49 @@ public class SelectionManager : Singleton<SelectionManager>
             return;
         }
 
-
         selectableEntity.OnDeselect();
 
         _selectedGroups[selectionKey].Remove(selectableEntity);
-        if (_selectedGroups[selectionKey].Count == 0) _selectedGroups.Remove(selectionKey);
+        if (_selectedGroups[selectionKey].Count == 0)
+        {
+            _selectedGroups.Remove(selectionKey);
+        }
 
+        UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
+        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
+    }
+
+    /// <summary>
+    /// Remove SelectableEntity if it's selected. And add it, if it's not selected.
+    /// </summary>
+    public void SwitchEntity(SelectableEntity selectableEntity)
+    {
+        SelectionKey selectionKey = new SelectionKey(selectableEntity);
+
+        if (_selectedGroups.ContainsKey(selectionKey))
+        {
+            RemoveEntity(selectableEntity);
+        }
+        else
+        {
+            AddEntity(selectableEntity);
+        }
+    }
+
+    public void ClearSelection()
+    {
+        foreach (var item in _selectedGroups)
+        {
+            for (int j = 0; j < item.Value.Count; j++)
+            {
+                item.Value[j].OnDeselect();
+            }
+        }
+
+        _selectedGroups.Clear();
+        _highlightGroupIndex = 0;
+
+        UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
     }
     #endregion

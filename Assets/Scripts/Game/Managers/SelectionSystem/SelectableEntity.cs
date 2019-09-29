@@ -40,11 +40,6 @@ public class SelectableEntity : MonoBehaviour
         _commandReceiverEntity = GetComponent<CommandReceiverEntity>();
     }
 
-    void OnMouseDown()
-    {
-        SelectionManager.Instance.AddEntity(this);
-    }
-
     void OnDestroy()
     {
         if (GameManager.ApplicationIsQuitting)
@@ -61,15 +56,18 @@ public class SelectableEntity : MonoBehaviour
 
     public void OnSelected()
     {
-        if (_selectionCircle == null)
+        if (_selectionCircle != null)
         {
-            Vector3 pos = transform.position + Vector3.up * 0.78f;
-            Quaternion rot = Quaternion.Euler(90, 0, 0);
-
-            _selectionCircle = ObjectPooler.Instance.SpawnFromPool("selection_circle", pos, rot);
-            _selectionCircle.transform.parent = transform;
-            _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(_ownedEntity.Owner);
+            Debug.LogWarning("SelectionCircle is already existing");
+            return;
         }
+
+        Vector3 pos = transform.position + Vector3.up * 0.78f;
+        Quaternion rot = Quaternion.Euler(90, 0, 0);
+
+        _selectionCircle = ObjectPooler.Instance.SpawnFromPool("selection_circle", pos, rot);
+        _selectionCircle.transform.parent = transform;
+        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(_ownedEntity.Owner);
     }
 
     public void OnDeselect()
