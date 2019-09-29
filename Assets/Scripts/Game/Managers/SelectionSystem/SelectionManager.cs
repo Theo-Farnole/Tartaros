@@ -6,21 +6,16 @@ using UnityEngine;
 public class SelectionManager : Singleton<SelectionManager>
 {
     #region Struct
-    public struct SelectionKey
+    public class Group
     {
         public EntityType entityType;
         public Owner owner;
+        public List<SelectableEntity> selectedEntities = new List<SelectableEntity>();
 
-        public SelectionKey(EntityType type, Owner owner)
+        public Group(EntityType entityType, Owner owner)
         {
-            this.entityType = type;
+            this.entityType = entityType;
             this.owner = owner;
-        }
-
-        public SelectionKey(SelectableEntity selectableEntity)
-        {
-            entityType = selectableEntity.Type;
-            owner = selectableEntity.Owner;
         }
     }
     #endregion
@@ -28,13 +23,13 @@ public class SelectionManager : Singleton<SelectionManager>
     #region Fields
     [SerializeField] private SelectionRect _selectionRect;
 
-    private Dictionary<SelectionKey, List<SelectableEntity>> _selectedGroups = new Dictionary<SelectionKey, List<SelectableEntity>>();
+    private List<Group> _selectedGroups = new List<Group>();
     private int _highlightGroupIndex = -1;
     #endregion
 
     #region Properties
-    public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SelectedGroups { get => _selectedGroups.ToArray(); }
-    public KeyValuePair<SelectionKey, List<SelectableEntity>>[] SpartanGroups { get => (from x in _selectedGroups where x.Key.owner == Owner.Sparta select x).ToArray(); }
+    public Group[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Owner.Sparta select x).ToArray(); }
+    public List<Group> SelectedGroups { get => _selectedGroups; }
     #endregion
 
     #region Methods
@@ -85,11 +80,7 @@ public class SelectionManager : Singleton<SelectionManager>
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             _highlightGroupIndex++;
-
-            if (_highlightGroupIndex >= _selectedGroups.Count)
-            {
-                _highlightGroupIndex = 0;
-            }
+            if (_highlightGroupIndex >= _selectedGroups.Count) _highlightGroupIndex = 0;
 
             UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
         }
@@ -98,7 +89,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
     #region Commands Executer
     /// <summary>
-    /// Must be called in Update()
+    /// If right click pressed, order attack or movement to Spartan selected groups.
     /// </summary>
     void ManageCommandsExecuter()
     {
@@ -106,38 +97,50 @@ public class SelectionManager : Singleton<SelectionManager>
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            // check if entities should ATTACK
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
             {
-                Transform target = hit.transform;
-
-                if (target.GetComponent<OwnedEntity>().Owner == Owner.Sparta)
-                    return;
-
-                // order attack
-                foreach (var group in SpartanGroups)
-                {
-                    for (int i = 0; i < group.Value.Count; i++)
-                    {
-                        group.Value[i].CommandReceiverEntity.Attack(target);
-                    }
-                }
+                OrderAttack(hit.transform);
             }
-            // check if entities should MOVE
             else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
             {
-                Vector3 target = hit.point;
+                OrderMovement(hit.point);
+            }
+        }
+    }
 
-                foreach (var item in _selectedGroups)
-                {
-                    if (item.Key.owner != Owner.Sparta)
-                        continue;
+    /// <summary>
+    /// Order attack to Spartan selected groups, except if target is also Spartan.
+    /// </summary>
+    /// <param name="target">Transform of the attack's target.</param>
+    void OrderAttack(Transform target)
+    {
+        if (target.GetComponent<OwnedEntity>().Owner == Owner.Sparta)
+            return;
 
-                    for (int j = 0; j < item.Value.Count; j++)
-                    {
-                        item.Value[j].CommandReceiverEntity.Move(target);
-                    }
-                }
+        // order attack
+        foreach (Group group in SpartanGroups)
+        {
+            for (int i = 0; i < group.selectedEntities.Count; i++)
+            {
+                group.selectedEntities[i].CommandReceiverEntity.Attack(target);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Order movement to Spartan selected groups.
+    /// </summary>
+    /// <param name="destination">Position of the wanted destination</param>
+    void OrderMovement(Vector3 destination)
+    {
+        foreach (Group group in SpartanGroups)
+        {
+            if (group.owner != Owner.Sparta)
+                continue;
+
+            for (int j = 0; j < group.selectedEntities.Count; j++)
+            {
+                group.selectedEntities[j].CommandReceiverEntity.Move(destination);
             }
         }
     }
@@ -146,22 +149,27 @@ public class SelectionManager : Singleton<SelectionManager>
     #region SelectedGroups Manager
     public void AddEntity(SelectableEntity selectableEntity)
     {
-        SelectionKey selectionKey = new SelectionKey(selectableEntity);
+        Group groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
 
-        // create entry in the dictionary
-        if (_selectedGroups.ContainsKey(selectionKey) == false)
+        // create group
+        if (groupWithSameType == null)
         {
-            _selectedGroups.Add(selectionKey, new List<SelectableEntity>());
+            groupWithSameType = new Group(selectableEntity.Type, selectableEntity.Owner);
+            _selectedGroups.Add(groupWithSameType);
+
+            if (_highlightGroupIndex == -1) _highlightGroupIndex = 0;
         }
 
-        if (_selectedGroups[selectionKey].Contains(selectableEntity))
+        // check if entity isn't selected
+        if (groupWithSameType.selectedEntities.Contains(selectableEntity))
         {
             Debug.Log("Selection Manager # " + selectableEntity + " can't be added because is already selected");
             return;
         }
 
+        // add to selectGroup and trigger OnSelect
+        groupWithSameType.selectedEntities.Add(selectableEntity);
         selectableEntity.OnSelected();
-        _selectedGroups[selectionKey].Add(selectableEntity);
 
         UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
@@ -169,20 +177,31 @@ public class SelectionManager : Singleton<SelectionManager>
 
     public void RemoveEntity(SelectableEntity selectableEntity)
     {
-        SelectionKey selectionKey = new SelectionKey(selectableEntity);
+        Group groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
 
-        if (_selectedGroups.ContainsKey(selectionKey) == false)
+        if (groupWithSameType == null ||
+           (groupWithSameType != null && groupWithSameType.selectedEntities.Contains(selectableEntity) == false))
         {
-            Debug.LogWarning("Can't delete " + selectionKey + " because it isn't selected");
+            Debug.LogWarning("Can't remove selectableEntity that's not selected!");
             return;
         }
 
         selectableEntity.OnDeselect();
+        groupWithSameType.selectedEntities.Remove(selectableEntity);
 
-        _selectedGroups[selectionKey].Remove(selectableEntity);
-        if (_selectedGroups[selectionKey].Count == 0)
+        // delete group if empty
+        if (groupWithSameType.selectedEntities.Count == 0)
         {
-            _selectedGroups.Remove(selectionKey);
+            int removeGroupIndex = _selectedGroups.IndexOf(groupWithSameType);
+
+            _selectedGroups.Remove(groupWithSameType);
+
+            // update HighlightGroupIndex
+            if (removeGroupIndex < _highlightGroupIndex)
+            {
+                _highlightGroupIndex--;
+                if (_highlightGroupIndex < 0) _highlightGroupIndex = 0;
+            }
         }
 
         UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
@@ -194,9 +213,9 @@ public class SelectionManager : Singleton<SelectionManager>
     /// </summary>
     public void SwitchEntity(SelectableEntity selectableEntity)
     {
-        SelectionKey selectionKey = new SelectionKey(selectableEntity);
+        bool isEntitySelected = _selectedGroups.Exists(x => x.selectedEntities.Contains(selectableEntity));
 
-        if (_selectedGroups.ContainsKey(selectionKey))
+        if (isEntitySelected)
         {
             RemoveEntity(selectableEntity);
         }
@@ -210,14 +229,14 @@ public class SelectionManager : Singleton<SelectionManager>
     {
         foreach (var item in _selectedGroups)
         {
-            for (int j = 0; j < item.Value.Count; j++)
+            for (int j = 0; j < item.selectedEntities.Count; j++)
             {
-                item.Value[j].OnDeselect();
+                item.selectedEntities[j].OnDeselect();
             }
         }
 
         _selectedGroups.Clear();
-        _highlightGroupIndex = 0;
+        _highlightGroupIndex = -1;
 
         UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());

@@ -18,11 +18,6 @@ public class UISelectedGroupWrapper : MonoBehaviour
 
     public void SetHighlight(bool isHighlight)
     {
-        if (isHighlight)
-        {
-            Debug.Log(gameObject.name + " has been highlighted");
-        }
-
         _highlightFrame.gameObject.SetActive(isHighlight);
     }
 }

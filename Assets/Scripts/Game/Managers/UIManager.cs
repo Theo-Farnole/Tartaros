@@ -34,7 +34,7 @@ public class UIManager : Singleton<UIManager>
         _resourcesLabel[(int)Resource.Gold].text = "gold " + currentResources.gold;
     }
 
-    public void UpdateSelectedGroups(KeyValuePair<SelectionManager.SelectionKey, List<SelectableEntity>>[] selectedGroups)
+    public void UpdateSelectedGroups(SelectionManager.Group[] selectedGroups)
     {
         for (int i = 0; i < _selectedGroupWrapper.Length; i++)
         {
@@ -45,8 +45,8 @@ public class UIManager : Singleton<UIManager>
             }
 
             _selectedGroupWrapper[i].gameObject.SetActive(true);
-            _selectedGroupWrapper[i].portrait.sprite = PortraitsManager.GetPortrait(selectedGroups[i].Key.entityType);
-            _selectedGroupWrapper[i].unitsCount.text = selectedGroups[i].Value.Count.ToString();
+            _selectedGroupWrapper[i].portrait.sprite = PortraitsManager.GetPortrait(selectedGroups[i].entityType);
+            _selectedGroupWrapper[i].unitsCount.text = selectedGroups[i].selectedEntities.Count.ToString();
         }
     }
 

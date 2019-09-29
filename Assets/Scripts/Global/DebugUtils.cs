@@ -59,9 +59,9 @@ public class DebugUtils : MonoBehaviour
         o.AppendLine("~ Selection ~");
 
         var selectedGroupsArray = SelectionManager.Instance.SelectedGroups;
-        for (int i = 0; i < selectedGroupsArray.Length; i++)
+        for (int i = 0; i < selectedGroupsArray.Count; i++)
         {
-            o.AppendLine(selectedGroupsArray[i].Value.Count + " " + selectedGroupsArray[i].Key.entityType);
+            o.AppendLine(selectedGroupsArray[i].selectedEntities.Count + " " + selectedGroupsArray[i].entityType);
         }
 
         Rect rect = new Rect(15, 45, 150, 400);
