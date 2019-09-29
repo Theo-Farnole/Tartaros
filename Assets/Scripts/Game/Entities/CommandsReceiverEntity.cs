@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,7 +12,7 @@ public enum CommandType
     SpawnUnit = 1 << 3
 }
 
-public class CommandReceiverEntity : MonoBehaviour
+public class CommandsReceiverEntity : MonoBehaviour
 {
     #region Fields
     [SerializeField, EnumFlag] private CommandType _availableCommands;
@@ -20,8 +21,7 @@ public class CommandReceiverEntity : MonoBehaviour
     [Header("Spawn Units Fields")]
     [SerializeField] private UnitCreationData[] _creatableUnits;
 
-
-    private OwnerState<CommandReceiverEntity> _currentCommand;
+    private OwnerState<CommandsReceiverEntity> _currentCommand;
 
     // cache variables
     private NavMeshAgent _navMeshAgent;
@@ -29,7 +29,7 @@ public class CommandReceiverEntity : MonoBehaviour
     #endregion
 
     #region Fields
-    private OwnerState<CommandReceiverEntity> Command
+    private OwnerState<CommandsReceiverEntity> Command
     {
         get
         {
@@ -47,6 +47,12 @@ public class CommandReceiverEntity : MonoBehaviour
     public AttackData Data { get => _data; }
     public NavMeshAgent NavMeshAgent { get => _navMeshAgent; }
     public Entity Entity { get => _entity; }
+
+    public UnitCreationData[] CreatableUnits { get => _creatableUnits; }
+
+    public bool CanMove { get => _availableCommands.HasFlag(CommandType.Move); }
+    public bool CanAttack { get => _availableCommands.HasFlag(CommandType.Attack); }
+    public bool CanSpawnUnit { get => _availableCommands.HasFlag(CommandType.SpawnUnit); }
     #endregion
 
     #region Methods
@@ -59,11 +65,6 @@ public class CommandReceiverEntity : MonoBehaviour
 
     void Update()
     {
-        if (GetComponent<SelectableEntity>().Type == EntityType.Alexios)
-        {
-            Debug.Log("A: _availableCommands > " + _availableCommands);
-        }
-
         _currentCommand?.Tick();
     }
     #endregion
@@ -71,7 +72,7 @@ public class CommandReceiverEntity : MonoBehaviour
     #region Commands Receive
     public void Move(Vector3 destination)
     {
-        if (_availableCommands.HasFlag(CommandType.Move))
+        if (CanMove)
         {
             Command = new CommandNavMeshGoTo(this, destination);
         }
@@ -79,11 +80,33 @@ public class CommandReceiverEntity : MonoBehaviour
 
     public void Attack(Transform target)
     {
-        if (_availableCommands.HasFlag(CommandType.Attack))
+        if (CanAttack)
         {
-            // todo: fix -> peut se déplacer même sans MOVE
             Command = new CommandAttack(this, target);
         }
+    }
+
+    public void SpawnUnit(Unit unitType)
+    {
+        UnitCreationData unitData = _creatableUnits.FirstOrDefault(x => x.Type == unitType);
+
+        if (unitData == null)
+        {
+            Debug.LogWarning("Can't create " + unitType + " because it's not inside _creatableUnits of " + transform.name + ".");
+            return;
+        }
+
+        if (GameManager.Instance.Resources < unitData.Cost)
+        {
+            Debug.Log("Player doesn't have enought resources to create " + unitType + ".");
+            return;
+        }
+
+        GameManager.Instance.Resources -= unitData.Cost;
+
+        var prefab = UnitsPrefabRegister.Instance.GetItem(unitType);
+        CommandsReceiverEntity commandReceiver =  Instantiate(prefab, transform.position, Quaternion.identity).GetComponent<CommandsReceiverEntity>();
+        commandReceiver.Move(transform.position + transform.forward * 1);
     }
 
     public void Stop()

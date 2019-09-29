@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8292011921921854947}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7752006604995115991
 MonoBehaviour:
@@ -64,6 +64,54 @@ MonoBehaviour:
   _buildingsPortraits:
   - {fileID: 21300000, guid: 45311b0b06f498c4c800b7599452127b, type: 3}
   - {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
+--- !u!1 &3558371146122828653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3910228920906330150}
+  - component: {fileID: 3228263513513842336}
+  m_Layer: 0
+  m_Name: Units Register
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3910228920906330150
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3558371146122828653}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8292011921921854947}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3228263513513842336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3558371146122828653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db24a64a6b7c486458835a08e39e7d3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefabsUnit:
+  - {fileID: 5734333928557051870, guid: ca6710c61e43e6c4c9fdc390fd8ad0fb, type: 3}
+  - {fileID: 5734333928557051870, guid: ca6710c61e43e6c4c9fdc390fd8ad0fb, type: 3}
+  - {fileID: 5658998944144009801, guid: e1bfb708d6db15945ba2a3ca2e69b85e, type: 3}
+  - {fileID: 3325713411561931174, guid: cd64728d68889534c9acbf4b8f83006c, type: 3}
 --- !u!1 &8292011921064858217
 GameObject:
   m_ObjectHideFlags: 0
@@ -154,6 +202,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8292011921064858223}
+  - {fileID: 3910228920906330150}
   - {fileID: 1149873627542000970}
   m_Father: {fileID: 0}
   m_RootOrder: 0

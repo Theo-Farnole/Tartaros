@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommandAttack : OwnerState<CommandReceiverEntity>
+public class CommandAttack : OwnerState<CommandsReceiverEntity>
 {
     #region Fields
     private Transform _target;
@@ -11,7 +11,7 @@ public class CommandAttack : OwnerState<CommandReceiverEntity>
     #endregion
 
     #region Methods
-    public CommandAttack(CommandReceiverEntity owner, Transform target, bool canMove = false) : base(owner)
+    public CommandAttack(CommandsReceiverEntity owner, Transform target, bool canMove = false) : base(owner)
     {
         _target = target;
         _canMove = canMove;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SelectionManager : Singleton<SelectionManager>
 {
@@ -44,6 +45,9 @@ public class SelectionManager : Singleton<SelectionManager>
             ClearSelection();
         }
 
+        if (EventSystem.current.IsPointerOverGameObject(-1))
+            return;
+
         if (Input.GetMouseButtonUp(0) && !_selectionRect.IsSelecting)
         {
             SwitchEntityUnderMouse();
@@ -82,7 +86,7 @@ public class SelectionManager : Singleton<SelectionManager>
             _highlightGroupIndex++;
             if (_highlightGroupIndex >= _selectedGroups.Count) _highlightGroupIndex = 0;
 
-            UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
+            UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
         }
     }
     #endregion
@@ -171,8 +175,7 @@ public class SelectionManager : Singleton<SelectionManager>
         groupWithSameType.selectedEntities.Add(selectableEntity);
         selectableEntity.OnSelected();
 
-        UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
-        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
+        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
     }
 
     public void RemoveEntity(SelectableEntity selectableEntity)
@@ -204,8 +207,9 @@ public class SelectionManager : Singleton<SelectionManager>
             }
         }
 
-        UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
-        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
+        if (_selectedGroups.Count == 0) _highlightGroupIndex = -1;
+
+        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
     }
 
     /// <summary>
@@ -238,8 +242,7 @@ public class SelectionManager : Singleton<SelectionManager>
         _selectedGroups.Clear();
         _highlightGroupIndex = -1;
 
-        UIManager.Instance.UpdateHighlightGroup(_highlightGroupIndex);
-        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray());
+        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
     }
     #endregion
     #endregion

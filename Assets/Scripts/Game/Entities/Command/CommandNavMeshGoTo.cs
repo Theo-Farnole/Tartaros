@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CommandNavMeshGoTo : OwnerState<CommandReceiverEntity>
+public class CommandNavMeshGoTo : OwnerState<CommandsReceiverEntity>
 {
-    public CommandNavMeshGoTo(CommandReceiverEntity owner, Vector3 destination) : base(owner)
+    public CommandNavMeshGoTo(CommandsReceiverEntity owner, Vector3 destination) : base(owner)
     {
         _owner.NavMeshAgent.SetDestination(destination);
     }

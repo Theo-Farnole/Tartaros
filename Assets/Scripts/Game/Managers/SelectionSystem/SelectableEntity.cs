@@ -11,7 +11,7 @@ public class SelectableEntity : MonoBehaviour
 
     // cache variables
     private OwnedEntity _ownedEntity;
-    private CommandReceiverEntity _commandReceiverEntity;
+    private CommandsReceiverEntity _commandReceiverEntity;
     #endregion
 
     #region Properties
@@ -29,7 +29,7 @@ public class SelectableEntity : MonoBehaviour
         }
     }
 
-    public CommandReceiverEntity CommandReceiverEntity { get => _commandReceiverEntity; }
+    public CommandsReceiverEntity CommandReceiverEntity { get => _commandReceiverEntity; }
     #endregion
 
     #region Methods
@@ -37,7 +37,7 @@ public class SelectableEntity : MonoBehaviour
     void Awake()
     {
         _ownedEntity = GetComponent<OwnedEntity>();
-        _commandReceiverEntity = GetComponent<CommandReceiverEntity>();
+        _commandReceiverEntity = GetComponent<CommandsReceiverEntity>();
     }
 
     void OnDestroy()

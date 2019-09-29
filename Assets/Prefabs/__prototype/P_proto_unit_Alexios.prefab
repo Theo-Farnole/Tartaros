@@ -78,7 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6dfcc952945c8a41aa62681f9109591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _availableCommands: 3
   _data: {fileID: 11400000, guid: 753b00e861a1f0447b8d42e838dead07, type: 2}
+  _creatableUnits: []
 --- !u!195 &1049413910
 NavMeshAgent:
   m_ObjectHideFlags: 0

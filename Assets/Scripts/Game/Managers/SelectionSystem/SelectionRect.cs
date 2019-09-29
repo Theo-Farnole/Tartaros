@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SelectionRect : MonoBehaviour
 {
@@ -29,6 +30,9 @@ public class SelectionRect : MonoBehaviour
     #region Managers
     void ManageSelectionInput()
     {
+        if (EventSystem.current.IsPointerOverGameObject(-1))
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             _originPositionRect = Input.mousePosition;

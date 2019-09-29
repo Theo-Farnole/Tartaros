@@ -14,9 +14,12 @@ public class UIManager : Singleton<UIManager>
     [EnumNamedArray(typeof(Resource))]
     [SerializeField] private TextMeshProUGUI[] _resourcesLabel;
     [SerializeField] private UISelectedGroupWrapper[] _selectedGroupWrapper = new UISelectedGroupWrapper[5];
+    [Space]
+    [SerializeField] private UICommandsWrapper[] _commandsWrapper = new UICommandsWrapper[2];
     #endregion
 
     #region Methods
+    #region MonoBehaviour Callbacks
     void Awake()
     {
         _waveIndicator.gameObject.SetActive(false);
@@ -25,16 +28,24 @@ public class UIManager : Singleton<UIManager>
         {
             _selectedGroupWrapper[i].gameObject.SetActive(false);
         }
+
+        for (int i = 0; i < _commandsWrapper.Length; i++)
+        {
+            _commandsWrapper[i].gameObject.SetActive(false);
+        }
     }
 
-    public void UpdateResourcesLabel(ResourcesWrapper currentResources)
+    void OnValidate()
     {
-        _resourcesLabel[(int)Resource.Food].text = "food " + currentResources.food;
-        _resourcesLabel[(int)Resource.Wood].text = "wood " + currentResources.wood;
-        _resourcesLabel[(int)Resource.Gold].text = "gold " + currentResources.gold;
+        if (_resourcesLabel.Length != Enum.GetValues(typeof(Resource)).Length)
+        {
+            Array.Resize(ref _resourcesLabel, Enum.GetValues(typeof(Resource)).Length);
+        }
     }
+    #endregion
 
-    public void UpdateSelectedGroups(SelectionManager.Group[] selectedGroups)
+    #region SelectGroups Methods
+    public void UpdateSelectedGroups(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
     {
         for (int i = 0; i < _selectedGroupWrapper.Length; i++)
         {
@@ -48,9 +59,21 @@ public class UIManager : Singleton<UIManager>
             _selectedGroupWrapper[i].portrait.sprite = PortraitsManager.GetPortrait(selectedGroups[i].entityType);
             _selectedGroupWrapper[i].unitsCount.text = selectedGroups[i].selectedEntities.Count.ToString();
         }
+
+
+        UpdateHighlightGroup(highlightGroupIndex);
+
+        CommandsReceiverEntity commandReceiver = null;
+
+        if (highlightGroupIndex != -1)
+        {
+            commandReceiver = selectedGroups[highlightGroupIndex].selectedEntities[0].GetComponent<CommandsReceiverEntity>();
+        }
+
+        UpdateCommandsPanel(commandReceiver);
     }
 
-    public void UpdateHighlightGroup(int highlightGroupIndex)
+    void UpdateHighlightGroup(int highlightGroupIndex)
     {
         for (int i = 0; i < _selectedGroupWrapper.Length; i++)
         {
@@ -58,6 +81,46 @@ public class UIManager : Singleton<UIManager>
 
             _selectedGroupWrapper[i].SetHighlight(isHighlight);
         }
+    }
+
+    void UpdateCommandsPanel(CommandsReceiverEntity commandReceiver)
+    {
+        // hide every commands wrapper
+        for (int i = 0; i < _commandsWrapper.Length; i++)
+        {
+            _commandsWrapper[i].gameObject.SetActive(false);
+        }
+
+        if (commandReceiver == null)
+            return;
+
+        // assign buttons to SpawnUnit Command
+        var creatableUnits = commandReceiver.CreatableUnits;
+
+        for (int i = 0; i < _commandsWrapper.Length; i++)
+        {
+            bool isActive = (i < creatableUnits.Length);
+            _commandsWrapper[i].gameObject.SetActive(isActive);
+
+            if (isActive)
+            {
+                _commandsWrapper[i].commandLabel.text = creatableUnits[i].Type.ToString();
+                //_commandsWrapper[i].backgroundButton.sprite = UnitsPortraitsRegister.Instance.GetItem(creatableUnits[i].Type);
+
+                var type = creatableUnits[i].Type;
+                _commandsWrapper[i].button.onClick.RemoveAllListeners();
+                _commandsWrapper[i].button.onClick.AddListener(() => commandReceiver.SpawnUnit(type));
+            }
+        }
+    }
+    #endregion
+
+    #region GameManager Methods
+    public void UpdateResourcesLabel(ResourcesWrapper currentResources)
+    {
+        _resourcesLabel[(int)Resource.Food].text = "food " + currentResources.food;
+        _resourcesLabel[(int)Resource.Wood].text = "wood " + currentResources.wood;
+        _resourcesLabel[(int)Resource.Gold].text = "gold " + currentResources.gold;
     }
 
     public void SetWaveText(int waveCount, float remainingTime)
@@ -75,13 +138,6 @@ public class UIManager : Singleton<UIManager>
         _waveIndicator.gameObject.SetActive(true);
         _waveIndicator.text = "Wave #" + waveCount + " in " + stringTime + " minutes";
     }
-
-    void OnValidate()
-    {
-        if (_resourcesLabel.Length != Enum.GetValues(typeof(Resource)).Length)
-        {
-            Array.Resize(ref _resourcesLabel, Enum.GetValues(typeof(Resource)).Length);
-        }
-    }
+    #endregion
     #endregion
 }
