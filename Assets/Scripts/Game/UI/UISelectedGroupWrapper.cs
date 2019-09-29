@@ -11,13 +11,18 @@ public class UISelectedGroupWrapper : MonoBehaviour
 
     [SerializeField] private Image _highlightFrame;
 
-    void Start()
+    void Awake()
     {
         SetHighlight(false);
     }
 
     public void SetHighlight(bool isHighlight)
     {
+        if (isHighlight)
+        {
+            Debug.Log(gameObject.name + " has been highlighted");
+        }
+
         _highlightFrame.gameObject.SetActive(isHighlight);
     }
 }
