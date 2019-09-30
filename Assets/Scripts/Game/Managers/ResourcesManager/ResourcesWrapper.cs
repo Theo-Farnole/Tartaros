@@ -59,6 +59,11 @@ public class ResourcesWrapper
         }
     }
 
+    public bool HasEnoughtResources(ResourcesWrapper b)
+    {
+        return (this > b);
+    }
+
     public static ResourcesWrapper operator -(ResourcesWrapper a, ResourcesWrapper b) =>
         new ResourcesWrapper(a.food - b.food, a.wood - b.wood, a.gold - b.gold);
 
@@ -68,21 +73,17 @@ public class ResourcesWrapper
     public static bool operator <(ResourcesWrapper a, ResourcesWrapper b) =>
          a.food < b.food && a.wood < b.wood && a.gold < b.gold;
 
-
     public static bool operator >(ResourcesWrapper a, ResourcesWrapper b) =>
         a.food > b.food && a.wood > b.wood && a.gold > b.gold;
     
     public static bool operator >=(ResourcesWrapper a, ResourcesWrapper b) =>
         a.food >= b.food && a.wood >= b.wood && a.gold >= b.gold;
 
-
     public static bool operator <=(ResourcesWrapper a, ResourcesWrapper b) =>
         a.food <= b.food && a.wood <= b.wood && a.gold <= b.gold;
 
-
     public static bool operator ==(ResourcesWrapper a, ResourcesWrapper b) =>
         a.food == b.food && a.wood == b.wood && a.gold == b.gold;
-
 
     public static bool operator !=(ResourcesWrapper a, ResourcesWrapper b) =>
         !(a == b);

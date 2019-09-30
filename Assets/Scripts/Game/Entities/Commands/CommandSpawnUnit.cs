@@ -23,7 +23,7 @@ public class CommandSpawnUnit : OwnerState<CommandsReceiverEntity>
             return;
         }
 
-        if (GameManager.Instance.Resources < unitData.Cost)
+        if (GameManager.Instance.Resources.HasEnoughtResources(unitData.Cost) == false)
         {
             Debug.Log("Player doesn't have enought resources to create " + unitType + ".");
             return;
