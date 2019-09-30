@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _cost:
-    food: 3
+    food: 20
     wood: 0
     gold: 0
