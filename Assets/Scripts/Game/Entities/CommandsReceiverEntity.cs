@@ -28,7 +28,7 @@ public class CommandsReceiverEntity : MonoBehaviour
     private Entity _entity;
     #endregion
 
-    #region Fields
+    #region Properties
     private OwnerState<CommandsReceiverEntity> Command
     {
         get
@@ -88,25 +88,7 @@ public class CommandsReceiverEntity : MonoBehaviour
 
     public void SpawnUnit(Unit unitType)
     {
-        UnitCreationData unitData = _creatableUnits.FirstOrDefault(x => x.Type == unitType);
-
-        if (unitData == null)
-        {
-            Debug.LogWarning("Can't create " + unitType + " because it's not inside _creatableUnits of " + transform.name + ".");
-            return;
-        }
-
-        if (GameManager.Instance.Resources < unitData.Cost)
-        {
-            Debug.Log("Player doesn't have enought resources to create " + unitType + ".");
-            return;
-        }
-
-        GameManager.Instance.Resources -= unitData.Cost;
-
-        var prefab = UnitsPrefabRegister.Instance.GetItem(unitType);
-        CommandsReceiverEntity commandReceiver =  Instantiate(prefab, transform.position, Quaternion.identity).GetComponent<CommandsReceiverEntity>();
-        commandReceiver.Move(transform.position + transform.forward * 1);
+        _currentCommand = new CommandSpawnUnit(this, unitType);
     }
 
     public void Stop()
