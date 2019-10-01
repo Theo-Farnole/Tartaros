@@ -14,6 +14,61 @@ public enum CommandType
 
 public class CommandsReceiverEntity : MonoBehaviour
 {
+    #region Class
+    public class CollisionScaler
+    {
+        private NavMeshAgent _navMeshAgent;
+        private Coroutine _currentCoroutine = null;
+        private float _startingRadius = 3;
+
+        private MonoBehaviour _owner;
+
+        private float ReducedRadius { get => _startingRadius * GameManager.Instance.CollisionScalerData.CollisionScaleDownPercent; }
+
+        public CollisionScaler(MonoBehaviour owner, NavMeshAgent navMeshAgent)
+        {
+            _owner = owner;
+            _navMeshAgent = navMeshAgent;
+
+            _startingRadius = navMeshAgent.radius;
+        }
+
+        public void ReduceRadius()
+        {
+            if (_currentCoroutine != null)
+            {
+                _owner.StopCoroutine(_currentCoroutine);
+            }
+
+            _currentCoroutine = new Timer(_owner, GameManager.Instance.CollisionScalerData.ReduceTime, (float t) =>
+            {
+                _navMeshAgent.radius = _startingRadius + t * (ReducedRadius - _startingRadius);
+            },
+            () =>
+            {
+                _navMeshAgent.radius = ReducedRadius;
+            }).Coroutine;
+        }
+
+        public void IncreaseRadius()
+        {
+            if (_currentCoroutine != null)
+            {
+                _owner.StopCoroutine(_currentCoroutine);
+            }
+
+            _currentCoroutine = new Timer(_owner, GameManager.Instance.CollisionScalerData.IncreaseTime, (float t) =>
+            {
+                _navMeshAgent.radius = ReducedRadius + t * (_startingRadius - ReducedRadius);
+            },
+            () =>
+            {
+                _navMeshAgent.radius = _startingRadius;
+            }).Coroutine;
+        }
+    }
+    #endregion
+
     #region Fields
     [SerializeField, EnumFlag] private CommandType _availableCommands;
     [Header("Attack Fields")]
@@ -22,6 +77,7 @@ public class CommandsReceiverEntity : MonoBehaviour
     [SerializeField] private UnitCreationData[] _creatableUnits;
 
     private OwnerState<CommandsReceiverEntity> _currentCommand;
+    private CollisionScaler _collisionScaler;
 
     // cache variables
     private NavMeshAgent _navMeshAgent;
@@ -53,6 +109,7 @@ public class CommandsReceiverEntity : MonoBehaviour
     public bool CanMove { get => _availableCommands.HasFlag(CommandType.Move); }
     public bool CanAttack { get => _availableCommands.HasFlag(CommandType.Attack); }
     public bool CanSpawnUnit { get => _availableCommands.HasFlag(CommandType.SpawnUnit); }
+    public CollisionScaler CollisionScaler1 { get => _collisionScaler; }
     #endregion
 
     #region Methods
@@ -61,6 +118,11 @@ public class CommandsReceiverEntity : MonoBehaviour
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _entity = GetComponent<Entity>();
+
+        if (_navMeshAgent != null)
+        {
+            _collisionScaler = new CollisionScaler(this, _navMeshAgent);
+        }
     }
 
     void Update()
@@ -74,7 +136,7 @@ public class CommandsReceiverEntity : MonoBehaviour
     {
         if (CanMove)
         {
-            Command = new CommandNavMeshGoTo(this, destination);
+            Command = new CommandNavMeshMove(this, destination);
         }
     }
 
@@ -93,6 +155,7 @@ public class CommandsReceiverEntity : MonoBehaviour
 
     public void Stop()
     {
+        Debug.Log(transform.name + " stop current command " + _currentCommand);
         Command = null;
     }
     #endregion

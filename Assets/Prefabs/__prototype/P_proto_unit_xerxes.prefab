@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5658998944144009803}
   - component: {fileID: 1097767165804314393}
   - component: {fileID: 80149849958489217}
-  - component: {fileID: 5658998944144009800}
   m_Layer: 10
   m_Name: P_proto_unit_xerxes
   m_TagString: Untagged
@@ -103,20 +102,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!136 &5658998944144009800
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5658998944144009801}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &5658998945811998284
 GameObject:
   m_ObjectHideFlags: 0

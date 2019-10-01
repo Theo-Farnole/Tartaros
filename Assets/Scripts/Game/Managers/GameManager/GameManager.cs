@@ -4,6 +4,8 @@ public class GameManager : Singleton<GameManager>
 {
     #region Fields
     [SerializeField] private GameManagerData _data;
+    [SerializeField] private CollisionScalerData _collisionScalerData;
+    [Space]
     [SerializeField] private SnapGrid _grid;
 
     private OwnerState<GameManager> _state = null;
@@ -42,6 +44,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     public static bool ApplicationIsQuitting { get => _applicationIsQuitting; }
+    public CollisionScalerData CollisionScalerData { get => _collisionScalerData; }
     #endregion
 
     #region Methods
@@ -60,7 +63,7 @@ public class GameManager : Singleton<GameManager>
 
     void OnApplicationQuit()
     {
-        _applicationIsQuitting = true;        
+        _applicationIsQuitting = true;
     }
     #endregion
 
