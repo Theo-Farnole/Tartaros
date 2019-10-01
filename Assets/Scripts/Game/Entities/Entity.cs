@@ -50,8 +50,6 @@ public class Entity : MonoBehaviour
         if (isInvincible)
             return;
 
-        Debug.Log(attacker.name + " do " + damage + " to " + name + ".");
-
         _hp -= damage;
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
 

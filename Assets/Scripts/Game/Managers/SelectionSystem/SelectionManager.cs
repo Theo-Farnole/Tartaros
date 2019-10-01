@@ -37,7 +37,6 @@ public class SelectionManager : Singleton<SelectionManager>
     #region MonoBehaviour Callback
     void Update()
     {
-        ManageCommandsExecuter();
         ManageHighlightGroupInput();
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -55,7 +54,7 @@ public class SelectionManager : Singleton<SelectionManager>
     }
     #endregion
 
-    #region Mouse Click
+    #region Manage MouseClick
     public void SwitchEntityUnderMouse()
     {
         if (Input.GetKey(KeyCode.LeftShift) == false)
@@ -65,7 +64,6 @@ public class SelectionManager : Singleton<SelectionManager>
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        // check if entities should ATTACK
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
         {
             SelectableEntity hittedSelectableEntity = hit.transform.GetComponent<SelectableEntity>();
@@ -87,65 +85,6 @@ public class SelectionManager : Singleton<SelectionManager>
             if (_highlightGroupIndex >= _selectedGroups.Count) _highlightGroupIndex = 0;
 
             UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
-        }
-    }
-    #endregion
-
-    #region Commands Executer
-    /// <summary>
-    /// If right click pressed, order attack or movement to Spartan selected groups.
-    /// </summary>
-    void ManageCommandsExecuter()
-    {
-        if (Input.GetMouseButton(1))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
-            {
-                OrderAttack(hit.transform);
-            }
-            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
-            {
-                OrderMovement(hit.point);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Order attack to Spartan selected groups, except if target is also Spartan.
-    /// </summary>
-    /// <param name="target">Transform of the attack's target.</param>
-    void OrderAttack(Transform target)
-    {
-        if (target.GetComponent<OwnedEntity>().Owner == Owner.Sparta)
-            return;
-
-        // order attack
-        foreach (Group group in SpartanGroups)
-        {
-            for (int i = 0; i < group.selectedEntities.Count; i++)
-            {
-                group.selectedEntities[i].CommandReceiverEntity.Attack(target);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Order movement to Spartan selected groups.
-    /// </summary>
-    /// <param name="destination">Position of the wanted destination</param>
-    void OrderMovement(Vector3 destination)
-    {
-        foreach (Group group in SpartanGroups)
-        {
-            if (group.owner != Owner.Sparta)
-                continue;
-
-            for (int j = 0; j < group.selectedEntities.Count; j++)
-            {
-                group.selectedEntities[j].CommandReceiverEntity.Move(destination);
-            }
         }
     }
     #endregion

@@ -7,9 +7,9 @@ using UnityEngine.AI;
 [System.Flags]
 public enum CommandType
 {
-    Move = 1,
-    Attack = 1 << 2,
-    SpawnUnit = 1 << 3
+    Move = 1 << 0,
+    Attack = 1 << 1,
+    SpawnUnit = 1 << 2
 }
 
 public class CommandsReceiverEntity : MonoBehaviour
@@ -138,13 +138,22 @@ public class CommandsReceiverEntity : MonoBehaviour
         {
             Command = new CommandNavMeshMove(this, destination);
         }
+
+        else
+        {
+            Debug.Log("Can't move");
+        }
     }
 
     public void Attack(Transform target)
     {
         if (CanAttack)
         {
-            Command = new CommandAttack(this, target);
+            Command = new CommandAttack(this, target, CanMove);
+        }
+        else
+        {
+            Debug.Log("Can't attack");
         }
     }
 
@@ -155,7 +164,6 @@ public class CommandsReceiverEntity : MonoBehaviour
 
     public void Stop()
     {
-        Debug.Log(transform.name + " stop current command " + _currentCommand);
         Command = null;
     }
     #endregion
