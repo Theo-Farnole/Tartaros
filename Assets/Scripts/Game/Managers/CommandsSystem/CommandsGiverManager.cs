@@ -39,10 +39,10 @@ public class CommandsGiverManager : MonoBehaviour
     /// <param name="target">Transform of the attack's target.</param>
     void OrderAttack(Transform target)
     {
-        if (target.GetComponent<OwnedEntity>().Owner == Owner.Sparta)
+        Debug.Log("target > " + target);
+        if (target.GetComponent<Entity>().Owner == Owner.Sparta)
             return;
         
-        // order attack
         foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
         {
             for (int i = 0; i < group.selectedEntities.Count; i++)
@@ -60,9 +60,6 @@ public class CommandsGiverManager : MonoBehaviour
     {
         foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
         {
-            if (group.owner != Owner.Sparta)
-                continue;
-
             for (int j = 0; j < group.selectedEntities.Count; j++)
             {
                 group.selectedEntities[j].CommandReceiverEntity.Move(destination);

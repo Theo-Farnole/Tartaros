@@ -9,5 +9,5 @@ public class BuildingsPrefabRegister : Register<GameObject, Building>
     [SerializeField] private GameObject[] _prefabsBuildings;
 
     protected override GameObject[] Prefabs { get => _prefabsBuildings; set => _prefabsBuildings = value; }
-    protected override int DeltaIndex { get => EntitySystem.STARTING_INDEX_BUILDING; }
+    protected override int DeltaIndex { get => EntitiesSystem.STARTING_INDEX_BUILDING; }
 }

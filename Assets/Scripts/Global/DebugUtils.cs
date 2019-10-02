@@ -13,7 +13,11 @@ public class DebugUtils : MonoBehaviour
     [SerializeField] private KeyCode _giveKey = KeyCode.F3;
     [SerializeField] private ResourcesWrapper _giveResources = new ResourcesWrapper(100, 100, 100);
 
-    private bool _active = true;
+    private static bool _active = true;
+    #endregion
+
+    #region Properties
+    public static bool Active { get => _active; }
     #endregion
 
     #region Methods

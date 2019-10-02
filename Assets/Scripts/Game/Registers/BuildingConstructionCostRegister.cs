@@ -8,5 +8,5 @@ public class BuildingConstructionCostRegister : Register<ResourcesWrapperDatabas
     [SerializeField] private ResourcesWrapperDatabase[] _constructionCost;
 
     protected override ResourcesWrapperDatabase[] Prefabs { get => _constructionCost; set => _constructionCost = value; }
-    protected override int DeltaIndex { get => EntitySystem.STARTING_INDEX_BUILDING; }
+    protected override int DeltaIndex { get => EntitiesSystem.STARTING_INDEX_BUILDING; }
 }

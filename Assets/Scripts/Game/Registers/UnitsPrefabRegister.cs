@@ -8,5 +8,5 @@ public class UnitsPrefabRegister : Register<GameObject, Unit>
     [SerializeField] private GameObject[] _prefabsUnit;
 
     protected override GameObject[] Prefabs { get => _prefabsUnit; set => _prefabsUnit = value; }
-    protected override int DeltaIndex { get => EntitySystem.STARTING_INDEX_UNIT; }
+    protected override int DeltaIndex { get => EntitiesSystem.STARTING_INDEX_UNIT; }
 }

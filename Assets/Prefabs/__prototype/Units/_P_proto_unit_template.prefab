@@ -122,14 +122,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1633938786359411144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 985525e7e550107419a31419e7a872c7, type: 3}
+  m_Script: {fileID: 11500000, guid: f509756853dd19d4a944546232614905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entityData: {fileID: 0}
+  _owner: 0
+  _entityData: {fileID: 11400000, guid: 407e009080f37774eafbda97feb90802, type: 2}
   isInvincible: 0
   _healthSlider: {fileID: 0}
   _hideHealthSliderIfFull: 1
-  _owner: 0
 --- !u!114 &1633938786359411146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,7 +168,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1.5
+  m_Speed: 2.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -176,7 +176,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 2.5
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

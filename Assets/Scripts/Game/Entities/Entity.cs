@@ -1,22 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Owner
+{
+    Sparta,
+    Persian,
+    Nature
+}
 
 [SelectionBase]
 public class Entity : MonoBehaviour
 {
     #region Fields
+    [Header("Owner Configuration")]
+    [SerializeField] private Owner _owner;
     [Header("Entity Config")]
     [SerializeField] protected HealthData _entityData;
     [SerializeField] public bool isInvincible = false;
-    [Space]
+    [Header("Entity Config")]
     [SerializeField] protected Slider _healthSlider;
     [SerializeField] private bool _hideHealthSliderIfFull = true;
 
-    protected int _hp;
+    private Dictionary<float, AttackSlots> _rangeToSlots = new Dictionary<float, AttackSlots>();
+    private int _hp;
     private int _maxHp;
     #endregion
 
@@ -24,10 +31,12 @@ public class Entity : MonoBehaviour
     public int MaxHp { get => _maxHp; }
     public int Hp { get => _hp; }
     public bool IsAlive { get => _hp > 0 ? true : false; }
+    public Owner Owner { get => _owner; }
     #endregion
 
     #region Methods
-    protected virtual void Awake()
+    #region MonoBehaviour Callbacks
+    void Awake()
     {
         if (_entityData != null)
         {
@@ -42,10 +51,38 @@ public class Entity : MonoBehaviour
         }
     }
 
-    /**
-     * Reduce entity's HP.
-     */
-    virtual public void GetDamage(int damage, Entity attacker)
+    void OnDrawGizmos()
+    {
+        if (DebugUtils.Active)
+        {
+            foreach (var attackSlots in _rangeToSlots)
+            {
+                attackSlots.Value.GizmosDrawSlots();
+            }
+        }
+    }
+    #endregion
+
+    #region AttackSlots Methods
+    public AttackSlots GetAttackSlots(float slotRange)
+    {
+        // add entry in dictionary if nonexistant
+        if (_rangeToSlots.ContainsKey(slotRange) == false)
+        {
+            _rangeToSlots.Add(slotRange, new AttackSlots(transform, slotRange, 1));
+        }
+
+        return _rangeToSlots[slotRange];
+    }    
+    #endregion
+
+    #region Health, death & UI Methods
+    /// <summary>
+    /// GoDamage to this entity.
+    /// </summary>
+    /// <param name="damage">Amount of hp to be removed</param>
+    /// <param name="attacker">Entity which do damage to the entity</param>
+    public void GetDamage(int damage, Entity attacker)
     {
         if (isInvincible)
             return;
@@ -61,7 +98,19 @@ public class Entity : MonoBehaviour
         }
     }
 
-    protected void UpdateHealthSlider()
+    /// <summary>
+    /// Play feedbacks, than destroy entity.
+    /// </summary>
+    /// <param name="killer">Entity which removed the last hp of the entity</param>
+    private void Death(Entity killer)
+    {
+        Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Update value of health slider, and hide it if option is ticked.
+    /// </summary>
+    private void UpdateHealthSlider()
     {
         if (_healthSlider == null)
             return;
@@ -77,10 +126,6 @@ public class Entity : MonoBehaviour
         _healthSlider.maxValue = _maxHp;
         _healthSlider.value = _hp;
     }
-
-    protected virtual void Death(Entity killer)
-    {
-        Destroy(gameObject);
-    }
+    #endregion
     #endregion
 }

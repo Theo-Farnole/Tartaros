@@ -10,7 +10,7 @@ public class SelectableEntity : MonoBehaviour
     private GameObject _selectionCircle = null;
 
     // cache variables
-    private OwnedEntity _ownedEntity;
+    private Entity _entity;
     private CommandsReceiverEntity _commandReceiverEntity;
     #endregion
 
@@ -20,12 +20,12 @@ public class SelectableEntity : MonoBehaviour
     {
         get
         {
-            if (_ownedEntity == null)
+            if (_entity == null)
             {
                 Debug.LogWarning("SelectableEntity doesn't own a OwnedEntity!");
             }
 
-            return _ownedEntity.Owner;
+            return _entity.Owner;
         }
     }
 
@@ -36,7 +36,7 @@ public class SelectableEntity : MonoBehaviour
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        _ownedEntity = GetComponent<OwnedEntity>();
+        _entity = GetComponent<Entity>();
         _commandReceiverEntity = GetComponent<CommandsReceiverEntity>();
     }
 
@@ -67,7 +67,7 @@ public class SelectableEntity : MonoBehaviour
 
         _selectionCircle = ObjectPooler.Instance.SpawnFromPool("selection_circle", pos, rot);
         _selectionCircle.transform.parent = transform;
-        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(_ownedEntity.Owner);
+        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(_entity.Owner);
     }
 
     public void OnDeselect()

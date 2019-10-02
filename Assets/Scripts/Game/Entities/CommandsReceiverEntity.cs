@@ -122,6 +122,7 @@ public class CommandsReceiverEntity : MonoBehaviour
         if (_navMeshAgent != null)
         {
             _collisionScaler = new CollisionScaler(this, _navMeshAgent);
+            _navMeshAgent.avoidancePriority = Random.Range(0, 101);
         }
     }
 
@@ -159,7 +160,10 @@ public class CommandsReceiverEntity : MonoBehaviour
 
     public void SpawnUnit(Unit unitType)
     {
-        _currentCommand = new CommandSpawnUnit(this, unitType);
+        if (CanSpawnUnit)
+        {
+            _currentCommand = new CommandSpawnUnit(this, unitType);
+        }
     }
 
     public void Stop()

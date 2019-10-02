@@ -1,6 +1,6 @@
 ﻿using System;
 
-public static class EntitySystem
+public static class EntitiesSystem
 {
     public static readonly int STARTING_INDEX_UNIT = 0;
     public static readonly int STARTING_INDEX_BUILDING = 1000;
