@@ -20,7 +20,7 @@ public class AttackSlots
     #endregion
 
     #region Properties
-    private Slot[] AvailableSlots  { get => (from x in _slots where x.assigned == true select x).ToArray();  }
+    private Slot[] AvailableSlots { get => (from x in _slots where x.assigned == true select x).ToArray(); }
     private Slot[] UnvailableSlots { get => (from x in _slots where x.assigned == false select x).ToArray(); }
     private Vector3[] LocalPositions { get => (from x in _slots select x.localPosition).ToArray(); }
     #endregion
@@ -89,7 +89,7 @@ public class AttackSlots
         // check if slot isn't already realse
         if (_slots[index].assigned == false)
             return;
-    
+
         _slots[index].assigned = false;
     }
 
@@ -98,13 +98,26 @@ public class AttackSlots
         Vector3 localPosition = worldPosition - _transform.position;
 
         Vector3[] localPositionAvailableSlots = (from x in _slots
-                                                where x.assigned == false
-                                                select x.localPosition).ToArray();
+                                                 where x.assigned == false
+                                                 select x.localPosition).ToArray();
 
         Vector3 closestVector = localPosition.GetClosestVector(localPositionAvailableSlots);
         Slot closestSlot = _slots.First(x => x.localPosition == closestVector);
 
         return Array.IndexOf(_slots, closestSlot);
+    }
+
+    public Slot GetNearestSlot(Vector3 worldPosition)
+    {
+        Vector3 localPosition = worldPosition - _transform.position;
+
+        Vector3[] localPositionSlots = (from x in _slots
+                                        select x.localPosition).ToArray();
+
+        Vector3 closestVector = localPosition.GetClosestVector(localPositionSlots);
+        Slot closestSlot = _slots.FirstOrDefault(x => x.localPosition == closestVector);
+
+        return closestSlot;
     }
 
     private Vector3 GetLocalPosition(int index)
