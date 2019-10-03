@@ -190,6 +190,7 @@ MonoBehaviour:
   _data: {fileID: 11400000, guid: 18e0ace1bc99010459f3962f36bf8e4f, type: 2}
   _collisionScalerData: {fileID: 11400000, guid: ec0a524eecc0b374ca058f8b5d860154,
     type: 2}
+  _attackSlotsData: {fileID: 11400000, guid: 68f195092593ef145a60ecd840aff05e, type: 2}
   _grid: {fileID: 5129434999720798641}
 --- !u!1 &5069166888738723386
 GameObject:

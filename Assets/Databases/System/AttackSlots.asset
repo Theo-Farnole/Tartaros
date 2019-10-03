@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef780584973159343986acde08dd6b53, type: 3}
-  m_Name: __Default health data
+  m_Script: {fileID: 11500000, guid: 2055df86b66ae8d40bb4a1d3575b703d, type: 3}
+  m_Name: AttackSlots
   m_EditorClassIdentifier: 
-  _hp: 2147483647
+  _distanceBetweenSlot: 1.8

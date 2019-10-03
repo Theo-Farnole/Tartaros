@@ -26,13 +26,13 @@ public class AttackSlots
     #endregion
 
     #region Methods
-    public AttackSlots(Transform transform, float slotRange, int distanceBetweenSlot)
+    public AttackSlots(Transform transform, float slotRange, float distanceBetweenSlot)
     {
         _transform = transform;
         CreateSlots(slotRange, distanceBetweenSlot);
     }
 
-    private void CreateSlots(float slotRange, int distanceBetweenSlot)
+    private void CreateSlots(float slotRange, float distanceBetweenSlot)
     {
         // find angleInterval & anglesCount
         float hypotenuse = Mathf.Sqrt(slotRange * slotRange + distanceBetweenSlot * distanceBetweenSlot);

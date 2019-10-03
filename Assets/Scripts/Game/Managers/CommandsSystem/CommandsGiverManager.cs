@@ -39,7 +39,6 @@ public class CommandsGiverManager : MonoBehaviour
     /// <param name="target">Transform of the attack's target.</param>
     void OrderAttack(Transform target)
     {
-        Debug.Log("target > " + target);
         if (target.GetComponent<Entity>().Owner == Owner.Sparta)
             return;
         

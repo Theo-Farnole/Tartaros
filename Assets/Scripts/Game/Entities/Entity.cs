@@ -69,7 +69,7 @@ public class Entity : MonoBehaviour
         // add entry in dictionary if nonexistant
         if (_rangeToSlots.ContainsKey(slotRange) == false)
         {
-            _rangeToSlots.Add(slotRange, new AttackSlots(transform, slotRange, 1));
+            _rangeToSlots.Add(slotRange, new AttackSlots(transform, slotRange, GameManager.Instance.AttackSlotsData.DistanceBetweenSlot));
         }
 
         return _rangeToSlots[slotRange];
