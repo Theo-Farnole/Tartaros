@@ -55,7 +55,12 @@ public class AttackSlots
         }
     }
 
-    public Slot AssignSlot(int index)
+    public Slot AssignNearestSlot(Vector3 worldPosition)
+    {
+        return AssignSlot(GetNearestAvailableSlotIndex(worldPosition));
+    }
+
+    private Slot AssignSlot(int index)
     {
         // avoid out of bounds errors
         if (index < 0 || index >= _slots.Length)
@@ -70,7 +75,12 @@ public class AttackSlots
         return _slots[index];
     }
 
-    public void ReleaseSlot(int index)
+    public void ReleaseSlot(Slot slot)
+    {
+        ReleaseSlot(Array.IndexOf(_slots, slot));
+    }
+
+    private void ReleaseSlot(int index)
     {
         // avoid out of bounds errors
         if (index < 0 || index >= _slots.Length)
@@ -83,7 +93,7 @@ public class AttackSlots
         _slots[index].assigned = false;
     }
 
-    public int GetNearestAvailableSlotIndex(Vector3 worldPosition)
+    private int GetNearestAvailableSlotIndex(Vector3 worldPosition)
     {
         Vector3 localPosition = worldPosition - _transform.position;
 

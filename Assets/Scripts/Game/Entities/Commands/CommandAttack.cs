@@ -7,7 +7,6 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
     #region Fields
     private Transform _target;
     private AttackSlots.Slot _slot;
-    private int _slotIndex = -1;
 
     private bool _canMove = false;
     private float _attackTimer = 0;
@@ -35,18 +34,16 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
         if (_canMove)
         {
             _attackSlots = _targetEntity.GetAttackSlots(owner.Data.AttackRange);
-
-            _slotIndex = _attackSlots.GetNearestAvailableSlotIndex(owner.transform.position);
-            _slot = _attackSlots.AssignSlot(_slotIndex);
+            _slot = _attackSlots.AssignNearestSlot(owner.transform.position);
         }
     }
 
     public override void OnStateExit()
     {
         // if slot assigned, release it
-        if (_slotIndex != -1)
+        if (_slot != null)
         {
-            _attackSlots.ReleaseSlot(_slotIndex);
+            _attackSlots.ReleaseSlot(_slot);
         }
     }
 
@@ -55,7 +52,7 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
         _attackTimer += Time.deltaTime;
 
         // is in attackrange ?
-        if (Vector3.Distance(_owner.transform.position, _target.position) <= _owner.Data.AttackRange)
+        if (false && Vector3.Distance(_owner.transform.position, _target.position) <= _owner.Data.AttackRange)
         {
             if (_owner.NavMeshAgent != null) _owner.NavMeshAgent.isStopped = true;
 

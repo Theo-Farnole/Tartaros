@@ -17,20 +17,20 @@ public class CommandsReceiverEntity : MonoBehaviour
     #region Class
     public class CollisionScaler
     {
+        private MonoBehaviour _owner;
         private NavMeshAgent _navMeshAgent;
+
         private Coroutine _currentCoroutine = null;
         private float _startingRadius = 3;
 
-        private MonoBehaviour _owner;
-
         private float ReducedRadius { get => _startingRadius * GameManager.Instance.CollisionScalerData.CollisionScaleDownPercent; }
 
-        public CollisionScaler(MonoBehaviour owner, NavMeshAgent navMeshAgent)
+        public CollisionScaler(MonoBehaviour owner)
         {
             _owner = owner;
-            _navMeshAgent = navMeshAgent;
+            _navMeshAgent = owner.GetComponent<NavMeshAgent>();
 
-            _startingRadius = navMeshAgent.radius;
+            _startingRadius = _navMeshAgent.radius;
         }
 
         public void ReduceRadius()
@@ -56,6 +56,8 @@ public class CommandsReceiverEntity : MonoBehaviour
             {
                 _owner.StopCoroutine(_currentCoroutine);
             }
+
+            
 
             _currentCoroutine = new Timer(_owner, GameManager.Instance.CollisionScalerData.IncreaseTime, (float t) =>
             {
@@ -121,8 +123,8 @@ public class CommandsReceiverEntity : MonoBehaviour
 
         if (_navMeshAgent != null)
         {
-            _collisionScaler = new CollisionScaler(this, _navMeshAgent);
-            _navMeshAgent.avoidancePriority = Random.Range(0, 101);
+            _collisionScaler = new CollisionScaler(this);
+            _navMeshAgent.avoidancePriority = Random.Range(0, 100);
         }
     }
 
