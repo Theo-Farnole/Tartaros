@@ -16,12 +16,12 @@ public class SnapGridDatabase : ScriptableObject
 
     public void OnValidate()
     {
-        _cellsTotalCount = _cellCount * _cellCount;
-
         // is _cellCount even ?
         if (_cellCount % 2 == 0)
         {
             _cellCount++;
         }
+
+        _cellsTotalCount = _cellCount * _cellCount;
     }
 }
