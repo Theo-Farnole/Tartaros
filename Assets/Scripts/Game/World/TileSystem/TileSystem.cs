@@ -5,7 +5,7 @@ using UnityEngine;
 public class TileSystem : Singleton<TileSystem>
 {
     #region Fields
-    [SerializeField] private TileDatabase _data;
+    [SerializeField] private SnapGridDatabase _data;
 
     private Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>();
     #endregion

@@ -4,7 +4,7 @@
 public class SnapGrid
 {
     #region Fields
-    [SerializeField] private TileDatabase _data;
+    [SerializeField] private SnapGridDatabase _data;
     [Space]
     [Header("Debug")]
     [SerializeField] private bool _debugDrawGrid = false;

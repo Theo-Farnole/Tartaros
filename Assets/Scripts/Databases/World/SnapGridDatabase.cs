@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leonidas Legacy/World/Tile")]
-public class TileDatabase : ScriptableObject
+[CreateAssetMenu(menuName = "Leonidas Legacy/World/Grid")]
+public class SnapGridDatabase : ScriptableObject
 {
     [SerializeField, Range(1, 101)] private int _cellCount = 51;
     public int CellCount { get => _cellCount; }
