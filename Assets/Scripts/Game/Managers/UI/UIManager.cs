@@ -8,14 +8,22 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     #region Fields
-    [SerializeField] private Image _selectedPortrait;
+    [Header("Game Information Panel")]
+    [SerializeField] private GameObject _panelGameInformation;
+    [Space]
     [SerializeField] private TextMeshProUGUI _waveIndicator;
+    [SerializeField, EnumNamedArray(typeof(Resource))] private TextMeshProUGUI[] _resourcesLabel;
+
+    [Header("Selection Panel")]
+    [SerializeField] private GameObject _panelSelection;
     [Space]
-    [EnumNamedArray(typeof(Resource))]
-    [SerializeField] private TextMeshProUGUI[] _resourcesLabel;
     [SerializeField] private UISelectedGroupWrapper[] _selectedGroupWrapper = new UISelectedGroupWrapper[5];
-    [Space]
     [SerializeField] private UICommandsWrapper[] _commandsWrapper = new UICommandsWrapper[2];
+
+    [Header("Construction Panel")]
+    [SerializeField] private GameObject _panelConstruction;
+    [Space]
+    [SerializeField, EnumNamedArray(typeof(Building))] private Button[] _buildingButtons;
     #endregion
 
     #region Methods
@@ -33,6 +41,16 @@ public class UIManager : Singleton<UIManager>
         {
             _commandsWrapper[i].gameObject.SetActive(false);
         }
+
+        for (int i = 0; i < _buildingButtons.Length; i++)
+        {
+            Building type = (Building)i + EntitiesSystem.STARTING_INDEX_BUILDING;
+            _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(type));
+
+            _buildingButtons[i].GetComponent<Image>().sprite = BuildingsPortraitsRegister.Instance.GetItem(type);
+        }
+
+        DisplayConstructionPanel();
     }
 
     void OnValidate()
@@ -41,10 +59,29 @@ public class UIManager : Singleton<UIManager>
         {
             Array.Resize(ref _resourcesLabel, Enum.GetValues(typeof(Resource)).Length);
         }
+
+        if (_buildingButtons.Length != Enum.GetValues(typeof(Building)).Length)
+        {
+            Array.Resize(ref _buildingButtons, Enum.GetValues(typeof(Building)).Length);
+        }
     }
     #endregion
 
-    #region SelectGroups Methods
+    #region Construction Panel Methods
+    public void DisplayConstructionPanel()
+    {
+        _panelConstruction.SetActive(true);
+        _panelSelection.SetActive(false);
+    }
+    #endregion
+
+    #region Selection Panel Methods
+    public void DisplayPanelSelection()
+    {
+        _panelConstruction.SetActive(false);
+        _panelSelection.SetActive(true);
+    }
+
     public void UpdateSelectedGroups(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
     {
         for (int i = 0; i < _selectedGroupWrapper.Length; i++)

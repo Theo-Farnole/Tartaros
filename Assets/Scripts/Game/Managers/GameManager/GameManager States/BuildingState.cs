@@ -14,11 +14,9 @@ public class BuildingState : OwnerState<GameManager>
     #endregion
 
     #region Methods
-    public BuildingState(GameManager owner) : base(owner) { }
-
-    public override void OnStateEnter()
+    public BuildingState(GameManager owner, Building buildingType) : base(owner)
     {
-        SetCurrentBuilding(Building.Barracks);
+        SetCurrentBuilding(buildingType);
     }
 
     public override void Tick()

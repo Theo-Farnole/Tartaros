@@ -48,7 +48,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b6f0dbbeaac11b6458da5818f795668b, type: 3}
   - {fileID: 21300000, guid: 3968e96966b82274594aef90285ee9a9, type: 3}
   - {fileID: 21300000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
-  - {fileID: 21300000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
 --- !u!114 &6093436272857011603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingsPortraits:
-  - {fileID: 21300000, guid: 45311b0b06f498c4c800b7599452127b, type: 3}
+  - {fileID: 21300000, guid: 04beb25e868cb264791c0ba773f4fff5, type: 3}
   - {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
 --- !u!1 &3558371146122828653
 GameObject:
@@ -109,9 +108,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabsUnit:
   - {fileID: 7593180476091094929, guid: 92f2acfb71fc0a5429ded23ed18fe1df, type: 3}
-  - {fileID: 5734333928557051870, guid: ca6710c61e43e6c4c9fdc390fd8ad0fb, type: 3}
-  - {fileID: 5658998944144009801, guid: e1bfb708d6db15945ba2a3ca2e69b85e, type: 3}
-  - {fileID: 3325713411561931174, guid: cd64728d68889534c9acbf4b8f83006c, type: 3}
+  - {fileID: 4736687551344453519, guid: e351172f29d078f4f8ed57e36107e731, type: 3}
+  - {fileID: 1642577766784393588, guid: 1a65c3e60c2b1cb4daafa7596c9be56e, type: 3}
 --- !u!1 &8292011921064858217
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,8 +155,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabsBuildings:
-  - {fileID: 8575780219574164860, guid: 42145dcd78308834bbe553c6818f24fc, type: 3}
-  - {fileID: 8575780219574164860, guid: 42145dcd78308834bbe553c6818f24fc, type: 3}
+  - {fileID: 2396348267423922118, guid: 84a40c61dd8192948862c03c000bd70b, type: 3}
+  - {fileID: 9141151344619652446, guid: bbbf9f6db733fb748a502986990941dd, type: 3}
 --- !u!114 &75674126694212700
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,6 @@ public enum EntityType
     Alexios = 0,
     Kassandra = 1,
     Xerxes = 2,
-    Deer = 3,
 
     // building
     House = 1000,
@@ -30,7 +29,6 @@ public enum Unit
     Alexios = EntityType.Alexios,
     Kassandra = EntityType.Kassandra,
     Xerxes = EntityType.Xerxes,
-    Deer = EntityType.Deer
 }
 
 public static class EntityTypeExtension

@@ -58,8 +58,6 @@ public class GameManager : Singleton<GameManager>
 
     void Update()
     {
-        CheckForStateChangement();
-
         _state?.Tick();
     }
 
@@ -69,15 +67,9 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
-    void CheckForStateChangement()
+    public void StartBuilding(Building type)
     {
-        if (_state == null)
-        {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                State = new BuildingState(this);
-            }
-        }
+        State = new BuildingState(this, type);
     }
     #endregion
 }

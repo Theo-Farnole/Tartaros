@@ -54,6 +54,20 @@ public class SelectionManager : Singleton<SelectionManager>
     }
     #endregion
 
+    #region UI Methods Call
+    private void UpdateUI()
+    {
+        if (_selectedGroups.Count == 0)
+        {
+            UIManager.Instance.DisplayConstructionPanel();
+        }
+        else
+        {
+            UIManager.Instance.DisplayPanelSelection();
+        }
+    }
+    #endregion
+
     #region Manage MouseClick
     public void SwitchEntityUnderMouse()
     {
@@ -114,6 +128,7 @@ public class SelectionManager : Singleton<SelectionManager>
         groupWithSameType.selectedEntities.Add(selectableEntity);
         selectableEntity.OnSelected();
 
+        UpdateUI();
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
     }
 
@@ -148,6 +163,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
         if (_selectedGroups.Count == 0) _highlightGroupIndex = -1;
 
+        UpdateUI();
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
     }
 
@@ -176,12 +192,13 @@ public class SelectionManager : Singleton<SelectionManager>
             {
                 item.selectedEntities[j].OnDeselect();
             }
-        }
+        }        
 
         _selectedGroups.Clear();
         _highlightGroupIndex = -1;
 
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
+        UpdateUI();
     }
     #endregion
     #endregion

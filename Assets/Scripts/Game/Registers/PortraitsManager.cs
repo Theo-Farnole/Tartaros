@@ -4,21 +4,21 @@ using UnityEngine;
 
 public static class PortraitsManager
 {
-    public static Sprite GetPortrait(EntityType ent)
+    public static Sprite GetPortrait(EntityType entity)
     {
-        var entUnitType = ent.IsUnitType();
+        Unit? unitType = entity.IsUnitType();
 
-        if (entUnitType != null)
+        if (unitType != null)
         {
-            return UnitsPortraitsRegister.Instance?.GetItem((Unit)entUnitType);
+            return UnitsPortraitsRegister.Instance.GetItem((Unit)unitType);
         }
         else
         {
-            var entBuildingType = ent.IsBuildingType();
+            Building? buildingType = entity.IsBuildingType();
 
-            if (entBuildingType != null)
+            if (buildingType != null)
             {
-                return BuildingsPortraitsRegister.Instance?.GetItem((Building)entBuildingType);
+                return BuildingsPortraitsRegister.Instance.GetItem((Building)buildingType);
             }
         }
 
