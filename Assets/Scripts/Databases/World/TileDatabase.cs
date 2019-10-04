@@ -11,8 +11,13 @@ public class TileDatabase : ScriptableObject
     [SerializeField] private float _cellSize = 1f;
     public float CellSize { get => _cellSize; }
 
+    [Header("Information")]
+    [SerializeField, ReadOnly] private int _cellsTotalCount = 0;
+
     public void OnValidate()
     {
+        _cellsTotalCount = _cellCount * _cellCount;
+
         // is _cellCount even ?
         if (_cellCount % 2 == 0)
         {

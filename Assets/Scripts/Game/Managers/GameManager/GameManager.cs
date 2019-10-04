@@ -51,9 +51,14 @@ public class GameManager : Singleton<GameManager>
 
     #region Methods
     #region MonoBehaviour Callbacks.
-    void Start()
+    void Awake()
     {
         Resources = _data.StartingResources;
+    }
+
+    void Start()
+    {
+        _grid.InstantiatePlane(transform);
     }
 
     void Update()

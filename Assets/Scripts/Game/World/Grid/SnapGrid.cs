@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class SnapGrid : MonoBehaviour
+[System.Serializable]
+public class SnapGrid
 {
     #region Fields
     [SerializeField] private TileDatabase _data;
@@ -9,45 +10,43 @@ public class SnapGrid : MonoBehaviour
     [SerializeField] private bool _debugDrawGrid = false;
     [SerializeField] private Color _gridColor = Color.yellow;
 
-    private LayerMask _layerMask;
+    private LayerMask _layerMask = -1;
+    private GameObject _plane;
     #endregion
 
     #region Methods
-    void Awake()
+    public SnapGrid()
     {
-        _layerMask = LayerMask.GetMask("Grid");
+        
     }
 
-    void Start()
+    public void InstantiatePlane(Transform parent)
     {
-        var plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        plane.transform.position = Vector3.zero;
-        plane.transform.rotation = Quaternion.identity;
+        if (_plane != null)
+            return;
 
-        plane.layer = LayerMask.NameToLayer("Grid");
-        plane.name = "Grid Plane";
-        plane.transform.parent = transform;
+        _plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        _plane.transform.position = Vector3.zero;
+        _plane.transform.rotation = Quaternion.identity;
 
-        // update Scale
-        Vector3 scale = Vector3.one;
-        scale *= _data.CellCount * _data.CellSize / 10;
+        _plane.layer = LayerMask.NameToLayer("Grid");
+        _plane.name = "Grid Plane";
+        _plane.transform.parent = parent;
 
-        plane.transform.localScale = scale;
+        _plane.transform.localScale = Vector3.one * _data.CellCount * _data.CellSize / 10; ;
 
-        Destroy(plane.GetComponent<MeshRenderer>()); // hide plane
+        Object.Destroy(_plane.GetComponent<MeshRenderer>()); // hide _plane
     }
 
     public Vector3? GetNearestPointFromMouse()
     {
-        Vector3 result = Vector3.zero;
+        if (_layerMask == -1) _layerMask = LayerMask.GetMask("Grid");
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMask))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layerMask))
         {
-            result = hit.point;
-            return GetNearestPointOnGrid(result);
+            return GetNearestPointOnGrid(hit.point);
         }
         else
         {
