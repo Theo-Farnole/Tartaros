@@ -70,6 +70,11 @@ public class GameManager : Singleton<GameManager>
     {
         _applicationIsQuitting = true;
     }
+
+    void OnDrawGizmos()
+    {
+        _grid.DrawGizmos();
+    }
     #endregion
 
     public void StartBuilding(Building type)

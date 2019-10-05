@@ -53,7 +53,7 @@ public class TileSystem : Singleton<TileSystem>
 
     public Vector2Int WorldPositionToCoords(Vector3 worldPosition)
     {
-        Vector3 gridPosition = GameManager.Instance.Grid.GetNearestPointOnGrid(worldPosition);
+        Vector3 gridPosition = GameManager.Instance.Grid.GetNearestPosition(worldPosition);
 
         Vector2Int result = new Vector2Int((int)(gridPosition.x / _data.CellSize), (int)(gridPosition.z / _data.CellSize));
 

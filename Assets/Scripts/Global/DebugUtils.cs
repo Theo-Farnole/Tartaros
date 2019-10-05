@@ -12,6 +12,8 @@ public class DebugUtils : MonoBehaviour
     [Header("Give Resources Settings")]
     [SerializeField] private KeyCode _giveKey = KeyCode.F3;
     [SerializeField] private ResourcesWrapper _giveResources = new ResourcesWrapper(100, 100, 100);
+    [Header("FOW Settings")]
+    [SerializeField] private KeyCode _displayMapKey = KeyCode.F4;
 
     private static bool _active = true;
     #endregion
@@ -43,6 +45,11 @@ public class DebugUtils : MonoBehaviour
             if (Input.GetKeyDown(_giveKey))
             {
                 GameManager.Instance.Resources += _giveResources;
+            }
+
+            if (Input.GetKeyDown(_displayMapKey))
+            {
+                FogOfWar.FOWManager.Instance.DebugLogVisiblityMap();
             }
         }
     }

@@ -8,17 +8,20 @@ public class SnapGrid
     [Space]
     [Header("Debug")]
     [SerializeField] private bool _debugDrawGrid = false;
+    [Space]
+    [SerializeField] private float _sphereRadius = 0.1f;
     [SerializeField] private Color _gridColor = Color.yellow;
 
     private LayerMask _layerMask = -1;
     private GameObject _plane;
     #endregion
 
+    #region Properties
+    public SnapGridDatabase Data { get => _data; }
+    #endregion
+
     #region Methods
-    public SnapGrid()
-    {
-        
-    }
+    public SnapGrid() { }
 
     public void InstantiatePlane(Transform parent)
     {
@@ -38,7 +41,7 @@ public class SnapGrid
         Object.Destroy(_plane.GetComponent<MeshRenderer>()); // hide _plane
     }
 
-    public Vector3? GetNearestPointFromMouse()
+    public Vector3? GetNearestPositionFromMouse()
     {
         if (_layerMask == -1) _layerMask = LayerMask.GetMask("Grid");
 
@@ -46,7 +49,7 @@ public class SnapGrid
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layerMask))
         {
-            return GetNearestPointOnGrid(hit.point);
+            return GetNearestPosition(hit.point);
         }
         else
         {
@@ -54,7 +57,15 @@ public class SnapGrid
         }
     }
 
-    public Vector3 GetNearestPointOnGrid(Vector3 position)
+    public Vector2Int GetNearestCoords(Vector3 position)
+    {
+        int xCount = Mathf.RoundToInt(position.x / _data.CellSize);
+        int zCount = Mathf.RoundToInt(position.z / _data.CellSize);
+
+        return new Vector2Int(xCount, zCount);
+    }
+
+    public Vector3 GetNearestPosition(Vector3 position)
     {
         float xCount = Mathf.Round(position.x / _data.CellSize);
         float yCount = Mathf.Round(position.y / _data.CellSize);
@@ -68,20 +79,19 @@ public class SnapGrid
         return result;
     }
 
-    void OnDrawGizmos()
+    public void DrawGizmos()
     {
         if (_debugDrawGrid == false)
             return;
 
         Gizmos.color = _gridColor;
-        int midGridCount = _data.CellCount / 2;
 
-        for (int x = -midGridCount; x <= midGridCount; x++)
+        for (int x = 0; x <= _data.CellCount; x++)
         {
-            for (int z = -midGridCount; z <= midGridCount; z++)
+            for (int z = 0; z <= _data.CellCount; z++)
             {
                 var point = new Vector3(x * _data.CellSize, 0, z * _data.CellSize);
-                Gizmos.DrawSphere(point, 0.05f);
+                Gizmos.DrawSphere(point, _sphereRadius);
             }
         }
 

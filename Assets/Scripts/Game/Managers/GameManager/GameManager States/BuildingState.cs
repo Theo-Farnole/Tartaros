@@ -72,7 +72,7 @@ public class BuildingState : OwnerState<GameManager>
 
     void UpdateCurrentBuildingPosition()
     {
-        Vector3? newPosition = GameManager.Instance.Grid.GetNearestPointFromMouse();
+        Vector3? newPosition = GameManager.Instance.Grid.GetNearestPositionFromMouse();
 
         if (newPosition != null)
         {

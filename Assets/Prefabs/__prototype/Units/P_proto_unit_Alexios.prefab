@@ -7,15 +7,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4738919885312350103, guid: deb173ea23cfce544a777ef54d01f49a,
+        type: 3}
+      propertyPath: _viewRadius
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1633938786359411144, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
       propertyPath: m_Name
-      value: P_proto_unit_Alexios
+      value: _P_proto_unit_Alexios (9)
       objectReference: {fileID: 0}
     - target: {fileID: 1633938786359411147, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.12
+      value: -6.39
       objectReference: {fileID: 0}
     - target: {fileID: 1633938786359411147, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
@@ -25,7 +30,7 @@ PrefabInstance:
     - target: {fileID: 1633938786359411147, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.46
+      value: 0.46
       objectReference: {fileID: 0}
     - target: {fileID: 1633938786359411147, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
@@ -67,12 +72,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6429056662796449699, guid: deb173ea23cfce544a777ef54d01f49a,
-        type: 3}
-      propertyPath: _entityData
-      value: 
-      objectReference: {fileID: 11400000, guid: 407e009080f37774eafbda97feb90802,
-        type: 2}
     - target: {fileID: 7636272330625382510, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
       propertyPath: _availableCommands
