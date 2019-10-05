@@ -156,6 +156,7 @@ MonoBehaviour:
     food: 100
     wood: 100
     gold: 100
+  _displayMapKey: 285
 --- !u!4 &994698239
 Transform:
   m_ObjectHideFlags: 0

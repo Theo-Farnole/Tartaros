@@ -49,7 +49,7 @@ namespace FogOfWar
         void Update()
         {
             // update fog each 3 frames
-            if (Time.frameCount % 10 == 0)
+            if (Time.frameCount % 3 == 0)
             {
                 UpdateVisibilityMap();
                 UpdateCoverablesVisibility();
