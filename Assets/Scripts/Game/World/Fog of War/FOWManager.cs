@@ -49,7 +49,7 @@ namespace FogOfWar
         void Update()
         {
             // update fog each 3 frames
-            if (Time.frameCount % 10 != 0)
+            if (Time.frameCount % 10 == 0)
             {
                 UpdateVisibilityMap();
                 UpdateCoverablesVisibility();
@@ -76,40 +76,25 @@ namespace FogOfWar
 
         void UpdateVisibilityMap()
         {
-            var newCoords = new int[_snapGrid.Data.CellCount, _snapGrid.Data.CellCount];
-
-            // initialize circle with NOT_VISIBLE
-            for (int i = 0; i < newCoords.GetLength(0); i++)
+            // set all VISIBLE coords to REAVEALED
+            for (int x = 0; x < _visiblityMap.GetLength(0); x++)
             {
-                for (int j = 0; j < newCoords.GetLength(1); j++)
+                for (int y = 0; y < _visiblityMap.GetLength(1); y++)
                 {
-                    newCoords[i, j] = NOT_VISIBLE;
+                    if (_visiblityMap[x, y] == VISIBLE)
+                    {
+                        _visiblityMap[x, y] = REVEALED;
+                    }
                 }
             }
 
-            // draw circle from viewers
+            // draw VISIBLE circle from viewers
             for (int i = 0; i < _viewers.Count; i++)
             {
                 Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].transform.position);
                 int viewRadius = Mathf.RoundToInt(_viewers[i].ViewRadius / _snapGrid.Data.CellSize);
 
-                newCoords.DrawCircleInside(viewersCoords.x, viewersCoords.y, viewRadius, VISIBLE);
-            }
-
-            // merge newCoords with currentCoords
-            for (int i = 0; i < _visiblityMap.GetLength(0); i++)
-            {
-                for (int j = 0; j < _visiblityMap.GetLength(1); j++)
-                {
-                    if (newCoords[i, j] == NOT_VISIBLE && (_visiblityMap[i, j] == REVEALED || _visiblityMap[i, j] == VISIBLE))
-                    {
-                        _visiblityMap[i, j] = REVEALED;
-                    }
-                    else
-                    {
-                        _visiblityMap[i, j] = newCoords[i, j];
-                    }
-                }
+                _visiblityMap.DrawCircleInside(viewersCoords.x, viewersCoords.y, viewRadius, VISIBLE);
             }
         }
 
@@ -120,7 +105,7 @@ namespace FogOfWar
                 Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].transform.position);
 
                 bool displayCoverable = true;
-                
+
                 if (coords.x >= 0 && coords.x < _visiblityMap.GetLength(0) &&
                     coords.y >= 0 && coords.y < _visiblityMap.GetLength(1))
                 {
