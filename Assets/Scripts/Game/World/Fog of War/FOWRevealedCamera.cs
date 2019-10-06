@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FOWRevealedCamera : MonoBehaviour
+namespace FogOfWar
 {
-    [SerializeField] Material _projectorMaterial;
-
-    void OnRenderImage(RenderTexture source, RenderTexture destination)
+    public class FOWRevealedCamera : MonoBehaviour
     {
-        RenderTexture r = RenderTexture.GetTemporary(source.width, source.height, 0, source.format);
+        [SerializeField] Material _projectorMaterial;
 
-        Graphics.Blit(source, r);
-        Graphics.Blit(r, destination);
+        void OnRenderImage(RenderTexture source, RenderTexture destination)
+        {
+            RenderTexture r = RenderTexture.GetTemporary(source.width, source.height, 0, source.format);
 
-        //_projectorMaterial.SetTexture("_ReavaledRenderTexture", r);
-        RenderTexture.ReleaseTemporary(r);
+            Graphics.Blit(source, r);
+            Graphics.Blit(r, destination);
+
+            //_projectorMaterial.SetTexture("_ReavaledRenderTexture", r);
+            RenderTexture.ReleaseTemporary(r);
+        }
     }
 }

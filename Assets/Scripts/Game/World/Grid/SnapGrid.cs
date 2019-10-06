@@ -9,7 +9,6 @@ public class SnapGrid
     [Header("Debug")]
     [SerializeField] private bool _debugDrawGrid = false;
     [Space]
-    [SerializeField] private float _sphereRadius = 0.1f;
     [SerializeField] private Color _gridColor = Color.yellow;
 
     private LayerMask _layerMask = -1;
@@ -91,7 +90,7 @@ public class SnapGrid
             for (int z = 0; z <= _data.CellCount; z++)
             {
                 var point = new Vector3(x * _data.CellSize, 0, z * _data.CellSize);
-                Gizmos.DrawSphere(point, _sphereRadius);
+                Gizmos.DrawWireCube(point, new Vector3(_data.CellSize, 0, _data.CellSize));
             }
         }
 

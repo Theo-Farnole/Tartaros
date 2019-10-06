@@ -579,6 +579,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2067733019447700000, guid: 4c112588bf33e2841bcfff87c871bae1,
+        type: 3}
+      propertyPath: _snapGrid._debugDrawGrid
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2067733019447700000, guid: 4c112588bf33e2841bcfff87c871bae1,
+        type: 3}
+      propertyPath: _snapGrid._gridColor.r
+      value: 0.96981233
+      objectReference: {fileID: 0}
+    - target: {fileID: 2067733019447700000, guid: 4c112588bf33e2841bcfff87c871bae1,
+        type: 3}
+      propertyPath: _snapGrid._gridColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2067733019447700000, guid: 4c112588bf33e2841bcfff87c871bae1,
+        type: 3}
+      propertyPath: _snapGrid._gridColor.b
+      value: 0.015686274
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c112588bf33e2841bcfff87c871bae1, type: 3}
 --- !u!1001 &7282021461376917111

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 829c3e03a8cc47a4ab644dbb598ecaf3, type: 3}
   m_Name: Fog of War Grid
   m_EditorClassIdentifier: 
-  _cellCount: 237
-  _cellSize: 0.25
-  _cellsTotalCount: 56169
+  _cellCount: 119
+  _cellSize: 0.5
+  _cellsTotalCount: 14161

@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveProjectorOnStart : MonoBehaviour
+namespace FogOfWar
 {
-    void Start()
+    public class ActiveProjectorOnStart : MonoBehaviour
     {
-        GetComponent<Projector>().enabled = true;
+        void Start()
+        {
+            GetComponent<Projector>().enabled = true;
+        }
     }
 }
