@@ -4,6 +4,8 @@
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
+Assets/3rd parties/AmplifyShaderEditor/
+Assets/3rd parties/AmplifyShaderEditor.meta
 
 # Visual Studio cache directory
 .vs/
