@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Leonidas Legacy/World/Grid")]
 public class SnapGridDatabase : ScriptableObject
 {
-    [SerializeField, Range(1, 101)] private int _cellCount = 51;
+    [SerializeField] private int _cellCount = 51;
     public int CellCount { get => _cellCount; }
 
     [SerializeField] private float _cellSize = 1f;
