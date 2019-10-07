@@ -17,56 +17,65 @@ public class Entity : MonoBehaviour
     [Header("Owner Configuration")]
     [SerializeField] private EntityType _type;
     [SerializeField, ReadOnly] private Owner _owner;
-    [Header("Entity Config")]
-    [SerializeField] protected HealthData _entityData;
-    [SerializeField] public bool isInvincible = false;
-    [Header("Health Slider Config")]
+    [Header("Health Slider Behaviour")]
     [SerializeField] protected Slider _healthSlider;
     [SerializeField] private bool _hideHealthSliderIfFull = true;
+    [Header("Fog of War Settings")]
+    [SerializeField] private FOWEntity _fowEntity;
+
+    private CommandsReceiver _commandsReceiver;
+    private EntityData _entityData;
 
     private Dictionary<float, AttackSlots> _rangeToSlots = new Dictionary<float, AttackSlots>();
     private int _hp;
     private int _maxHp;
-
-    // cache variable
-    private FOWEntity _fowEntity;
-    private CommandsReceiverEntity _commandReceiverEntity;
     #endregion
 
     #region Properties
     public int MaxHp { get => _maxHp; }
     public int Hp { get => _hp; }
     public bool IsAlive { get => _hp > 0 ? true : false; }
-    public Owner Owner { get => _owner; }
-    public EntityType Type { get => _type;}
 
+    public Owner Owner { get => _owner; }
+    public EntityType Type { get => _type; }
+
+    public EntityData Data { get => _entityData; }
     public FOWEntity FowEntity { get => _fowEntity; }
-    public CommandsReceiverEntity CommandReceiverEntity { get => _commandReceiverEntity; }
+    public CommandsReceiver CommandReceiver { get => _commandsReceiver; }
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        _fowEntity = GetComponent<FOWEntity>();
-        _commandReceiverEntity = GetComponent<CommandsReceiverEntity>();
+        _owner = _type.GetOwner();
+        _commandsReceiver = new CommandsReceiver(this);
+    }
 
-        if (_entityData != null)
-        {
-            _hp = _entityData.Hp;
-            _maxHp = _entityData.Hp;
+    void Start()
+    {
+        _entityData = DataRegister.GetData(_type);
+        _fowEntity.Init(this);
 
-            UpdateHealthSlider();
-        }
-        else
-        {
-            Debug.Log("Il manque une entity data pour " + transform.name);
-        }
+        _hp = _entityData.Hp;
+        _maxHp = _entityData.Hp;
+
+        UpdateHealthSlider();
+    }
+
+    void Update()
+    {
+        _commandsReceiver.Tick();
     }
 
     void OnValidate()
     {
         _owner = _type.GetOwner();
+    }
+
+    void OnDestroy()
+    {
+        _fowEntity.RemoveFromFOWManager();
     }
 
     void OnDrawGizmos()
@@ -91,7 +100,7 @@ public class Entity : MonoBehaviour
         }
 
         return _rangeToSlots[slotRange];
-    }    
+    }
     #endregion
 
     #region Health, death & UI Methods
@@ -102,7 +111,7 @@ public class Entity : MonoBehaviour
     /// <param name="attacker">Entity which do damage to the entity</param>
     public void GetDamage(int damage, Entity attacker)
     {
-        if (isInvincible)
+        if (_entityData.IsInvincible)
             return;
 
         _hp -= damage;

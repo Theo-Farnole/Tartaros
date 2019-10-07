@@ -100,11 +100,11 @@ public class UIManager : Singleton<UIManager>
 
         UpdateHighlightGroup(highlightGroupIndex);
 
-        CommandsReceiverEntity commandReceiver = null;
+        CommandsReceiver commandReceiver = null;
 
         if (highlightGroupIndex != -1)
         {
-            commandReceiver = selectedGroups[highlightGroupIndex].selectedEntities[0].GetComponent<CommandsReceiverEntity>();
+            commandReceiver = selectedGroups[highlightGroupIndex].selectedEntities[0].Entity.CommandReceiver;
         }
 
         UpdateCommandsPanel(commandReceiver);
@@ -120,7 +120,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    void UpdateCommandsPanel(CommandsReceiverEntity commandReceiver)
+    void UpdateCommandsPanel(CommandsReceiver commandReceiver)
     {
         // hide every commands wrapper
         for (int i = 0; i < _commandsWrapper.Length; i++)
@@ -141,10 +141,10 @@ public class UIManager : Singleton<UIManager>
 
             if (isActive)
             {
-                _commandsWrapper[i].commandLabel.text = creatableUnits[i].Type.ToString();
+                _commandsWrapper[i].commandLabel.text = creatableUnits[i].ToString();
                 //_commandsWrapper[i].backgroundButton.sprite = UnitsPortraitsRegister.Instance.GetItem(creatableUnits[i].Type);
 
-                var type = creatableUnits[i].Type;
+                var type = creatableUnits[i];
                 _commandsWrapper[i].button.onClick.RemoveAllListeners();
                 _commandsWrapper[i].button.onClick.AddListener(() => commandReceiver.SpawnUnit(type));
             }

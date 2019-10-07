@@ -8,5 +8,6 @@ public enum ComparisonType
     GreaterThan = 3,
     SmallerThan = 4,
     SmallerOrEqual = 5,
-    GreaterOrEqual = 6
+    GreaterOrEqual = 6,
+    HasFlag = 7
 }

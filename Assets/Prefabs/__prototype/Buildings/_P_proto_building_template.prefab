@@ -167,10 +167,8 @@ GameObject:
   - component: {fileID: 8858728489114700971}
   - component: {fileID: 5905244259690331293}
   - component: {fileID: 1005371494344353609}
-  - component: {fileID: 2519388065089346072}
   - component: {fileID: 1005371494796442890}
   - component: {fileID: 2497158977066122675}
-  - component: {fileID: 7624071125923472386}
   m_Layer: 10
   m_Name: _P_proto_building_template
   m_TagString: Untagged
@@ -206,11 +204,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f509756853dd19d4a944546232614905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 1000
   _owner: 0
-  _entityData: {fileID: 11400000, guid: 407e009080f37774eafbda97feb90802, type: 2}
-  isInvincible: 0
   _healthSlider: {fileID: 0}
   _hideHealthSliderIfFull: 1
+  _fowEntity:
+    _fogOfWarVision: {fileID: 8944886223949679281}
+    _coverable:
+      _transform: {fileID: 8858728489114700971}
+      _collider: {fileID: 2497158977066122675}
+      _renderer: {fileID: 7799345527090771453}
 --- !u!114 &1005371494344353609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,22 +226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0ee896dadcae4a4296bb11ef516e71f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 1000
---- !u!114 &2519388065089346072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8858728489114700970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6dfcc952945c8a41aa62681f9109591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _availableCommands: 0
-  _data: {fileID: 11400000, guid: a069d5c19f2dfdc4ebf43e295a39980e, type: 2}
-  _creatableUnits: []
 --- !u!208 &1005371494796442890
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -268,21 +255,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.8, y: 0.8, z: 0.8}
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!114 &7624071125923472386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8858728489114700970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ad8dab8740215841b69d608251c99e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _viewRadius: 3
-  _fogOfWarVision: {fileID: 8944886223949679281}
-  _coverable:
-    transform: {fileID: 8858728489114700971}
-    collider: {fileID: 2497158977066122675}
-    renderer: {fileID: 7799345527090771453}

@@ -5,20 +5,20 @@ using UnityEngine;
 namespace FogOfWar
 {
     [System.Serializable]
-    public class Coverable
+    public class FOWCoverable
     {
-        public Transform transform;
+        [SerializeField] private Transform _transform;
         [Space]
-        [SerializeField] Collider _collider;
-        [SerializeField] Renderer _renderer;
+        [SerializeField] private Collider _collider;
+        [SerializeField] private Renderer _renderer;
 
-        private bool _isCovered;
+        private bool _isCovered = false;
 
         public bool IsCovered { get => _isCovered; }
+        public Transform Transform { get => _transform; }
 
         public void Cover(bool isCovered)
         {
-            Debug.Log("Set cover to " + isCovered + ".");
             _isCovered = isCovered;
 
             _collider.enabled = !_isCovered;

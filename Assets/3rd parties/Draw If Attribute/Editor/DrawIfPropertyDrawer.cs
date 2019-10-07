@@ -2,6 +2,7 @@
 using UnityEngine;
 using Utilities;
 using Exceptions;
+using System;
 
 [CustomPropertyDrawer(typeof(DrawIfAttribute))]
 public class DrawIfPropertyDrawer : PropertyDrawer
@@ -84,11 +85,16 @@ public class DrawIfPropertyDrawer : PropertyDrawer
                 if (numericComparedFieldValue >= numericComparedValue)
                     conditionMet = true;
                 break;
+
+            case ComparisonType.HasFlag:
+                if (comparedField.GetValue<Enum>().HasFlag((Enum)drawIf.comparedValue))
+                    conditionMet = true;
+                break;
         }
 
         // The height of the property should be defaulted to the default height.
         propertyHeight = base.GetPropertyHeight(property, label);
-        
+
         // If the condition is met, simply draw the field. Else...
         if (conditionMet)
         {

@@ -20,7 +20,7 @@ namespace FogOfWar
         private int[,] _visiblityMap;
 
         private List<FOWEntity> _viewers = new List<FOWEntity>();
-        private List<Coverable> _coverables = new List<Coverable>();
+        private List<FOWCoverable> _coverables = new List<FOWCoverable>();
         #endregion
 
         #region Methods
@@ -61,7 +61,17 @@ namespace FogOfWar
             _viewers.Add(entity);
         }
 
-        public void AddCoverable(Coverable coverable)
+        public void RemoveViewer(FOWEntity entity)
+        {
+            _viewers.Remove(entity);
+        }
+
+        public void RemoveCoverable(FOWCoverable coverable)
+        {
+            _coverables.Remove(coverable);
+        }
+
+        public void AddCoverable(FOWCoverable coverable)
         {
             _coverables.Add(coverable);
         }
@@ -84,7 +94,7 @@ namespace FogOfWar
             // draw VISIBLE circle from viewers
             for (int i = 0; i < _viewers.Count; i++)
             {
-                Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].transform.position);
+                Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].Transform.position);
                 int viewRadius = Mathf.RoundToInt(_viewers[i].ViewRadius / _snapGrid.Data.CellSize);
 
                 _visiblityMap.DrawCircleInside(viewersCoords.x, viewersCoords.y, viewRadius, VISIBLE);
@@ -95,7 +105,7 @@ namespace FogOfWar
         {
             for (int i = 0; i < _coverables.Count; i++)
             {
-                Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].transform.position);
+                Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].Transform.position);
 
                 bool isCover = true;
 

@@ -46,7 +46,7 @@ public class CommandsGiverManager : MonoBehaviour
         {
             for (int i = 0; i < group.selectedEntities.Count; i++)
             {
-                group.selectedEntities[i].Entity.CommandReceiverEntity.Attack(target);
+                group.selectedEntities[i].Entity.CommandReceiver.Attack(target);
             }
         }
     }
@@ -61,7 +61,7 @@ public class CommandsGiverManager : MonoBehaviour
         {
             for (int j = 0; j < group.selectedEntities.Count; j++)
             {
-                group.selectedEntities[j].Entity.CommandReceiverEntity.Move(destination);
+                group.selectedEntities[j].Entity.CommandReceiver.Move(destination);
             }
         }
     }

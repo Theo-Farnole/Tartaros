@@ -4,52 +4,34 @@ using UnityEngine;
 
 namespace FogOfWar
 {
-    [RequireComponent(typeof(Entity))]
-    public class FOWEntity : MonoBehaviour
+    [System.Serializable]
+    public class FOWEntity
     {
         #region Fields
         [Header("Viewer Settings")]
-        [SerializeField] private float _viewRadius = 3;
         [SerializeField] private SpriteRenderer _fogOfWarVision = null;
         [Header("Coverable Settings")]
-        [SerializeField] private Coverable _coverable;
+        [SerializeField] private FOWCoverable _coverable = new FOWCoverable();
 
-        // cache variable
-        private Entity _entity;
+        private Entity _owner;
         #endregion
 
         #region Fields
-        public float ViewRadius { get => _viewRadius; }
-        public bool IsCover
-        {
-            get
-            {
-                if (_entity.Owner == Owner.Sparta)
-                {
-                    return false;
-                }
-                else
-                {
-                    Debug.Log("return _cov.IsCover = " + _coverable.IsCovered);
-                    return _coverable.IsCovered;
-                }
-            }
-        }
+        public float ViewRadius { get => _owner.Data.VisionRange; }
+        public Transform Transform { get => _owner.transform; }
+        public bool IsCover { get => _owner.Owner == Owner.Sparta ? false : _coverable.IsCovered; }
         #endregion
 
         #region Methods
-        void Awake()
+        public void Init(Entity owner)
         {
-            _entity = GetComponent<Entity>();
-        }
+            _owner = owner;
 
-        void Start()
-        {
-            if (_entity.Owner == Owner.Sparta)
+            if (_owner.Owner == Owner.Sparta)
             {
                 FOWManager.Instance.AddViewer(this);
                 _fogOfWarVision.gameObject.SetActive(true);
-                _fogOfWarVision.transform.localScale = Vector3.one * _viewRadius * 2;
+                _fogOfWarVision.transform.localScale = Vector3.one * ViewRadius * 2;
             }
             else
             {
@@ -57,6 +39,18 @@ namespace FogOfWar
                 _fogOfWarVision.enabled = false;
             }
         }
-        #endregion
+
+        public void RemoveFromFOWManager()
+        {
+            if (_owner.Owner == Owner.Sparta)
+            {
+                FOWManager.Instance?.RemoveViewer(this);
+            }
+            else
+            {
+                FOWManager.Instance?.RemoveCoverable(_coverable);
+            }
+        }
     }
+    #endregion
 }

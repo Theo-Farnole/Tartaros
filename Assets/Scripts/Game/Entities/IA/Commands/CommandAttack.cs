@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommandAttack : OwnerState<CommandsReceiverEntity>
+public class CommandAttack : OwnerState<CommandsReceiver>
 {
     #region Enum
     enum State
@@ -28,7 +28,7 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
     #endregion
 
     #region Properties
-    private float AttackRange { get => _owner.Data.AttackRange; }
+    private float AttackRange { get => _owner.Entity.Data.AttackRange; }
     private State CurrentState
     {
         get => _currentState;
@@ -65,7 +65,7 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
     #endregion
 
     #region Methods
-    public CommandAttack(CommandsReceiverEntity owner, Transform target, bool canMove = false) : base(owner)
+    public CommandAttack(CommandsReceiver owner, Transform target, bool canMove = false) : base(owner)
     {
         if (target == null)
         {
@@ -78,7 +78,7 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
         _canMove = canMove;
         _targetEntity = _target.GetComponent<Entity>();
 
-        _initialDistance = Vector3.Distance(_owner.transform.position, _target.position);
+        _initialDistance = Vector3.Distance(_owner.Transform.position, _target.position);
 
         if (_canMove)
         {
@@ -106,6 +106,12 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
     {
         _attackTimer += Time.deltaTime;
 
+        if (_target == null)
+        {
+            _owner.Stop();
+            return;
+        }
+
         switch (CurrentState)
         {
             case State.GoToSlot:
@@ -123,17 +129,17 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
     private void TryAttack()
     {
         // check if entity is close enought to attack
-        if (Vector3.Distance(_owner.transform.position, _target.position) > AttackRange)
+        if (Vector3.Distance(_owner.Transform.position, _target.position) > AttackRange)
         {
             CurrentState = State.GoToSlot;
             return;
         }
 
         // Is attack timer allow attack ?
-        if (_attackTimer >= _owner.Data.AttackSpeed)
+        if (_attackTimer >= _owner.Entity.Data.AttackSpeed)
         {
             _attackTimer = 0;
-            _targetEntity.GetDamage(_owner.Data.Damage, _owner.Entity);
+            _targetEntity.GetDamage(_owner.Entity.Data.Damage, _owner.Entity);
         }
     }
 
@@ -142,7 +148,7 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
         _owner.NavMeshAgent.SetDestination(_target.position + _currentSlot.localPosition);
         _owner.NavMeshAgent.avoidancePriority = AvoidanceSystem.GetHasTargetPriority(_owner.NavMeshAgent.remainingDistance, _initialDistance);
 
-        if (_attackSlots.GetNearestSlot(_owner.transform.position) != _currentSlot)
+        if (_attackSlots.GetNearestSlot(_owner.Transform.position) != _currentSlot)
         {
             AssignSlot();
         }
@@ -164,7 +170,7 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
             _attackSlots.ReleaseSlot(_currentSlot);
         }
 
-        _currentSlot = _attackSlots.AssignNearestSlot(_owner.transform.position);
+        _currentSlot = _attackSlots.AssignNearestSlot(_owner.Transform.position);
 
         CurrentState = State.GoToSlot;
     }

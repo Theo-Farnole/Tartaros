@@ -4,15 +4,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-[System.Flags]
-public enum CommandType
-{
-    Move = 1 << 0,
-    Attack = 1 << 1,
-    SpawnUnit = 1 << 2
-}
 
-public class CommandsReceiverEntity : MonoBehaviour
+public class CommandsReceiver
 {
     #region Class
     public class CollisionScaler
@@ -72,27 +65,18 @@ public class CommandsReceiverEntity : MonoBehaviour
     #endregion
 
     #region Fields
-    [SerializeField, EnumFlag] private CommandType _availableCommands;
-    [Header("Attack Fields")]
-    [SerializeField] private AttackData _data;
-    [Header("Spawn Units Fields")]
-    [SerializeField] private UnitCreationData[] _creatableUnits;
-
-    private OwnerState<CommandsReceiverEntity> _currentCommand;
+    private OwnerState<CommandsReceiver> _currentCommand;
     private CollisionScaler _collisionScaler;
+    private Entity _entity;
 
     // cache variables
     private NavMeshAgent _navMeshAgent;
-    private Entity _entity;
     #endregion
 
     #region Properties
-    private OwnerState<CommandsReceiverEntity> Command
+    private OwnerState<CommandsReceiver> Command
     {
-        get
-        {
-            return _currentCommand;
-        }
+        get => _currentCommand;
 
         set
         {
@@ -102,37 +86,35 @@ public class CommandsReceiverEntity : MonoBehaviour
         }
     }
 
-    public AttackData Data { get => _data; }
     public NavMeshAgent NavMeshAgent { get => _navMeshAgent; }
-    public Entity Entity { get => _entity; }
 
-    public UnitCreationData[] CreatableUnits { get => _creatableUnits; }
+    public Entity Entity { get => _entity;  }
+    public Transform Transform { get => _entity.transform;  }
+    public Unit[] CreatableUnits { get => _entity.Data.AvailableUnitsForCreation; }
 
-    public bool CanMove { get => _availableCommands.HasFlag(CommandType.Move); }
-    public bool CanAttack { get => _availableCommands.HasFlag(CommandType.Attack); }
-    public bool CanSpawnUnit { get => _availableCommands.HasFlag(CommandType.SpawnUnit); }
+    public bool CanMove { get => _entity.Data == null ? false : _entity.Data.CanMove; }
+    public bool CanAttack { get => _entity.Data == null ? false : _entity.Data.CanAttack; }
+    public bool CanSpawnUnit { get => _entity.Data == null ? false : _entity.Data.CanSpawnUnit; }
     public CollisionScaler CollisionScaler1 { get => _collisionScaler; }
     #endregion
 
-    #region Methods
-    #region MonoBehaviour Callbacks
-    void Awake()
+    #region Methods    
+    public CommandsReceiver(Entity owner)
     {
-        _navMeshAgent = GetComponent<NavMeshAgent>();
-        _entity = GetComponent<Entity>();
+        _entity = owner;
+        _navMeshAgent = owner.GetComponent<NavMeshAgent>();
 
         if (_navMeshAgent != null)
         {
-            _collisionScaler = new CollisionScaler(this);
+            _collisionScaler = new CollisionScaler(owner);
             _navMeshAgent.avoidancePriority = Random.Range(0, 100);
         }
     }
 
-    void Update()
+    public void Tick()
     {
         _currentCommand?.Tick();
-    }
-    #endregion
+    }    
 
     #region Commands Receive
     public void Move(Vector3 destination)

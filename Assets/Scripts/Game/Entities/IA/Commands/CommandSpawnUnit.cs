@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CommandSpawnUnit : OwnerState<CommandsReceiverEntity>
+public class CommandSpawnUnit : OwnerState<CommandsReceiver>
 {
-    public CommandSpawnUnit(CommandsReceiverEntity owner, Unit unitType) : base(owner)
+    public CommandSpawnUnit(CommandsReceiver owner, Unit unitType) : base(owner)
     {
         SpawnUnit(unitType);
     }
@@ -15,24 +15,24 @@ public class CommandSpawnUnit : OwnerState<CommandsReceiverEntity>
 
     void SpawnUnit(Unit unitType)
     {
-        UnitCreationData unitData = _owner.CreatableUnits.FirstOrDefault(x => x.Type == unitType);
+        EntityData unitData = UnitsDataRegister.Instance.GetItem(unitType);
 
         if (unitData == null)
         {
-            Debug.LogWarning("Can't create " + unitType + " because it's not inside _creatableUnits of " + _owner.name + ".");
+            Debug.LogWarning("Can't create " + unitType + " because it's not inside _creatableUnits of " + _owner.Entity.name + ".");
             return;
         }
 
-        if (GameManager.Instance.Resources.HasEnoughtResources(unitData.Cost) == false)
+        if (GameManager.Instance.Resources.HasEnoughtResources(unitData.SpawningCost) == false)
         {
             Debug.Log("Player doesn't have enought resources to create " + unitType + ".");
             return;
         }
 
-        GameManager.Instance.Resources -= unitData.Cost;
+        GameManager.Instance.Resources -= unitData.SpawningCost;
 
         var prefab = UnitsPrefabRegister.Instance.GetItem(unitType);
-        CommandsReceiverEntity commandReceiver = GameObject.Instantiate(prefab, _owner.transform.position, Quaternion.identity).GetComponent<CommandsReceiverEntity>();
-        commandReceiver.Move(_owner.transform.position + _owner.transform.forward * 1);
+        CommandsReceiver commandReceiver = Object.Instantiate(prefab, _owner.Transform.position, Quaternion.identity).GetComponent<Entity>().CommandReceiver;
+        commandReceiver.Move(_owner.Transform.position + _owner.Transform.forward * 1);
     }
 }
