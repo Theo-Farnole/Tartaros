@@ -33,6 +33,25 @@ public enum Unit
 
 public static class EntityTypeExtension
 {
+    public static Owner GetOwner(this EntityType e)
+    {
+        switch (e)
+        {
+            case EntityType.Alexios:
+            case EntityType.Kassandra:
+                return Owner.Sparta;
+
+            case EntityType.Xerxes:
+                return Owner.Persian;
+
+            case EntityType.House:
+            case EntityType.Barracks:
+                return Owner.Sparta;
+        }
+
+        return Owner.Nature;
+    }
+
     public static Unit? IsUnitType(this EntityType e)
     {
         foreach (Unit item in Enum.GetValues(typeof(Unit)))

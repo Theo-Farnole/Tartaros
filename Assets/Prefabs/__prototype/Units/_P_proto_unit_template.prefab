@@ -255,8 +255,8 @@ MonoBehaviour:
   _fogOfWarVision: {fileID: 7303349781198450086}
   _coverable:
     transform: {fileID: 1633938786359411147}
-    collider: {fileID: 1356949969540019438}
-    renderer: {fileID: 1633938785907707343}
+    _collider: {fileID: 1356949969540019438}
+    _renderer: {fileID: 1633938785907707343}
 --- !u!136 &1356949969540019438
 CapsuleCollider:
   m_ObjectHideFlags: 0

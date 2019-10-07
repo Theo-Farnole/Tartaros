@@ -1,35 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FogOfWar;
 
 public class SelectableEntity : MonoBehaviour
 {
     #region Fields
-    [SerializeField] private EntityType _type;
-
     private GameObject _selectionCircle = null;
 
     // cache variables
     private Entity _entity;
-    private CommandsReceiverEntity _commandReceiverEntity;
     #endregion
 
     #region Properties
-    public EntityType Type { get => _type; }
-    public Owner Owner
-    {
-        get
-        {
-            if (_entity == null)
-            {
-                Debug.LogWarning("SelectableEntity doesn't own a OwnedEntity!");
-            }
+    public EntityType Type { get => _entity.Type; }
+    public Owner Owner  { get => _entity.Owner; }
 
-            return _entity.Owner;
-        }
-    }
-
-    public CommandsReceiverEntity CommandReceiverEntity { get => _commandReceiverEntity; }
+    public Entity Entity { get => _entity; }
     #endregion
 
     #region Methods
@@ -37,7 +24,6 @@ public class SelectableEntity : MonoBehaviour
     void Awake()
     {
         _entity = GetComponent<Entity>();
-        _commandReceiverEntity = GetComponent<CommandsReceiverEntity>();
     }
 
     void OnDestroy()

@@ -106,6 +106,9 @@ public class SelectionManager : Singleton<SelectionManager>
     #region SelectedGroups Manager
     public void AddEntity(SelectableEntity selectableEntity)
     {
+        if (selectableEntity.Entity.FowEntity.IsCover)
+            return;
+
         Group groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
 
         // create group

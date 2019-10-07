@@ -144,7 +144,6 @@ public class CommandAttack : OwnerState<CommandsReceiverEntity>
 
         if (_attackSlots.GetNearestSlot(_owner.transform.position) != _currentSlot)
         {
-            Debug.Log("Assign nearest slot");
             AssignSlot();
         }
 

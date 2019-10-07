@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FogOfWar;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,17 +15,22 @@ public class Entity : MonoBehaviour
 {
     #region Fields
     [Header("Owner Configuration")]
-    [SerializeField] private Owner _owner;
+    [SerializeField] private EntityType _type;
+    [SerializeField, ReadOnly] private Owner _owner;
     [Header("Entity Config")]
     [SerializeField] protected HealthData _entityData;
     [SerializeField] public bool isInvincible = false;
-    [Header("Entity Config")]
+    [Header("Health Slider Config")]
     [SerializeField] protected Slider _healthSlider;
     [SerializeField] private bool _hideHealthSliderIfFull = true;
 
     private Dictionary<float, AttackSlots> _rangeToSlots = new Dictionary<float, AttackSlots>();
     private int _hp;
     private int _maxHp;
+
+    // cache variable
+    private FOWEntity _fowEntity;
+    private CommandsReceiverEntity _commandReceiverEntity;
     #endregion
 
     #region Properties
@@ -32,12 +38,19 @@ public class Entity : MonoBehaviour
     public int Hp { get => _hp; }
     public bool IsAlive { get => _hp > 0 ? true : false; }
     public Owner Owner { get => _owner; }
+    public EntityType Type { get => _type;}
+
+    public FOWEntity FowEntity { get => _fowEntity; }
+    public CommandsReceiverEntity CommandReceiverEntity { get => _commandReceiverEntity; }
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void Awake()
     {
+        _fowEntity = GetComponent<FOWEntity>();
+        _commandReceiverEntity = GetComponent<CommandsReceiverEntity>();
+
         if (_entityData != null)
         {
             _hp = _entityData.Hp;
@@ -49,6 +62,11 @@ public class Entity : MonoBehaviour
         {
             Debug.Log("Il manque une entity data pour " + transform.name);
         }
+    }
+
+    void OnValidate()
+    {
+        _owner = _type.GetOwner();
     }
 
     void OnDrawGizmos()

@@ -8,14 +8,7 @@ namespace FogOfWar
     public class FOWManager : Singleton<FOWManager>
     {
         #region Struct
-        [System.Serializable]
-        public struct Coverable
-        {
-            public Transform transform;
-            [Space]
-            public Collider collider;
-            public Renderer renderer;
-        }
+        
         #endregion
 
         #region Fields
@@ -104,23 +97,18 @@ namespace FogOfWar
             {
                 Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].transform.position);
 
-                bool displayCoverable = true;
+                bool isCover = true;
 
                 if (coords.x >= 0 && coords.x < _visiblityMap.GetLength(0) &&
                     coords.y >= 0 && coords.y < _visiblityMap.GetLength(1))
                 {
                     if (_visiblityMap[coords.x, coords.y] == VISIBLE)
                     {
-                        displayCoverable = true;
-                    }
-                    else
-                    {
-                        displayCoverable = false;
+                        isCover = false;
                     }
                 }
 
-                _coverables[i].renderer.enabled = displayCoverable;
-                _coverables[i].collider.enabled = displayCoverable;
+                _coverables[i].Cover(isCover);
             }
         }
 
