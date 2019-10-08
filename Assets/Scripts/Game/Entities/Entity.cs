@@ -11,37 +11,31 @@ public enum Owner
 }
 
 [SelectionBase]
-public class Entity : MonoBehaviour
+public class Entity : MonoBehaviour, IEntityKilled
 {
     #region Fields
     [Header("Owner Configuration")]
     [SerializeField] private EntityType _type;
     [SerializeField, ReadOnly] private Owner _owner;
-    [Header("Health Slider Behaviour")]
-    [SerializeField] protected Slider _healthSlider;
-    [SerializeField] private bool _hideHealthSliderIfFull = true;
-    [Header("Fog of War Settings")]
+    [Header("Miscellaneous Components")]
+    [SerializeField] private HeathComponent _healthComponent;
     [SerializeField] private FOWEntity _fowEntity;
 
     private CommandsReceiver _commandsReceiver;
     private EntityData _entityData;
 
     private Dictionary<float, AttackSlots> _rangeToSlots = new Dictionary<float, AttackSlots>();
-    private int _hp;
-    private int _maxHp;
     #endregion
 
     #region Properties
-    public int MaxHp { get => _maxHp; }
-    public int Hp { get => _hp; }
-    public bool IsAlive { get => _hp > 0 ? true : false; }
-
     public Owner Owner { get => _owner; }
     public EntityType Type { get => _type; }
 
     public EntityData Data { get => _entityData; }
+
     public FOWEntity FowEntity { get => _fowEntity; }
     public CommandsReceiver CommandReceiver { get => _commandsReceiver; }
+    public HeathComponent HealthComponent { get => _healthComponent; }
     #endregion
 
     #region Methods
@@ -55,12 +49,9 @@ public class Entity : MonoBehaviour
     void Start()
     {
         _entityData = DataRegister.GetData(_type);
+
         _fowEntity.Init(this);
-
-        _hp = _entityData.Hp;
-        _maxHp = _entityData.Hp;
-
-        UpdateHealthSlider();
+        _healthComponent.Init(this);
     }
 
     void Update()
@@ -90,7 +81,6 @@ public class Entity : MonoBehaviour
     }
     #endregion
 
-    #region AttackSlots Methods
     public AttackSlots GetAttackSlots(float slotRange)
     {
         // add entry in dictionary if nonexistant
@@ -101,58 +91,14 @@ public class Entity : MonoBehaviour
 
         return _rangeToSlots[slotRange];
     }
-    #endregion
-
-    #region Health, death & UI Methods
-    /// <summary>
-    /// GoDamage to this entity.
-    /// </summary>
-    /// <param name="damage">Amount of hp to be removed</param>
-    /// <param name="attacker">Entity which do damage to the entity</param>
-    public void GetDamage(int damage, Entity attacker)
-    {
-        if (_entityData.IsInvincible)
-            return;
-
-        _hp -= damage;
-        _hp = Mathf.Clamp(_hp, 0, _maxHp);
-
-        UpdateHealthSlider();
-
-        if (!IsAlive)
-        {
-            Death(attacker);
-        }
-    }
 
     /// <summary>
     /// Play feedbacks, than destroy entity.
     /// </summary>
     /// <param name="killer">Entity which removed the last hp of the entity</param>
-    private void Death(Entity killer)
+    void IEntityKilled.Death(Entity killer)
     {
         Destroy(gameObject);
     }
-
-    /// <summary>
-    /// Update value of health slider, and hide it if option is ticked.
-    /// </summary>
-    private void UpdateHealthSlider()
-    {
-        if (_healthSlider == null)
-            return;
-
-        // active or not the slider
-        if (_hideHealthSliderIfFull)
-        {
-            bool isFullLife = (_hp == _maxHp);
-            _healthSlider.gameObject.SetActive(!isFullLife);
-        }
-
-        // update the value
-        _healthSlider.maxValue = _maxHp;
-        _healthSlider.value = _hp;
-    }
-    #endregion
     #endregion
 }

@@ -139,7 +139,7 @@ public class CommandAttack : OwnerState<CommandsReceiver>
         if (_attackTimer >= _owner.Entity.Data.AttackSpeed)
         {
             _attackTimer = 0;
-            _targetEntity.GetDamage(_owner.Entity.Data.Damage, _owner.Entity);
+            _targetEntity.HealthComponent.GetDamage(_owner.Entity.Data.Damage, _owner.Entity);
         }
     }
 

@@ -18,7 +18,7 @@ MonoBehaviour:
     food: 0
     wood: 20
     gold: 0
-  _visionRange: 8
+  _visionRange: 3
   _availableCommands: 4
   _damage: 3
   _attackRange: 3
