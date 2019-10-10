@@ -137,17 +137,20 @@ public class UIManager : Singleton<UIManager>
 
         for (int i = 0; i < _commandsWrapper.Length; i++)
         {
-            bool isActive = (i < creatableUnits.Length);
-            _commandsWrapper[i].gameObject.SetActive(isActive);
-
-            if (isActive)
+            if (i < creatableUnits.Length)
             {
-                _commandsWrapper[i].commandLabel.text = creatableUnits[i].ToString();
-                //_commandsWrapper[i].backgroundButton.sprite = UnitsPortraitsRegister.Instance.GetItem(creatableUnits[i].Type);
+                _commandsWrapper[i].gameObject.SetActive(true);
 
-                var type = creatableUnits[i];
+                Unit unitType = creatableUnits[i];
+                _commandsWrapper[i].hotkey.text = UnitsRegister.Instance.GetItem(unitType).Hotkey.ToString();
+                _commandsWrapper[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
+
                 _commandsWrapper[i].button.onClick.RemoveAllListeners();
-                _commandsWrapper[i].button.onClick.AddListener(() => commandReceiver.SpawnUnit(type));
+                _commandsWrapper[i].button.onClick.AddListener(() => commandReceiver.SpawnUnit(unitType));
+            }
+            else
+            {
+                _commandsWrapper[i].gameObject.SetActive(false);
             }
         }
     }

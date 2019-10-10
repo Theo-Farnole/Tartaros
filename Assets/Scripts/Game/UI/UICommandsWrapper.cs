@@ -9,5 +9,5 @@ public class UICommandsWrapper : MonoBehaviour
     public Button button;
     [Space]
     public Image backgroundButton;
-    public TextMeshProUGUI commandLabel;
+    public TextMeshProUGUI hotkey;
 }
