@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Registers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class StateSpawnUnit : OwnerState<CommandsReceiver>
 
     void SpawnUnit(Unit unitType)
     {
-        EntityData unitData = UnitsDataRegister.Instance.GetItem(unitType);
+        EntityData unitData = UnitsRegister.Instance.GetItem(unitType).EntityData;
 
         if (unitData == null)
         {
@@ -31,7 +32,7 @@ public class StateSpawnUnit : OwnerState<CommandsReceiver>
 
         GameManager.Instance.Resources -= unitData.SpawningCost;
 
-        var prefab = UnitsPrefabRegister.Instance.GetItem(unitType);
+        GameObject prefab = UnitsRegister.Instance.GetItem(unitType).Prefab;
         CommandsReceiver commandReceiver = Object.Instantiate(prefab, _owner.Transform.position, Quaternion.identity).GetComponent<Entity>().CommandReceiver;
         commandReceiver.Move(_owner.Transform.position + _owner.Transform.forward * 1);
     }

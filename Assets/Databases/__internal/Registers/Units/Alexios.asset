@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd045c48bfb070d4c8db72c3a2d5004f, type: 3}
+  m_Name: Alexios
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 7593180476091094929, guid: 92f2acfb71fc0a5429ded23ed18fe1df, type: 3}
+  _portrait: {fileID: 21300000, guid: b6f0dbbeaac11b6458da5818f795668b, type: 3}
+  _entityData: {fileID: 11400000, guid: 2299761eaefd7ea49aad12db7978c5e7, type: 2}
+  _hotkey: 0

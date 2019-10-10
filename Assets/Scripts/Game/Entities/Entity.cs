@@ -48,7 +48,7 @@ public class Entity : MonoBehaviour, IEntityKilled
 
     void Start()
     {
-        _entityData = DataRegister.GetData(_type);
+        _entityData = Registers.EntitiesRegister.GetRegisterData(_type).EntityData;
 
         _fowEntity.Init(this);
         _healthComponent.Init(this);

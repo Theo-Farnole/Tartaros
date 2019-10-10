@@ -3,32 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Register<TPrefab, TEnum> : Singleton<Register<TPrefab, TEnum>> where TEnum : struct, System.Enum where TPrefab : class
+namespace Registers
 {
-    #region Fields
-    private TPrefab[] _prefabs;
-    #endregion
-
-    #region Properties
-    protected virtual TPrefab[] Prefabs { get => _prefabs; set => _prefabs = value; }
-    protected virtual int DeltaIndex { get => 0; }
-    #endregion
-
-    #region Methods   
-    // force array to be the size of TEnum
-    void OnValidate()
+    public abstract class Register<TPrefab, TEnum> : Singleton<Register<TPrefab, TEnum>> where TEnum : struct, Enum
     {
-        var prefabs = Prefabs;
-        Array.Resize(ref prefabs, Enum.GetValues(typeof(TEnum)).Length);
-        Prefabs = prefabs;
-    }
+        #region Fields
+        private TPrefab[] _prefabs;
+        #endregion
 
-    public TPrefab GetItem(TEnum itemEnum)
-    {
-        int index = (int)(object)itemEnum;
-        index -= DeltaIndex;
+        #region Properties
+        protected virtual TPrefab[] Prefabs { get => _prefabs; set => _prefabs = value; }
+        protected virtual int DeltaIndex { get => 0; }
+        #endregion
 
-        return Prefabs[index];
+        #region Methods   
+        // force array to be the size of TEnum
+        void OnValidate()
+        {
+            var prefabs = Prefabs;
+            Array.Resize(ref prefabs, Enum.GetValues(typeof(TEnum)).Length);
+            Prefabs = prefabs;
+        }
+
+        public TPrefab GetItem(TEnum itemEnum)
+        {
+            int index = (int)(object)itemEnum;
+            index -= DeltaIndex;
+
+            return Prefabs[index];
+        }
+        #endregion
     }
-    #endregion
 }

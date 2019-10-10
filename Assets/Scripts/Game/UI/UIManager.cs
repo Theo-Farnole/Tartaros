@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Registers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -47,7 +48,7 @@ public class UIManager : Singleton<UIManager>
             Building type = (Building)i + EntitiesSystem.STARTING_INDEX_BUILDING;
             _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(type));
 
-            _buildingButtons[i].GetComponent<Image>().sprite = BuildingsPortraitsRegister.Instance.GetItem(type);
+            _buildingButtons[i].GetComponent<Image>().sprite = Registers.BuildingsRegister.Instance.GetItem(type).Portrait;
         }
 
         DisplayConstructionPanel();
@@ -93,7 +94,7 @@ public class UIManager : Singleton<UIManager>
             }
 
             _selectedGroupWrapper[i].gameObject.SetActive(true);
-            _selectedGroupWrapper[i].portrait.sprite = PortraitsManager.GetPortrait(selectedGroups[i].entityType);
+            _selectedGroupWrapper[i].portrait.sprite = EntitiesRegister.GetRegisterData(selectedGroups[i].entityType).Portrait;
             _selectedGroupWrapper[i].unitsCount.text = selectedGroups[i].selectedEntities.Count.ToString();
         }
 

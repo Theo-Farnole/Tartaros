@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Registers;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ public class BuildingState : OwnerState<GameManager>
     #endregion
 
     #region Properties
-    private ResourcesWrapper CurrentBuildingCost { get => BuildingDataRegister.Instance.GetItem(_currentBuildingType).SpawningCost; }
+    private ResourcesWrapper CurrentBuildingCost { get => BuildingsRegister.Instance.GetItem(_currentBuildingType).EntityData.SpawningCost; }
+
     #endregion
 
     #region Methods
@@ -62,7 +64,7 @@ public class BuildingState : OwnerState<GameManager>
 
         _owner.Resources -= CurrentBuildingCost;
 
-        var prefab = BuildingsPrefabRegister.Instance.GetItem(building);
+        GameObject prefab = BuildingsRegister.Instance.GetItem(building).Prefab;
 
         _currentBuilding = Object.Instantiate(prefab);
         DynamicsObjects.Instance.SetToParent(_currentBuilding.transform, "Building");
