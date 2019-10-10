@@ -2,4 +2,4 @@ component_depth: 1
 languages:
 - csharp
 exclude:
-- Assets/3rd parties/
+- \Assets\3rd parties\*
