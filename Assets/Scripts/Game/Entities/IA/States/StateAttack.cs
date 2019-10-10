@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommandAttack : OwnerState<CommandsReceiver>
+public class StateAttack : OwnerState<CommandsReceiver>
 {
     #region Enum
     enum State
@@ -65,7 +65,7 @@ public class CommandAttack : OwnerState<CommandsReceiver>
     #endregion
 
     #region Methods
-    public CommandAttack(CommandsReceiver owner, Transform target, bool canMove = false) : base(owner)
+    public StateAttack(CommandsReceiver owner, Transform target, bool canMove = false) : base(owner)
     {
         if (target == null)
         {

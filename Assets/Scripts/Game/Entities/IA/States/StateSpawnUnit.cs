@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CommandSpawnUnit : OwnerState<CommandsReceiver>
+public class StateSpawnUnit : OwnerState<CommandsReceiver>
 {
-    public CommandSpawnUnit(CommandsReceiver owner, Unit unitType) : base(owner)
+    public StateSpawnUnit(CommandsReceiver owner, Unit unitType) : base(owner)
     {
         SpawnUnit(unitType);
     }

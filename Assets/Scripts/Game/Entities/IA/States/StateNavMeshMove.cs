@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CommandNavMeshMove : OwnerState<CommandsReceiver>
+public class StateNavMeshMove : OwnerState<CommandsReceiver>
 {
-    public CommandNavMeshMove(CommandsReceiver owner, Vector3 destination) : base(owner)
+    public StateNavMeshMove(CommandsReceiver owner, Vector3 destination) : base(owner)
     {
         _owner.NavMeshAgent.SetDestination(destination);
     }

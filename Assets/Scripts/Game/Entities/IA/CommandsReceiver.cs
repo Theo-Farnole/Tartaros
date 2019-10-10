@@ -121,7 +121,7 @@ public class CommandsReceiver
     {
         if (CanMove)
         {
-            Command = new CommandNavMeshMove(this, destination);
+            Command = new StateNavMeshMove(this, destination);
         }
 
         else
@@ -134,7 +134,7 @@ public class CommandsReceiver
     {
         if (CanAttack)
         {
-            Command = new CommandAttack(this, target, CanMove);
+            Command = new StateAttack(this, target, CanMove);
         }
         else
         {
@@ -146,7 +146,7 @@ public class CommandsReceiver
     {
         if (CanSpawnUnit)
         {
-            _currentCommand = new CommandSpawnUnit(this, unitType);
+            _currentCommand = new StateSpawnUnit(this, unitType);
         }
     }
 
