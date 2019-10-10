@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Alexios
   m_EditorClassIdentifier: 
   _prefab: {fileID: 7593180476091094929, guid: 92f2acfb71fc0a5429ded23ed18fe1df, type: 3}
-  _portrait: {fileID: 21300000, guid: b6f0dbbeaac11b6458da5818f795668b, type: 3}
   _entityData: {fileID: 11400000, guid: 2299761eaefd7ea49aad12db7978c5e7, type: 2}
-  _hotkey: 0
+  _portrait: {fileID: 21300000, guid: b6f0dbbeaac11b6458da5818f795668b, type: 3}
+  _hotkey: 122

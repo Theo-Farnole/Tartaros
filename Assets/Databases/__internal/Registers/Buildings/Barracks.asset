@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Barracks
   m_EditorClassIdentifier: 
   _prefab: {fileID: 9141151344619652446, guid: bbbf9f6db733fb748a502986990941dd, type: 3}
-  _portrait: {fileID: 21300000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
   _entityData: {fileID: 11400000, guid: 9c8c19eb7597f8c42ae1c998ec68282f, type: 2}
-  _hotkey: 0
+  _portrait: {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
+  _hotkey: 98

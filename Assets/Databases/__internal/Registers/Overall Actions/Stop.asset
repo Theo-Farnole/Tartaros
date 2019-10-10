@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 0}
   _entityData: {fileID: 0}
-  _portrait: {fileID: 21300000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
+  _portrait: {fileID: 21300000, guid: 62890810e2858b84da1ce60f5a074504, type: 3}
   _hotkey: 115
