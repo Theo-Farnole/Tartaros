@@ -19,7 +19,7 @@ MonoBehaviour:
     wood: 5
     gold: 0
   _visionRange: 8
-  _availableCommands: 3
+  _availableOrders: 3
   _damage: 5
   _attackRange: 8
   _attackSpeed: 2

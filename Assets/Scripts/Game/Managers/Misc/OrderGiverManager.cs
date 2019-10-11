@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommandsGiverManager : Singleton<CommandsGiverManager>
+public class OrderGiverManager : Singleton<OrderGiverManager>
 {
     #region Methods
     #region MonoBehaviour callbacks
     void Update()
     {
-        ManageCommandsExecuter();
+        ManageOrdersExecuter();
     }
     #endregion
 
-    #region Commands Executer
+    #region Order Executer
     /// <summary>
     /// If right click pressed, order attack or movement to Spartan selected groups.
     /// </summary>
-    void ManageCommandsExecuter()
+    void ManageOrdersExecuter()
     {
         if (Input.GetMouseButton(1))
         {
@@ -46,7 +46,7 @@ public class CommandsGiverManager : Singleton<CommandsGiverManager>
         {
             for (int i = 0; i < group.selectedEntities.Count; i++)
             {
-                group.selectedEntities[i].Entity.CommandReceiver.Attack(target);
+                group.selectedEntities[i].Entity.OrdersReceiver.Attack(target);
             }
         }
     }
@@ -57,7 +57,7 @@ public class CommandsGiverManager : Singleton<CommandsGiverManager>
         {
             for (int i = 0; i < group.selectedEntities.Count; i++)
             {
-                group.selectedEntities[i].Entity.CommandReceiver.Stop();
+                group.selectedEntities[i].Entity.OrdersReceiver.Stop();
             }
         }
     }
@@ -68,22 +68,18 @@ public class CommandsGiverManager : Singleton<CommandsGiverManager>
         {
             for (int i = 0; i < group.selectedEntities.Count; i++)
             {
-                group.selectedEntities[i].Entity.CommandReceiver.SpawnUnit(unit);
+                group.selectedEntities[i].Entity.OrdersReceiver.SpawnUnit(unit);
             }
         }
     }
 
-    /// <summary>
-    /// Order movement to Spartan selected groups.
-    /// </summary>
-    /// <param name="destination">Position of the wanted destination</param>
     public void OrderMovement(Vector3 destination)
     {
         foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
         {
             for (int j = 0; j < group.selectedEntities.Count; j++)
             {
-                group.selectedEntities[j].Entity.CommandReceiver.Move(destination);
+                group.selectedEntities[j].Entity.OrdersReceiver.Move(destination);
             }
         }
     }

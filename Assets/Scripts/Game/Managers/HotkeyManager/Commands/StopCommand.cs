@@ -8,7 +8,7 @@ namespace CommandPattern
     {
         public override void Execute()
         {
-            CommandsGiverManager.Instance.OrderStop();
+            OrderGiverManager.Instance.OrderStop();
         }
     }
 }

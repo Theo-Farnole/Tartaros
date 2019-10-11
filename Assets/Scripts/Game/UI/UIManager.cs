@@ -19,7 +19,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _panelSelection;
     [Space]
     [SerializeField] private UISelectedGroupWrapper[] _selectedGroupWrapper = new UISelectedGroupWrapper[5];
-    [SerializeField] private UICommandsWrapper[] _commandsWrapper = new UICommandsWrapper[2];
+    [SerializeField] private UICommandsWrapper[] _wrapperOverallOrders = new UICommandsWrapper[2];
+    [SerializeField] private UICommandsWrapper[] _wrapperSpawnUnitsOrders = new UICommandsWrapper[2];
 
     [Header("Construction Panel")]
     [SerializeField] private GameObject _panelConstruction;
@@ -38,9 +39,9 @@ public class UIManager : Singleton<UIManager>
             _selectedGroupWrapper[i].gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < _commandsWrapper.Length; i++)
+        for (int i = 0; i < _wrapperSpawnUnitsOrders.Length; i++)
         {
-            _commandsWrapper[i].gameObject.SetActive(false);
+            _wrapperSpawnUnitsOrders[i].gameObject.SetActive(false);
         }
 
         for (int i = 0; i < _buildingButtons.Length; i++)
@@ -83,7 +84,18 @@ public class UIManager : Singleton<UIManager>
         _panelSelection.SetActive(true);
     }
 
-    public void UpdateSelectedGroups(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
+    public void UpdateSelection(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
+    {
+        UpdateSelectedGroups(selectedGroups);
+        UpdateHighlightGroup(highlightGroupIndex);
+
+        if (highlightGroupIndex >= 0 && highlightGroupIndex < selectedGroups.Length)
+        {
+            UpdateOrdersPanel(selectedGroups[highlightGroupIndex].selectedEntities[0].Entity.OrdersReceiver);
+        }
+    }
+
+    void UpdateSelectedGroups(SelectionManager.Group[] selectedGroups)
     {
         for (int i = 0; i < _selectedGroupWrapper.Length; i++)
         {
@@ -98,17 +110,6 @@ public class UIManager : Singleton<UIManager>
             _selectedGroupWrapper[i].unitsCount.text = selectedGroups[i].selectedEntities.Count.ToString();
         }
 
-
-        UpdateHighlightGroup(highlightGroupIndex);
-
-        CommandsReceiver commandReceiver = null;
-
-        if (highlightGroupIndex != -1)
-        {
-            commandReceiver = selectedGroups[highlightGroupIndex].selectedEntities[0].Entity.CommandReceiver;
-        }
-
-        UpdateCommandsPanel(commandReceiver);
     }
 
     void UpdateHighlightGroup(int highlightGroupIndex)
@@ -121,36 +122,85 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    void UpdateCommandsPanel(CommandsReceiver commandReceiver)
+    void UpdateOrdersPanel(OrderReceiver orderReceiver)
     {
         // hide every commands wrapper
-        for (int i = 0; i < _commandsWrapper.Length; i++)
+        for (int i = 0; i < _wrapperSpawnUnitsOrders.Length; i++)
         {
-            _commandsWrapper[i].gameObject.SetActive(false);
+            _wrapperSpawnUnitsOrders[i].gameObject.SetActive(false);
         }
 
-        if (commandReceiver == null)
+        for (int i = 0; i < _wrapperOverallOrders.Length; i++)
+        {
+            _wrapperOverallOrders[i].gameObject.SetActive(false);
+        }
+
+        if (orderReceiver == null)
             return;
 
-        // assign buttons to SpawnUnit Command
-        var creatableUnits = commandReceiver.CreatableUnits;
-
-        for (int i = 0; i < _commandsWrapper.Length; i++)
+        // assign buttons to OverallAction
+        foreach (OverallAction action in Enum.GetValues(typeof(OverallAction)))
         {
-            if (i < creatableUnits.Length)
+            int index = (int)action;
+
+            if (orderReceiver.CanOverallAction(action))
             {
-                _commandsWrapper[i].gameObject.SetActive(true);
+                _wrapperOverallOrders[index].gameObject.SetActive(true);
 
-                Unit unitType = creatableUnits[i];
-                _commandsWrapper[i].hotkey.text = UnitsRegister.Instance.GetItem(unitType).Hotkey.ToString();
-                _commandsWrapper[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
+                _wrapperOverallOrders[index].hotkey.text = OverallActionsRegister.Instance.GetItem(action).Hotkey.ToString();
+                _wrapperOverallOrders[index].backgroundButton.sprite = OverallActionsRegister.Instance.GetItem(action).Portrait;
 
-                _commandsWrapper[i].button.onClick.RemoveAllListeners();
-                _commandsWrapper[i].button.onClick.AddListener(() => commandReceiver.SpawnUnit(unitType));
+                _wrapperOverallOrders[index].button.onClick.RemoveAllListeners();
+
+                switch (action)
+                {
+                    case OverallAction.Stop:
+                        _wrapperOverallOrders[index].button.onClick.AddListener(() =>
+                        {
+                            OrderGiverManager.Instance.OrderStop();
+                        });
+                        break;
+
+                    case OverallAction.Move:
+                        _wrapperOverallOrders[index].button.onClick.AddListener(() =>
+                        {
+                            HotkeyManager.Instance.askCursor = true;
+                            HotkeyManager.Instance.askCursorType = HotkeyManager.AskCursor.Move;
+                        });
+                        break;
+
+                    case OverallAction.Attack:
+                        _wrapperOverallOrders[index].button.onClick.AddListener(() =>
+                        {
+                            HotkeyManager.Instance.askCursor = true;
+                            HotkeyManager.Instance.askCursorType = HotkeyManager.AskCursor.Attack;
+                        });
+                        break;
+                }
             }
             else
             {
-                _commandsWrapper[i].gameObject.SetActive(false);
+                _wrapperOverallOrders[index].gameObject.SetActive(false);
+            }
+        }
+
+        // assign buttons to SpawnUnit
+        for (int i = 0; i < _wrapperSpawnUnitsOrders.Length; i++)
+        {
+            if (i < orderReceiver.CreatableUnits.Length)
+            {
+                _wrapperSpawnUnitsOrders[i].gameObject.SetActive(true);
+
+                Unit unitType = orderReceiver.CreatableUnits[i];
+                _wrapperSpawnUnitsOrders[i].hotkey.text = UnitsRegister.Instance.GetItem(unitType).Hotkey.ToString();
+                _wrapperSpawnUnitsOrders[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
+
+                _wrapperSpawnUnitsOrders[i].button.onClick.RemoveAllListeners();
+                _wrapperSpawnUnitsOrders[i].button.onClick.AddListener(() => OrderGiverManager.Instance.OrderSpawnUnits(unitType));
+            }
+            else
+            {
+                _wrapperSpawnUnitsOrders[i].gameObject.SetActive(false);
             }
         }
     }

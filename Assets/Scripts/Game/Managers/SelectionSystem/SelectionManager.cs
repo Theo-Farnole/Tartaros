@@ -101,7 +101,7 @@ public class SelectionManager : Singleton<SelectionManager>
             _highlightGroupIndex++;
             if (_highlightGroupIndex >= _selectedGroups.Count) _highlightGroupIndex = 0;
 
-            UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
+            UIManager.Instance.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         }
     }
     #endregion
@@ -135,7 +135,7 @@ public class SelectionManager : Singleton<SelectionManager>
         selectableEntity.OnSelected();
 
         UpdateUI();
-        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
+        UIManager.Instance.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         HotkeyManager.Instance.SetCommandsHandler(_selectedGroups[0].entityType);
     }
 
@@ -171,7 +171,7 @@ public class SelectionManager : Singleton<SelectionManager>
         if (_selectedGroups.Count == 0) _highlightGroupIndex = -1;
 
         UpdateUI();
-        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
+        UIManager.Instance.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         HotkeyManager.Instance.SetCommandsHandler(_selectedGroups[0].entityType);
     }
 
@@ -205,7 +205,7 @@ public class SelectionManager : Singleton<SelectionManager>
         _selectedGroups.Clear();
         _highlightGroupIndex = -1;
 
-        UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
+        UIManager.Instance.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         HotkeyManager.Instance.ClearCommandsHandler();
         UpdateUI();
     }

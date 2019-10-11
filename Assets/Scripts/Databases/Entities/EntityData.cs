@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Flags]
-public enum CommandType
+public enum OrdersType
 {
     Move = 1 << 0,
     Attack = 1 << 1,
@@ -35,22 +35,22 @@ public class EntityData : ScriptableObject
     public float VisionRange { get => _visionRange; }
     #endregion
 
-    #region COMMANDS: MOVE, ATTACK, CREATE UNITS
-    [Header("Commands")]
-    [SerializeField, EnumFlag] private CommandType _availableCommands;
+    #region Actions: MOVE, ATTACK, CREATE UNITS
+    [Header("Orders")]
+    [SerializeField, EnumFlag] private OrdersType _availableOrders;
 
-    public bool CanMove { get => _availableCommands.HasFlag(CommandType.Move); }
-    public bool CanAttack { get => _availableCommands.HasFlag(CommandType.Attack); }
-    public bool CanSpawnUnit { get => _availableCommands.HasFlag(CommandType.UnitCreation); }
+    public bool CanMove { get => _availableOrders.HasFlag(OrdersType.Move); }
+    public bool CanAttack { get => _availableOrders.HasFlag(OrdersType.Attack); }
+    public bool CanSpawnUnit { get => _availableOrders.HasFlag(OrdersType.UnitCreation); }
 
     #region Attack
     [Header("Attack Settings")]
-    [DrawIf("_availableCommands", CommandType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [DrawIf("_availableOrders", OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
     [SerializeField] private int _damage = 3;
     [Space]
-    [DrawIf("_availableCommands", CommandType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [DrawIf("_availableOrders", OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
     [SerializeField] private float _attackRange = 3f;
-    [DrawIf("_availableCommands", CommandType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [DrawIf("_availableOrders", OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
     [SerializeField, Tooltip("Time between each attack")] private float _attackSpeed = 1f;
 
     [Space]
@@ -64,7 +64,7 @@ public class EntityData : ScriptableObject
     #region Movement
     [Header("Movement Settings")]
 
-    [DrawIf("_availableCommands", CommandType.Move, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [DrawIf("_availableOrders", OrdersType.Move, ComparisonType.HasFlag, DisablingType.ReadOnly)]
     [SerializeField, Tooltip("Units per second")] private float _speed = 3;
 
     public float Speed { get => _speed; }
@@ -72,7 +72,7 @@ public class EntityData : ScriptableObject
 
     #region Units Creation
     [Header("Spawning Settings")]
-    [DrawIf("_availableCommands", CommandType.UnitCreation, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [DrawIf("_availableOrders", OrdersType.UnitCreation, ComparisonType.HasFlag, DisablingType.ReadOnly)]
     [SerializeField] private Unit[] _availableUnitsForCreation;
 
     public Unit[] AvailableUnitsForCreation { get => _availableUnitsForCreation; }

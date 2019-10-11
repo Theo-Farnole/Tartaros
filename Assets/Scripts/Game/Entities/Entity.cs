@@ -21,7 +21,7 @@ public class Entity : MonoBehaviour, IEntityKilled
     [SerializeField] private HeathComponent _healthComponent;
     [SerializeField] private FOWEntity _fowEntity;
 
-    private CommandsReceiver _commandsReceiver;
+    private OrderReceiver _ordersReceiver;
     private EntityData _entityData;
 
     private Dictionary<float, AttackSlots> _rangeToSlots = new Dictionary<float, AttackSlots>();
@@ -34,7 +34,7 @@ public class Entity : MonoBehaviour, IEntityKilled
     public EntityData Data { get => _entityData; }
 
     public FOWEntity FowEntity { get => _fowEntity; }
-    public CommandsReceiver CommandReceiver { get => _commandsReceiver; }
+    public OrderReceiver OrdersReceiver { get => _ordersReceiver; }
     public HeathComponent HealthComponent { get => _healthComponent; }
     #endregion
 
@@ -43,7 +43,7 @@ public class Entity : MonoBehaviour, IEntityKilled
     void Awake()
     {
         _owner = _type.GetOwner();
-        _commandsReceiver = new CommandsReceiver(this);
+        _ordersReceiver = new OrderReceiver(this);
     }
 
     void Start()
@@ -56,7 +56,7 @@ public class Entity : MonoBehaviour, IEntityKilled
 
     void Update()
     {
-        _commandsReceiver.Tick();
+        _ordersReceiver.Tick();
     }
 
     void OnValidate()

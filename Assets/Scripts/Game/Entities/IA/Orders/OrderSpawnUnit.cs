@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StateSpawnUnit : OwnerState<CommandsReceiver>
+public class OrderSpawnUnit : OwnerState<OrderReceiver>
 {
-    public StateSpawnUnit(CommandsReceiver owner, Unit unitType) : base(owner)
+    public OrderSpawnUnit(OrderReceiver owner, Unit unitType) : base(owner)
     {
         SpawnUnit(unitType);
     }
@@ -33,7 +33,7 @@ public class StateSpawnUnit : OwnerState<CommandsReceiver>
         GameManager.Instance.Resources -= unitData.SpawningCost;
 
         GameObject prefab = UnitsRegister.Instance.GetItem(unitType).Prefab;
-        CommandsReceiver commandReceiver = Object.Instantiate(prefab, _owner.Transform.position, Quaternion.identity).GetComponent<Entity>().CommandReceiver;
-        commandReceiver.Move(_owner.Transform.position + _owner.Transform.forward * 1);
+        OrderReceiver orderReceiver = Object.Instantiate(prefab, _owner.Transform.position, Quaternion.identity).GetComponent<Entity>().OrdersReceiver;
+        orderReceiver.Move(_owner.Transform.position + _owner.Transform.forward * 1);
     }
 }

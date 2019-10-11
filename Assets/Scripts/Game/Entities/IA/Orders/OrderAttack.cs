@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateAttack : OwnerState<CommandsReceiver>
+public class OrderAttack : OwnerState<OrderReceiver>
 {
     #region Enum
     enum State
@@ -65,11 +65,11 @@ public class StateAttack : OwnerState<CommandsReceiver>
     #endregion
 
     #region Methods
-    public StateAttack(CommandsReceiver owner, Transform target, bool canMove = false) : base(owner)
+    public OrderAttack(OrderReceiver owner, Transform target, bool canMove = false) : base(owner)
     {
         if (target == null)
         {
-            Debug.LogError("Can't set null target on CommandAttack. Aborting it.");
+            Debug.LogError("Can't set null target on StateAttack. Aborting it.");
             owner.Stop();
             return;
         }

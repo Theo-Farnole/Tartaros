@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class CommandsReceiver
+public class OrderReceiver
 {
     #region Class
     public class CollisionScaler
@@ -65,7 +65,7 @@ public class CommandsReceiver
     #endregion
 
     #region Fields
-    private OwnerState<CommandsReceiver> _currentCommand;
+    private OwnerState<OrderReceiver> _currentState;
     private CollisionScaler _collisionScaler;
     private Entity _entity;
 
@@ -74,15 +74,15 @@ public class CommandsReceiver
     #endregion
 
     #region Properties
-    private OwnerState<CommandsReceiver> State
+    private OwnerState<OrderReceiver> State
     {
-        get => _currentCommand;
+        get => _currentState;
 
         set
         {
-            _currentCommand?.OnStateExit();
-            _currentCommand = value;
-            _currentCommand?.OnStateEnter();
+            _currentState?.OnStateExit();
+            _currentState = value;
+            _currentState?.OnStateEnter();
         }
     }
 
@@ -99,7 +99,7 @@ public class CommandsReceiver
     #endregion
 
     #region Methods    
-    public CommandsReceiver(Entity owner)
+    public OrderReceiver(Entity owner)
     {
         _entity = owner;
         _navMeshAgent = owner.GetComponent<NavMeshAgent>();
@@ -112,15 +112,32 @@ public class CommandsReceiver
 
     public void Tick()
     {
-        _currentCommand?.Tick();
+        _currentState?.Tick();
     }    
 
-    #region States Changer
+    public bool CanOverallAction(OverallAction overallAction)
+    {
+        switch (overallAction)
+        {
+            case OverallAction.Stop:
+                return true;
+
+            case OverallAction.Move:
+                return CanMove;
+
+            case OverallAction.Attack:
+                return CanAttack;
+        }
+
+        return false;
+    }
+
+    #region States Modifier
     public void Move(Vector3 destination)
     {
         if (CanMove)
         {
-            State = new StateNavMeshMove(this, destination);
+            State = new OrderNavMeshMove(this, destination);
         }
     }
 
@@ -128,7 +145,7 @@ public class CommandsReceiver
     {
         if (CanAttack)
         {
-            State = new StateAttack(this, target, CanMove);
+            State = new OrderAttack(this, target, CanMove);
         }
     }
 
@@ -136,7 +153,7 @@ public class CommandsReceiver
     {
         if (CanSpawnUnit)
         {
-            _currentCommand = new StateSpawnUnit(this, unitType);
+            _currentState = new OrderSpawnUnit(this, unitType);
         }
     }
 
