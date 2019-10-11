@@ -74,7 +74,7 @@ public class CommandsReceiver
     #endregion
 
     #region Properties
-    private OwnerState<CommandsReceiver> Command
+    private OwnerState<CommandsReceiver> State
     {
         get => _currentCommand;
 
@@ -107,7 +107,6 @@ public class CommandsReceiver
         if (_navMeshAgent != null)
         {
             _collisionScaler = new CollisionScaler(owner);
-            _navMeshAgent.avoidancePriority = Random.Range(0, 100);
         }
     }
 
@@ -116,17 +115,12 @@ public class CommandsReceiver
         _currentCommand?.Tick();
     }    
 
-    #region Commands Receive
+    #region States Changer
     public void Move(Vector3 destination)
     {
         if (CanMove)
         {
-            Command = new StateNavMeshMove(this, destination);
-        }
-
-        else
-        {
-            Debug.Log("Can't move");
+            State = new StateNavMeshMove(this, destination);
         }
     }
 
@@ -134,11 +128,7 @@ public class CommandsReceiver
     {
         if (CanAttack)
         {
-            Command = new StateAttack(this, target, CanMove);
-        }
-        else
-        {
-            Debug.Log("Can't attack");
+            State = new StateAttack(this, target, CanMove);
         }
     }
 
@@ -152,7 +142,7 @@ public class CommandsReceiver
 
     public void Stop()
     {
-        Command = null;
+        State = null;
     }
     #endregion
     #endregion

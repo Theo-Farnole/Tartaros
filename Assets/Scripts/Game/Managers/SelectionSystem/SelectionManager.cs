@@ -71,6 +71,9 @@ public class SelectionManager : Singleton<SelectionManager>
     #region Manage MouseClick
     public void SwitchEntityUnderMouse()
     {
+        if (HotkeyManager.Instance.askCursor)
+            return;
+
         if (Input.GetKey(KeyCode.LeftShift) == false)
         {
             ClearSelection();
@@ -133,6 +136,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
         UpdateUI();
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
+        HotkeyManager.Instance.SetCommandsHandler(_selectedGroups[0].entityType);
     }
 
     public void RemoveEntity(SelectableEntity selectableEntity)
@@ -168,6 +172,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
         UpdateUI();
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
+        HotkeyManager.Instance.SetCommandsHandler(_selectedGroups[0].entityType);
     }
 
     /// <summary>
@@ -201,6 +206,7 @@ public class SelectionManager : Singleton<SelectionManager>
         _highlightGroupIndex = -1;
 
         UIManager.Instance.UpdateSelectedGroups(_selectedGroups.ToArray(), _highlightGroupIndex);
+        HotkeyManager.Instance.ClearCommandsHandler();
         UpdateUI();
     }
     #endregion
