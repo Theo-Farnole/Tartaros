@@ -3,8 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UI.Game;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class UIManager : Singleton<UIManager>
 {
@@ -18,9 +20,8 @@ public class UIManager : Singleton<UIManager>
     [Header("Selection Panel")]
     [SerializeField] private GameObject _panelSelection;
     [Space]
-    [SerializeField] private UISelectedGroupWrapper[] _selectedGroupWrapper = new UISelectedGroupWrapper[5];
-    [SerializeField] private UICommandsWrapper[] _wrapperOverallOrders = new UICommandsWrapper[2];
-    [SerializeField] private UICommandsWrapper[] _wrapperSpawnUnitsOrders = new UICommandsWrapper[2];
+    [SerializeField] private SelectedGroupWrapper[] _selectedGroupWrapper = new SelectedGroupWrapper[5];
+    [SerializeField] private OrdersWrapper _ordersWrapper;
 
     [Header("Construction Panel")]
     [SerializeField] private GameObject _panelConstruction;
@@ -39,10 +40,7 @@ public class UIManager : Singleton<UIManager>
             _selectedGroupWrapper[i].gameObject.SetActive(false);
         }
 
-        for (int i = 0; i < _wrapperSpawnUnitsOrders.Length; i++)
-        {
-            _wrapperSpawnUnitsOrders[i].gameObject.SetActive(false);
-        }
+        _ordersWrapper.HideOrders();
 
         for (int i = 0; i < _buildingButtons.Length; i++)
         {
@@ -66,6 +64,8 @@ public class UIManager : Singleton<UIManager>
         {
             Array.Resize(ref _buildingButtons, Enum.GetValues(typeof(Building)).Length);
         }
+
+        _ordersWrapper?.OnValidateCallback();
     }
     #endregion
 
@@ -91,7 +91,7 @@ public class UIManager : Singleton<UIManager>
 
         if (highlightGroupIndex >= 0 && highlightGroupIndex < selectedGroups.Length)
         {
-            UpdateOrdersPanel(selectedGroups[highlightGroupIndex].selectedEntities[0].Entity.OrdersReceiver);
+            UpdateOrdersWrapper(selectedGroups[highlightGroupIndex].selectedEntities[0].Entity.OrdersReceiver);
         }
     }
 
@@ -122,87 +122,9 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    void UpdateOrdersPanel(OrderReceiver orderReceiver)
+    void UpdateOrdersWrapper(OrderReceiver orderReceiver)
     {
-        // hide every commands wrapper
-        for (int i = 0; i < _wrapperSpawnUnitsOrders.Length; i++)
-        {
-            _wrapperSpawnUnitsOrders[i].gameObject.SetActive(false);
-        }
-
-        for (int i = 0; i < _wrapperOverallOrders.Length; i++)
-        {
-            _wrapperOverallOrders[i].gameObject.SetActive(false);
-        }
-
-        if (orderReceiver == null)
-            return;
-
-        // assign buttons to OverallAction
-        foreach (OverallAction action in Enum.GetValues(typeof(OverallAction)))
-        {
-            int index = (int)action;
-
-            if (orderReceiver.CanOverallAction(action))
-            {
-                _wrapperOverallOrders[index].gameObject.SetActive(true);
-
-                _wrapperOverallOrders[index].hotkey.text = OverallActionsRegister.Instance.GetItem(action).Hotkey.ToString();
-                _wrapperOverallOrders[index].backgroundButton.sprite = OverallActionsRegister.Instance.GetItem(action).Portrait;
-
-                _wrapperOverallOrders[index].button.onClick.RemoveAllListeners();
-
-                switch (action)
-                {
-                    case OverallAction.Stop:
-                        _wrapperOverallOrders[index].button.onClick.AddListener(() =>
-                        {
-                            OrderGiverManager.Instance.OrderStop();
-                        });
-                        break;
-
-                    case OverallAction.Move:
-                        _wrapperOverallOrders[index].button.onClick.AddListener(() =>
-                        {
-                            HotkeyManager.Instance.askCursor = true;
-                            HotkeyManager.Instance.askCursorType = HotkeyManager.AskCursor.Move;
-                        });
-                        break;
-
-                    case OverallAction.Attack:
-                        _wrapperOverallOrders[index].button.onClick.AddListener(() =>
-                        {
-                            HotkeyManager.Instance.askCursor = true;
-                            HotkeyManager.Instance.askCursorType = HotkeyManager.AskCursor.Attack;
-                        });
-                        break;
-                }
-            }
-            else
-            {
-                _wrapperOverallOrders[index].gameObject.SetActive(false);
-            }
-        }
-
-        // assign buttons to SpawnUnit
-        for (int i = 0; i < _wrapperSpawnUnitsOrders.Length; i++)
-        {
-            if (i < orderReceiver.CreatableUnits.Length)
-            {
-                _wrapperSpawnUnitsOrders[i].gameObject.SetActive(true);
-
-                Unit unitType = orderReceiver.CreatableUnits[i];
-                _wrapperSpawnUnitsOrders[i].hotkey.text = UnitsRegister.Instance.GetItem(unitType).Hotkey.ToString();
-                _wrapperSpawnUnitsOrders[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
-
-                _wrapperSpawnUnitsOrders[i].button.onClick.RemoveAllListeners();
-                _wrapperSpawnUnitsOrders[i].button.onClick.AddListener(() => OrderGiverManager.Instance.OrderSpawnUnits(unitType));
-            }
-            else
-            {
-                _wrapperSpawnUnitsOrders[i].gameObject.SetActive(false);
-            }
-        }
+        _ordersWrapper.UpdateOrders(orderReceiver);
     }
     #endregion
 
@@ -232,3 +154,4 @@ public class UIManager : Singleton<UIManager>
     #endregion
     #endregion
 }
+
