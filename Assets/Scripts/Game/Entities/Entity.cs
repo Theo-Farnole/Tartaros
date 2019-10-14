@@ -19,10 +19,10 @@ public class Entity : MonoBehaviour, IEntityKilled
     [SerializeField, ReadOnly] private Owner _owner;
     [Header("Miscellaneous Components")]
     [SerializeField] private HeathComponent _healthComponent;
-    [SerializeField] private FOWEntity _fowEntity;
 
-    private OrderReceiver _ordersReceiver;
+    private OrdersReceiver _ordersReceiver;
     private EntityData _entityData;
+    private FOWEntity _fowEntity;
 
     private Dictionary<float, AttackSlots> _rangeToSlots = new Dictionary<float, AttackSlots>();
     #endregion
@@ -34,7 +34,7 @@ public class Entity : MonoBehaviour, IEntityKilled
     public EntityData Data { get => _entityData; }
 
     public FOWEntity FowEntity { get => _fowEntity; }
-    public OrderReceiver OrdersReceiver { get => _ordersReceiver; }
+    public OrdersReceiver OrdersReceiver { get => _ordersReceiver; }
     public HeathComponent HealthComponent { get => _healthComponent; }
     #endregion
 
@@ -43,30 +43,20 @@ public class Entity : MonoBehaviour, IEntityKilled
     void Awake()
     {
         _owner = _type.GetOwner();
-        _ordersReceiver = new OrderReceiver(this);
+
+        _fowEntity = GetComponent<FOWEntity>();
+        _ordersReceiver = GetComponent<OrdersReceiver>();
     }
 
     void Start()
     {
         _entityData = Registers.EntitiesRegister.GetRegisterData(_type).EntityData;
-
-        _fowEntity.Init(this);
         _healthComponent.Init(this);
-    }
-
-    void Update()
-    {
-        _ordersReceiver.Tick();
     }
 
     void OnValidate()
     {
         _owner = _type.GetOwner();
-    }
-
-    void OnDestroy()
-    {
-        _fowEntity.RemoveFromFOWManager();
     }
 
     void OnDrawGizmos()

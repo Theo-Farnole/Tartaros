@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderAttack : OwnerState<OrderReceiver>
+public class OrderAttack : OwnerState<OrdersReceiver>
 {
     #region Enum
     enum State
@@ -65,7 +65,7 @@ public class OrderAttack : OwnerState<OrderReceiver>
     #endregion
 
     #region Methods
-    public OrderAttack(OrderReceiver owner, Transform target, bool canMove = false) : base(owner)
+    public OrderAttack(OrdersReceiver owner, Transform target, bool canMove = false) : base(owner)
     {
         if (target == null)
         {

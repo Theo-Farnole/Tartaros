@@ -5,8 +5,16 @@ using UnityEngine;
 namespace FogOfWar
 {
     [System.Serializable]
-    public class FOWEntity
+    public class FOWEntity : MonoBehaviour
     {
+        #region Enum
+        public enum Type
+        {
+            Viewer = 0,
+            Coverable = 1
+        }
+        #endregion
+
         #region Fields
         [Header("Viewer Settings")]
         [SerializeField] private SpriteRenderer _fogOfWarVision = null;
@@ -14,41 +22,73 @@ namespace FogOfWar
         [SerializeField] private FOWCoverable _coverable = new FOWCoverable();
 
         private Entity _owner;
+        private Type _type;
         #endregion
 
         #region Fields
+        public bool IsCover { get => _type == Type.Viewer ? false : _coverable.IsCover; }
         public float ViewRadius { get => _owner.Data.VisionRange; }
-        public Transform Transform { get => _owner.transform; }
-        public bool IsCover { get => _owner.Owner == Owner.Sparta ? false : _coverable.IsCovered; }
+        public FOWCoverable Coverable { get => _coverable; }
         #endregion
 
         #region Methods
-        public void Init(Entity owner)
+        #region MonoBehaviour Callbacks
+        void Start()
         {
-            _owner = owner;
+            _owner = GetComponent<Entity>();            
 
-            if (_owner.Owner == Owner.Sparta)
+            SetTypeField();
+            RegisterToManager();
+        }
+
+        void OnDestroy()
+        {
+            RemoveFromFOWManager();
+        }
+        #endregion
+
+        void RemoveFromFOWManager()
+        {
+            switch (_type)
             {
-                FOWManager.Instance.AddViewer(this);
-                _fogOfWarVision.gameObject.SetActive(true);
-                _fogOfWarVision.transform.localScale = Vector3.one * ViewRadius * 2;
-            }
-            else
-            {
-                FOWManager.Instance.AddCoverable(_coverable);
-                _fogOfWarVision.enabled = false;
+                case Type.Viewer:
+                    FOWManager.Instance?.RemoveViewer(this);
+                    break;
+
+                case Type.Coverable:
+                    FOWManager.Instance?.RemoveCoverable(this);
+                    break;
             }
         }
 
-        public void RemoveFromFOWManager()
+        void SetTypeField()
         {
             if (_owner.Owner == Owner.Sparta)
             {
-                FOWManager.Instance?.RemoveViewer(this);
+                _type = Type.Viewer;
             }
             else
             {
-                FOWManager.Instance?.RemoveCoverable(_coverable);
+                _type = Type.Coverable;
+            }
+        }
+
+        void RegisterToManager()
+        {
+            switch (_type)
+            {
+                case Type.Viewer:
+                    FOWManager.Instance.AddViewer(this);
+
+                    _fogOfWarVision.gameObject.SetActive(true);
+                    _fogOfWarVision.transform.localScale = Vector3.one * ViewRadius * 2;
+                    break;
+
+                case Type.Coverable:
+                    FOWManager.Instance.AddCoverable(this);
+
+                    _fogOfWarVision.gameObject.SetActive(false);
+                    break;
             }
         }
     }

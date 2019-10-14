@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class OrderReceiver
+public class OrdersReceiver : MonoBehaviour
 {
     #region Class
     public class CollisionScaler
@@ -65,7 +65,7 @@ public class OrderReceiver
     #endregion
 
     #region Fields
-    private OwnerState<OrderReceiver> _currentState;
+    private OwnerState<OrdersReceiver> _currentState;
     private CollisionScaler _collisionScaler;
     private Entity _entity;
 
@@ -74,7 +74,7 @@ public class OrderReceiver
     #endregion
 
     #region Properties
-    private OwnerState<OrderReceiver> State
+    private OwnerState<OrdersReceiver> State
     {
         get => _currentState;
 
@@ -99,18 +99,18 @@ public class OrderReceiver
     #endregion
 
     #region Methods    
-    public OrderReceiver(Entity owner)
+    void Awake()
     {
-        _entity = owner;
-        _navMeshAgent = owner.GetComponent<NavMeshAgent>();
+        _entity = GetComponent<Entity>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
 
         if (_navMeshAgent != null)
         {
-            _collisionScaler = new CollisionScaler(owner);
+            _collisionScaler = new CollisionScaler(_entity);
         }
     }
 
-    public void Tick()
+    void Update()
     {
         _currentState?.Tick();
     }    

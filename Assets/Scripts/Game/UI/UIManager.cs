@@ -122,7 +122,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    void UpdateOrdersWrapper(OrderReceiver orderReceiver)
+    void UpdateOrdersWrapper(OrdersReceiver orderReceiver)
     {
         _ordersWrapper.UpdateOrders(orderReceiver);
     }

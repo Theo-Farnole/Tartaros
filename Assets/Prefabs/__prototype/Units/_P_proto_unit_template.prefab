@@ -166,6 +166,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1633938786359411147}
   - component: {fileID: 6429056662796449699}
+  - component: {fileID: 3239589975542566446}
+  - component: {fileID: 7268425058961444133}
   - component: {fileID: 1633938786359411146}
   - component: {fileID: 1356949969540019438}
   - component: {fileID: 6429056662954292992}
@@ -206,14 +208,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _owner: 0
-  _healthSlider: {fileID: 0}
-  _hideHealthSliderIfFull: 1
-  _fowEntity:
-    _fogOfWarVision: {fileID: 7303349781198450086}
-    _coverable:
-      _transform: {fileID: 1633938786359411147}
-      _collider: {fileID: 1356949969540019438}
-      _renderer: {fileID: 1633938785907707343}
+  _healthComponent:
+    _healthSlider: {fileID: 0}
+    _hideHealthSliderIfFull: 1
+--- !u!114 &3239589975542566446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633938786359411144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad8dab8740215841b69d608251c99e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fogOfWarVision: {fileID: 7303349781198450086}
+  _coverable:
+    _collider: {fileID: 1356949969540019438}
+    _renderer: {fileID: 1633938785907707343}
+--- !u!114 &7268425058961444133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633938786359411144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6dfcc952945c8a41aa62681f9109591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1633938786359411146
 MonoBehaviour:
   m_ObjectHideFlags: 0

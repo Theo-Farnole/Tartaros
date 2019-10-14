@@ -7,22 +7,22 @@ namespace FogOfWar
     [System.Serializable]
     public class FOWCoverable
     {
-        [SerializeField] private Transform _transform;
-        [Space]
         [SerializeField] private Collider _collider;
         [SerializeField] private Renderer _renderer;
 
-        private bool _isCovered = false;
+        private bool _isCover = false;
 
-        public bool IsCovered { get => _isCovered; }
-        public Transform Transform { get => _transform; }
-
-        public void Cover(bool isCovered)
+        public bool IsCover
         {
-            _isCovered = isCovered;
+            get => _isCover;
 
-            _collider.enabled = !_isCovered;
-            _renderer.enabled = !_isCovered;
+            set
+            {
+                _isCover = value;
+
+                _collider.enabled = !_isCover;
+                _renderer.enabled = !_isCover;
+            }
         }
     }
 }

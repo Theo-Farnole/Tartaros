@@ -33,7 +33,7 @@ namespace UI.Game
             }
         }
 
-        public void UpdateOrders(OrderReceiver orderReceiver)
+        public void UpdateOrders(OrdersReceiver orderReceiver)
         {
             HideOrders();
 
@@ -44,7 +44,7 @@ namespace UI.Game
             UpdateSpawnUnitsOrder(orderReceiver);
         }
 
-        void UpdateSpawnUnitsOrder(OrderReceiver orderReceiver)
+        void UpdateSpawnUnitsOrder(OrdersReceiver orderReceiver)
         {
             for (int i = 0; i < _wrapperSpawnUnitsOrders.Length && i < orderReceiver.CreatableUnits.Length; i++)
             {
@@ -59,7 +59,7 @@ namespace UI.Game
             }
         }
 
-        void UpdateOverallOrders(OrderReceiver orderReceiver)
+        void UpdateOverallOrders(OrdersReceiver orderReceiver)
         {
             foreach (OverallAction action in Enum.GetValues(typeof(OverallAction)))
             {
