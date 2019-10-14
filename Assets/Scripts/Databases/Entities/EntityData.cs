@@ -7,7 +7,7 @@ public enum OrdersType
 {
     Move = 1 << 0,
     Attack = 1 << 1,
-    UnitCreation = 1 << 2
+    CreateUnits = 1 << 2,
 }
 
 [CreateAssetMenu(menuName = "Leonidas Legacy/Entity")]
@@ -41,7 +41,7 @@ public class EntityData : ScriptableObject
 
     public bool CanMove { get => _availableOrders.HasFlag(OrdersType.Move); }
     public bool CanAttack { get => _availableOrders.HasFlag(OrdersType.Attack); }
-    public bool CanSpawnUnit { get => _availableOrders.HasFlag(OrdersType.UnitCreation); }
+    public bool CanSpawnUnit { get => _availableOrders.HasFlag(OrdersType.CreateUnits); }
 
     #region Attack
     [Header("Attack Settings")]
@@ -72,7 +72,7 @@ public class EntityData : ScriptableObject
 
     #region Units Creation
     [Header("Spawning Settings")]
-    [DrawIf("_availableOrders", OrdersType.UnitCreation, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [DrawIf("_availableOrders", OrdersType.CreateUnits, ComparisonType.HasFlag, DisablingType.ReadOnly)]
     [SerializeField] private Unit[] _availableUnitsForCreation;
 
     public Unit[] AvailableUnitsForCreation { get => _availableUnitsForCreation; }
