@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BuildingState : OwnerState<GameManager>
 {
@@ -23,9 +24,6 @@ public class BuildingState : OwnerState<GameManager>
 
     public override void Tick()
     {
-        if (_currentBuilding == null)
-            return;
-
         UpdateCurrentBuildingPosition();
 
         if (Input.GetMouseButtonDown(0))
@@ -35,7 +33,7 @@ public class BuildingState : OwnerState<GameManager>
 
             if (tile == null)
             {
-                CreateCurrentBuilding(coords);
+                ConstructCurrentBuilding(coords);
             }
             else
             {
@@ -45,8 +43,7 @@ public class BuildingState : OwnerState<GameManager>
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Object.Destroy(_currentBuilding.gameObject);
-            _owner.Resources += CurrentBuildingCost;
+            DestroyCurrentBuilding();
             _owner.State = null;
         }
     }
@@ -67,7 +64,7 @@ public class BuildingState : OwnerState<GameManager>
         GameObject prefab = BuildingsRegister.Instance.GetItem(building).Prefab;
 
         _currentBuilding = Object.Instantiate(prefab);
-        DynamicsObjects.Instance.SetToParent(_currentBuilding.transform, "Building");
+        EnableComponents(false);
 
         UpdateCurrentBuildingPosition();
     }
@@ -82,12 +79,36 @@ public class BuildingState : OwnerState<GameManager>
         }
     }
 
-    void CreateCurrentBuilding(Vector2Int coords)
+    void ConstructCurrentBuilding(Vector2Int coords)
     {
+        EnableComponents(true);
+        DynamicsObjects.Instance.SetToParent(_currentBuilding.transform, "Building");
+
         TileSystem.Instance.SetTile(coords, _currentBuilding);
 
         // then leave
         _owner.State = null;
+    }
+
+    void DestroyCurrentBuilding()
+    {
+        Object.Destroy(_currentBuilding.gameObject);
+        _owner.Resources += CurrentBuildingCost;
+    }
+
+    void EnableComponents(bool enabled)
+    {
+        var fowEntity = _currentBuilding.GetComponent<FogOfWar.FOWEntity>();
+        if (fowEntity) fowEntity.enabled = enabled;
+
+        var collider = _currentBuilding.GetComponent<Collider>();
+        if (collider) collider.enabled = enabled;
+
+        var navMeshAgent = _currentBuilding.GetComponent<NavMeshAgent>();
+        if (navMeshAgent) navMeshAgent.enabled = enabled;
+
+        var navMeshObstacle = _currentBuilding.GetComponent<NavMeshObstacle>();
+        if (navMeshObstacle) navMeshObstacle.enabled = enabled;
     }
     #endregion
 }
