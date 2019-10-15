@@ -55,7 +55,7 @@ namespace UI.Game
                 _wrapperSpawnUnitsOrders[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
 
                 _wrapperSpawnUnitsOrders[i].button.onClick.RemoveAllListeners();
-                _wrapperSpawnUnitsOrders[i].button.onClick.AddListener(() => OrderGiverManager.Instance.OrderSpawnUnits(unitType));
+                _wrapperSpawnUnitsOrders[i].button.onClick.AddListener(() => OrdersGiverManager.Instance.OrderSpawnUnits(unitType));
             }
         }
 
@@ -79,7 +79,7 @@ namespace UI.Game
                         case OverallAction.Stop:
                             _wrapperOverallOrders[index].button.onClick.AddListener(() =>
                             {
-                                OrderGiverManager.Instance.OrderStop();
+                                OrdersGiverManager.Instance.OrderStop();
                             });
                             break;
 

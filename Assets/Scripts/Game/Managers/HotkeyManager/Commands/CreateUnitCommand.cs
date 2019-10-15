@@ -15,7 +15,7 @@ namespace CommandPattern
 
         public override void Execute()
         {
-            OrderGiverManager.Instance.OrderSpawnUnits(_unit);
+            OrdersGiverManager.Instance.OrderSpawnUnits(_unit);
         }
     }
 }

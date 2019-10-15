@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderGiverManager : Singleton<OrderGiverManager>
+public class OrdersGiverManager : Singleton<OrdersGiverManager>
 {
     #region Methods
     #region MonoBehaviour callbacks

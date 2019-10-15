@@ -29,6 +29,7 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region Properties
+    public bool IsPlayerSelection { get => _selectedGroups.Count > 0; }
     public Group[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Owner.Sparta select x).ToArray(); }
     public List<Group> SelectedGroups { get => _selectedGroups; }
     #endregion
@@ -200,7 +201,7 @@ public class SelectionManager : Singleton<SelectionManager>
             {
                 item.selectedEntities[j].OnDeselect();
             }
-        }        
+        }
 
         _selectedGroups.Clear();
         _highlightGroupIndex = -1;

@@ -46,7 +46,7 @@ public class HotkeyManager : Singleton<HotkeyManager>
             case AskCursor.Attack:
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
                 {
-                    OrderGiverManager.Instance.OrderAttack(hit.transform);
+                    OrdersGiverManager.Instance.OrderAttack(hit.transform);
                     askCursor = false;
                 }
                 break;
@@ -54,7 +54,7 @@ public class HotkeyManager : Singleton<HotkeyManager>
             case AskCursor.Move:
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
                 {
-                    OrderGiverManager.Instance.OrderMovement(hit.point);
+                    OrdersGiverManager.Instance.OrderMovement(hit.point);
                     askCursor = false;
                 }
                 break;
