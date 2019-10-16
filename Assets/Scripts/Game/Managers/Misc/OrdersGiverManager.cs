@@ -39,7 +39,7 @@ public class OrdersGiverManager : Singleton<OrdersGiverManager>
     /// <param name="target">Transform of the attack's target.</param>
     public void OrderAttack(Transform target)
     {
-        if (target.GetComponent<Entity>().Owner == Owner.Sparta)
+        if (target.GetComponent<Entity>().owner == Owner.Sparta)
             return;
         
         foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)

@@ -44,6 +44,7 @@ public class EntityData : ScriptableObject
     public bool CanMove { get => _availableOrders.HasFlag(OrdersType.Move); }
     public bool CanAttack { get => _availableOrders.HasFlag(OrdersType.Attack); }
     public bool CanSpawnUnit { get => _availableOrders.HasFlag(OrdersType.CreateUnits); }
+    public bool CanCreateResources { get => _availableOrders.HasFlag(OrdersType.CreateResources); }
 
     #region Attack
     [Separator("Attack Settings", true)]
@@ -67,7 +68,7 @@ public class EntityData : ScriptableObject
     [Separator("Movement Settings", true)]
     [Space]
     [DrawIf(nameof(_availableOrders), OrdersType.Move, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [SerializeField, Tooltip("Units per second")] private float _speed = 3;
+    [SerializeField, PositiveValueOnly, Tooltip("Units per second")] private float _speed = 3;
 
     public float Speed { get => _speed; }
     #endregion
@@ -85,8 +86,11 @@ public class EntityData : ScriptableObject
     [Separator("Resources Generation", true)]
     [Space]
     [DrawIf(nameof(_availableOrders), OrdersType.CreateResources, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [SerializeField] private float _generationTick;
+    [SerializeField, PositiveValueOnly, Tooltip("In seconds")] private float _generationTick;
     [SerializeField] private ResourcesWrapper _resourcesAmount;
+
+    public ResourcesWrapper ResourcesAmount { get => _resourcesAmount; }
+    public float GenerationTick { get => _generationTick; }
     #endregion
     #endregion
 

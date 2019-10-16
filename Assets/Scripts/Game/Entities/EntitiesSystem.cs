@@ -15,13 +15,15 @@ public enum EntityType
 
     // building
     House = 1000,
-    Barracks = 1001
+    Barracks = 1001,
+    Farm = 1002
 }
 
 public enum Building
 {
     House = EntityType.House,
-    Barracks = EntityType.Barracks
+    Barracks = EntityType.Barracks,
+    Farm = EntityType.Farm
 }
 
 public enum Unit

@@ -21,13 +21,13 @@ namespace FogOfWar
         [Header("Coverable Settings")]
         [SerializeField] private FOWCoverable _coverable = new FOWCoverable();
 
-        private Entity _owner;
+        private Entity _entity;
         private Type _type;
         #endregion
 
         #region Fields
         public bool IsCover { get => _type == Type.Viewer ? false : _coverable.IsCover; }
-        public float ViewRadius { get => _owner.Data.VisionRange; }
+        public float ViewRadius { get => _entity.Data.VisionRange; }
         public FOWCoverable Coverable { get => _coverable; }
         #endregion
 
@@ -35,7 +35,7 @@ namespace FogOfWar
         #region MonoBehaviour Callbacks
         void Start()
         {
-            _owner = GetComponent<Entity>();            
+            _entity = GetComponent<Entity>();            
 
             SetTypeField();
             RegisterToManager();
@@ -63,7 +63,7 @@ namespace FogOfWar
 
         void SetTypeField()
         {
-            if (_owner.Owner == Owner.Sparta)
+            if (_entity.owner == Owner.Sparta)
             {
                 _type = Type.Viewer;
             }

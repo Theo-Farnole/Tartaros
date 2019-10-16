@@ -26,7 +26,7 @@ public class UIManager : Singleton<UIManager>
     [Header("Construction Panel")]
     [SerializeField] private GameObject _panelConstruction;
     [Space]
-    [SerializeField, EnumNamedArray(typeof(Building))] private Button[] _buildingButtons;
+    [SerializeField] private Button[] _buildingButtons;
     #endregion
 
     #region Methods
@@ -42,12 +42,12 @@ public class UIManager : Singleton<UIManager>
 
         _ordersWrapper.HideOrders();
 
-        for (int i = 0; i < _buildingButtons.Length; i++)
+        foreach (Building type in Enum.GetValues(typeof(Building)))
         {
-            Building type = (Building)i + EntitiesSystem.STARTING_INDEX_BUILDING;
-            _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(type));
+            int i = (int)type - EntitiesSystem.STARTING_INDEX_BUILDING;
 
-            _buildingButtons[i].GetComponent<Image>().sprite = Registers.BuildingsRegister.Instance.GetItem(type).Portrait;
+            _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(type));
+            _buildingButtons[i].GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(type).Portrait;
         }
 
         DisplayConstructionPanel();
@@ -60,11 +60,6 @@ public class UIManager : Singleton<UIManager>
             Array.Resize(ref _resourcesLabel, Enum.GetValues(typeof(Resource)).Length);
         }
 
-        if (_buildingButtons.Length != Enum.GetValues(typeof(Building)).Length)
-        {
-            Array.Resize(ref _buildingButtons, Enum.GetValues(typeof(Building)).Length);
-        }
-
         _ordersWrapper?.OnValidateCallback();
     }
     #endregion
@@ -74,6 +69,27 @@ public class UIManager : Singleton<UIManager>
     {
         _panelConstruction.SetActive(true);
         _panelSelection.SetActive(false);
+    }
+
+    public void UpdateConstructionButtons()
+    {
+        // deactive all _buildingButtons
+        for (int i = 0; i < _buildingButtons.Length; i++)
+        {
+            _buildingButtons[i].gameObject.SetActive(false);
+        }
+
+        // then active buttons in Building int range
+        foreach (Building building in Enum.GetValues(typeof(Building)))
+        {
+            int index = (int)building - EntitiesSystem.STARTING_INDEX_BUILDING;
+
+            if (index < _buildingButtons.Length)
+            {
+                _buildingButtons[index].gameObject.SetActive(true);
+                _buildingButtons[index].GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(building).Portrait;
+            }
+        }
     }
     #endregion
 

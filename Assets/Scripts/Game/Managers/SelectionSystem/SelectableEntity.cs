@@ -14,7 +14,7 @@ public class SelectableEntity : MonoBehaviour
 
     #region Properties
     public EntityType Type { get => _entity.Type; }
-    public Owner Owner  { get => _entity.Owner; }
+    public Owner Owner  { get => _entity.owner; }
 
     public Entity Entity { get => _entity; }
     #endregion
@@ -53,7 +53,7 @@ public class SelectableEntity : MonoBehaviour
 
         _selectionCircle = ObjectPooler.Instance.SpawnFromPool("selection_circle", pos, rot);
         _selectionCircle.transform.parent = transform;
-        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(_entity.Owner);
+        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(_entity.owner);
     }
 
     public void OnDeselect()

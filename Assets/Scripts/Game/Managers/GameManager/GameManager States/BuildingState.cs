@@ -13,7 +13,6 @@ public class BuildingState : OwnerState<GameManager>
 
     #region Properties
     private ResourcesWrapper CurrentBuildingCost { get => BuildingsRegister.Instance.GetItem(_currentBuildingType).EntityData.SpawningCost; }
-
     #endregion
 
     #region Methods
@@ -82,6 +81,8 @@ public class BuildingState : OwnerState<GameManager>
     void ConstructCurrentBuilding(Vector2Int coords)
     {
         EnableComponents(true);
+        _currentBuilding.GetComponent<OrdersReceiver>().StartCreatingResources();
+        _currentBuilding.GetComponent<Entity>().owner = Owner.Sparta;
         DynamicsObjects.Instance.SetToParent(_currentBuilding.transform, "Building");
 
         TileSystem.Instance.SetTile(coords, _currentBuilding);

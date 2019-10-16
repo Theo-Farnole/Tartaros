@@ -50,7 +50,7 @@ public class OrdersReceiver : MonoBehaviour
                 _owner.StopCoroutine(_currentCoroutine);
             }
 
-            
+
 
             _currentCoroutine = new Timer(_owner, GameManager.Instance.CollisionScalerData.IncreaseTime, (float t) =>
             {
@@ -88,13 +88,14 @@ public class OrdersReceiver : MonoBehaviour
 
     public NavMeshAgent NavMeshAgent { get => _navMeshAgent; }
 
-    public Entity Entity { get => _entity;  }
-    public Transform Transform { get => _entity.transform;  }
+    public Entity Entity { get => _entity; }
+    public Transform Transform { get => _entity.transform; }
     public Unit[] CreatableUnits { get => _entity.Data.AvailableUnitsForCreation; }
 
-    public bool CanMove { get => _entity.Data == null ? false : _entity.Data.CanMove; }
-    public bool CanAttack { get => _entity.Data == null ? false : _entity.Data.CanAttack; }
-    public bool CanSpawnUnit { get => _entity.Data == null ? false : _entity.Data.CanSpawnUnit; }
+    public bool CanMove { get => _entity.Data.CanMove; }
+    public bool CanAttack { get => _entity.Data.CanAttack; }
+    public bool CanSpawnUnit { get => _entity.Data.CanSpawnUnit; }
+    public bool CanCreateResources { get => _entity.Data.CanCreateResources; }
     public CollisionScaler CollisionScaler1 { get => _collisionScaler; }
     #endregion
 
@@ -113,7 +114,7 @@ public class OrdersReceiver : MonoBehaviour
     void Update()
     {
         _currentState?.Tick();
-    }    
+    }
 
     public bool CanOverallAction(OverallAction overallAction)
     {
@@ -132,7 +133,7 @@ public class OrdersReceiver : MonoBehaviour
         return false;
     }
 
-    #region States Modifier
+    #region Current state Modifier
     public void Move(Vector3 destination)
     {
         if (CanMove)
@@ -154,6 +155,14 @@ public class OrdersReceiver : MonoBehaviour
         if (CanSpawnUnit)
         {
             _currentState = new OrderSpawnUnit(this, unitType);
+        }
+    }
+
+    public void StartCreatingResources()
+    {
+        if (CanCreateResources)
+        {
+            _currentState = new OrderCreateResources(this);
         }
     }
 

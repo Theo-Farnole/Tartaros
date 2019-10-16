@@ -64,6 +64,7 @@ MonoBehaviour:
   _buildingsData:
   - {fileID: 11400000, guid: 6ce3611d06774e54e93e7cbeebcd50f9, type: 2}
   - {fileID: 11400000, guid: 435c372274fa2a849aa70660e5590bac, type: 2}
+  - {fileID: 11400000, guid: e15535cf0e41e894c8988c9cfc673340, type: 2}
 --- !u!114 &1549219351751314842
 MonoBehaviour:
   m_ObjectHideFlags: 0

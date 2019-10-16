@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: __default unit
+  m_Name: Farm
   m_EditorClassIdentifier: 
   _isInvincible: 0
   _hp: 2
@@ -18,20 +18,16 @@ MonoBehaviour:
     food: 0
     wood: 0
     gold: 0
-  _visionRange: 8
-  _availableOrders: 3
+  _visionRange: 3.37
+  _availableOrders: 8
   _damage: 3
   _attackSpeed: 2
   _attackRange: 1
   _damagePerSecond: 1.5
   _speed: 3
   _availableUnitsForCreation: 
-  _generationTick: 0
+  _generationTick: 10
   _resourcesAmount:
-    food: 0
+    food: 10
     wood: 0
     gold: 0
-  dispTest: 1
-  _test:
-    test: 0
-    teeest: 0

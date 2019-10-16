@@ -16,7 +16,7 @@ public class Entity : MonoBehaviour, IEntityKilled
     #region Fields
     [Header("Owner Configuration")]
     [SerializeField] private EntityType _type;
-    [SerializeField, MyBox.ReadOnly] private Owner _owner;
+    [SerializeField, MyBox.ReadOnly] public Owner owner;
     [Header("Miscellaneous Components")]
     [SerializeField] private HeathComponent _healthComponent;
 
@@ -28,7 +28,6 @@ public class Entity : MonoBehaviour, IEntityKilled
     #endregion
 
     #region Properties
-    public Owner Owner { get => _owner; }
     public EntityType Type { get => _type; }
 
     public EntityData Data { get => _entityData; }
@@ -42,7 +41,10 @@ public class Entity : MonoBehaviour, IEntityKilled
     #region MonoBehaviour Callbacks
     void Awake()
     {
-        _owner = _type.GetOwner();
+        if (_type.IsUnitType() != null)
+        {
+            owner = _type.GetOwner();
+        }
 
         _fowEntity = GetComponent<FOWEntity>();
         _ordersReceiver = GetComponent<OrdersReceiver>();
@@ -56,7 +58,7 @@ public class Entity : MonoBehaviour, IEntityKilled
 
     void OnValidate()
     {
-        _owner = _type.GetOwner();
+        owner = _type.GetOwner();
     }
 
     void OnDrawGizmos()
