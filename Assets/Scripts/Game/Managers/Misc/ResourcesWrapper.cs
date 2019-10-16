@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using MyBox;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,11 +12,11 @@ public enum Resource
 }
 
 [System.Serializable]
-public class ResourcesWrapper
+public struct ResourcesWrapper
 {
-    public int food = 0;
-    public int wood = 0;
-    public int gold = 0;
+    [PositiveValueOnly] public int food;
+    [PositiveValueOnly] public int wood;
+    [PositiveValueOnly] public int gold;
 
     public ResourcesWrapper(int food = 0, int wood = 0, int gold = 0)
     {
