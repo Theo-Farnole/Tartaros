@@ -21,8 +21,13 @@ MonoBehaviour:
   _visionRange: 3
   _availableOrders: 3
   _damage: 1
-  _attackRange: 1
   _attackSpeed: 0.5
+  _attackRange: 1
   _damagePerSecond: 2
   _speed: 3
-  _availableUnitsForCreation: 
+  _availableUnitsForCreation: 000000000000000000000000
+  _generationTick: 0
+  _resourcesAmount:
+    food: 0
+    wood: 0
+    gold: 0

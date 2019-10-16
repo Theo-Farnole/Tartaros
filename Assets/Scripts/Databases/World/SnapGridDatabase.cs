@@ -12,7 +12,7 @@ public class SnapGridDatabase : ScriptableObject
     public float CellSize { get => _cellSize; }
 
     [Header("Information")]
-    [SerializeField, ReadOnly] private int _cellsTotalCount = 0;
+    [SerializeField, MyBox.ReadOnly] private int _cellsTotalCount = 0;
 
     public void OnValidate()
     {

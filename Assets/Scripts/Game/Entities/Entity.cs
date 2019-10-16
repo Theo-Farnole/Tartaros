@@ -16,7 +16,7 @@ public class Entity : MonoBehaviour, IEntityKilled
     #region Fields
     [Header("Owner Configuration")]
     [SerializeField] private EntityType _type;
-    [SerializeField, ReadOnly] private Owner _owner;
+    [SerializeField, MyBox.ReadOnly] private Owner _owner;
     [Header("Miscellaneous Components")]
     [SerializeField] private HeathComponent _healthComponent;
 
