@@ -92,10 +92,10 @@ public class OrdersReceiver : MonoBehaviour
     public Transform Transform { get => _entity.transform; }
     public Unit[] CreatableUnits { get => _entity.Data.AvailableUnitsForCreation; }
 
-    public bool CanMove { get => _entity.Data.CanMove; }
-    public bool CanAttack { get => _entity.Data.CanAttack; }
-    public bool CanSpawnUnit { get => _entity.Data.CanSpawnUnit; }
-    public bool CanCreateResources { get => _entity.Data.CanCreateResources; }
+    public bool CanMove { get => _entity.Data == null ? false :_entity.Data.CanMove; }
+    public bool CanAttack { get => _entity.Data == null ? false : _entity.Data.CanAttack; }
+    public bool CanSpawnUnit { get => _entity.Data == null ? false : _entity.Data.CanSpawnUnit; }
+    public bool CanCreateResources { get => _entity.Data == null ? false : _entity.Data.CanCreateResources; }
     public CollisionScaler CollisionScaler1 { get => _collisionScaler; }
     #endregion
 
