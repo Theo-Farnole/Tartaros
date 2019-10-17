@@ -46,6 +46,9 @@ namespace UI.Game
 
         void UpdateSpawnUnitsOrder(OrdersReceiver orderReceiver)
         {
+            if (!orderReceiver.CanSpawnUnit)
+                return;
+
             for (int i = 0; i < _wrapperSpawnUnitsOrders.Length && i < orderReceiver.CreatableUnits.Length; i++)
             {
                 _wrapperSpawnUnitsOrders[i].gameObject.SetActive(true);

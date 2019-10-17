@@ -77,7 +77,7 @@ public class HotkeyManager : Singleton<HotkeyManager>
     }
 
     public void SetCommandsHandler(EntityType entityType)
-    {        
+    {
         ClearCommandsHandler();
 
         RegisterData data = EntitiesRegister.GetRegisterData(entityType);
@@ -95,16 +95,26 @@ public class HotkeyManager : Singleton<HotkeyManager>
         }
 
         // stop
-        if (data.EntityData.CanAttack)
+        if (data.EntityData.CanMove || data.EntityData.CanAttack)
         {
             _commands.Add(OverallActionsRegister.Instance.GetItem(OverallAction.Stop).Hotkey, new StopCommand());
         }
 
         // CreateUnits
-        for (int i = 0; i < data.EntityData.AvailableUnitsForCreation.Length; i++)
+        if (data.EntityData.CanCreateResources)
         {
-            Unit unit = data.EntityData.AvailableUnitsForCreation[i];
-            _commands.Add(UnitsRegister.Instance.GetItem(unit).Hotkey, new CreateUnitCommand(unit));
+            for (int i = 0; i < data.EntityData.AvailableUnitsForCreation.Length; i++)
+            {
+                Unit unit = data.EntityData.AvailableUnitsForCreation[i];
+                KeyCode hotkey = UnitsRegister.Instance.GetItem(unit).Hotkey;
+
+                if (_commands.ContainsKey(hotkey))
+                {
+                    Debug.LogWarning("Hotkey " + hotkey + " is already register.");
+                    continue;
+                }
+                _commands.Add(UnitsRegister.Instance.GetItem(unit).Hotkey, new CreateUnitCommand(unit));
+            }
         }
     }
 

@@ -125,7 +125,6 @@ public class UIManager : Singleton<UIManager>
             _selectedGroupWrapper[i].portrait.sprite = EntitiesRegister.GetRegisterData(selectedGroups[i].entityType).Portrait;
             _selectedGroupWrapper[i].unitsCount.text = selectedGroups[i].selectedEntities.Count.ToString();
         }
-
     }
 
     void UpdateHighlightGroup(int highlightGroupIndex)

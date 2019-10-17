@@ -168,6 +168,11 @@ public class OrdersReceiver : MonoBehaviour
 
     public void Stop()
     {
+        if (State is OrderCreateResources)
+        {
+            Debug.LogWarning("Stop State OrderCreateResources.");
+        }
+
         State = null;
     }
     #endregion
