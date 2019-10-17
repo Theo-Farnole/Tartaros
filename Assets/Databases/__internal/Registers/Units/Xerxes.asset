@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Xerxes
   m_EditorClassIdentifier: 
   _prefab: {fileID: 1642577766784393588, guid: 1a65c3e60c2b1cb4daafa7596c9be56e, type: 3}
-  _entityData: {fileID: 11400000, guid: 3b13f67ab4eba4245bf187587c9d187b, type: 2}
+  _entityData: {fileID: 11400000, guid: 4763c579653748b40b4dd2e488b021af, type: 2}
   _portrait: {fileID: 21300000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
   _hotkey: 120

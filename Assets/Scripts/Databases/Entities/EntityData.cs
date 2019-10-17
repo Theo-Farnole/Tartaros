@@ -50,15 +50,22 @@ public class EntityData : ScriptableObject
     [Separator("Attack Settings", true)]
     [Space]
     [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [PositiveValueOnly, SerializeField] private int _damage = 3;
-    [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [PositiveValueOnly, SerializeField, Tooltip("Time between each attack"), Range(0, 5)] private float _attackSpeed = 1f;
+    [SerializeField] private bool _isMelee = true;
+    [DrawIf(nameof(_isMelee), false, ComparisonType.Equals, DisablingType.DontDraw)]
+    [SerializeField] private GameObject _prefabProjectile;
     [Space]
     [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [PositiveValueOnly, SerializeField] private float _attackRange = 3f;
+    [PositiveValueOnly, SerializeField] private int _damage = 3;
+    [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [PositiveValueOnly, SerializeField, Tooltip("Time between each attack")] private float _attackSpeed = 1f;
+    [Space]
+    [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [PositiveValueOnly, SerializeField, Range(0, 15)] private float _attackRange = 3f;
     [Space]
     [SerializeField, ShowOnly] private float _damagePerSecond;
 
+    public bool IsMelee { get => _isMelee; }
+    public GameObject PrefabProjectile { get => _prefabProjectile;}
     public int Damage { get => _damage; }
     public float AttackRange { get => _attackRange; }
     public float AttackSpeed { get => _attackSpeed; }
@@ -89,8 +96,8 @@ public class EntityData : ScriptableObject
     [SerializeField, PositiveValueOnly, Tooltip("In seconds")] private float _generationTick;
     [SerializeField] private ResourcesWrapper _resourcesAmount;
 
+    public float GenerationTick { get => _generationTick; }    
     public ResourcesWrapper ResourcesAmount { get => _resourcesAmount; }
-    public float GenerationTick { get => _generationTick; }
     #endregion
     #endregion
 

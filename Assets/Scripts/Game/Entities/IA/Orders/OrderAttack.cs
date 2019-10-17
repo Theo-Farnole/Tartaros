@@ -137,9 +137,23 @@ public class OrderAttack : OwnerState<OrdersReceiver>
 
         // Is attack timer allow attack ?
         if (_attackTimer >= _owner.Entity.Data.AttackSpeed)
+        {            
+            Attack();            
+        }
+    }
+
+    private void Attack()
+    {
+        _attackTimer = 0;
+
+        if (_owner.Entity.Data.IsMelee)
         {
-            _attackTimer = 0;
             _targetEntity.HealthComponent.GetDamage(_owner.Entity.Data.Damage, _owner.Entity);
+        }
+        else
+        {
+            Projectile projectile = ObjectPooler.Instance.SpawnFromPool(_owner.Entity.Data.PrefabProjectile, _owner.transform.position, Quaternion.identity).GetComponent<Projectile>();
+            projectile.Throw(_target, _owner.Entity);
         }
     }
 

@@ -46,3 +46,6 @@ MonoBehaviour:
   _pools:
   - tag: selection_circle
     prefab: {fileID: 75726643763961423, guid: 36da5f7c11d4d514a8172e00d9c31f52, type: 3}
+  - tag: projectile_spear
+    prefab: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
+      type: 3}

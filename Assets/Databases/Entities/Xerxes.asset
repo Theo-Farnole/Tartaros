@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: Kassandra
+  m_Name: Xerxes
   m_EditorClassIdentifier: 
   _isInvincible: 0
   _hp: 10
@@ -20,13 +20,13 @@ MonoBehaviour:
     gold: 0
   _visionRange: 8
   _availableOrders: 3
-  _isMelee: 0
+  _isMelee: 1
   _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
     type: 3}
-  _damage: 10
+  _damage: 1
   _attackSpeed: 1
   _attackRange: 6
-  _damagePerSecond: 10
+  _damagePerSecond: 1
   _speed: 2
   _availableUnitsForCreation: 
   _generationTick: 0
