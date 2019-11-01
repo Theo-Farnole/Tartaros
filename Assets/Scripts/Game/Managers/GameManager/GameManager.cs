@@ -9,7 +9,7 @@ public class GameManager : Singleton<GameManager>
     [Space]
     [SerializeField] private SnapGrid _grid;
 
-    private OwnerState<GameManager> _state = null;
+    private OwnedState<GameManager> _state = null;
     private ResourcesWrapper _resources = new ResourcesWrapper();
 
     private static bool _applicationIsQuitting = false;
@@ -29,7 +29,7 @@ public class GameManager : Singleton<GameManager>
             UIManager.Instance.UpdateResourcesLabel(_resources);
         }
     }
-    public OwnerState<GameManager> State
+    public OwnedState<GameManager> State
     {
         get
         {

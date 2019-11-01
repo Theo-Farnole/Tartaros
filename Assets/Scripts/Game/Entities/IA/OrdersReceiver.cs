@@ -65,7 +65,7 @@ public class OrdersReceiver : MonoBehaviour
     #endregion
 
     #region Fields
-    private OwnerState<OrdersReceiver> _currentState;
+    private OwnedState<OrdersReceiver> _currentState;
     private CollisionScaler _collisionScaler;
     private Entity _entity;
 
@@ -74,7 +74,7 @@ public class OrdersReceiver : MonoBehaviour
     #endregion
 
     #region Properties
-    private OwnerState<OrdersReceiver> State
+    private OwnedState<OrdersReceiver> State
     {
         get => _currentState;
 

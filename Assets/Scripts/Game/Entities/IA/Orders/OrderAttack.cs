@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderAttack : OwnerState<OrdersReceiver>
+public class OrderAttack : OwnedState<OrdersReceiver>
 {
     #region Enum
     enum State

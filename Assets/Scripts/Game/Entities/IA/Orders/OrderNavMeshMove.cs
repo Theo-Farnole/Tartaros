@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class OrderNavMeshMove : OwnerState<OrdersReceiver>
+public class OrderNavMeshMove : OwnedState<OrdersReceiver>
 {
     public OrderNavMeshMove(OrdersReceiver owner, Vector3 destination) : base(owner)
     {

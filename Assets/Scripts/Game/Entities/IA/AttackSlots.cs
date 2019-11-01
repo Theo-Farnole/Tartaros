@@ -101,7 +101,7 @@ public class AttackSlots
                                                  where x.assigned == false
                                                  select x.localPosition).ToArray();
 
-        Vector3 closestVector = localPosition.GetClosestVector(localPositionAvailableSlots);
+        Vector3 closestVector = localPosition.GetClosestPoint(localPositionAvailableSlots);
         Slot closestSlot = _slots.First(x => x.localPosition == closestVector);
 
         return Array.IndexOf(_slots, closestSlot);
@@ -114,7 +114,7 @@ public class AttackSlots
         Vector3[] localPositionSlots = (from x in _slots
                                         select x.localPosition).ToArray();
 
-        Vector3 closestVector = localPosition.GetClosestVector(localPositionSlots);
+        Vector3 closestVector = localPosition.GetClosestPoint(localPositionSlots);
         Slot closestSlot = _slots.FirstOrDefault(x => x.localPosition == closestVector);
 
         return closestSlot;

@@ -73,9 +73,9 @@ public class SelectionRect : MonoBehaviour
         if (_isSelecting)
         {
             // Create a rect from both mouse positions
-            Rect rect = Utils.GetScreenRect(_originPositionRect, Input.mousePosition);
-            Utils.DrawScreenRect(rect, new Color(0.8f, 0.8f, 0.95f, 0.25f));
-            Utils.DrawScreenRectBorder(rect, 2, new Color(0.8f, 0.8f, 0.95f));
+            Rect rect = GUIRectDrawer.GetScreenRect(_originPositionRect, Input.mousePosition);
+            GUIRectDrawer.DrawScreenRect(rect, new Color(0.8f, 0.8f, 0.95f, 0.25f));
+            GUIRectDrawer.DrawScreenRectBorder(rect, 2, new Color(0.8f, 0.8f, 0.95f));
         }
     }
     #endregion
@@ -85,7 +85,7 @@ public class SelectionRect : MonoBehaviour
     {
         var selectableEntities = FindObjectsOfType<SelectableEntity>();
         var camera = Camera.main;
-        var viewportBounds = Utils.GetViewportBounds(camera, _originPositionRect, Input.mousePosition);
+        var viewportBounds = GUIRectDrawer.GetViewportBounds(camera, _originPositionRect, Input.mousePosition);
 
         for (int i = 0; i < selectableEntities.Length; i++)
         {

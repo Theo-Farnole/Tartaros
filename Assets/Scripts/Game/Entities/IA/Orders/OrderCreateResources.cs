@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderCreateResources : OwnerState<OrdersReceiver>
+public class OrderCreateResources : OwnedState<OrdersReceiver>
 {
     private float _currentTimer = 0;
 

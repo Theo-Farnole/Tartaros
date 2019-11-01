@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BuildingState : OwnerState<GameManager>
+public class BuildingState : OwnedState<GameManager>
 {
     #region Fields
     private GameObject _currentBuilding = null;

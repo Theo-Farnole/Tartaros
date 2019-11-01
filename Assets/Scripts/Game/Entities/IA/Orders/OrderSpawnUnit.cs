@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class OrderSpawnUnit : OwnerState<OrdersReceiver>
+public class OrderSpawnUnit : OwnedState<OrdersReceiver>
 {
     public OrderSpawnUnit(OrdersReceiver owner, Unit unitType) : base(owner)
     {
