@@ -12,7 +12,7 @@ class UIManagerEditor : Editor
 
         if (GUILayout.Button("Update Construction Buttons"))
         {
-            ((UIManager)target).UpdateConstructionButtons();
+            ((UIManager)target).PanelConstruction.UpdateConstructionButtons();
         }
     }
 }

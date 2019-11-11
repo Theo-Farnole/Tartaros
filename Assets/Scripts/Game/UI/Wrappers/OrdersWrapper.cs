@@ -13,7 +13,7 @@ namespace UI.Game
         [SerializeField, EnumNamedArray(typeof(OverallAction))] private CommandsWrapper[] _wrapperOverallOrders = new CommandsWrapper[2];
         [SerializeField] private CommandsWrapper[] _wrapperSpawnUnitsOrders = new CommandsWrapper[2];
 
-        public void OnValidateCallback()
+        public void ResizeArrayIfNeeded()
         {
             if (_wrapperOverallOrders.Length != Enum.GetValues(typeof(OverallAction)).Length)
             {

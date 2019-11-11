@@ -27,7 +27,7 @@ public class GameManager : Singleton<GameManager>
         set
         {
             _resources = value;
-            UIManager.Instance.UpdateResourcesLabel(_resources);
+            UIManager.Instance.PanelGameInformation.UpdateResourcesLabel(_resources);
         }
     }
     public OwnedState<GameManager> State

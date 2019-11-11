@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UI.Game;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -61,11 +62,11 @@ public class SelectionManager : Singleton<SelectionManager>
     {
         if (_selectedGroups.Count == 0)
         {
-            UIManager.Instance.DisplayConstructionPanel();
+            UIManager.Instance.DisplayPanel<PanelConstruction>();
         }
         else
         {
-            UIManager.Instance.DisplayPanelSelection();
+            UIManager.Instance.DisplayPanel<PanelSelection>();
         }
     }
     #endregion
@@ -103,7 +104,7 @@ public class SelectionManager : Singleton<SelectionManager>
             _highlightGroupIndex++;
             if (_highlightGroupIndex >= _selectedGroups.Count) _highlightGroupIndex = 0;
 
-            UIManager.Instance.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
+            UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         }
     }
     #endregion
@@ -137,7 +138,7 @@ public class SelectionManager : Singleton<SelectionManager>
         selectableEntity.OnSelected();
 
         UpdateUI();
-        UIManager.Instance.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
+        UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         HotkeyManager.Instance.SetCommandsHandler(_selectedGroups[0].entityType);
     }
 
@@ -173,7 +174,7 @@ public class SelectionManager : Singleton<SelectionManager>
         if (_selectedGroups.Count == 0) _highlightGroupIndex = -1;
 
         UpdateUI();
-        UIManager.Instance.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
+        UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         HotkeyManager.Instance.SetCommandsHandler(_selectedGroups[0].entityType);
     }
 
@@ -207,7 +208,7 @@ public class SelectionManager : Singleton<SelectionManager>
         _selectedGroups.Clear();
         _highlightGroupIndex = -1;
 
-        UIManager.Instance.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
+        UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         HotkeyManager.Instance.ClearCommandsHandler();
         UpdateUI();
     }

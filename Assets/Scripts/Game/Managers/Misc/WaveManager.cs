@@ -26,7 +26,7 @@ public class WaveManager : MonoBehaviour
     {
         _timer += Time.deltaTime;
 
-        UIManager.Instance.SetWaveText(_waveCount, RemainingTime);
+        UIManager.Instance.PanelGameInformation.SetWaveText(_waveCount, RemainingTime);
 
         if (RemainingTime <= 0)
         {
