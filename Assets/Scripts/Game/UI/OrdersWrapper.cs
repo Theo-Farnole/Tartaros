@@ -1,4 +1,5 @@
-﻿using Registers;
+﻿using Lortedo.Utilities.Inspector;
+using Registers;
 using System;
 using System.Collections;
 using System.Collections.Generic;

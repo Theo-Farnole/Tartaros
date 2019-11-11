@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FogOfWar;
+using Lortedo.Utilities.Pattern;
 
 public class SelectableEntity : MonoBehaviour
 {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lortedo.Utilities.Inspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

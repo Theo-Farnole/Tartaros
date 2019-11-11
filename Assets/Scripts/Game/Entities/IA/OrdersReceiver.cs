@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Lortedo.Utilities;
+using Lortedo.Utilities.Pattern;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,9 +35,9 @@ public class OrdersReceiver : MonoBehaviour
                 _owner.StopCoroutine(_currentCoroutine);
             }
 
-            _currentCoroutine = new Timer(_owner, GameManager.Instance.CollisionScalerData.ReduceTime, (float t) =>
+            _currentCoroutine = new Timer(_owner, GameManager.Instance.CollisionScalerData.ReduceTime, (float completion) =>
             {
-                _navMeshAgent.radius = _startingRadius + t * (ReducedRadius - _startingRadius);
+                _navMeshAgent.radius = _startingRadius + completion * (ReducedRadius - _startingRadius);
             },
             () =>
             {

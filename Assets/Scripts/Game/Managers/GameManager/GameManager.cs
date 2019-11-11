@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Lortedo.Utilities.Pattern;
+using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
