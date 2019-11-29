@@ -12,6 +12,8 @@ public class SelectionCircle : MonoBehaviour, IPooledObject
     [SerializeField] private Material[] _materials;
 
     private Projector _projector;
+
+    public string ObjectTag { get; set; }
     #endregion
 
     #region Methods
