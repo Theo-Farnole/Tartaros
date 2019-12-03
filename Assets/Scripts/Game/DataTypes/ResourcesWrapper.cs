@@ -65,6 +65,8 @@ public struct ResourcesWrapper
         return (this > b);
     }
 
+
+    #region Operator
     public static ResourcesWrapper operator -(ResourcesWrapper a, ResourcesWrapper b) =>
         new ResourcesWrapper(a.food - b.food, a.wood - b.wood, a.gold - b.gold);
 
@@ -88,5 +90,5 @@ public struct ResourcesWrapper
 
     public static bool operator !=(ResourcesWrapper a, ResourcesWrapper b) =>
         !(a == b);
+    #endregion
 }
-
