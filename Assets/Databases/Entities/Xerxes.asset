@@ -19,7 +19,7 @@ MonoBehaviour:
     wood: 5
     gold: 0
   _visionRange: 8
-  _availableOrders: 3
+  _availableOrders: 7
   _isMelee: 1
   _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
     type: 3}
