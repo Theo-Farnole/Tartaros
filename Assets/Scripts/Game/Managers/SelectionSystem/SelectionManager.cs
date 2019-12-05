@@ -24,7 +24,7 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region Fields
-    [SerializeField] private SelectionRect _selectionRect;
+    [SerializeField] private SelectionRectManager _selectionRect;
 
     private List<Group> _selectedGroups = new List<Group>();
     private int _highlightGroupIndex = -1;

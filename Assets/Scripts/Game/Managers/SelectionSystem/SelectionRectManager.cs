@@ -4,9 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SelectionRect : MonoBehaviour
+/// <summary>
+/// It manage the selection draw, and 
+/// </summary>
+public class SelectionRectManager : MonoBehaviour
 {
     #region Fields
+    public readonly static int pixelsToStartSelection = 50;
+
     private bool _isSelecting = false;
     private Vector3 _originPositionRect;
     #endregion
@@ -31,35 +36,40 @@ public class SelectionRect : MonoBehaviour
     #region Managers
     void ManageSelectionInput()
     {
-        if (EventSystem.current.IsPointerOverGameObject(-1))
-            return;
-
-        if (Input.GetMouseButtonDown(0))
+        // if pointer over UI, don't start selection
+        if (EventSystem.current.IsPointerOverGameObject(-1) == false)
         {
-            _originPositionRect = Input.mousePosition;
-        }
+            if (Input.GetMouseButtonDown(0))
+            {
+                _originPositionRect = Input.mousePosition;
+            }
 
-        if (Input.GetMouseButton(0))
-        {
-            ManageSelectionRectActivation();
+            if (Input.GetMouseButton(0))
+            {
+                CheckForSelectionRectStart();
+            }
         }
 
         if (Input.GetMouseButtonUp(0) && _isSelecting)
         {
-            AddEntitiesInRect();
+            AddEntitiesInSelectionRect();
             _isSelecting = false;
         }
     }
 
-    void ManageSelectionRectActivation()
+    /// <summary>
+    /// If is mouse button down, check if the player is dragging
+    /// </summary>
+    void CheckForSelectionRectStart()
     {
+        // if it selecting, don't check to start again
         if (_isSelecting)
             return;
 
-        if (Vector3.Distance(Input.mousePosition, _originPositionRect) >= 50)
+        if (Vector3.Distance(Input.mousePosition, _originPositionRect) >= pixelsToStartSelection)
         {
             _isSelecting = true;
-            
+
             if (Input.GetKey(KeyCode.LeftShift) == false)
             {
                 SelectionManager.Instance.ClearSelection();
@@ -81,8 +91,8 @@ public class SelectionRect : MonoBehaviour
     }
     #endregion
 
-    #region On SelectionRect releasing
-    void AddEntitiesInRect()
+    #region On SelectionRect Releasing
+    void AddEntitiesInSelectionRect()
     {
         var selectableEntities = FindObjectsOfType<SelectableEntity>();
         var camera = Camera.main;
