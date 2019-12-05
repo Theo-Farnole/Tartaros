@@ -8,15 +8,12 @@ public class CollisionScalerData : ScriptableObject
     [SerializeField, Range(0, 100), Tooltip("In Percent")] private int _collisionScaleDownPercent = 50;
     public float CollisionScaleDownPercent { get => (float)_collisionScaleDownPercent / 100f; }
 
-    [Space]
     [SerializeField, Tooltip("In Seconds")] private float _reduceTime = 1f;
     public float ReduceTime { get => _reduceTime; }
 
     [SerializeField] private bool _useDifferentIncreaseTime = true;
 
-    [Space]
     [SerializeField, DrawIf("_useDifferentIncreaseTime", true, ComparisonType.Equals, DisablingType.ReadOnly)] private float _increaseTime = 1f;
-
     public float IncreaseTime
     {
         get
