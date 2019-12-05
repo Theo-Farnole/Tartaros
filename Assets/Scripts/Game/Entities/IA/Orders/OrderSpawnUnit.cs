@@ -25,7 +25,7 @@ public class OrderSpawnUnit : OwnedState<OrdersReceiver>
             return;
         }
 
-        if (GameManager.Instance.Resources.HasEnoughtResources(unitData.SpawningCost) == false)
+        if (GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost) == false)
         {
             UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitType + ".");
             return;

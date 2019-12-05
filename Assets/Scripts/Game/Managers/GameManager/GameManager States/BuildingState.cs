@@ -9,12 +9,12 @@ using UnityEngine.AI;
 public class BuildingState : OwnedState<GameManager>
 {
     #region Fields
-    private GameObject _currentBuilding = null;
-    private Building _currentBuildingType;
+    private GameObject _building = null;
+    private Building _buildingType;
     #endregion
 
     #region Properties
-    private ResourcesWrapper CurrentBuildingCost { get => BuildingsRegister.Instance.GetItem(_currentBuildingType).EntityData.SpawningCost; }
+    private ResourcesWrapper CurrentBuildingCost { get => BuildingsRegister.Instance.GetItem(_buildingType).EntityData.SpawningCost; }
     #endregion
 
     #region Methods
@@ -25,16 +25,18 @@ public class BuildingState : OwnedState<GameManager>
 
     public override void Tick()
     {
-        UpdateCurrentBuildingPosition();
+        UpdateBuildingPosition();
 
+        // Can we build ?
         if (Input.GetMouseButtonDown(0))
         {
-            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(_currentBuilding.transform.position);
+            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(_building.transform.position);
             GameObject tile = TileSystem.Instance.GetTile(coords);
 
+            // Is tile where we want to build is free ?
             if (tile == null)
             {
-                ConstructCurrentBuilding(coords);
+                ConstructBuilding(coords);
             }
             else
             {
@@ -44,73 +46,69 @@ public class BuildingState : OwnedState<GameManager>
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            DestroyCurrentBuilding();
+            DestroyAndRefundBuilding();
+
             _owner.State = null;
         }
     }
 
-    public void SetCurrentBuilding(Building building)
+    void SetCurrentBuilding(Building building)
     {
-        _currentBuildingType = building;
-
-        if (_owner.Resources <= CurrentBuildingCost)
-        {
-            UIMessagesLogger.Instance.AddErrorMessage("GameManager doesn't have enought resources to build " + building);
-            _owner.State = null;
-            return;
-        }
-
+        _buildingType = building;
         _owner.Resources -= CurrentBuildingCost;
-
+                 
+        // get prefab then instantiate
         GameObject prefab = BuildingsRegister.Instance.GetItem(building).Prefab;
+        _building = Object.Instantiate(prefab);
 
-        _currentBuilding = Object.Instantiate(prefab);
-        EnableComponents(false);
-
-        UpdateCurrentBuildingPosition();
+        EnableBuildingComponents(false);
+        UpdateBuildingPosition();
     }
 
-    void UpdateCurrentBuildingPosition()
+    void UpdateBuildingPosition()
     {
         Vector3? newPosition = GameManager.Instance.Grid.GetNearestPositionFromMouse();
 
         if (newPosition != null)
         {
-            _currentBuilding.transform.position = (Vector3)newPosition;
+            _building.transform.position = (Vector3)newPosition;
         }
     }
 
-    void ConstructCurrentBuilding(Vector2Int coords)
+    void ConstructBuilding(Vector2Int coords)
     {
-        EnableComponents(true);
-        _currentBuilding.GetComponent<OrdersReceiver>().StartCreatingResources();
-        _currentBuilding.GetComponent<Entity>().owner = Owner.Sparta;
-        DynamicsObjects.Instance.SetToParent(_currentBuilding.transform, "Building");
+        EnableBuildingComponents(true);
 
-        TileSystem.Instance.SetTile(coords, _currentBuilding);
+        _building.GetComponent<OrdersReceiver>().StartCreatingResources();
+        _building.GetComponent<Entity>().owner = Owner.Sparta;
+
+        DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
+
+        // register tile
+        TileSystem.Instance.SetTile(coords, _building);
 
         // then leave
         _owner.State = null;
     }
 
-    void DestroyCurrentBuilding()
+    void DestroyAndRefundBuilding()
     {
-        Object.Destroy(_currentBuilding.gameObject);
+        Object.Destroy(_building.gameObject);
         _owner.Resources += CurrentBuildingCost;
     }
 
-    void EnableComponents(bool enabled)
+    void EnableBuildingComponents(bool enabled)
     {
-        var fowEntity = _currentBuilding.GetComponent<FogOfWar.FOWEntity>();
+        var fowEntity = _building.GetComponent<FogOfWar.FOWEntity>();
         if (fowEntity) fowEntity.enabled = enabled;
 
-        var collider = _currentBuilding.GetComponent<Collider>();
+        var collider = _building.GetComponent<Collider>();
         if (collider) collider.enabled = enabled;
 
-        var navMeshAgent = _currentBuilding.GetComponent<NavMeshAgent>();
+        var navMeshAgent = _building.GetComponent<NavMeshAgent>();
         if (navMeshAgent) navMeshAgent.enabled = enabled;
 
-        var navMeshObstacle = _currentBuilding.GetComponent<NavMeshObstacle>();
+        var navMeshObstacle = _building.GetComponent<NavMeshObstacle>();
         if (navMeshObstacle) navMeshObstacle.enabled = enabled;
     }
     #endregion

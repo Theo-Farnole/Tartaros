@@ -1,4 +1,5 @@
 ﻿using Lortedo.Utilities.Pattern;
+using Registers;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -51,7 +52,7 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Methods
-    #region MonoBehaviour Callbacks.
+    #region MonoBehaviour Callbacks
     void Awake()
     {
         Resources = _data.StartingResources;
@@ -78,9 +79,19 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
-    public void StartBuilding(Building type)
+    public void StartBuilding(Building buildingType)
     {
-        State = new BuildingState(this, type);
+        var buildingCost = BuildingsRegister.Instance.GetItem(buildingType).EntityData.SpawningCost;
+
+        // check if we has enought resources, otherwise we create error message
+        if (_resources.HasEnoughResources(buildingCost))
+        {
+            State = new BuildingState(this, buildingType);            
+        }
+        else
+        {
+            UIMessagesLogger.Instance.AddErrorMessage("GameManager doesn't have enough resources to build " + buildingType);
+        }
     }
     #endregion
 }
