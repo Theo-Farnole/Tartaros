@@ -30,7 +30,7 @@ namespace UI.Game
             for (int i = 0; i < _selectedGroupWrapper.Length; i++)
             {
                 _selectedGroupWrapper[i] = GameObject.Instantiate(_prefabSelectedGroup).GetComponent<Group>();
-                _selectedGroupWrapper[i].transform.parent = _parentSelectedGroup.transform;
+                _selectedGroupWrapper[i].transform.SetParent(_parentSelectedGroup.transform, false);
                 _selectedGroupWrapper[i].gameObject.SetActive(false);
             }
 
