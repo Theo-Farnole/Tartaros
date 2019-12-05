@@ -38,7 +38,7 @@ public class BuildingState : OwnedState<GameManager>
             }
             else
             {
-                Debug.LogWarning("Can't build on non-empty tile");
+                UIMessagesLogger.Instance.AddErrorMessage("Can't build on non-empty tile");
             }
         }
 
@@ -55,7 +55,7 @@ public class BuildingState : OwnedState<GameManager>
 
         if (_owner.Resources <= CurrentBuildingCost)
         {
-            Debug.LogWarning("GameManager doesn't have enought resources to build " + building);
+            UIMessagesLogger.Instance.AddErrorMessage("GameManager doesn't have enought resources to build " + building);
             _owner.State = null;
             return;
         }
