@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace UI.Game
 {
-    public class CommandsWrapper : MonoBehaviour
+    public class Order : MonoBehaviour
     {
         public Button button;
         [Space]

@@ -10,9 +10,9 @@ class UIManagerEditor : Editor
     {
         DrawDefaultInspector();
 
-        if (GUILayout.Button("Update Construction Buttons"))
+        if (GUILayout.Button("Create Construction Buttons"))
         {
-            ((UIManager)target).PanelConstruction.UpdateConstructionButtons();
+            ((UIManager)target).PanelConstruction.CreateConstructionButtons();
         }
     }
 }

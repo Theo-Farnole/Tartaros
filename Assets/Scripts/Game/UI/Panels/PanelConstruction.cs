@@ -2,18 +2,23 @@
 using Lortedo.Utilities.Managers;
 using Registers;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI.Game
 {
-    [System.Serializable]
+    [Serializable]
     public class PanelConstruction : Panel
     {
         #region Fields
-        [Space]
-        [SerializeField] private Button[] _buildingButtons;
+        [Space(order = 0)]
+        [Header("Construction Button", order = 1)]
+        [SerializeField] private GameObject _prefabConstructionButton;
+        [SerializeField] private Transform _parentConstructionButton;
+
+        [HideInInspector, SerializeField] private Button[] _buildingButtons = new Button[0];
         #endregion
 
         #region Properties
@@ -22,34 +27,38 @@ namespace UI.Game
         #region Methods
         public override void Initialize()
         {
-            foreach (Building type in Enum.GetValues(typeof(Building)))
-            {
-                int i = (int)type - EntitiesSystem.STARTING_INDEX_BUILDING;
+            // add StartBuilding listener to buttons
+            int buildingEnumLength = Enum.GetValues(typeof(Building)).Length;
 
-                _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(type));
-                _buildingButtons[i].GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(type).Portrait;
+            for (int i = 0; i < buildingEnumLength; i++)
+            {
+                Building buildingType = (Building)Enum.GetValues(typeof(Building)).GetValue(i);
+
+                _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));                
             }
         }
 
-        public void UpdateConstructionButtons()
-        {
-            // deactive all _buildingButtons
-            for (int i = 0; i < _buildingButtons.Length; i++)
+        public void CreateConstructionButtons()
+        {                  
+            // destroy older buttons
+            _parentConstructionButton.transform.DestroyImmediateChildren();
+
+            int buildingEnumLength = Enum.GetValues(typeof(Building)).Length;
+            _buildingButtons = new Button[buildingEnumLength];
+
+            for (int i = 0; i < buildingEnumLength; i++)
             {
-                _buildingButtons[i].gameObject.SetActive(false);
+                Building buildingType = (Building) Enum.GetValues(typeof(Building)).GetValue(i);
+
+                Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
+                
+                buildingButton.GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(buildingType).Portrait;
+                buildingButton.transform.SetParent(_parentConstructionButton, false);
+
+                _buildingButtons[i] = buildingButton;
             }
 
-            // then active buttons in Building int range
-            foreach (Building building in Enum.GetValues(typeof(Building)))
-            {
-                int index = (int)building - EntitiesSystem.STARTING_INDEX_BUILDING;
-
-                if (index < _buildingButtons.Length)
-                {
-                    _buildingButtons[index].gameObject.SetActive(true);
-                    _buildingButtons[index].GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(building).Portrait;
-                }
-            }
+            Canvas.ForceUpdateCanvases();
         }
         #endregion
     }

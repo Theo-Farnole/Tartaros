@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 2402064397235286172}
   - component: {fileID: 6239374886170910808}
   m_Layer: 5
-  m_Name: P_selectedGroup_wrapper
+  m_Name: PF_UI_SelectedGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

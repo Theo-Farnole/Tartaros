@@ -10,27 +10,27 @@ namespace UI.Game
     [Serializable]
     public class OrdersWrapper
     {
-        [SerializeField, EnumNamedArray(typeof(OverallAction))] private CommandsWrapper[] _wrapperOverallOrders = new CommandsWrapper[2];
-        [SerializeField] private CommandsWrapper[] _wrapperSpawnUnitsOrders = new CommandsWrapper[2];
+        [SerializeField, EnumNamedArray(typeof(OverallAction))] private Order[] _overallOrders = new Order[2];
+        [SerializeField] private Order[] _spawnUnitsOrders = new Order[2];
 
         public void ResizeArrayIfNeeded()
         {
-            if (_wrapperOverallOrders.Length != Enum.GetValues(typeof(OverallAction)).Length)
+            if (_overallOrders.Length != Enum.GetValues(typeof(OverallAction)).Length)
             {
-                Array.Resize(ref _wrapperOverallOrders, Enum.GetValues(typeof(OverallAction)).Length);
+                Array.Resize(ref _overallOrders, Enum.GetValues(typeof(OverallAction)).Length);
             }
         }
 
         public void HideOrders()
         {
-            for (int i = 0; i < _wrapperOverallOrders.Length; i++)
+            for (int i = 0; i < _overallOrders.Length; i++)
             {
-                _wrapperOverallOrders[i].gameObject.SetActive(false);
+                _overallOrders[i].gameObject.SetActive(false);
             }
 
-            for (int i = 0; i < _wrapperSpawnUnitsOrders.Length; i++)
+            for (int i = 0; i < _spawnUnitsOrders.Length; i++)
             {
-                _wrapperSpawnUnitsOrders[i].gameObject.SetActive(false);
+                _spawnUnitsOrders[i].gameObject.SetActive(false);
             }
         }
 
@@ -50,16 +50,16 @@ namespace UI.Game
             if (!orderReceiver.CanSpawnUnit)
                 return;
 
-            for (int i = 0; i < _wrapperSpawnUnitsOrders.Length && i < orderReceiver.CreatableUnits.Length; i++)
+            for (int i = 0; i < _spawnUnitsOrders.Length && i < orderReceiver.CreatableUnits.Length; i++)
             {
-                _wrapperSpawnUnitsOrders[i].gameObject.SetActive(true);
+                _spawnUnitsOrders[i].gameObject.SetActive(true);
 
                 Unit unitType = orderReceiver.CreatableUnits[i];
-                _wrapperSpawnUnitsOrders[i].hotkey.text = UnitsRegister.Instance.GetItem(unitType).Hotkey.ToString();
-                _wrapperSpawnUnitsOrders[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
+                _spawnUnitsOrders[i].hotkey.text = UnitsRegister.Instance.GetItem(unitType).Hotkey.ToString();
+                _spawnUnitsOrders[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
 
-                _wrapperSpawnUnitsOrders[i].button.onClick.RemoveAllListeners();
-                _wrapperSpawnUnitsOrders[i].button.onClick.AddListener(() => OrdersGiverManager.Instance.OrderSpawnUnits(unitType));
+                _spawnUnitsOrders[i].button.onClick.RemoveAllListeners();
+                _spawnUnitsOrders[i].button.onClick.AddListener(() => OrdersGiverManager.Instance.OrderSpawnUnits(unitType));
             }
         }
 
@@ -71,24 +71,24 @@ namespace UI.Game
 
                 if (orderReceiver.CanOverallAction(action))
                 {
-                    _wrapperOverallOrders[index].gameObject.SetActive(true);
+                    _overallOrders[index].gameObject.SetActive(true);
 
-                    _wrapperOverallOrders[index].hotkey.text = OverallActionsRegister.Instance.GetItem(action).Hotkey.ToString();
-                    _wrapperOverallOrders[index].backgroundButton.sprite = OverallActionsRegister.Instance.GetItem(action).Portrait;
+                    _overallOrders[index].hotkey.text = OverallActionsRegister.Instance.GetItem(action).Hotkey.ToString();
+                    _overallOrders[index].backgroundButton.sprite = OverallActionsRegister.Instance.GetItem(action).Portrait;
 
-                    _wrapperOverallOrders[index].button.onClick.RemoveAllListeners();
+                    _overallOrders[index].button.onClick.RemoveAllListeners();
 
                     switch (action)
                     {
                         case OverallAction.Stop:
-                            _wrapperOverallOrders[index].button.onClick.AddListener(() =>
+                            _overallOrders[index].button.onClick.AddListener(() =>
                             {
                                 OrdersGiverManager.Instance.OrderStop();
                             });
                             break;
 
                         case OverallAction.Move:
-                            _wrapperOverallOrders[index].button.onClick.AddListener(() =>
+                            _overallOrders[index].button.onClick.AddListener(() =>
                             {
                                 HotkeyManager.Instance.askCursor = true;
                                 HotkeyManager.Instance.askCursorType = HotkeyManager.AskCursor.Move;
@@ -96,7 +96,7 @@ namespace UI.Game
                             break;
 
                         case OverallAction.Attack:
-                            _wrapperOverallOrders[index].button.onClick.AddListener(() =>
+                            _overallOrders[index].button.onClick.AddListener(() =>
                             {
                                 HotkeyManager.Instance.askCursor = true;
                                 HotkeyManager.Instance.askCursorType = HotkeyManager.AskCursor.Attack;
@@ -106,7 +106,7 @@ namespace UI.Game
                 }
                 else
                 {
-                    _wrapperOverallOrders[index].gameObject.SetActive(false);
+                    _overallOrders[index].gameObject.SetActive(false);
                 }
             }
         }

@@ -10,7 +10,8 @@ namespace UI.Game
     public class PanelGameInformation : Panel
     {
         #region Fields
-        [Space]
+        [Space(order = 0)]
+        [Header("Content", order = 1)]
         [SerializeField] private TextMeshProUGUI _waveIndicator;
         [SerializeField, EnumNamedArray(typeof(Resource))] private TextMeshProUGUI[] _resourcesLabel;
         #endregion

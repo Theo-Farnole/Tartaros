@@ -7,13 +7,18 @@ using UnityEngine;
 
 namespace UI.Game
 {
-    [System.Serializable]
+    [Serializable]
     public class PanelSelection : Panel
     {
         #region Fields
-        [Space]
-        [SerializeField] private SelectedGroupWrapper[] _selectedGroupWrapper = new SelectedGroupWrapper[5];
+        [Space(order = 0)]
+        [Header("Selected Groups", order = 1)]
+        [SerializeField] private GameObject _prefabSelectedGroup;
+        [SerializeField] private Transform _parentSelectedGroup;
+        [Header("Orders")]
         [SerializeField] private OrdersWrapper _ordersWrapper;
+
+        private Group[] _selectedGroupWrapper = new Group[5];
         #endregion
 
         #region Properties
@@ -24,6 +29,8 @@ namespace UI.Game
         {
             for (int i = 0; i < _selectedGroupWrapper.Length; i++)
             {
+                _selectedGroupWrapper[i] = GameObject.Instantiate(_prefabSelectedGroup).GetComponent<Group>();
+                _selectedGroupWrapper[i].transform.parent = _parentSelectedGroup.transform;
                 _selectedGroupWrapper[i].gameObject.SetActive(false);
             }
 
