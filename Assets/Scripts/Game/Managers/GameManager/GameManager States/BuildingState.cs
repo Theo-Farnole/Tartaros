@@ -10,7 +10,7 @@ public class BuildingState : OwnedState<GameManager>
 {
     #region Fields
     private GameObject _building = null;
-    private Building _buildingType;
+    private BuildingType _buildingType;
     #endregion
 
     #region Properties
@@ -18,7 +18,7 @@ public class BuildingState : OwnedState<GameManager>
     #endregion
 
     #region Methods
-    public BuildingState(GameManager owner, Building buildingType) : base(owner)
+    public BuildingState(GameManager owner, BuildingType buildingType) : base(owner)
     {
         SetCurrentBuilding(buildingType);
     }
@@ -52,7 +52,7 @@ public class BuildingState : OwnedState<GameManager>
         }
     }
 
-    void SetCurrentBuilding(Building building)
+    void SetCurrentBuilding(BuildingType building)
     {
         _buildingType = building;
         _owner.Resources -= CurrentBuildingCost;
@@ -78,9 +78,8 @@ public class BuildingState : OwnedState<GameManager>
     void ConstructBuilding(Vector2Int coords)
     {
         EnableBuildingComponents(true);
-
-        _building.GetComponent<OrdersReceiver>().StartCreatingResources();
-        _building.GetComponent<Entity>().owner = Owner.Sparta;
+        
+        _building.GetComponent<Unit>().Team = Team.Sparta;
 
         DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
 
@@ -99,7 +98,7 @@ public class BuildingState : OwnedState<GameManager>
 
     void EnableBuildingComponents(bool enabled)
     {
-        var fowEntity = _building.GetComponent<FogOfWar.FOWEntity>();
+        var fowEntity = _building.GetComponent<UnitFog>();
         if (fowEntity) fowEntity.enabled = enabled;
 
         var collider = _building.GetComponent<Collider>();

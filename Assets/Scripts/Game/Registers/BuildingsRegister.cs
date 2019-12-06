@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Registers
 {
-    public class BuildingsRegister : Register<RegisterData, Building>
+    public class BuildingsRegister : Register<RegisterData, BuildingType>
     {
-        [EnumNamedArray(typeof(Building))]
+        [EnumNamedArray(typeof(BuildingType))]
         [SerializeField] private RegisterData[] _buildingsData;
 
         protected override RegisterData[] Prefabs { get => _buildingsData; set => _buildingsData = value; }

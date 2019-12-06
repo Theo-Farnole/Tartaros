@@ -12,10 +12,10 @@ public class SelectionManager : Singleton<SelectionManager>
     public class Group
     {
         public EntityType entityType;
-        public Owner owner;
-        public List<SelectableEntity> selectedEntities = new List<SelectableEntity>();
+        public Team owner;
+        public List<Unit> unitsSelected = new List<Unit>();
 
-        public Group(EntityType entityType, Owner owner)
+        public Group(EntityType entityType, Team owner)
         {
             this.entityType = entityType;
             this.owner = owner;
@@ -32,7 +32,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
     #region Properties
     public bool IsPlayerSelection { get => _selectedGroups.Count > 0; }
-    public Group[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Owner.Sparta select x).ToArray(); }
+    public Group[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Team.Sparta select x).ToArray(); }
     public List<Group> SelectedGroups { get => _selectedGroups; }
     #endregion
 
@@ -74,7 +74,7 @@ public class SelectionManager : Singleton<SelectionManager>
     #region Manage MouseClick
     public void SwitchEntityUnderMouse()
     {
-        if (HotkeyManager.Instance.askCursor)
+        if (HotkeyActionListener.Instance.waitingForMouseClick)
             return;
 
         if (Input.GetKey(KeyCode.LeftShift) == false)
@@ -86,7 +86,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
         {
-            SelectableEntity hittedSelectableEntity = hit.transform.GetComponent<SelectableEntity>();
+            Unit hittedSelectableEntity = hit.transform.GetComponent<Unit>();
 
             if (hittedSelectableEntity)
             {
@@ -110,9 +110,9 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region SelectedGroups Manager
-    public void AddEntity(SelectableEntity selectableEntity)
+    public void AddEntity(Unit selectableEntity)
     {
-        if (selectableEntity.Entity.FowEntity.IsCover)
+        if (selectableEntity.GetCharacterComponent<UnitFog>().IsCover)
             return;
 
         Group groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
@@ -120,44 +120,44 @@ public class SelectionManager : Singleton<SelectionManager>
         // create group
         if (groupWithSameType == null)
         {
-            groupWithSameType = new Group(selectableEntity.Type, selectableEntity.Owner);
+            groupWithSameType = new Group(selectableEntity.Type, selectableEntity.Team);
             _selectedGroups.Add(groupWithSameType);
 
             if (_highlightGroupIndex == -1) _highlightGroupIndex = 0;
         }
 
         // check if entity isn't selected
-        if (groupWithSameType.selectedEntities.Contains(selectableEntity))
+        if (groupWithSameType.unitsSelected.Contains(selectableEntity))
         {
             Debug.Log("Selection Manager # " + selectableEntity + " can't be added because is already selected");
             return;
         }
 
         // add to selectGroup and trigger OnSelect
-        groupWithSameType.selectedEntities.Add(selectableEntity);
-        selectableEntity.OnSelected();
+        groupWithSameType.unitsSelected.Add(selectableEntity);
+        selectableEntity.GetCharacterComponent<UnitSelectable>().OnSelected();
 
         UpdateUI();
         UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
-        HotkeyManager.Instance.SetCommandsHandler(_selectedGroups[0].entityType);
+        HotkeyActionListener.Instance.SetHotkeyHandler(_selectedGroups[0].entityType);
     }
 
-    public void RemoveEntity(SelectableEntity selectableEntity)
+    public void RemoveEntity(Unit selectableEntity)
     {
         Group groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
 
+        // don't remove unselected unit
         if (groupWithSameType == null ||
-           (groupWithSameType != null && groupWithSameType.selectedEntities.Contains(selectableEntity) == false))
+           (groupWithSameType != null && groupWithSameType.unitsSelected.Contains(selectableEntity) == false))
         {
-            Debug.LogWarning("Can't remove selectableEntity that's not selected!");
             return;
         }
 
-        selectableEntity.OnDeselect();
-        groupWithSameType.selectedEntities.Remove(selectableEntity);
+        selectableEntity.GetCharacterComponent<UnitSelectable>().OnDeselect();
+        groupWithSameType.unitsSelected.Remove(selectableEntity);
 
         // delete group if empty
-        if (groupWithSameType.selectedEntities.Count == 0)
+        if (groupWithSameType.unitsSelected.Count == 0)
         {
             int removeGroupIndex = _selectedGroups.IndexOf(groupWithSameType);
 
@@ -175,23 +175,23 @@ public class SelectionManager : Singleton<SelectionManager>
 
         UpdateUI();
         UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
-        HotkeyManager.Instance.SetCommandsHandler(_selectedGroups[0].entityType);
+        HotkeyActionListener.Instance.SetHotkeyHandler(_selectedGroups[0].entityType);
     }
 
     /// <summary>
     /// Remove SelectableEntity if it's selected. And add it, if it's not selected.
     /// </summary>
-    public void SwitchEntity(SelectableEntity selectableEntity)
+    public void SwitchEntity(Unit toSwitchUnit)
     {
-        bool isEntitySelected = _selectedGroups.Exists(x => x.selectedEntities.Contains(selectableEntity));
+        bool isEntitySelected = _selectedGroups.Exists(x => x.unitsSelected.Contains(toSwitchUnit));
 
         if (isEntitySelected)
         {
-            RemoveEntity(selectableEntity);
+            RemoveEntity(toSwitchUnit);
         }
         else
         {
-            AddEntity(selectableEntity);
+            AddEntity(toSwitchUnit);
         }
     }
 
@@ -199,9 +199,9 @@ public class SelectionManager : Singleton<SelectionManager>
     {
         foreach (var item in _selectedGroups)
         {
-            for (int j = 0; j < item.selectedEntities.Count; j++)
+            for (int j = 0; j < item.unitsSelected.Count; j++)
             {
-                item.selectedEntities[j].OnDeselect();
+                item.unitsSelected[j].GetCharacterComponent<UnitSelectable>().OnDeselect();
             }
         }
 
@@ -209,7 +209,7 @@ public class SelectionManager : Singleton<SelectionManager>
         _highlightGroupIndex = -1;
 
         UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
-        HotkeyManager.Instance.ClearCommandsHandler();
+        HotkeyActionListener.Instance.ClearCommandsHandler();
         UpdateUI();
     }
     #endregion

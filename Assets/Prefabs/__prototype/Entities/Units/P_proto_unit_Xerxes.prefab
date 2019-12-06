@@ -10,28 +10,7 @@ PrefabInstance:
     - target: {fileID: 1633938786359411144, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
       propertyPath: m_Name
-      value: P_proto_unit_Xerxes (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7636272330625382510, guid: deb173ea23cfce544a777ef54d01f49a,
-        type: 3}
-      propertyPath: _availableCommands
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7636272330625382510, guid: deb173ea23cfce544a777ef54d01f49a,
-        type: 3}
-      propertyPath: _data
-      value: 
-      objectReference: {fileID: 11400000, guid: 753b00e861a1f0447b8d42e838dead07,
-        type: 2}
-    - target: {fileID: 6429056662796449699, guid: deb173ea23cfce544a777ef54d01f49a,
-        type: 3}
-      propertyPath: _type
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6429056662796449699, guid: deb173ea23cfce544a777ef54d01f49a,
-        type: 3}
-      propertyPath: _owner
-      value: 1
+      value: P_proto_unit_Xerxes
       objectReference: {fileID: 0}
     - target: {fileID: 1633938786359411147, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
@@ -88,10 +67,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6429056662796449699, guid: deb173ea23cfce544a777ef54d01f49a,
+        type: 3}
+      propertyPath: _type
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6429056662796449699, guid: deb173ea23cfce544a777ef54d01f49a,
+        type: 3}
+      propertyPath: _owner
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1633938785907707343, guid: deb173ea23cfce544a777ef54d01f49a,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 25b4fed5bab22ca4a82b277b46ea85f3, type: 2}
+    - target: {fileID: 7636272330625382510, guid: deb173ea23cfce544a777ef54d01f49a,
+        type: 3}
+      propertyPath: _availableCommands
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7636272330625382510, guid: deb173ea23cfce544a777ef54d01f49a,
+        type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3785093167086511068, guid: deb173ea23cfce544a777ef54d01f49a,
+        type: 3}
+      propertyPath: _type
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: deb173ea23cfce544a777ef54d01f49a, type: 3}

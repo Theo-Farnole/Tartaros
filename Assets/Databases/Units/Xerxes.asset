@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
+  m_Name: Xerxes
+  m_EditorClassIdentifier: 
+  _isInvincible: 0
+  _hp: 10
+  _spawningCost:
+    food: 20
+    wood: 5
+    gold: 0
+  _viewRadius: 4
+  _availableOrders: 3
+  _isMelee: 1
+  _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
+    type: 3}
+  _damage: 1
+  _attackSpeed: 1
+  _attackRadius: 3
+  _damagePerSecond: 1
+  _speed: 2
+  _availableUnitsForCreation: 
+  _generationTick: 0
+  _resourcesAmount:
+    food: 0
+    wood: 0
+    gold: 0

@@ -8,19 +8,19 @@ namespace Registers
     {
         public static RegisterData GetRegisterData(EntityType type)
         {
-            Unit? unitType = type.IsUnitType();
+            UnitType? unitType = type.IsUnitType();
 
             if (unitType != null)
             {
-                return UnitsRegister.Instance.GetItem((Unit)unitType);
+                return UnitsRegister.Instance.GetItem((UnitType)unitType);
             }
             else
             {
-                Building? buildingType = type.IsBuildingType();
+                BuildingType? buildingType = type.IsBuildingType();
 
                 if (buildingType != null)
                 {
-                    return BuildingsRegister.Instance.GetItem((Building)buildingType);
+                    return BuildingsRegister.Instance.GetItem((BuildingType)buildingType);
                 }
             }
 

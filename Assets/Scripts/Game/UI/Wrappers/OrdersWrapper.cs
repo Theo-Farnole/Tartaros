@@ -34,42 +34,42 @@ namespace UI.Game
             }
         }
 
-        public void UpdateOrders(OrdersReceiver orderReceiver)
+        public void UpdateOrders(Unit unit)
         {
             HideOrders();
 
-            if (orderReceiver == null)
+            if (unit == null)
                 return;
 
-            UpdateOverallOrders(orderReceiver);
-            UpdateSpawnUnitsOrder(orderReceiver);
+            UpdateOverallOrders(unit);
+            UpdateSpawnUnitsOrder(unit);
         }
 
-        void UpdateSpawnUnitsOrder(OrdersReceiver orderReceiver)
+        void UpdateSpawnUnitsOrder(Unit unit)
         {
-            if (!orderReceiver.CanSpawnUnit)
+            if (!unit.Data.CanSpawnUnit)
                 return;
 
-            for (int i = 0; i < _spawnUnitsOrders.Length && i < orderReceiver.CreatableUnits.Length; i++)
+            for (int i = 0; i < _spawnUnitsOrders.Length && i < unit.Data.AvailableUnitsForCreation.Length; i++)
             {
                 _spawnUnitsOrders[i].gameObject.SetActive(true);
 
-                Unit unitType = orderReceiver.CreatableUnits[i];
+                UnitType unitType = unit.Data.AvailableUnitsForCreation[i];
                 _spawnUnitsOrders[i].hotkey.text = UnitsRegister.Instance.GetItem(unitType).Hotkey.ToString();
                 _spawnUnitsOrders[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
 
                 _spawnUnitsOrders[i].button.onClick.RemoveAllListeners();
-                _spawnUnitsOrders[i].button.onClick.AddListener(() => OrdersGiverManager.Instance.OrderSpawnUnits(unitType));
+                _spawnUnitsOrders[i].button.onClick.AddListener(() => CallActionsToSelectedGroups.OrderSpawnUnits(unitType));
             }
         }
 
-        void UpdateOverallOrders(OrdersReceiver orderReceiver)
+        void UpdateOverallOrders(Unit unit)
         {
             foreach (OverallAction action in Enum.GetValues(typeof(OverallAction)))
             {
                 int index = (int)action;
 
-                if (orderReceiver.CanOverallAction(action))
+                if (unit.Data.CanDoOverallAction(action))
                 {
                     _overallOrders[index].gameObject.SetActive(true);
 
@@ -83,23 +83,23 @@ namespace UI.Game
                         case OverallAction.Stop:
                             _overallOrders[index].button.onClick.AddListener(() =>
                             {
-                                OrdersGiverManager.Instance.OrderStop();
+                                CallActionsToSelectedGroups.OrderStop();
                             });
                             break;
 
                         case OverallAction.Move:
                             _overallOrders[index].button.onClick.AddListener(() =>
                             {
-                                HotkeyManager.Instance.askCursor = true;
-                                HotkeyManager.Instance.askCursorType = HotkeyManager.AskCursor.Move;
+                                HotkeyActionListener.Instance.waitingForMouseClick = true;
+                                HotkeyActionListener.Instance.waitingForInputCursor = HotkeyActionListener.AskCursor.Move;
                             });
                             break;
 
                         case OverallAction.Attack:
                             _overallOrders[index].button.onClick.AddListener(() =>
                             {
-                                HotkeyManager.Instance.askCursor = true;
-                                HotkeyManager.Instance.askCursorType = HotkeyManager.AskCursor.Attack;
+                                HotkeyActionListener.Instance.waitingForMouseClick = true;
+                                HotkeyActionListener.Instance.waitingForInputCursor = HotkeyActionListener.AskCursor.Attack;
                             });
                             break;
                     }

@@ -49,23 +49,23 @@ namespace UI.Game
 
             if (highlightGroupIndex >= 0 && highlightGroupIndex < selectedGroups.Length)
             {
-                UpdateOrdersWrapper(selectedGroups[highlightGroupIndex].selectedEntities[0].Entity.OrdersReceiver);
+                UpdateOrdersWrapper(selectedGroups[highlightGroupIndex].unitsSelected[0]);
             }
         }
 
-        void UpdateSelectedGroups(SelectionManager.Group[] selectedGroups)
+        void UpdateSelectedGroups(SelectionManager.Group[] groupsSelected)
         {
             for (int i = 0; i < _selectedGroupWrapper.Length; i++)
             {
-                if (i >= selectedGroups.Length)
+                if (i >= groupsSelected.Length)
                 {
                     _selectedGroupWrapper[i].gameObject.SetActive(false);
                     continue;
                 }
 
                 _selectedGroupWrapper[i].gameObject.SetActive(true);
-                _selectedGroupWrapper[i].portrait.sprite = EntitiesRegister.GetRegisterData(selectedGroups[i].entityType).Portrait;
-                _selectedGroupWrapper[i].unitsCount.text = selectedGroups[i].selectedEntities.Count.ToString();
+                _selectedGroupWrapper[i].portrait.sprite = EntitiesRegister.GetRegisterData(groupsSelected[i].entityType).Portrait;
+                _selectedGroupWrapper[i].unitsCount.text = groupsSelected[i].unitsSelected.Count.ToString();
             }
         }
 
@@ -79,9 +79,9 @@ namespace UI.Game
             }
         }
 
-        void UpdateOrdersWrapper(OrdersReceiver orderReceiver)
+        void UpdateOrdersWrapper(Unit unit)
         {
-            _ordersWrapper.UpdateOrders(orderReceiver);
+            _ordersWrapper.UpdateOrders(unit);
         }
         #endregion
     }

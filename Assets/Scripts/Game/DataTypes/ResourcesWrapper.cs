@@ -70,7 +70,6 @@ public struct ResourcesWrapper
         return string.Format("food: {0}, wood: {1}, gold: {2} ", food, wood, gold);
     }
 
-
     #region Operator
     public static ResourcesWrapper operator -(ResourcesWrapper a, ResourcesWrapper b) =>
         new ResourcesWrapper(a.food - b.food, a.wood - b.wood, a.gold - b.gold);

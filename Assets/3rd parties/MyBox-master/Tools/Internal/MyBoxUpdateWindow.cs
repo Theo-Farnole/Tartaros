@@ -130,8 +130,8 @@ namespace MyBox.Internal
 
 				if (!_currentVersion.BaseVersionMatch(_latestVersion) && withLog)
 				{
-					Debug.Log("It's time to update MyBox :)! Use \"Tools/MyBox/Update window\". Current version: " +
-					          _currentVersion + ", new version: " + _latestVersion);
+					//Debug.Log("It's time to update MyBox :)! Use \"Tools/MyBox/Update window\". Current version: " +
+					//          _currentVersion + ", new version: " + _latestVersion);
 				}
 			}
 		}

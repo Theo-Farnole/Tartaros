@@ -6,7 +6,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     #region Fields
-    private Entity _entityAttacker;
+    private Unit _throwerUnit;
     private Rigidbody _rigidbody;
 
     private bool _isLaunched = false;
@@ -32,22 +32,22 @@ public class Projectile : MonoBehaviour
         if (!_isLaunched)
             return;
 
-        Entity ent = other.GetComponent<Entity>();
+        Unit unit = other.GetComponent<Unit>();
 
-        if (ent != null && ent.owner != _entityAttacker.owner)
+        if (unit != null && unit.Team != _throwerUnit.Team)
         {
-            ent.HealthComponent.GetDamage(_entityAttacker.Data.Damage, _entityAttacker);
-            ObjectPooler.Instance.EnqueueGameObject(_entityAttacker.Data.PrefabProjectile, gameObject);
+            unit.GetCharacterComponent<UnitHealth>().GetDamage(_throwerUnit.Data.Damage, _throwerUnit);
+            ObjectPooler.Instance.EnqueueGameObject(_throwerUnit.Data.PrefabProjectile, gameObject);
 
             _isLaunched = false;
         }
     }
     #endregion
 
-    public void Throw(Transform target, Entity attacker)
+    public void Throw(Transform target, Unit attacker)
     {
         _isLaunched = true;
-        _entityAttacker = attacker;
+        _throwerUnit = attacker;
 
         _rigidbody.velocity = Vector3.zero;
         Vector3 initialVector = CalcBallisticVelocityVector(transform.position, target.position + Vector3.up, 45);

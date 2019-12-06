@@ -1,62 +1,70 @@
-﻿using System;
+using System;
+using System.Linq;
 
 public static class EntitiesSystem
 {
-    public static readonly int STARTING_INDEX_UNIT = 0;
-    public static readonly int STARTING_INDEX_BUILDING = 1000;
+    public const int STARTING_INDEX_UNIT = 0;
+    public const int STARTING_INDEX_BUILDING = 1000;
 }
 
 public enum EntityType
 {
     // units
-    Alexios = 0,
-    Kassandra = 1,
-    Xerxes = 2,
+    Alexios = EntitiesSystem.STARTING_INDEX_UNIT + 0,
+    Kassandra = EntitiesSystem.STARTING_INDEX_UNIT + 1,
+    Xerxes = EntitiesSystem.STARTING_INDEX_UNIT + 2,
 
     // building
-    House = 1000,
-    Barracks = 1001,
-    Farm = 1002
+    House = EntitiesSystem.STARTING_INDEX_BUILDING,
+    Barracks = EntitiesSystem.STARTING_INDEX_BUILDING + 1,
+    Farm = EntitiesSystem.STARTING_INDEX_BUILDING + 2
 }
 
-public enum Building
+public enum BuildingType
 {
     House = EntityType.House,
     Barracks = EntityType.Barracks,
     Farm = EntityType.Farm
 }
 
-public enum Unit
+public enum UnitType
 {
     Alexios = EntityType.Alexios,
     Kassandra = EntityType.Kassandra,
     Xerxes = EntityType.Xerxes,
 }
 
+public enum Team
+{
+    Sparta,
+    Persian, 
+    Nature
+}
+
 public static class EntityTypeExtension
 {
-    public static Owner GetOwner(this EntityType e)
+    public static Team GetOwner(this EntityType e)
     {
         switch (e)
         {
             case EntityType.Alexios:
             case EntityType.Kassandra:
-                return Owner.Sparta;
+                return Team.Sparta;
 
             case EntityType.Xerxes:
-                return Owner.Persian;
+                return Team.Persian;
 
             case EntityType.House:
             case EntityType.Barracks:
-                return Owner.Sparta;
+                return Team.Sparta;
         }
 
-        return Owner.Nature;
+        return Team.Nature;
     }
 
-    public static Unit? IsUnitType(this EntityType e)
+    public static UnitType? IsUnitType(this EntityType e)
     {
-        foreach (Unit item in Enum.GetValues(typeof(Unit)))
+        foreach (UnitType item in Enum.GetValues(typeof(UnitType)))
         {
             if ((int)item == (int)e)
             {
@@ -67,9 +75,9 @@ public static class EntityTypeExtension
         return null;
     }
 
-    public static Building? IsBuildingType(this EntityType e)
+    public static BuildingType? IsBuildingType(this EntityType e)
     {
-        foreach (Building item in Enum.GetValues(typeof(Building)))
+        foreach (BuildingType item in Enum.GetValues(typeof(BuildingType)))
         {
             if ((int)item == (int)e)
             {

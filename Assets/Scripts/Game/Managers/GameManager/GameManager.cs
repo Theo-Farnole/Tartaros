@@ -79,7 +79,7 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
-    public void StartBuilding(Building buildingType)
+    public void StartBuilding(BuildingType buildingType)
     {
         var buildingCost = BuildingsRegister.Instance.GetItem(buildingType).EntityData.SpawningCost;
 

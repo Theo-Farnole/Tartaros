@@ -28,11 +28,11 @@ namespace UI.Game
         public override void Initialize()
         {
             // add StartBuilding listener to buttons
-            int buildingEnumLength = Enum.GetValues(typeof(Building)).Length;
+            int buildingEnumLength = Enum.GetValues(typeof(BuildingType)).Length;
 
             for (int i = 0; i < buildingEnumLength; i++)
             {
-                Building buildingType = (Building)Enum.GetValues(typeof(Building)).GetValue(i);
+                BuildingType buildingType = (BuildingType)Enum.GetValues(typeof(BuildingType)).GetValue(i);
 
                 _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));                
             }
@@ -43,12 +43,12 @@ namespace UI.Game
             // destroy older buttons
             _parentConstructionButton.transform.DestroyImmediateChildren();
 
-            int buildingEnumLength = Enum.GetValues(typeof(Building)).Length;
+            int buildingEnumLength = Enum.GetValues(typeof(BuildingType)).Length;
             _buildingButtons = new Button[buildingEnumLength];
 
             for (int i = 0; i < buildingEnumLength; i++)
             {
-                Building buildingType = (Building) Enum.GetValues(typeof(Building)).GetValue(i);
+                BuildingType buildingType = (BuildingType) Enum.GetValues(typeof(BuildingType)).GetValue(i);
 
                 Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
                 

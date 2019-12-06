@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spawn enemies waves frequently.
+/// </summary>
 public class WaveManager : MonoBehaviour
 {
     #region Fields

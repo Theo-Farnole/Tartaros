@@ -32,11 +32,6 @@ public class UIManager : AbstractUIManager<UIManager>
 
         DisplayPanel<PanelConstruction>();
     }
-
-    void Update()
-    {
-        Debug.Log("CurrentDisplayPanel " + CurrentDisplayPanel);
-    }
     #endregion
 }
 
