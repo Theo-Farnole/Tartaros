@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UnitHealth : UnitComponent
 {
     [Header("Health Slider Behaviour")]
+    [SerializeField] private Canvas _sliderCanvas;
     [SerializeField] private Slider _healthSlider;
     [SerializeField] private bool _hideHealthSliderIfFull = true;
 
@@ -54,7 +55,13 @@ public class UnitHealth : UnitComponent
         if (_hideHealthSliderIfFull)
         {
             bool isFullLife = (_hp == _maxHp);
-            _healthSlider.gameObject.SetActive(!isFullLife);
+            bool sliderCanvasActivation = !isFullLife;
+
+            // only set active if needed
+            if (_sliderCanvas.gameObject.activeSelf != sliderCanvasActivation)
+            {
+                _sliderCanvas.gameObject.SetActive(sliderCanvasActivation);
+            }
         }
 
         // update the value
