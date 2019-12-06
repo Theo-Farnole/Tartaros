@@ -100,13 +100,18 @@ public class Unit : MonoBehaviour
     public void SetAction(Action action)
     {
         _queueAction.Clear();
+
         SetCurrentAction(action);
     }
 
+    /// <summary>
+    /// Clear queue and set action to null
+    /// </summary>
     public void Stop()
     {
-        SetCurrentAction(null);
         _queueAction.Clear();
+
+        SetCurrentAction(null);
     }
     #endregion
 

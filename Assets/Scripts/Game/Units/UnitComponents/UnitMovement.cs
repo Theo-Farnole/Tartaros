@@ -37,8 +37,19 @@ public class UnitMovement : UnitComponent
     }
 
     public bool HasReachedDestination()
-    {
-        return (!_navMeshAgent.pathPending && _navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance);
+    {        
+        if (!_navMeshAgent.pathPending)
+        {
+            if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
+            {
+                if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public void MoveToPosition(Vector3 position)

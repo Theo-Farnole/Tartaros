@@ -25,7 +25,7 @@ public class UnitAttack : UnitComponent
 
         if (Time.frameCount % _allocatedFrameToCalculation == 0)
         {
-            ManageAutoAttack();
+            //ManageAutoAttack();
         }
     }
     #endregion
