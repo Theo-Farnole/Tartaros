@@ -6,15 +6,27 @@ using UnityEngine;
 public class UnitAttack : UnitComponent
 {
     #region Fields
+    public readonly int MAX_ALLOCATED_FRAME_CALCULATION = 3;
+
     private float _attackTimer = 0;
+    private int _allocatedFrameToCalculation = 1; // eg. calculate auto attack each X frames
     #endregion
 
     #region Methods
     #region Mono Callbacks
+    void Start()
+    {
+        _allocatedFrameToCalculation = Random.Range(1, MAX_ALLOCATED_FRAME_CALCULATION);
+    }
+
     void Update()
     {
         _attackTimer += Time.deltaTime;
-        ManageAutoAttack();
+
+        if (Time.frameCount % _allocatedFrameToCalculation == 0)
+        {
+            ManageAutoAttack();
+        }
     }
     #endregion
 
