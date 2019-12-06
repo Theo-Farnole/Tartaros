@@ -17,8 +17,8 @@ MonoBehaviour:
     buildPath: $VERSION/
     openFolderPostBuild: 1
   _productParameters:
-    buildCounter: 1
-    lastGeneratedVersion: alpha1.1.0_build1
+    buildCounter: 2
+    lastGeneratedVersion: alpha1.1.0_build2
     version: alpha1.1.0_build$BUILD
     autoGenerate: 1
   _releaseTypeList:
@@ -32,7 +32,10 @@ MonoBehaviour:
       enableHeadlessMode: 0
       customDefines: 
       sceneList:
-        enabledScenes: []
+        enabledScenes:
+        - fileGUID: 824868216971d9944936e06cf36402ae
+        - fileGUID: 9fc0d4010bbf28b4594072e72b8655ab
+        - fileGUID: 5b8b3ce7f297edb4fb8dfdc4cd8d0036
   _platformList:
     platforms:
     - enabled: 1
