@@ -56,7 +56,7 @@ public class CursorAspectManager : MonoBehaviour
                     _cursorState = CursorState.OverEntity;
                 }
             }
-            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
+            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain")))
             {
                 _cursorState = CursorState.OrderMove;
             }

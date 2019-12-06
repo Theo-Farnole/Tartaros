@@ -58,11 +58,6 @@ public class GameManager : Singleton<GameManager>
         Resources = _data.StartingResources;
     }
 
-    void Start()
-    {
-        _grid.InstantiatePlane(transform);
-    }
-
     void Update()
     {
         _state?.Tick();

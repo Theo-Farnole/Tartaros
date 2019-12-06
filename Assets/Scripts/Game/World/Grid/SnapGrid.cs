@@ -22,27 +22,9 @@ public class SnapGrid
     #region Methods
     public SnapGrid() { }
 
-    public void InstantiatePlane(Transform parent)
-    {
-        if (_plane != null)
-            return;
-
-        _plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-        _plane.transform.position = Vector3.zero;
-        _plane.transform.rotation = Quaternion.identity;
-
-        _plane.layer = LayerMask.NameToLayer("Grid");
-        _plane.name = "Grid Plane";
-        _plane.transform.parent = parent;
-
-        _plane.transform.localScale = Vector3.one * _data.CellCount * _data.CellSize / 10; ;
-
-        Object.Destroy(_plane.GetComponent<MeshRenderer>()); // hide _plane
-    }
-
     public Vector3? GetNearestPositionFromMouse()
     {
-        if (_layerMask == -1) _layerMask = LayerMask.GetMask("Grid");
+        if (_layerMask == -1) _layerMask = LayerMask.GetMask("Terrain");
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

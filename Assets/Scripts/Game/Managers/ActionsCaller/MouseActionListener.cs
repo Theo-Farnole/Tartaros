@@ -23,7 +23,7 @@ public class MouseActionListener : MonoBehaviour
             {
                 CallActionsToSelectedGroups.OrderAttackUnit(hit.transform.GetComponent<Unit>());
             }
-            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
+            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain")))
             {
                 CallActionsToSelectedGroups.OrderMoveToPosition(hit.point);
             }
