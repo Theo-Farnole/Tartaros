@@ -14,6 +14,7 @@ public class UnitDetection : UnitComponent
         var unitTeam = UnitManager.Team;
         
         var overlapCollision = Physics.OverlapSphere(transform.position, UnitManager.Data.ViewRadius);
+
         var enemiesOutput = overlapCollision
             .Select(x => x.GetComponent<Unit>()) // get all components
             .Where(x => x != null && x.Team != unitTeam) // remove allies and not Units component
@@ -22,6 +23,9 @@ public class UnitDetection : UnitComponent
         return enemiesOutput;
     }
 
+    /// <summary>
+    /// Use a OverlapSphere, then process the OverlapSphere output with 2 Linq queries. Then make a distance on every enemies.
+    /// </summary>
     public Unit GetNearestEnemyInViewRadius()
     {
         Unit[] nearEnemies = GetAllEnemiesInViewRadius();
