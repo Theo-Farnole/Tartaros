@@ -8,7 +8,7 @@ namespace Registers
     {
         public static RegisterData GetRegisterData(EntityType type)
         {
-            UnitType? unitType = type.IsUnitType();
+            UnitType? unitType = type.GetUnitType();
 
             if (unitType != null)
             {
@@ -16,7 +16,7 @@ namespace Registers
             }
             else
             {
-                BuildingType? buildingType = type.IsBuildingType();
+                BuildingType? buildingType = type.GetBuildingType();
 
                 if (buildingType != null)
                 {

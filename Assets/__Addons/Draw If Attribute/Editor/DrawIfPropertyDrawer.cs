@@ -45,8 +45,8 @@ public class DrawIfPropertyDrawer : PropertyDrawer
             // This place will only be reached if the type is not a numeric one. If the comparison type is not valid for the compared field type, log an error.
             if (drawIf.comparisonType != ComparisonType.Equals && drawIf.comparisonType != ComparisonType.NotEqual)
             {
-                Debug.LogError("The only comparsion types available to type '" + comparedFieldValue.GetType() + "' are Equals and NotEqual. (On object '" + property.serializedObject.targetObject.name + "')");
-                return;
+                //Debug.LogError("The only comparsion types available to type '" + comparedFieldValue.GetType() + "' are Equals and NotEqual. (On object '" + property.serializedObject.targetObject.name + "')");
+                //return;
             }
         }
 
@@ -88,6 +88,11 @@ public class DrawIfPropertyDrawer : PropertyDrawer
 
             case ComparisonType.HasFlag:
                 if (comparedField.GetValue<Enum>().HasFlag((Enum)drawIf.comparedValue))
+                    conditionMet = true;
+                break;
+
+            case ComparisonType.IsBuildingType:
+                if (comparedField.GetValue<EntityType>().IsBuildingType() == (bool)drawIf.comparedValue)
                     conditionMet = true;
                 break;
         }

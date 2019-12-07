@@ -13,7 +13,9 @@ public class Entity : MonoBehaviour
     #region Fields
     [Header("Team Configuration")]
     [SerializeField] private EntityType _type;
-    [SerializeField, MyBox.ReadOnly] private Team _team;
+
+    [DrawIf(nameof(_type), true, ComparisonType.IsBuildingType, DisablingType.ReadOnly)]
+    [SerializeField] private Team _team;
 
     private EntityData _data;
     private Action _currentAction;
@@ -41,17 +43,19 @@ public class Entity : MonoBehaviour
     void Start()
     {
         _data = Registers.EntitiesRegister.GetRegisterData(_type).EntityData;
-
-        if (_type.IsUnitType() != null)
-        {
-            _team = _type.GetOwner();
-        }
-
     }
 
     void Update()
     {
         _currentAction?.Tick();
+    }
+
+    void OnValidate()
+    {
+        if (_type.GetUnitType() != null)
+        {
+            _team = _type.GetOwner();
+        }
     }
     #endregion
 

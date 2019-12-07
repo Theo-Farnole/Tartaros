@@ -62,7 +62,33 @@ public static class EntityTypeExtension
         return Team.Nature;
     }
 
-    public static UnitType? IsUnitType(this EntityType e)
+    public static bool IsUnitType(this EntityType e)
+    {
+        foreach (UnitType item in Enum.GetValues(typeof(UnitType)))
+        {
+            if ((int)item == (int)e)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static bool IsBuildingType(this EntityType e)
+    {
+        foreach (BuildingType item in Enum.GetValues(typeof(BuildingType)))
+        {
+            if ((int)item == (int)e)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static UnitType? GetUnitType(this EntityType e)
     {
         foreach (UnitType item in Enum.GetValues(typeof(UnitType)))
         {
@@ -75,7 +101,7 @@ public static class EntityTypeExtension
         return null;
     }
 
-    public static BuildingType? IsBuildingType(this EntityType e)
+    public static BuildingType? GetBuildingType(this EntityType e)
     {
         foreach (BuildingType item in Enum.GetValues(typeof(BuildingType)))
         {
