@@ -129,7 +129,6 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
                 }
             }
         }
-
     }
     #endregion
     #endregion
