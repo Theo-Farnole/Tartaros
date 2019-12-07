@@ -1,4 +1,4 @@
-﻿using Lortedo.Utilities.Inspector;
+using Lortedo.Utilities.Inspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ public class CursorAspectManager : MonoBehaviour
 
     void UpdateCursorState()
     {
-        if (SelectionManager.Instance.IsPlayerSelection)
+        if (SelectionManager.Instance.HasSelection)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
