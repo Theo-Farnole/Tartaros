@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
+  m_Name: Barracks
+  m_EditorClassIdentifier: 
+  _isInvincible: 0
+  _hp: 10
+  _spawningCost:
+    food: 0
+    wood: 20
+    gold: 0
+  _viewRadius: 8
+  _availableOrders: 4
+  _isMelee: 1
+  _prefabProjectile: {fileID: 0}
+  _damage: 3
+  _attackSpeed: 1
+  _attackRadius: 3
+  _damagePerSecond: 3
+  _speed: 3
+  _availableUnitsForCreation: 0000000001000000
+  _generationTick: 1
+  _resourcesAmount:
+    food: 10
+    wood: 5
+    gold: 5

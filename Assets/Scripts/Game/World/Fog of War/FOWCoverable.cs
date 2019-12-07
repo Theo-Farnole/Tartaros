@@ -7,8 +7,8 @@ namespace FogOfWar
     [System.Serializable]
     public class FOWCoverable
     {
-        [SerializeField] private Collider _collider;
-        [SerializeField] private Renderer _renderer;
+        [SerializeField] private GameObject _renderer;
+        [HideInInspector] public Collider collider;
 
         private bool _isCover = false;
 
@@ -20,8 +20,8 @@ namespace FogOfWar
             {
                 _isCover = value;
 
-                _collider.enabled = !_isCover;
-                _renderer.enabled = !_isCover;
+                collider.enabled = !_isCover;
+                _renderer.SetActive(!_isCover);
             }
         }
     }

@@ -31,6 +31,11 @@ public class EntityFog : EntityComponent
 
     #region Methods
     #region MonoBehaviour Callbacks
+    void Awake()
+    {
+        _coverable.collider = GetComponent<Collider>();    
+    }
+
     void Start()
     {
         SetTypeField();

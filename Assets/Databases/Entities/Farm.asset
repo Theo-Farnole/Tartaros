@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: __default building
+  m_Name: Farm
   m_EditorClassIdentifier: 
   _isInvincible: 0
   _hp: 10
   _spawningCost:
     food: 0
-    wood: 20
+    wood: 10
     gold: 0
   _viewRadius: 8
-  _availableOrders: 12
+  _availableOrders: 8
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
   _damage: 3

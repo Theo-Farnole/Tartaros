@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 75726643763961421}
   - component: {fileID: 2207463542009257204}
   m_Layer: 0
-  m_Name: P_selection_circle
+  m_Name: PF_WorldUI_SelectionCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
