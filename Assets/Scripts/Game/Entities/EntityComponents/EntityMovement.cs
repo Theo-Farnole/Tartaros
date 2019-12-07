@@ -22,6 +22,9 @@ public class EntityMovement : EntityComponent
     #region Public methods
     public void MoveToEntity(Entity target)
     {
+        if (!Entity.Data.CanMove)
+            return;
+
         _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(target.transform.position);
     }
@@ -33,6 +36,8 @@ public class EntityMovement : EntityComponent
 
     public bool HasReachedDestination()
     {
+        if (!Entity.Data.CanMove) return true;
+
         if (!_navMeshAgent.pathPending)
         {
             if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
@@ -49,12 +54,16 @@ public class EntityMovement : EntityComponent
 
     public void MoveToPosition(Vector3 position)
     {
+        if (!Entity.Data.CanMove) return;
+
         _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(position);
     }
 
     public void StopMoving()
     {
+        if (!Entity.Data.CanMove) return;
+
         _navMeshAgent.SetDestination(transform.position);
         _navMeshAgent.ResetPath();
 
