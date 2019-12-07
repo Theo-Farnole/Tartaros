@@ -6,8 +6,6 @@ using UnityEngine.AI;
 public class EntityMovement : EntityComponent
 {
     #region Fields
-    public readonly static float DISTANCE_THRESHOLD = 0.3f;
-
     private NavMeshAgent _navMeshAgent;
     #endregion
 
@@ -29,29 +27,6 @@ public class EntityMovement : EntityComponent
         _navMeshAgent.SetDestination(target.transform.position);
     }
 
-    public bool IsEntityInAttackRange(Entity target)
-    {
-        return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius;
-    }
-
-    public bool HasReachedDestination()
-    {
-        if (!Entity.Data.CanMove) return true;
-
-        if (!_navMeshAgent.pathPending)
-        {
-            if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
-            {
-                if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public void MoveToPosition(Vector3 position)
     {
         if (!Entity.Data.CanMove) return;
@@ -70,28 +45,23 @@ public class EntityMovement : EntityComponent
         _navMeshAgent.isStopped = true;
     }
 
-    public bool IsNearFromEntity(Entity target)
-    {
-        if (Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
 
-    public bool IsNearFromPosition(Vector3 position)
+    public bool HasReachedDestination()
     {
-        if (Vector3.Distance(transform.position, position) <= DISTANCE_THRESHOLD)
+        if (!Entity.Data.CanMove) return true;
+
+        if (!_navMeshAgent.pathPending)
         {
-            return true;
+            if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
+            {
+                if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
+                {
+                    return true;
+                }
+            }
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
     #endregion
     #endregion

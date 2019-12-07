@@ -29,9 +29,10 @@ namespace LeonidasLegacy.IA.Action
             }
 
             EntityMovement entityMovement = entity.GetCharacterComponent<EntityMovement>();
+            EntityDetection entityDetection = entity.GetCharacterComponent<EntityDetection>();
 
             // Can entity attack target?
-            if (entityMovement.IsEntityInAttackRange(_target))
+            if (entityDetection.IsEntityInAttackRange(_target))
             {
                 entityMovement.StopMoving();
 

@@ -5,6 +5,37 @@ using UnityEngine;
 
 public class EntityDetection : EntityComponent
 {
+    public readonly static float DISTANCE_THRESHOLD = 0.3f;
+
+    public bool IsEntityInAttackRange(Entity target)
+    {
+        return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius;
+    }
+    
+    public bool IsNearFromEntity(Entity target)
+    {
+        if (Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool IsNearFromPosition(Vector3 position)
+    {
+        if (Vector3.Distance(transform.position, position) <= DISTANCE_THRESHOLD)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     /// <summary>
     /// Use a OverlapSphere, then process the OverlapSphere output with 2 Linq queries.
     /// </summary>
