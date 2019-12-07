@@ -21,6 +21,8 @@ public class EntityUnitSpawner : EntityComponent
 
     public void SpawnUnit(UnitType unitType)
     {
+        if (!Entity.Data.CanSpawnUnit) return;
+
         if (Entity.Data.AvailableUnitsForCreation.Contains(unitType) == false)
         {
             Debug.LogWarningFormat("Can't create {0} because it's not inside _creatableUnits of {1}.", unitType, name);
