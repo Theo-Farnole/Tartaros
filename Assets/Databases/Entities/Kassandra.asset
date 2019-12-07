@@ -18,16 +18,16 @@ MonoBehaviour:
     food: 20
     wood: 5
     gold: 0
-  _viewRadius: 5
+  _viewRadius: 8
   _availableOrders: 3
   _isMelee: 0
   _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
     type: 3}
-  _damage: 10
-  _attackSpeed: 1
-  _attackRadius: 3
-  _damagePerSecond: 10
-  _speed: 2
+  _damage: 1
+  _attackSpeed: 2
+  _attackRadius: 8
+  _damagePerSecond: 0.5
+  _speed: 3
   _availableUnitsForCreation: 
   _generationTick: 0
   _resourcesAmount:

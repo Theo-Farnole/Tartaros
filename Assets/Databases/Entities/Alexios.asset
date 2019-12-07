@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
   m_Name: Alexios
   m_EditorClassIdentifier: 
-  _isInvincible: 1
+  _isInvincible: 0
   _hp: 10
   _spawningCost:
     food: 20
@@ -22,10 +22,10 @@ MonoBehaviour:
   _availableOrders: 3
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
-  _damage: 5
+  _damage: 1
   _attackSpeed: 0.5
   _attackRadius: 3
-  _damagePerSecond: 10
+  _damagePerSecond: 2
   _speed: 3
   _availableUnitsForCreation: 000000000000000000000000
   _generationTick: 0
