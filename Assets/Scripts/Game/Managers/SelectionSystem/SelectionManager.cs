@@ -13,7 +13,7 @@ public class SelectionManager : Singleton<SelectionManager>
     {
         public EntityType entityType;
         public Team owner;
-        public List<Unit> unitsSelected = new List<Unit>();
+        public List<Entity> unitsSelected = new List<Entity>();
 
         public Group(EntityType entityType, Team owner)
         {
@@ -86,7 +86,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
         {
-            Unit hittedSelectableEntity = hit.transform.GetComponent<Unit>();
+            Entity hittedSelectableEntity = hit.transform.GetComponent<Entity>();
 
             if (hittedSelectableEntity)
             {
@@ -110,9 +110,9 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region SelectedGroups Manager
-    public void AddEntity(Unit selectableEntity)
+    public void AddEntity(Entity selectableEntity)
     {
-        if (selectableEntity.GetCharacterComponent<UnitFog>().IsCover)
+        if (selectableEntity.GetCharacterComponent<EntityFog>().IsCover)
             return;
 
         Group groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
@@ -135,14 +135,14 @@ public class SelectionManager : Singleton<SelectionManager>
 
         // add to selectGroup and trigger OnSelect
         groupWithSameType.unitsSelected.Add(selectableEntity);
-        selectableEntity.GetCharacterComponent<UnitSelectable>().OnSelected();
+        selectableEntity.GetCharacterComponent<EntitySelectable>().OnSelected();
 
         UpdateUI();
         UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
         HotkeyActionListener.Instance.SetHotkeyHandler(_selectedGroups[0].entityType);
     }
 
-    public void RemoveEntity(Unit selectableEntity)
+    public void RemoveEntity(Entity selectableEntity)
     {
         Group groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
 
@@ -153,7 +153,7 @@ public class SelectionManager : Singleton<SelectionManager>
             return;
         }
 
-        selectableEntity.GetCharacterComponent<UnitSelectable>().OnDeselect();
+        selectableEntity.GetCharacterComponent<EntitySelectable>().OnDeselect();
         groupWithSameType.unitsSelected.Remove(selectableEntity);
 
         // delete group if empty
@@ -181,7 +181,7 @@ public class SelectionManager : Singleton<SelectionManager>
     /// <summary>
     /// Remove SelectableEntity if it's selected. And add it, if it's not selected.
     /// </summary>
-    public void SwitchEntity(Unit toSwitchUnit)
+    public void SwitchEntity(Entity toSwitchUnit)
     {
         bool isEntitySelected = _selectedGroups.Exists(x => x.unitsSelected.Contains(toSwitchUnit));
 
@@ -201,7 +201,7 @@ public class SelectionManager : Singleton<SelectionManager>
         {
             for (int j = 0; j < item.unitsSelected.Count; j++)
             {
-                item.unitsSelected[j].GetCharacterComponent<UnitSelectable>().OnDeselect();
+                item.unitsSelected[j].GetCharacterComponent<EntitySelectable>().OnDeselect();
             }
         }
 

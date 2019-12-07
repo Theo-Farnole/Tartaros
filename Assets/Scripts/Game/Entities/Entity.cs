@@ -4,24 +4,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manage action tick & queueing. Initialize EntityComponent.
+/// </summary>
 [SelectionBase]
-public class Unit : MonoBehaviour
+public class Entity : MonoBehaviour
 {
     #region Fields
     [Header("Team Configuration")]
     [SerializeField] private EntityType _type;
     [SerializeField, MyBox.ReadOnly] private Team _team;
 
-    private UnitData _data;
+    private EntityData _data;
     private Action _currentAction;
     private Queue<Action> _queueAction = new Queue<Action>();
 
     // cache variables
-    private Dictionary<System.Type, UnitComponent> _components = new Dictionary<System.Type, UnitComponent>();
+    private Dictionary<System.Type, EntityComponent> _components = new Dictionary<System.Type, EntityComponent>();
     #endregion
 
     #region Properties
-    public UnitData Data { get => _data; }
+    public EntityData Data { get => _data; }
     public EntityType Type { get => _type; }
     public Team Team { get => _team; set => _team = value; }
     public bool HasCurrentAction { get => (_currentAction != null); }
@@ -62,7 +65,7 @@ public class Unit : MonoBehaviour
     /// <summary>
     /// Get cached character component.
     /// </summary>
-    public T GetCharacterComponent<T>() where T : UnitComponent
+    public T GetCharacterComponent<T>() where T : EntityComponent
     {
         return (T)_components[typeof(T)];
     }
@@ -125,14 +128,14 @@ public class Unit : MonoBehaviour
 
     void InitializeComponents()
     {
-        foreach (System.Type type in UtilsClass.GetSubclass<UnitComponent>())
+        foreach (System.Type type in UtilsClass.GetSubclass<EntityComponent>())
         {
-            UnitComponent charComponent = (UnitComponent)GetComponent(type);
+            EntityComponent charComponent = (EntityComponent)GetComponent(type);
 
             if (charComponent != null)
             {
                 _components.Add(type, charComponent);
-                charComponent.UnitManager = this;
+                charComponent.Entity = this;
             }
             else
             {

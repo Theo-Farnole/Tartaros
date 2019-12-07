@@ -94,7 +94,7 @@ public class SelectionRectManager : MonoBehaviour
     #region On SelectionRect Releasing
     void AddEntitiesInSelectionRect()
     {
-        var unitsSelectable = FindObjectsOfType<UnitSelectable>();
+        var unitsSelectable = FindObjectsOfType<EntitySelectable>();
         var camera = Camera.main;
         var viewportBounds = GUIRectDrawer.GetViewportBounds(camera, _originPositionRect, Input.mousePosition);
 
@@ -102,7 +102,7 @@ public class SelectionRectManager : MonoBehaviour
         {
             if (IsWithinSelectionBounds(camera, viewportBounds, unitsSelectable[i].gameObject))
             {
-                SelectionManager.Instance.AddEntity(unitsSelectable[i].GetComponent<Unit>());
+                SelectionManager.Instance.AddEntity(unitsSelectable[i].GetComponent<Entity>());
             }
         }
     }

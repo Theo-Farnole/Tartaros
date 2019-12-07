@@ -8,14 +8,14 @@ namespace Registers
     public class RegisterData : ScriptableObject
     {
         [SerializeField] private GameObject _prefab;
-        [SerializeField] private UnitData _entityData;
+        [SerializeField] private EntityData _entityData;
         [Space]
         [SerializeField] private Sprite _portrait;
         [SerializeField] private KeyCode _hotkey;
 
         public GameObject Prefab { get => _prefab; }
         public Sprite Portrait { get => _portrait; }
-        public UnitData EntityData { get => _entityData; }
+        public EntityData EntityData { get => _entityData; }
         public KeyCode Hotkey { get => _hotkey; }
     }
 }

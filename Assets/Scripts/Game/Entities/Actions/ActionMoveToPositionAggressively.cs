@@ -7,19 +7,19 @@ namespace LeonidasLegacy.IA.Action
 {
     public class ActionMoveToPositionAggressively : Action
     {
-        public ActionMoveToPositionAggressively(Unit owner, Vector3 position) : base(owner)
+        public ActionMoveToPositionAggressively(Entity owner, Vector3 position) : base(owner)
         {
-            owner.GetCharacterComponent<UnitMovement>().MoveToPosition(position);
+            owner.GetCharacterComponent<EntityMovement>().MoveToPosition(position);
         }
 
         public override void OnStateExit()
         {
-            unitManager.GetCharacterComponent<UnitMovement>().StopMoving();
+            entity.GetCharacterComponent<EntityMovement>().StopMoving();
         }
 
         public override void Tick()
         {
-            unitManager.GetCharacterComponent<UnitAttack>().StartActionAttackNearestEnemy();
+            entity.GetCharacterComponent<EntityAttack>().StartActionAttackNearestEnemy();
         }
     }
 }

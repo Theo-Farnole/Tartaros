@@ -47,7 +47,7 @@ public class CursorAspectManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
             {
-                if (hit.transform.GetComponent<Unit>().Team != Team.Sparta)
+                if (hit.transform.GetComponent<Entity>().Team != Team.Sparta)
                 {
                     _cursorState = CursorState.OrderAttack;
                 }

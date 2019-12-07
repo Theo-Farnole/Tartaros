@@ -79,7 +79,7 @@ namespace UI.Game
             }
         }
 
-        void UpdateOrdersWrapper(Unit unit)
+        void UpdateOrdersWrapper(Entity unit)
         {
             _ordersWrapper.UpdateOrders(unit);
         }

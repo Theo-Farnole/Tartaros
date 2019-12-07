@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitAttack : UnitComponent
+public class EntityAttack : EntityComponent
 {
     #region Fields
     public readonly int MAX_ALLOCATED_FRAME_CALCULATION = 3;
@@ -31,9 +31,9 @@ public class UnitAttack : UnitComponent
     #endregion
 
     #region Public methods
-    public void DoAttack(Unit target)
+    public void DoAttack(Entity target)
     {
-        if (!UnitManager.Data.CanAttack)
+        if (!Entity.Data.CanAttack)
             return;
 
         if (_attackTimer < target.Data.AttackSpeed)
@@ -43,33 +43,33 @@ public class UnitAttack : UnitComponent
         {
             _attackTimer = 0;
 
-            target.GetCharacterComponent<UnitHealth>().GetDamage(UnitManager.Data.Damage, UnitManager);
+            target.GetCharacterComponent<EntityHealth>().GetDamage(Entity.Data.Damage, Entity);
         }
     }
 
     /// <summary>
-    /// If an enemy is visible, set Unit action to ActionAttackUnit.
+    /// If an enemy is visible, set Entity action to ActionAttackEntity.
     /// </summary>
     public void StartActionAttackNearestEnemy()
     {
-        var nearestEnemy = UnitManager.GetCharacterComponent<UnitDetection>().GetNearestEnemyInViewRadius();
+        var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestEnemyInViewRadius();
 
         if (nearestEnemy != null)
         {
-            var actionAttackUnit = new ActionAttackUnit(UnitManager, nearestEnemy);
-            UnitManager.SetAction(actionAttackUnit);
+            var action = new ActionAttackEntity(Entity, nearestEnemy);
+            Entity.SetAction(action);
         }
     }
     #endregion
 
     #region Private methods
     /// <summary>
-    /// Attack neareast enemy if Unit hasn't current action
+    /// Attack neareast enemy if Entity hasn't current action
     /// </summary>
     void ManageAutoAttack()
     {
-        // only auto attact if Unit hasn't current action
-        if (!UnitManager.HasCurrentAction)
+        // only auto attact if Entity hasn't current action
+        if (!Entity.HasCurrentAction)
         {
             StartActionAttackNearestEnemy();
         }

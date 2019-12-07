@@ -12,8 +12,8 @@ namespace FogOfWar
         [SerializeField] private SnapGrid _snapGrid;
         [SerializeField, HideInInspector] private FogState[,] _visiblityMap; // allow hot reloading in Editor
 
-        private List<UnitFog> _viewers = new List<UnitFog>();
-        private List<UnitFog> _coverables = new List<UnitFog>();
+        private List<EntityFog> _viewers = new List<EntityFog>();
+        private List<EntityFog> _coverables = new List<EntityFog>();
         #endregion
 
         #region Methods
@@ -49,22 +49,22 @@ namespace FogOfWar
         #endregion
 
         #region Entities Manager
-        public void AddViewer(UnitFog entity)
+        public void AddViewer(EntityFog entity)
         {
             _viewers.Add(entity);
         }
 
-        public void RemoveViewer(UnitFog entity)
+        public void RemoveViewer(EntityFog entity)
         {
             _viewers.Remove(entity);
         }
 
-        public void RemoveCoverable(UnitFog entity)
+        public void RemoveCoverable(EntityFog entity)
         {
             _coverables.Remove(entity);
         }
 
-        public void AddCoverable(UnitFog entity)
+        public void AddCoverable(EntityFog entity)
         {
             _coverables.Add(entity);
         }
@@ -88,7 +88,7 @@ namespace FogOfWar
             for (int i = 0; i < _viewers.Count; i++)
             {
                 Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].transform.position);
-                int viewRadius = Mathf.RoundToInt(_viewers[i].UnitManager.Data.ViewRadius / _snapGrid.Data.CellSize);
+                int viewRadius = Mathf.RoundToInt(_viewers[i].Entity.Data.ViewRadius / _snapGrid.Data.CellSize);
 
                 _visiblityMap.DrawCircleInside(viewersCoords.x, viewersCoords.y, viewRadius, FogState.Visible);
             }

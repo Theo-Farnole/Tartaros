@@ -102,7 +102,7 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
             case AskCursor.Attack:
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
                 {
-                    CallActionsToSelectedGroups.OrderAttackUnit(hit.transform.GetComponent<Unit>());
+                    CallActionsToSelectedGroups.OrderAttackUnit(hit.transform.GetComponent<Entity>());
                     waitingForMouseClick = false;
                 }
                 break;

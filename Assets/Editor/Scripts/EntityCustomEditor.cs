@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(Unit))]
-public class UnitCustomEditor : Editor
+[CustomEditor(typeof(Entity))]
+public class EntityCustomEditor : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -16,7 +16,7 @@ public class UnitCustomEditor : Editor
     private void DrawUnitAction()
     {
         // get action
-        Unit unit = (Unit)target;
+        Entity unit = (Entity)target;
         string action = unit.CurrentAction != null ? unit.CurrentAction.ToString() : "NONE"; // display action or "NONE"
 
         GUILayout.Space(EditorGUIUtility.singleLineHeight);

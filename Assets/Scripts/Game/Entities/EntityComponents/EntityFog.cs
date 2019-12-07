@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class UnitFog : UnitComponent
+public class EntityFog : EntityComponent
 {
     #region Enum
     public enum Type
@@ -60,7 +60,7 @@ public class UnitFog : UnitComponent
 
     void SetTypeField()
     {
-        if (UnitManager.Team == Team.Sparta)
+        if (Entity.Team == Team.Sparta)
         {
             _type = Type.Viewer;
         }
@@ -78,7 +78,7 @@ public class UnitFog : UnitComponent
                 FOWManager.Instance.AddViewer(this);
 
                 _fogOfWarVision.gameObject.SetActive(true);
-                _fogOfWarVision.transform.localScale = Vector3.one * UnitManager.Data.ViewRadius * 2;
+                _fogOfWarVision.transform.localScale = Vector3.one * Entity.Data.ViewRadius * 2;
                 break;
 
             case Type.Coverable:

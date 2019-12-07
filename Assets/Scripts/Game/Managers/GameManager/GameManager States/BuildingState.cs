@@ -79,7 +79,7 @@ public class BuildingState : OwnedState<GameManager>
     {
         EnableBuildingComponents(true);
         
-        _building.GetComponent<Unit>().Team = Team.Sparta;
+        _building.GetComponent<Entity>().Team = Team.Sparta;
 
         DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
 
@@ -98,7 +98,7 @@ public class BuildingState : OwnedState<GameManager>
 
     void EnableBuildingComponents(bool enabled)
     {
-        var fowEntity = _building.GetComponent<UnitFog>();
+        var fowEntity = _building.GetComponent<EntityFog>();
         if (fowEntity) fowEntity.enabled = enabled;
 
         var collider = _building.GetComponent<Collider>();

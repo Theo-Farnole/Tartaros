@@ -14,7 +14,7 @@ public enum OrdersType
 }
 
 [CreateAssetMenu(menuName = "Leonidas Legacy/Entity")]
-public class UnitData : ScriptableObject
+public class EntityData : ScriptableObject
 {
     #region Health Settings
     [Header("Health Settings")]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitHealth : UnitComponent
+public class EntityHealth : EntityComponent
 {
     [Header("Health Slider Behaviour")]
     [SerializeField] private Canvas _sliderCanvas;
@@ -19,8 +19,8 @@ public class UnitHealth : UnitComponent
 
     void Start()
     {
-        _hp = UnitManager.Data.Hp;
-        _maxHp = UnitManager.Data.Hp;
+        _hp = Entity.Data.Hp;
+        _maxHp = Entity.Data.Hp;
 
         UpdateHealthSlider();
     }
@@ -30,9 +30,9 @@ public class UnitHealth : UnitComponent
     /// </summary>
     /// <param name="damage">Amount of hp to be removed</param>
     /// <param name="attacker">Entity which do damage to the entity</param>
-    public void GetDamage(int damage, Unit attacker)
+    public void GetDamage(int damage, Entity attacker)
     {
-        if (UnitManager.Data.IsInvincible)
+        if (Entity.Data.IsInvincible)
             return;
 
         _hp -= damage;
@@ -42,7 +42,7 @@ public class UnitHealth : UnitComponent
 
         if (!IsAlive)
         {
-            UnitManager.Death();
+            Entity.Death();
         }
     }
 

@@ -34,7 +34,7 @@ namespace UI.Game
             }
         }
 
-        public void UpdateOrders(Unit unit)
+        public void UpdateOrders(Entity unit)
         {
             HideOrders();
 
@@ -45,7 +45,7 @@ namespace UI.Game
             UpdateSpawnUnitsOrder(unit);
         }
 
-        void UpdateSpawnUnitsOrder(Unit unit)
+        void UpdateSpawnUnitsOrder(Entity unit)
         {
             if (!unit.Data.CanSpawnUnit)
                 return;
@@ -63,7 +63,7 @@ namespace UI.Game
             }
         }
 
-        void UpdateOverallOrders(Unit unit)
+        void UpdateOverallOrders(Entity unit)
         {
             foreach (OverallAction action in Enum.GetValues(typeof(OverallAction)))
             {

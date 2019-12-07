@@ -6,7 +6,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     #region Fields
-    private Unit _throwerUnit;
+    private Entity _throwerUnit;
     private Rigidbody _rigidbody;
 
     private bool _isLaunched = false;
@@ -32,11 +32,11 @@ public class Projectile : MonoBehaviour
         if (!_isLaunched)
             return;
 
-        Unit unit = other.GetComponent<Unit>();
+        Entity unit = other.GetComponent<Entity>();
 
         if (unit != null && unit.Team != _throwerUnit.Team)
         {
-            unit.GetCharacterComponent<UnitHealth>().GetDamage(_throwerUnit.Data.Damage, _throwerUnit);
+            unit.GetCharacterComponent<EntityHealth>().GetDamage(_throwerUnit.Data.Damage, _throwerUnit);
             ObjectPooler.Instance.EnqueueGameObject(_throwerUnit.Data.PrefabProjectile, gameObject);
 
             _isLaunched = false;
@@ -44,7 +44,7 @@ public class Projectile : MonoBehaviour
     }
     #endregion
 
-    public void Throw(Transform target, Unit attacker)
+    public void Throw(Transform target, Entity attacker)
     {
         _isLaunched = true;
         _throwerUnit = attacker;

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitSelectable : UnitComponent
+public class EntitySelectable : EntityComponent
 {
     #region Fields
     private GameObject _selectionCircle = null;
@@ -21,7 +21,7 @@ public class UnitSelectable : UnitComponent
             ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
         }
 
-        SelectionManager.Instance.RemoveEntity(UnitManager);
+        SelectionManager.Instance.RemoveEntity(Entity);
     }
     #endregion
 
@@ -39,7 +39,7 @@ public class UnitSelectable : UnitComponent
 
         _selectionCircle = ObjectPooler.Instance.SpawnFromPool("selection_circle", pos, rot);
         _selectionCircle.transform.parent = transform;
-        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(UnitManager.Team);
+        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(Entity.Team);
     }
 
     public void OnDeselect()

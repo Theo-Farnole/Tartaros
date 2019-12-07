@@ -13,7 +13,7 @@ public static class CallActionsToSelectedGroups
     /// Order attack to Spartan selected groups, except if target is also Spartan.
     /// </summary>
     /// <param name="target">Transform of the attack's target.</param>
-    public static void OrderAttackUnit(Unit target)
+    public static void OrderAttackUnit(Entity target)
     {
         if (target == null)
             return;
@@ -26,7 +26,7 @@ public static class CallActionsToSelectedGroups
         {
             for (int i = 0; i < group.unitsSelected.Count; i++)
             {
-                var actionAttack = new ActionAttackUnit(group.unitsSelected[i], target);
+                var actionAttack = new ActionAttackEntity(group.unitsSelected[i], target);
 
                 group.unitsSelected[i].SetAction(actionAttack);
             }
@@ -50,7 +50,7 @@ public static class CallActionsToSelectedGroups
         {
             for (int i = 0; i < group.unitsSelected.Count; i++)
             {
-                group.unitsSelected[i].GetCharacterComponent<UnitSpawnerUnit>().SpawnUnit(unit);
+                group.unitsSelected[i].GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(unit);
             }
         }
     }

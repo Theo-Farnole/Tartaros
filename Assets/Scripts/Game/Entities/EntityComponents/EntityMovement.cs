@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UnitMovement : UnitComponent
+public class EntityMovement : EntityComponent
 {
     #region Fields
     public readonly static float DISTANCE_THRESHOLD = 0.3f;
@@ -17,27 +17,22 @@ public class UnitMovement : UnitComponent
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
     }
-
-    //void Update()
-    //{
-    //    Debug.LogFormat("{0} nav mesh agent is stopped = {1}", name, _navMeshAgent.isStopped);    
-    //}
     #endregion
 
     #region Public methods
-    public void MoveToUnit(Unit unit)
+    public void MoveToEntity(Entity target)
     {
         _navMeshAgent.isStopped = false;
-        _navMeshAgent.SetDestination(unit.transform.position);
+        _navMeshAgent.SetDestination(target.transform.position);
     }
 
-    public bool IsUnitInAttackRange(Unit unit)
+    public bool IsEntityInAttackRange(Entity target)
     {
-        return Vector3.Distance(transform.position, unit.transform.position) <= UnitManager.Data.AttackRadius;
+        return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius;
     }
 
     public bool HasReachedDestination()
-    {        
+    {
         if (!_navMeshAgent.pathPending)
         {
             if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
@@ -66,9 +61,9 @@ public class UnitMovement : UnitComponent
         _navMeshAgent.isStopped = true;
     }
 
-    public bool IsNearFromUnit(Unit unit)
+    public bool IsNearFromEntity(Entity target)
     {
-        if (Vector3.Distance(transform.position, unit.transform.position) <= DISTANCE_THRESHOLD)
+        if (Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD)
         {
             return true;
         }

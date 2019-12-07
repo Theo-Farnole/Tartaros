@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitResourcesGenerator : UnitComponent
+public class EntityResourcesGeneration : EntityComponent
 {
     private float _currentTimer = 0;
 
     void Update()
     {
-        if (!UnitManager.Data.CanCreateResources)
+        if (!Entity.Data.CanCreateResources)
             return;
 
         _currentTimer += Time.deltaTime;
 
-        if (_currentTimer >= UnitManager.Data.GenerationTick)
+        if (_currentTimer >= Entity.Data.GenerationTick)
         {
         _currentTimer = 0;
             CreateResources();
@@ -22,6 +22,6 @@ public class UnitResourcesGenerator : UnitComponent
 
     void CreateResources()
     {
-        GameManager.Instance.Resources += UnitManager.Data.ResourcesAmount;
+        GameManager.Instance.Resources += Entity.Data.ResourcesAmount;
     }
 }

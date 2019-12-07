@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UnitSpawnerUnit : UnitComponent
+public class EntityUnitSpawner : EntityComponent
 {
     private Vector3 _anchorPosition;
 
@@ -21,7 +21,7 @@ public class UnitSpawnerUnit : UnitComponent
 
     public void SpawnUnit(UnitType unitType)
     {
-        if (UnitManager.Data.AvailableUnitsForCreation.Contains(unitType) == false)
+        if (Entity.Data.AvailableUnitsForCreation.Contains(unitType) == false)
         {
             Debug.LogWarningFormat("Can't create {0} because it's not inside _creatableUnits of {1}.", unitType, name);
             return;
@@ -42,8 +42,8 @@ public class UnitSpawnerUnit : UnitComponent
         var instantiatedObject = Object.Instantiate(unitData.Prefab, transform.position, Quaternion.identity);
 
         // set action
-        var unit = instantiatedObject.GetComponent<Unit>();
-        Action moveToAnchorAction = new ActionMoveToPosition(unit, _anchorPosition);
-        unit.SetAction(moveToAnchorAction);
+        var entity = instantiatedObject.GetComponent<Entity>();
+        Action moveToAnchorAction = new ActionMoveToPosition(entity, _anchorPosition);
+        entity.SetAction(moveToAnchorAction);
     }
 }

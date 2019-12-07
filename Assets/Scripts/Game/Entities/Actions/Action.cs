@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace LeonidasLegacy.IA.Action
 {
-    public abstract class Action : OwnedState<Unit>
+    public abstract class Action : OwnedState<Entity>
     {
-        public Action(Unit owner) : base(owner)
+        public Action(Entity owner) : base(owner)
         {
         }
 
-        public Unit unitManager { get => _owner; }
+        public Entity entity { get => _owner; }
     }
 }
