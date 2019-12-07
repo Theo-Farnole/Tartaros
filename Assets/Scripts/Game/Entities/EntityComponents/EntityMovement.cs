@@ -15,6 +15,14 @@ public class EntityMovement : EntityComponent
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
     }
+
+    void Start()
+    {
+        if (_navMeshAgent != null)
+        {
+            _navMeshAgent.speed = Entity.Data.Speed;
+        }
+    }
     #endregion
 
     #region Public methods
