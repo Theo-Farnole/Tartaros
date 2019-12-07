@@ -18,7 +18,7 @@ MonoBehaviour:
     food: 0
     wood: 10
     gold: 0
-  _viewRadius: 8
+  _viewRadius: 1
   _availableOrders: 8
   _isMelee: 1
   _prefabProjectile: {fileID: 0}

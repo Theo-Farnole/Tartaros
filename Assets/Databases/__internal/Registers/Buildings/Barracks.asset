@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd045c48bfb070d4c8db72c3a2d5004f, type: 3}
   m_Name: Barracks
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 545007711727897807, guid: 991d5e0ade863b94c8911376e6dcb0f5, type: 3}
+  _prefab: {fileID: 545007711727897807, guid: 5223a26d9e803f04ab7c98100babab8f, type: 3}
   _entityData: {fileID: 11400000, guid: 6a1997c83280ffd478dffdae9191d1a8, type: 2}
   _portrait: {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
   _hotkey: 98
