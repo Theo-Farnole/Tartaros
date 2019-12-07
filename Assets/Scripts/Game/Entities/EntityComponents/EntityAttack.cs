@@ -1,4 +1,5 @@
 ﻿using LeonidasLegacy.IA.Action;
+using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,14 +37,22 @@ public class EntityAttack : EntityComponent
         if (!Entity.Data.CanAttack)
             return;
 
-        if (_attackTimer < target.Data.AttackSpeed)
+        if (_attackTimer < Entity.Data.AttackSpeed)
             return;
 
-        if (Vector3.Distance(transform.position, target.transform.position) <= target.Data.AttackRadius)
+        if (Entity.GetCharacterComponent<EntityDetection>().IsEntityInAttackRange(target))
         {
             _attackTimer = 0;
 
-            target.GetCharacterComponent<EntityHealth>().GetDamage(Entity.Data.Damage, Entity);
+            if (Entity.Data.IsMelee)
+            {
+                target.GetCharacterComponent<EntityHealth>().GetDamage(Entity.Data.Damage, Entity);
+            }
+            else
+            {
+                Projectile projectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
+                projectile.Throw(target.transform, Entity);
+            }
         }
     }
 
