@@ -6,16 +6,22 @@ public class EntityResourcesGeneration : EntityComponent
 {
     private float _currentTimer = 0;
 
+    void Start()
+    {
+        // disable this component if entity can't create resources
+        if (!Entity.Data.CanCreateResources)
+        {
+            enabled = false;
+        }        
+    }
+
     void Update()
     {
-        if (!Entity.Data.CanCreateResources)
-            return;
-
         _currentTimer += Time.deltaTime;
 
         if (_currentTimer >= Entity.Data.GenerationTick)
         {
-        _currentTimer = 0;
+            _currentTimer = 0;
             CreateResources();
         }
     }
