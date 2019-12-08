@@ -14,7 +14,7 @@ public class Entity : MonoBehaviour
     [Header("Team Configuration")]
     [SerializeField] private EntityType _type;
 
-    [DrawIf(nameof(_type), true, ComparisonType.IsBuildingType, DisablingType.ReadOnly)]
+    [DrawIf(nameof(_type), EntitiesSystem.STARTING_INDEX_BUILDING, ComparisonType.GreaterOrEqual, DisablingType.ReadOnly)]
     [SerializeField] private Team _team;
 
     private EntityData _data;

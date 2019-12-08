@@ -88,12 +88,7 @@ public class DrawIfPropertyDrawer : PropertyDrawer
 
             case ComparisonType.HasFlag:
                 if (comparedField.GetValue<Enum>().HasFlag((Enum)drawIf.comparedValue))
-                    conditionMet = true;
-                break;
-
-            case ComparisonType.IsBuildingType:
-                if (comparedField.GetValue<EntityType>().IsBuildingType() == (bool)drawIf.comparedValue)
-                    conditionMet = true;
+                    conditionMet = true;                
                 break;
         }
 

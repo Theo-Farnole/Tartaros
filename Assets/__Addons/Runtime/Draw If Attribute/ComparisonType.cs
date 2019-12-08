@@ -9,6 +9,5 @@ public enum ComparisonType
     SmallerThan = 4,
     SmallerOrEqual = 5,
     GreaterOrEqual = 6,
-    HasFlag = 7,
-    IsBuildingType = 8
+    HasFlag = 7
 }
