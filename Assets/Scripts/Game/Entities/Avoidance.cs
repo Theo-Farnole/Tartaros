@@ -16,13 +16,13 @@ public static class AvoidanceExtension
         switch (a)
         {
             case Avoidance.Fight:
-                return 5;
+                return 50;
 
             case Avoidance.Move:
-                return 15;
+                return 30;
 
             case Avoidance.Idle:
-                return 50;
+                return 5;
         }
 
         Debug.LogErrorFormat("{0} isn't set in AvoidanceExtension.");
