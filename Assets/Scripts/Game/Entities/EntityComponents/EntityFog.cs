@@ -77,6 +77,12 @@ public class EntityFog : EntityComponent
 
     void RegisterToManager()
     {
+        if (FOWManager.Instance == null)
+        {
+            Debug.LogWarning("Fog of War manager is missing. Have you load SC_GameLogic ?");
+            return;
+        }
+
         switch (_type)
         {
             case Type.Viewer:

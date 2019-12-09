@@ -37,6 +37,8 @@ public class EntityAttack : EntityComponent
         if (!Entity.Data.CanAttack)
             return;
 
+        Entity.GetCharacterComponent<EntityMovement>().SetAvoidance(Avoidance.Fight);
+
         if (_attackTimer < Entity.Data.AttackSpeed)
             return;
 

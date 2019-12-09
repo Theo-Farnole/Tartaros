@@ -7,9 +7,16 @@ namespace LeonidasLegacy.IA.Action
 {
     public class ActionMoveToPositionAggressively : Action
     {
+        private Vector3 _position;
+
         public ActionMoveToPositionAggressively(Entity owner, Vector3 position) : base(owner)
         {
-            owner.GetCharacterComponent<EntityMovement>().MoveToPosition(position);
+            _position = position;
+        }
+
+        public override void OnStateEnter()
+        {
+            entity.GetCharacterComponent<EntityMovement>().MoveToPosition(_position);
         }
 
         public override void OnStateExit()

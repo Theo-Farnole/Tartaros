@@ -26,10 +26,17 @@ public class EntityMovement : EntityComponent
     #endregion
 
     #region Public methods
+    public void SetAvoidance(Avoidance avoidance)
+    {
+        _navMeshAgent.avoidancePriority = avoidance.ToPriority();
+    }
+
     public void MoveToEntity(Entity target)
     {
         if (!Entity.Data.CanMove)
             return;
+
+        SetAvoidance(Avoidance.Move);
 
         _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(target.transform.position);
@@ -39,6 +46,8 @@ public class EntityMovement : EntityComponent
     {
         if (!Entity.Data.CanMove) return;
 
+        SetAvoidance(Avoidance.Move);
+
         _navMeshAgent.isStopped = false;
         _navMeshAgent.SetDestination(position);
     }
@@ -46,6 +55,8 @@ public class EntityMovement : EntityComponent
     public void StopMoving()
     {
         if (!Entity.Data.CanMove) return;
+
+        SetAvoidance(Avoidance.Idle);
 
         _navMeshAgent.SetDestination(transform.position);
         _navMeshAgent.ResetPath();
@@ -62,7 +73,9 @@ public class EntityMovement : EntityComponent
         {
             if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
             {
-                if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
+                if (!_navMeshAgent.hasPath) Debug.LogWarningFormat("{0} doesn't have found a valid path to reached it destination.", transform.name);
+
+                if (_navMeshAgent.velocity.sqrMagnitude == 0f)
                 {
                     return true;
                 }

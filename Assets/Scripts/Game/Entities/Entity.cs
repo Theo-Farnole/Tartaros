@@ -1,4 +1,4 @@
-﻿using LeonidasLegacy.IA.Action;
+using LeonidasLegacy.IA.Action;
 using Lortedo.Utilities;
 using System.Collections;
 using System.Collections.Generic;
@@ -114,7 +114,7 @@ public class Entity : MonoBehaviour
     /// <summary>
     /// Clear queue and set action to null
     /// </summary>
-    public void Stop()
+    public void StopEveryActions()
     {
         _queueAction.Clear();
 

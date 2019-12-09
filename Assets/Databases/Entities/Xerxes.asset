@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
   m_Name: Xerxes
   m_EditorClassIdentifier: 
-  _isInvincible: 0
+  _isInvincible: 1
   _hp: 10
   _spawningCost:
     food: 20

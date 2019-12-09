@@ -1,4 +1,4 @@
-﻿using Lortedo.Utilities.Pattern;
+using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
