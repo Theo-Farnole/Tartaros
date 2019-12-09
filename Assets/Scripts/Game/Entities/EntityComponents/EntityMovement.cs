@@ -73,9 +73,7 @@ public class EntityMovement : EntityComponent
         {
             if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
             {
-                if (!_navMeshAgent.hasPath) Debug.LogWarningFormat("{0} doesn't have found a valid path to reached it destination.", transform.name);
-
-                if (_navMeshAgent.velocity.sqrMagnitude == 0f)
+                if (_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
                 {
                     return true;
                 }
