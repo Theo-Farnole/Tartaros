@@ -23,8 +23,7 @@ namespace LeonidasLegacy.IA.Action
             // if target has been killed
             if (_target == null)
             {
-                entity.GetCharacterComponent<EntityMovement>().StopMoving();
-                entity.StopCurrentAction();
+                OnEnemyDeath();
                 return;
             }
 
@@ -43,6 +42,19 @@ namespace LeonidasLegacy.IA.Action
             {
                 entityMovement.MoveToEntity(_target);
             }
+        }
+
+        private void OnEnemyDeath()
+        {
+            // try to auto attack nearest enemy
+            bool attacksANewEnemy = entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
+
+            // if not enemy nearest, stop current action
+            if (!attacksANewEnemy)
+            {
+                entity.StopCurrentAction();
+            }
+
         }
     }
 }

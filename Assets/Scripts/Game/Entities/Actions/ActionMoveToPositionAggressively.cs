@@ -26,7 +26,7 @@ namespace LeonidasLegacy.IA.Action
 
         public override void Tick()
         {
-            entity.GetCharacterComponent<EntityAttack>().StartActionAttackNearestEnemy();
+            entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
         }
     }
 }
