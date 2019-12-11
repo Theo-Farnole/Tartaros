@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace LeonidasLegacy.IA.Action
 {
+    /// <summary>
+    /// Walk to the _position until an enemy is seen
+    /// </summary>
     public class ActionMoveToPositionAggressively : Action
     {
         private Vector3 _position;
