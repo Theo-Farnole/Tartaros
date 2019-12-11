@@ -16,7 +16,7 @@ namespace CommandPattern
 
         public override void Execute()
         {
-            CallActionsToSelectedGroups.OrderSpawnUnits(_unit);
+            SelectedGroupsActionsCaller.OrderSpawnUnits(_unit);
         }
     }
 }

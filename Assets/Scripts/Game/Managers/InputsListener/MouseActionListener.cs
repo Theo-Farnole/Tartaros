@@ -21,11 +21,11 @@ public class MouseActionListener : MonoBehaviour
             
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
             {
-                CallActionsToSelectedGroups.OnEntityClick(hit.transform.GetComponent<Entity>());
+                SelectedGroupsActionsCaller.OnEntityClick(hit.transform.GetComponent<Entity>());
             }
             else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain")))
             {
-                CallActionsToSelectedGroups.OrderMoveToPosition(hit.point);
+                SelectedGroupsActionsCaller.OrderMoveToPosition(hit.point);
             }
         }
     }

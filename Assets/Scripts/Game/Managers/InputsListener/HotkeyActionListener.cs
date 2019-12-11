@@ -102,7 +102,7 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
             case AskCursor.Attack:
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
                 {
-                    CallActionsToSelectedGroups.OrderAttackUnit(hit.transform.GetComponent<Entity>());
+                    SelectedGroupsActionsCaller.OrderAttackUnit(hit.transform.GetComponent<Entity>());
                     waitingForMouseClick = false;
                 }
                 break;
@@ -110,7 +110,7 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
             case AskCursor.Move:
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
                 {
-                    CallActionsToSelectedGroups.OrderMoveToPosition(hit.point);
+                    SelectedGroupsActionsCaller.OrderMoveToPosition(hit.point);
                     waitingForMouseClick = false;
                 }
                 break;

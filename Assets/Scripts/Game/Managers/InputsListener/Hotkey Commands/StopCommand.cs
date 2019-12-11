@@ -9,7 +9,7 @@ namespace CommandPattern
     {
         public override void Execute()
         {
-            CallActionsToSelectedGroups.OrderStop();
+            SelectedGroupsActionsCaller.OrderStop();
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Wrapper used to call action to selected groups from others scripts.
 /// </summary>
-public static class CallActionsToSelectedGroups
+public static class SelectedGroupsActionsCaller
 {
     /// <summary>
     /// Order attack to Spartan selected groups, except if target is also Spartan.
