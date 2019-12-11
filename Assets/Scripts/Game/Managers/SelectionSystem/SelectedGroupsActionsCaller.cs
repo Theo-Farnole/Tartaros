@@ -1,4 +1,4 @@
-using LeonidasLegacy.IA.Action;
+﻿using LeonidasLegacy.IA.Action;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,6 +75,19 @@ public static class CallActionsToSelectedGroups
                 var actionMove = new ActionMoveToPosition(group.unitsSelected[j], destination);
 
                 group.unitsSelected[j].SetAction(actionMove);
+            }
+        }
+    }
+
+    public static void OrderMoveAggressively(Vector3 destination)
+    {
+        foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
+        {
+            for (int j = 0; j < group.unitsSelected.Count; j++)
+            {
+                var actionMoveAggressively = new ActionMoveToPositionAggressively(group.unitsSelected[j], destination);
+
+                group.unitsSelected[j].SetAction(actionMoveAggressively);
             }
         }
     }
