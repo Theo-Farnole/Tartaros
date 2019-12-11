@@ -1,4 +1,4 @@
-﻿using LeonidasLegacy.IA.Action;
+using LeonidasLegacy.IA.Action;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,10 +18,6 @@ public static class CallActionsToSelectedGroups
         if (target == null)
             return;
 
-        // prevent attacking sparta units
-        if (target.Team == Team.Sparta)
-            return;
-
         foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
         {
             for (int i = 0; i < group.unitsSelected.Count; i++)
@@ -30,6 +26,21 @@ public static class CallActionsToSelectedGroups
 
                 group.unitsSelected[i].SetAction(actionAttack);
             }
+        }
+    }
+
+    /// <summary>
+    /// If Entity is Spartan, we move to destination. Else, we attack the entity.
+    /// </summary>
+    public static void OnEntityClick(Entity target)
+    {
+        if (target.Team == Team.Sparta)
+        {
+            OrderMoveToPosition(target.transform.position);
+        }
+        else
+        {
+            OrderAttackUnit(target);
         }
     }
 
