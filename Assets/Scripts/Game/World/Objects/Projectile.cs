@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
 {
     #region Fields
     private Entity _throwerUnit;
+    private Entity _target;
     private Rigidbody _rigidbody;
 
     private bool _isLaunched = false;
@@ -34,7 +35,7 @@ public class Projectile : MonoBehaviour
 
         Entity unit = other.GetComponent<Entity>();
 
-        if (unit != null && unit.Team != _throwerUnit.Team)
+        if (unit == _target)
         {
             unit.GetCharacterComponent<EntityHealth>().GetDamage(_throwerUnit.Data.Damage, _throwerUnit);
             ObjectPooler.Instance.EnqueueGameObject(_throwerUnit.Data.PrefabProjectile, gameObject);
@@ -44,13 +45,14 @@ public class Projectile : MonoBehaviour
     }
     #endregion
 
-    public void Throw(Transform target, Entity attacker)
+    public void Throw(Entity target, Entity attacker)
     {
         _isLaunched = true;
         _throwerUnit = attacker;
+        _target = target;
 
         _rigidbody.velocity = Vector3.zero;
-        Vector3 initialVector = CalcBallisticVelocityVector(transform.position, target.position + Vector3.up, 45);
+        Vector3 initialVector = CalcBallisticVelocityVector(transform.position, target.transform.position + Vector3.up, 45);
         _rigidbody.AddForce(initialVector, ForceMode.VelocityChange);
     }
 
