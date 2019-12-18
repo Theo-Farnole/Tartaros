@@ -14,9 +14,6 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
         Attack = 2
     }
 
-    [HideInInspector] public bool waitingForMouseClick = false;
-    [HideInInspector] public AskCursor waitingForInputCursor = AskCursor.None;
-
     Dictionary<KeyCode, Command> _commands = new Dictionary<KeyCode, Command>();
 
     #region Methods
@@ -24,11 +21,6 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
     void Update()
     {
         ManageHotkeyInput();
-    }
-
-    void LateUpdate()
-    {
-        ManageAskCursor();
     }
     #endregion
 
@@ -47,19 +39,21 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
         if (data.EntityData.CanMove)
         {
             var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Move).Hotkey;
-            _commands.Add(hotkey, new WaitForMoveDestinationCommand());
+            _commands.Add(hotkey, new ListenSecondClickToMoveCommand());
         }
 
         // attack
         if (data.EntityData.CanAttack)
         {
-            _commands.Add(OverallActionsRegister.Instance.GetItem(OverallAction.Attack).Hotkey, new WaitForAttackTargetCommand());
+            var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Attack).Hotkey;
+            _commands.Add(hotkey, new ListenSecondClickToAttackCommand());
         }
 
         // stop
         if (data.EntityData.CanMove || data.EntityData.CanAttack)
         {
-            _commands.Add(OverallActionsRegister.Instance.GetItem(OverallAction.Stop).Hotkey, new StopCommand());
+            var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Stop).Hotkey;
+            _commands.Add(hotkey, new StopCommand());
         }
 
         // CreateUnits
@@ -87,36 +81,6 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
     #endregion
 
     #region Private methods
-    void ManageAskCursor()
-    {
-        if (!waitingForMouseClick)
-            return;
-
-        if (!Input.GetMouseButtonDown(0))
-            return;
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        switch (waitingForInputCursor)
-        {
-            case AskCursor.Attack:
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
-                {
-                    SelectedGroupsActionsCaller.OrderAttackUnit(hit.transform.GetComponent<Entity>());
-                    waitingForMouseClick = false;
-                }
-                break;
-
-            case AskCursor.Move:
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Grid")))
-                {
-                    SelectedGroupsActionsCaller.OrderMoveToPosition(hit.point);
-                    waitingForMouseClick = false;
-                }
-                break;
-        }
-    }
-
     void ManageHotkeyInput()
     {
         foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))

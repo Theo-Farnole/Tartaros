@@ -12,9 +12,10 @@ public class CursorAspectManager : MonoBehaviour
     public enum CursorState
     {
         Default = 0,
-        OverEntity = 1, // over entity without selection
+        OverAlly = 1, // over entity without selection
         OrderMove = 2,
-        OrderAttack = 3
+        OrderAttack = 3,
+        OverEnemy = 4
     }
 
     #region Fields
@@ -41,42 +42,46 @@ public class CursorAspectManager : MonoBehaviour
 
     void UpdateCursorState()
     {
-        if (SelectionManager.Instance.HasSelection)
+        if (SecondClickListener.Instance.ListenToClick)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            _cursorState = SecondClickListener.Instance.CursorOverride;
+            return;
+        }
 
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
+        {
+            // order cursor
+            if (SelectionManager.Instance.HasSelection)
             {
-                if (hit.transform.GetComponent<Entity>().Team != Team.Sparta)
-                {
-                    _cursorState = CursorState.OrderAttack;
-                }
+                if (hit.transform.GetComponent<Entity>().Team == Team.Sparta)                
+                    _cursorState = CursorState.OrderMove;
+                
                 else
-                {
-                    _cursorState = CursorState.OverEntity;
-                }
+                    _cursorState = CursorState.OrderAttack;
             }
-            else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain")))
-            {
-                _cursorState = CursorState.OrderMove;
-            }
+            // over cursor
             else
             {
-                _cursorState = CursorState.Default;
+                if (hit.transform.GetComponent<Entity>().Team == Team.Sparta)
+                    _cursorState = CursorState.OverAlly;
+
+                else
+                    _cursorState = CursorState.OverEnemy;
             }
+        }
+        else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain")))
+        {
+            if (SelectionManager.Instance.HasSelection)
+                _cursorState = CursorState.OrderMove;
+
+            else
+                _cursorState = CursorState.Default;
         }
         else
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
-            {
-                _cursorState = CursorState.OverEntity;
-            }
-            else
-            {
-                _cursorState = CursorState.Default;
-            }
+            _cursorState = CursorState.Default;
         }
     }
     #endregion

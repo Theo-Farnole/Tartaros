@@ -1382,6 +1382,7 @@ GameObject:
   - component: {fileID: 848056612}
   - component: {fileID: 848056611}
   - component: {fileID: 848056610}
+  - component: {fileID: 848056613}
   m_Layer: 0
   m_Name: === InputListener
   m_TagString: Untagged
@@ -1427,8 +1428,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ce468f90efe1a4da696a6da98fb7dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitingForMouseClick: 0
-  waitingForInputCursor: 0
 --- !u!114 &848056612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1447,6 +1446,19 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 44a99ee545fd8ba46a452b12c1f9378b, type: 3}
   - {fileID: 2800000, guid: 8859fce41c5d0a148ad0b7eebfca7fe9, type: 3}
   - {fileID: 2800000, guid: 2d18e23e3ce249b4489b8bcdd02d3f48, type: 3}
+  - {fileID: 2800000, guid: 2a2b4775272c890448e1bd6239fdfc84, type: 3}
+--- !u!114 &848056613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848056608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: accf59b0a73dfb94a9f9631f1427c6c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &932302543
 GameObject:
   m_ObjectHideFlags: 0

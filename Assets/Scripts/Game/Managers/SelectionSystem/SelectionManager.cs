@@ -74,9 +74,6 @@ public class SelectionManager : Singleton<SelectionManager>
     #region Manage MouseClick
     public void SwitchEntityUnderMouse()
     {
-        if (HotkeyActionListener.Instance.waitingForMouseClick)
-            return;
-
         if (Input.GetKey(KeyCode.LeftShift) == false)
         {
             ClearSelection();

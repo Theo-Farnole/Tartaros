@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.Inspector;
+﻿using CommandPattern;
+using Lortedo.Utilities.Inspector;
 using Registers;
 using System;
 using System.Collections;
@@ -90,16 +91,14 @@ namespace UI.Game
                         case OverallAction.Move:
                             _overallOrders[index].button.onClick.AddListener(() =>
                             {
-                                HotkeyActionListener.Instance.waitingForMouseClick = true;
-                                HotkeyActionListener.Instance.waitingForInputCursor = HotkeyActionListener.AskCursor.Move;
+                                SecondClickListener.Instance.ListenToMove();
                             });
                             break;
 
                         case OverallAction.Attack:
                             _overallOrders[index].button.onClick.AddListener(() =>
                             {
-                                HotkeyActionListener.Instance.waitingForMouseClick = true;
-                                HotkeyActionListener.Instance.waitingForInputCursor = HotkeyActionListener.AskCursor.Attack;
+                                SecondClickListener.Instance.ListenToAttack();
                             });
                             break;
                     }
