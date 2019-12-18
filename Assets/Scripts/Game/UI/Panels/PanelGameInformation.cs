@@ -27,6 +27,8 @@ namespace UI.Game
 
             GameManager.OnGameResourcesUpdate += UpdateResourcesLabel;
             WaveManager.OnWaveTimerUpdate += SetWaveText;
+
+            UpdateResourcesLabel(GameManager.Instance.Resources);
         }
 
         public override void OnValidate()
