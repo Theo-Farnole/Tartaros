@@ -33,6 +33,10 @@ public class Projectile : MonoBehaviour
         if (!_isLaunched)
             return;
 
+        // is the target is dead ?
+        if (_target == null)
+            return;
+
         Entity unit = other.GetComponent<Entity>();
 
         if (unit == _target)
