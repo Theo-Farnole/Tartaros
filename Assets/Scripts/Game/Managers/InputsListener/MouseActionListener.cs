@@ -19,7 +19,6 @@ public class MouseActionListener : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            Debug.Log("XD");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             
