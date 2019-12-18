@@ -2,9 +2,13 @@
 using Registers;
 using UnityEngine;
 
+public delegate void OnResourcesUpdate(ResourcesWrapper resources);
+
 public class GameManager : Singleton<GameManager>
 {
     #region Fields
+    public static event OnResourcesUpdate OnGameResourcesUpdate;
+
     [SerializeField] private GameManagerData _data;
     [SerializeField] private CollisionScalerData _collisionScalerData;
     [SerializeField] private AttackSlotsData _attackSlotsData;
@@ -28,7 +32,7 @@ public class GameManager : Singleton<GameManager>
         set
         {
             _resources = value;
-            UIManager.Instance.PanelGameInformation.UpdateResourcesLabel(_resources);
+            OnGameResourcesUpdate?.Invoke(_resources);
         }
     }
     public OwnedState<GameManager> State
@@ -53,7 +57,7 @@ public class GameManager : Singleton<GameManager>
 
     #region Methods
     #region MonoBehaviour Callbacks
-    void Awake()
+    void Start()
     {
         Resources = _data.StartingResources;
     }

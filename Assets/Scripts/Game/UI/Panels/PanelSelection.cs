@@ -35,17 +35,19 @@ namespace UI.Game
             }
 
             _ordersWrapper.HideOrders();
+
+            SelectionManager.OnSelectionUpdated += UpdateSelection;
         }
 
         public override void OnValidate()
         {
             _ordersWrapper.ResizeArrayIfNeeded();
-        }
+        }        
 
         public void UpdateSelection(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
         {
             UpdateSelectedGroups(selectedGroups);
-            UpdateHighlightGroup(highlightGroupIndex);
+            HighlightGroup(highlightGroupIndex);
 
             if (highlightGroupIndex >= 0 && highlightGroupIndex < selectedGroups.Length)
             {
@@ -53,6 +55,10 @@ namespace UI.Game
             }
         }
 
+        /// <summary>
+        /// Set sprite & units number
+        /// </summary>
+        /// <param name="groupsSelected"></param>
         void UpdateSelectedGroups(SelectionManager.Group[] groupsSelected)
         {
             for (int i = 0; i < _selectedGroupWrapper.Length; i++)
@@ -69,7 +75,10 @@ namespace UI.Game
             }
         }
 
-        void UpdateHighlightGroup(int highlightGroupIndex)
+        /// <summary>
+        /// Only one group can be highlight at the same time.
+        /// </summary>
+        void HighlightGroup(int highlightGroupIndex)
         {
             for (int i = 0; i < _selectedGroupWrapper.Length; i++)
             {

@@ -31,6 +31,20 @@ public class UIManager : AbstractUIManager<UIManager>
         AddAlwaysDisplay<PanelGameInformation>();
 
         DisplayPanel<PanelConstruction>();
+
+        SelectionManager.OnSelectionUpdated += ManagePanelDisplay;
+    }
+
+    void ManagePanelDisplay(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
+    {
+        if (selectedGroups.Length == 0)
+        {
+            DisplayPanel<PanelConstruction>();
+        }
+        else
+        {
+            DisplayPanel<PanelSelection>();
+        }
     }
     #endregion
 }

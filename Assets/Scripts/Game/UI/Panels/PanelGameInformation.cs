@@ -24,6 +24,9 @@ namespace UI.Game
         public override void Initialize()
         {
             _waveIndicator.gameObject.SetActive(false);
+
+            GameManager.OnGameResourcesUpdate += UpdateResourcesLabel;
+            WaveManager.OnWaveTimerUpdate += SetWaveText;
         }
 
         public override void OnValidate()

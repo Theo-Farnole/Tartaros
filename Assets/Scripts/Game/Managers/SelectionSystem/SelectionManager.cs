@@ -6,6 +6,8 @@ using UI.Game;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public delegate void OnSelectionUpdated(SelectionManager.Group[] selectedGroups, int highlightGroupIndex);
+
 public class SelectionManager : Singleton<SelectionManager>
 {
     #region Struct
@@ -24,6 +26,8 @@ public class SelectionManager : Singleton<SelectionManager>
     #endregion
 
     #region Fields
+    public static event OnSelectionUpdated OnSelectionUpdated;
+
     [SerializeField] private SelectionRectManager _selectionRect;
 
     private List<Group> _selectedGroups = new List<Group>();
@@ -53,20 +57,6 @@ public class SelectionManager : Singleton<SelectionManager>
         if (Input.GetMouseButtonUp(0) && !_selectionRect.IsSelecting)
         {
             SwitchEntityUnderMouse();
-        }
-    }
-    #endregion
-
-    #region UI Methods Call
-    private void UpdateUI()
-    {
-        if (_selectedGroups.Count == 0)
-        {
-            UIManager.Instance.DisplayPanel<PanelConstruction>();
-        }
-        else
-        {
-            UIManager.Instance.DisplayPanel<PanelSelection>();
         }
     }
     #endregion
@@ -101,7 +91,7 @@ public class SelectionManager : Singleton<SelectionManager>
             _highlightGroupIndex++;
             if (_highlightGroupIndex >= _selectedGroups.Count) _highlightGroupIndex = 0;
 
-            UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
+            OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
         }
     }
     #endregion
@@ -134,9 +124,7 @@ public class SelectionManager : Singleton<SelectionManager>
         groupWithSameType.unitsSelected.Add(selectableEntity);
         selectableEntity.GetCharacterComponent<EntitySelectable>().OnSelected();
 
-        UpdateUI();
-        UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
-        HotkeyActionListener.Instance.SetHotkeyHandler(_selectedGroups[0].entityType);
+        OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);  
     }
 
     public void RemoveEntity(Entity selectableEntity)
@@ -170,9 +158,7 @@ public class SelectionManager : Singleton<SelectionManager>
 
         if (_selectedGroups.Count == 0) _highlightGroupIndex = -1;
 
-        UpdateUI();
-        UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
-        HotkeyActionListener.Instance.SetHotkeyHandler(_selectedGroups[0].entityType);
+        OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
     }
 
     /// <summary>
@@ -205,9 +191,7 @@ public class SelectionManager : Singleton<SelectionManager>
         _selectedGroups.Clear();
         _highlightGroupIndex = -1;
 
-        UIManager.Instance.PanelSelection.UpdateSelection(_selectedGroups.ToArray(), _highlightGroupIndex);
-        HotkeyActionListener.Instance.ClearCommandsHandler();
-        UpdateUI();
+        OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);                
     }
     #endregion
     #endregion

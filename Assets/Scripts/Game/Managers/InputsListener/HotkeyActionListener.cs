@@ -18,13 +18,17 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
 
     #region Methods
     #region MonoBehaviour Callbacks
+    void Start()
+    {
+        SelectionManager.OnSelectionUpdated += OnSelectionUpdated;   
+    }
     void Update()
     {
         ManageHotkeyInput();
     }
     #endregion
 
-    #region Public methods
+    #region Private methods
     /// <summary>
     /// Clear and re-set _commands dictionary.
     /// </summary>
@@ -78,10 +82,8 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
     {
         _commands.Clear();
     }
-    #endregion
-
-    #region Private methods
-    void ManageHotkeyInput()
+    
+    private void ManageHotkeyInput()
     {
         foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
         {
@@ -92,6 +94,18 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
                     _commands[vKey].Execute();
                 }
             }
+        }
+    }
+
+    private void OnSelectionUpdated(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
+    {
+        if (selectedGroups.Length > 0 && selectedGroups[0] != null)
+        {
+            SetHotkeyHandler(selectedGroups[0].entityType);
+        }
+        else
+        {
+            ClearCommandsHandler();
         }
     }
     #endregion

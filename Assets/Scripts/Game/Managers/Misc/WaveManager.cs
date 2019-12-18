@@ -2,26 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void OnWaveTimerUpdate(int waveCount, float remainingTime);
+
 /// <summary>
 /// Spawn enemies waves frequently.
 /// </summary>
 public class WaveManager : MonoBehaviour
 {
     #region Fields
+    public static event OnWaveTimerUpdate OnWaveTimerUpdate;
+
     [SerializeField] private WaveManagerData _data;
 
     private int _waveCount = 1;
     private float _timer = 0;
-    #endregion
-
-    #region Properties
-    private float RemainingTime
-    {
-        get
-        {
-            return _data.TimerBetweenWavesInSeconds - _timer;
-        }
-    }
     #endregion
 
     #region Methods
@@ -29,9 +23,11 @@ public class WaveManager : MonoBehaviour
     {
         _timer += Time.deltaTime;
 
-        UIManager.Instance.PanelGameInformation.SetWaveText(_waveCount, RemainingTime);
+        float remainingTime = _data.TimerBetweenWavesInSeconds - _timer;
 
-        if (RemainingTime <= 0)
+        OnWaveTimerUpdate?.Invoke(_waveCount, remainingTime);
+
+        if (remainingTime <= 0)
         {
             TriggerWave();
         }

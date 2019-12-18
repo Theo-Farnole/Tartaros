@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.lortedo.utilities": "https://github.com/Lortedo29/Utilities.git#054f2021d4fa6e819696ec23d169bc2b1e6fb146",
+    "com.lortedo.utilities": "https://github.com/Lortedo29/Utilities.git#c435facff64d2f1861f5ff75984373c644c9a55f",
     "com.unity.ads": "2.0.8",
     "com.unity.analytics": "3.3.2",
     "com.unity.collab-proxy": "1.2.16",
@@ -41,8 +41,8 @@
   },
   "lock": {
     "com.lortedo.utilities": {
-      "hash": "054f2021d4fa6e819696ec23d169bc2b1e6fb146",
-      "revision": "054f2021d4fa6e819696ec23d169bc2b1e6fb146"
+      "hash": "c435facff64d2f1861f5ff75984373c644c9a55f",
+      "revision": "c435facff64d2f1861f5ff75984373c644c9a55f"
     }
   }
 }
