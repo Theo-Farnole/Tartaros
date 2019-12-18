@@ -44,12 +44,9 @@ public class SecondClickListener : Singleton<SecondClickListener>
 
         _actionOnClick = (RaycastHit hit) =>
         {
-            Debug.Log("Second click");
-
             // do we hit terrain ?
             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
             {
-                Debug.Log("hit point = " + hit.point);
                 SelectedGroupsActionsCaller.OrderMoveAggressively(hit.point);
             }
             else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Entity"))
@@ -72,7 +69,6 @@ public class SecondClickListener : Singleton<SecondClickListener>
 
         _actionOnClick = (RaycastHit hit) =>
         {
-            Debug.Log("Move to pos");
             SelectedGroupsActionsCaller.OrderMoveToPosition(hit.point);
         };
     }
