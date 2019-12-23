@@ -1,7 +1,9 @@
 {
     "name": "LeonidasProject.External.Editor",
     "references": [
-        "GUID:c75a110dfecb40646a6e6397a136af85"
+        "GUID:c75a110dfecb40646a6e6397a136af85",
+        "GUID:a35efad8797223d499f8c68b1f545dbc",
+        "GUID:d60799ab2a985554ea1a39cd38695018"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
