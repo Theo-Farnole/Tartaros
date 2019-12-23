@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -814,7 +814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 476398939}
   - component: {fileID: 476398940}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Errors Messages
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1974,7 +1974,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1261831974}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvases
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2222,7 +2222,7 @@ GameObject:
   - component: {fileID: 1523630475}
   - component: {fileID: 1523630477}
   - component: {fileID: 1523630476}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2326,7 +2326,7 @@ GameObject:
   - component: {fileID: 1566114766}
   - component: {fileID: 1566114765}
   - component: {fileID: 1566114764}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas - Errors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2831,7 +2831,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1737971471}
   - component: {fileID: 1737971472}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Errors Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3138,7 +3138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1925576844}
   - component: {fileID: 4288023078682847208}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3555,7 +3555,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2054337208}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Interface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
