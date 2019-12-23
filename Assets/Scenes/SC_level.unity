@@ -96,7 +96,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000004, guid: faabd9893bbd34d4db76e2cab63fc14c,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -282,6 +283,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Entity_Unit_Kassandra (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -431,6 +437,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Xerxes (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2860701231306052999, guid: 707a40530aeebfa478d1ad7a721a9af6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2860701231306052996, guid: 707a40530aeebfa478d1ad7a721a9af6,
         type: 3}
@@ -1143,6 +1154,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Entity_Unit_Kassandra (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1312,7 +1328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &722766863
 Transform:
   m_ObjectHideFlags: 0
@@ -1346,6 +1362,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Kassandra (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
@@ -1497,6 +1518,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Entity_Unit_Xerxes (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2860701231306052999, guid: 707a40530aeebfa478d1ad7a721a9af6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2860701231306052996, guid: 707a40530aeebfa478d1ad7a721a9af6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1571,6 +1597,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Kassandra (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
@@ -1713,7 +1744,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.43033826, y: -0, z: -0, w: 0.90266776}
-  m_LocalPosition: {x: 28.57, y: 9.1, z: 10.9}
+  m_LocalPosition: {x: 26.97, y: 11, z: 9.69}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1743,6 +1774,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Kassandra (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
@@ -1893,6 +1929,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Xerxes (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2860701231306052999, guid: 707a40530aeebfa478d1ad7a721a9af6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2860701231306052996, guid: 707a40530aeebfa478d1ad7a721a9af6,
         type: 3}
@@ -2119,6 +2160,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Entity_Unit_Xerxes (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 2860701231306052999, guid: 707a40530aeebfa478d1ad7a721a9af6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2860701231306052996, guid: 707a40530aeebfa478d1ad7a721a9af6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2193,6 +2239,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Xerxes (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2860701231306052999, guid: 707a40530aeebfa478d1ad7a721a9af6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2860701231306052996, guid: 707a40530aeebfa478d1ad7a721a9af6,
         type: 3}
@@ -2422,7 +2473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1309624514
 Transform:
   m_ObjectHideFlags: 0
@@ -2535,6 +2586,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Xerxes (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2860701231306052999, guid: 707a40530aeebfa478d1ad7a721a9af6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2860701231306052996, guid: 707a40530aeebfa478d1ad7a721a9af6,
         type: 3}
@@ -2760,6 +2816,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Kassandra (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
@@ -3099,6 +3160,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Entity_Unit_Kassandra (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3249,6 +3315,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Entity_Unit_Xerxes (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 2860701231306052999, guid: 707a40530aeebfa478d1ad7a721a9af6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2860701231306052996, guid: 707a40530aeebfa478d1ad7a721a9af6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3398,6 +3469,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Xerxes (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2860701231306052999, guid: 707a40530aeebfa478d1ad7a721a9af6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2860701231306052996, guid: 707a40530aeebfa478d1ad7a721a9af6,
         type: 3}
@@ -3752,6 +3828,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Kassandra (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}

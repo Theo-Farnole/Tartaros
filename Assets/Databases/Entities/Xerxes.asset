@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Xerxes
   m_EditorClassIdentifier: 
   _isInvincible: 0
-  _hp: 100
+  _hp: 285
   _spawningCost:
     food: 20
     wood: 5
