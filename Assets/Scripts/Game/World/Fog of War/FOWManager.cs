@@ -23,9 +23,13 @@ namespace FogOfWar
             _visiblityMap = new FogState[_snapGrid.Data.CellCount, _snapGrid.Data.CellCount];
 
             // initialize circle with NOT_VISIBLE
-            for (int i = 0; i < _visiblityMap.GetLength(0); i++)
+            int lenghtOne = _visiblityMap.GetLength(0);
+
+            for (int i = 0; i < lenghtOne; i++)
             {
-                for (int j = 0; j < _visiblityMap.GetLength(1); j++)
+                int lengthTwo = _visiblityMap.GetLength(1);
+
+                for (int j = 0; j < lengthTwo; j++)
                 {
                     _visiblityMap[i, j] = FogState.NotVisible;
                 }
@@ -34,12 +38,8 @@ namespace FogOfWar
 
         void Update()
         {
-            // update fog each 3 frames
-            if (Time.frameCount % 3 == 0)
-            {
                 UpdateVisibilityMap();
-                UpdateCoverablesVisibility();
-            }
+                UpdateCoverablesVisibility();            
         }
 
         void OnDrawGizmos()
@@ -73,9 +73,11 @@ namespace FogOfWar
         void UpdateVisibilityMap()
         {
             // set all VISIBLE coords to REAVEALED
-            for (int x = 0; x < _visiblityMap.GetLength(0); x++)
+            int lengthOne = _visiblityMap.GetLength(0);
+            for (int x = 0; x < lengthOne; x++)
             {
-                for (int y = 0; y < _visiblityMap.GetLength(1); y++)
+                int lengthTwo = _visiblityMap.GetLength(1);
+                for (int y = 0; y < lengthTwo; y++)
                 {
                     if (_visiblityMap[x, y] == FogState.Visible)
                     {
