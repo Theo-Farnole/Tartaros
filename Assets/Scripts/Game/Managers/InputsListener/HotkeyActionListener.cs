@@ -85,14 +85,11 @@ public class HotkeyActionListener : Singleton<HotkeyActionListener>
     
     private void ManageHotkeyInput()
     {
-        foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
+        foreach (var kvp in _commands)
         {
-            if (Input.GetKeyDown(vKey))
+            if (Input.GetKeyDown(kvp.Key))
             {
-                if (_commands.ContainsKey(vKey))
-                {
-                    _commands[vKey].Execute();
-                }
+                kvp.Value.Execute();
             }
         }
     }
