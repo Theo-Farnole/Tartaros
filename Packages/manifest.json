@@ -1,12 +1,8 @@
 {
   "dependencies": {
     "com.lortedo.utilities": "https://github.com/Lortedo29/Utilities.git#c435facff64d2f1861f5ff75984373c644c9a55f",
-    "com.unity.ads": "2.0.8",
-    "com.unity.analytics": "3.3.2",
-    "com.unity.collab-proxy": "1.2.16",
     "com.unity.package-manager-ui": "2.1.2",
     "com.unity.postprocessing": "2.1.7",
-    "com.unity.purchasing": "2.0.6",
     "com.unity.recorder": "2.1.0-preview.1",
     "com.unity.textmeshpro": "2.0.1",
     "com.unity.timeline": "1.0.0",
