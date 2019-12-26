@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Game.FogOfWar;
+using Game.Selection;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -49,7 +51,7 @@ public class DebugUtils : MonoBehaviour
 
             if (Input.GetKeyDown(_displayMapKey))
             {
-                FogOfWar.FOWManager.Instance.DebugLogVisiblityMap();
+                FOWManager.Instance.DebugLogVisiblityMap();
             }
         }
     }

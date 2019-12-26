@@ -1,4 +1,4 @@
-﻿using FogOfWar;
+﻿using Game.FogOfWar;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-namespace FogOfWar
+namespace Game.FogOfWar
 {
     public class FOWManager : Singleton<FOWManager>
     {
@@ -38,8 +38,8 @@ namespace FogOfWar
 
         void Update()
         {
-                UpdateVisibilityMap();
-                UpdateCoverablesVisibility();            
+            UpdateVisibilityMap();
+            UpdateCoverablesVisibility();
         }
 
         void OnDrawGizmos()

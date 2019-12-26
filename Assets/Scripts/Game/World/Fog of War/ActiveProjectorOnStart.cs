@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FogOfWar
+namespace Game.FogOfWar
 {
     public class ActiveProjectorOnStart : MonoBehaviour
     {
