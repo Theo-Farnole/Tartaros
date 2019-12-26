@@ -21,7 +21,7 @@ public class EntitySelectable : EntityComponent
             ObjectPooler.Instance.EnqueueGameObject("selection_circle", _selectionCircle);
         }
 
-        SelectionManager.Instance.RemoveEntity(Entity);
+        Game.Selection.SelectionManager.Instance.RemoveEntity(Entity);
     }
     #endregion
 
