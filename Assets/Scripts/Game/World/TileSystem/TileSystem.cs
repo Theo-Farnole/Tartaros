@@ -3,29 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileSystem : Singleton<TileSystem>
+public class TileSystem
 {
     #region Fields
-    [SerializeField] private SnapGridDatabase _data;
-
     private Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>();
     #endregion
 
-    #region Methods
-    void Awake()
+    #region Ctor
+    public TileSystem()
     {
-        // init tiles dictionnary
-        int midCellCount = _data.CellCount / 2;
-
-        for (int x = -midCellCount; x <= midCellCount; x++)
-        {
-            for (int y = -midCellCount; y <= midCellCount; y++)
-            {
-                _tiles.Add(new Vector2Int(x, y), null);
-            }
-        }
+        ResetAllTiles();
     }
-    
+    #endregion
+
+    #region Public Methods
     public GameObject GetTile(Vector2Int coords)
     {
         if (_tiles.ContainsKey(coords))
@@ -56,9 +47,28 @@ public class TileSystem : Singleton<TileSystem>
     {
         Vector3 gridPosition = GameManager.Instance.Grid.GetNearestPosition(worldPosition);
 
-        Vector2Int result = new Vector2Int((int)(gridPosition.x / _data.CellSize), (int)(gridPosition.z / _data.CellSize));
+        var cellSize = GameManager.Instance.Grid.Data.CellSize;
+        Vector2Int result = new Vector2Int((int)(gridPosition.x / cellSize), (int)(gridPosition.z / cellSize));
 
         return result;
+    }
+    #endregion
+
+    #region Private methods
+    /// <summary>
+    /// Set each tile to null.
+    /// </summary>
+    private void ResetAllTiles()
+    {
+        int midCellCount = GameManager.Instance.Grid.Data.CellCount / 2;
+
+        for (int x = -midCellCount; x <= midCellCount; x++)
+        {
+            for (int y = -midCellCount; y <= midCellCount; y++)
+            {
+                _tiles.Add(new Vector2Int(x, y), null);
+            }
+        }
     }
     #endregion
 }

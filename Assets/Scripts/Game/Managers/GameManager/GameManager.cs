@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
 
     private OwnedState<GameManager> _state = null;
     private ResourcesWrapper _resources = new ResourcesWrapper();
+    private TileSystem _tileSystem;
 
     private static bool _applicationIsQuitting = false;
     #endregion
@@ -53,6 +54,7 @@ public class GameManager : Singleton<GameManager>
     public static bool ApplicationIsQuitting { get => _applicationIsQuitting; }
     public CollisionScalerData CollisionScalerData { get => _collisionScalerData; }
     public AttackSlotsData AttackSlotsData { get => _attackSlotsData; }
+    public TileSystem TileSystem { get => _tileSystem; }
     #endregion
 
     #region Methods
@@ -60,6 +62,11 @@ public class GameManager : Singleton<GameManager>
     void Awake()
     {
         Resources = _data.StartingResources;
+    }
+
+    void Start()
+    {
+        _tileSystem = new TileSystem();
     }
 
     void Update()
