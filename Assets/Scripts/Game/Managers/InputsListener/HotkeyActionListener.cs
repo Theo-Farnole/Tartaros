@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HotkeyActionListener : Singleton<HotkeyActionListener>
+public class HotkeyActionListener : MonoBehaviour
 {
     public enum AskCursor
     {
