@@ -22,30 +22,33 @@ namespace Game.FogOfWar
             int x = 0;
             int y = radius;
 
+            int lengthOne = array.GetLength(0);
+            int lengthTwo = array.GetLength(1);
+
             do
             {
                 // ensure index is in range before setting (depends on your image implementation)
                 // in this case we check if the pixel location is within the bounds of the image before setting the pixel
-                if (centerX + x >= 0 && centerX + x <= array.GetLength(0) - 1 && centerY + y >= 0 && centerY + y <= array.GetLength(1) - 1 &&
-                    centerX + x >= 0 && centerX + x <= array.GetLength(0) - 1 && centerY - y >= 0 && centerY - y <= array.GetLength(1) - 1)
+                if (centerX + x >= 0 && centerX + x <= lengthOne - 1 &&
+                    centerY + y >= 0 && centerY + y <= lengthTwo - 1 && centerY - y >= 0 && centerY - y <= lengthTwo - 1)
                 {
                     DrawLine(array, centerX + x, centerY + y, centerX + x, centerY - y, fulfillValue);
                 }
 
-                if (centerX - x >= 0 && centerX - x <= array.GetLength(0) - 1 && centerY + y >= 0 && centerY + y <= array.GetLength(1) - 1 &&
-                    centerX - x >= 0 && centerX - x <= array.GetLength(0) - 1 && centerY - y >= 0 && centerY - y <= array.GetLength(1) - 1)
+                if (centerX - x >= 0 && centerX - x <= lengthOne - 1 &&
+                    centerY + y >= 0 && centerY + y <= lengthTwo - 1 && centerY - y >= 0 && centerY - y <= lengthTwo - 1)
                 {
                     DrawLine(array, centerX - x, centerY - y, centerX - x, centerY + y, fulfillValue);
                 }
 
-                if (centerX + y >= 0 && centerX + y <= array.GetLength(0) - 1 && centerY + x >= 0 && centerY + x <= array.GetLength(1) - 1 &&
-                    centerX + y >= 0 && centerX + y <= array.GetLength(0) - 1 && centerY - x >= 0 && centerY - x <= array.GetLength(1) - 1)
+                if (centerX + y >= 0 && centerX + y <= lengthOne - 1 &&
+                    centerY + x >= 0 && centerY + x <= lengthTwo - 1 && centerY - x >= 0 && centerY - x <= lengthTwo - 1)
                 {
                     DrawLine(array, centerX + y, centerY + x, centerX + y, centerY - x, fulfillValue);
                 }
 
-                if (centerX - y >= 0 && centerX - y <= array.GetLength(0) - 1 && centerY + x >= 0 && centerY + x <= array.GetLength(1) - 1 &&
-                    centerX - y >= 0 && centerX - y <= array.GetLength(0) - 1 && centerY - x >= 0 && centerY - x <= array.GetLength(1) - 1)
+                if (centerX - y >= 0 && centerX - y <= lengthOne - 1 &&
+                    centerY + x >= 0 && centerY + x <= lengthTwo - 1 && centerY - x >= 0 && centerY - x <= lengthTwo - 1)
                 {
                     DrawLine(array, centerX - y, centerY + x, centerX - y, centerY - x, fulfillValue);
                 }
