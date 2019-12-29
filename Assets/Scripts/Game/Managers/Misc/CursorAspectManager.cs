@@ -24,10 +24,16 @@ public class CursorAspectManager : MonoBehaviour
     [SerializeField, EnumNamedArray(typeof(CursorState))] private Texture2D[] _cursorTextures;
 
     private CursorState _cursorState = CursorState.Default;
+    private Camera _mainCamera;
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
+    void Start()
+    {
+        _mainCamera = Camera.main;
+    }
+
     void Update()
     {
         UpdateCursorState();
@@ -42,14 +48,14 @@ public class CursorAspectManager : MonoBehaviour
     #endregion
 
     void UpdateCursorState()
-    {
+    {        
         if (SecondClickListener.Instance.ListenToClick)
         {
             _cursorState = SecondClickListener.Instance.CursorOverride;
             return;
         }
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
         {
