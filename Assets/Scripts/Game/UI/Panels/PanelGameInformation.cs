@@ -10,6 +10,9 @@ namespace UI.Game
     public class PanelGameInformation : Panel
     {
         #region Fields
+        private const string TIME_FORMAT = "{0}:{1:00}";
+        private const string WAVE_FORMAT = "Wave # {0} in {1} minutes";
+
         [Space(order = 0)]
         [Header("Content", order = 1)]
         [SerializeField] private TextMeshProUGUI _waveIndicator;
@@ -51,15 +54,9 @@ namespace UI.Game
             int remainingMinutes = Mathf.FloorToInt(remainingTime / 60);
             int remainingSeconds = Mathf.FloorToInt(remainingTime % 60);
 
-            string stringTime = remainingMinutes.ToString();
-
-            if (remainingMinutes <= 5)
-            {
-                stringTime = string.Format("{0}:{1:00}", remainingMinutes, remainingSeconds);
-            }
-
-            _waveIndicator.gameObject.SetActive(true);
-            _waveIndicator.text = "Wave #" + waveCount + " in " + stringTime + " minutes";
+            string stringTime = string.Format(TIME_FORMAT, remainingMinutes, remainingSeconds);            
+            
+            _waveIndicator.text = string.Format(WAVE_FORMAT, waveCount, stringTime);
         }
         #endregion
     }

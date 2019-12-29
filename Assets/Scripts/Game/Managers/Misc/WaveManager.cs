@@ -21,12 +21,19 @@ public class WaveManager : MonoBehaviour
     #region Methods
     void Update()
     {
+        int oldTimerInSeconds = (int)_timer;
         _timer += Time.deltaTime;
 
         float remainingTime = _data.TimerBetweenWavesInSeconds - _timer;
 
-        OnWaveTimerUpdate?.Invoke(_waveCount, remainingTime);
+        // Manage OnWaveTimerUpdate trigger:
+        // trigger each seconds
+        if (oldTimerInSeconds < (int)_timer)
+        {
+            OnWaveTimerUpdate?.Invoke(_waveCount, remainingTime);
+        }
 
+        // manage wave triggering
         if (remainingTime <= 0)
         {
             TriggerWave();
