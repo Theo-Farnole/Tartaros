@@ -16,6 +16,17 @@ public enum OrdersType
 [CreateAssetMenu(menuName = "Leonidas Legacy/Entity")]
 public class EntityData : ScriptableObject
 {
+    #region Misc
+    [SerializeField] private Sprite _portrait;
+    [SerializeField] private GameObject _prefab;
+    [Space]
+    [SerializeField] private KeyCode _hotkey;
+
+    public Sprite Portrait { get => _portrait; }
+    public KeyCode Hotkey { get => _hotkey; }
+    public GameObject Prefab { get => _prefab; }
+    #endregion
+
     #region Health Settings
     [Header("Health Settings")]
     [SerializeField] private bool _isInvincible = false;

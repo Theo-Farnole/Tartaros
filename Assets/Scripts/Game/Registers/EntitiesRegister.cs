@@ -6,7 +6,7 @@ namespace Registers
 {
     public static class EntitiesRegister
     {
-        public static RegisterData GetRegisterData(EntityType type)
+        public static EntityData GetRegisterData(EntityType type)
         {
             UnitType? unitType = type.GetUnitType();
 

@@ -31,14 +31,14 @@ public class EntityUnitSpawner : EntityComponent
 
         var unitData = UnitsRegister.Instance.GetItem(unitType);
 
-        if (GameManager.Instance.Resources.HasEnoughResources(unitData.EntityData.SpawningCost) == false)
+        if (GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost) == false)
         {
             UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitType + ".");
             return;
         }
 
         // remove resources
-        GameManager.Instance.Resources -= unitData.EntityData.SpawningCost;
+        GameManager.Instance.Resources -= unitData.SpawningCost;
 
         // instantiate
         var instantiatedObject = Object.Instantiate(unitData.Prefab, transform.position, Quaternion.identity);

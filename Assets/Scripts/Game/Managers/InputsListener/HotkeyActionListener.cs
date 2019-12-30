@@ -38,35 +38,35 @@ public class HotkeyActionListener : MonoBehaviour
     {
         ClearCommandsHandler();
 
-        RegisterData data = EntitiesRegister.GetRegisterData(typeToListenHotkey);
+        EntityData data = EntitiesRegister.GetRegisterData(typeToListenHotkey);
 
         // move
-        if (data.EntityData.CanMove)
+        if (data.CanMove)
         {
             var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Move).Hotkey;
             _commands.Add(hotkey, new ListenSecondClickToMoveCommand());
         }
 
         // attack
-        if (data.EntityData.CanAttack)
+        if (data.CanAttack)
         {
             var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Attack).Hotkey;
             _commands.Add(hotkey, new ListenSecondClickToAttackCommand());
         }
 
         // stop
-        if (data.EntityData.CanMove || data.EntityData.CanAttack)
+        if (data.CanMove || data.CanAttack)
         {
             var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Stop).Hotkey;
             _commands.Add(hotkey, new StopCommand());
         }
 
         // CreateUnits
-        if (data.EntityData.CanCreateResources)
+        if (data.CanCreateResources)
         {
-            for (int i = 0; i < data.EntityData.AvailableUnitsForCreation.Length; i++)
+            for (int i = 0; i < data.AvailableUnitsForCreation.Length; i++)
             {
-                UnitType unit = data.EntityData.AvailableUnitsForCreation[i];
+                UnitType unit = data.AvailableUnitsForCreation[i];
                 KeyCode hotkey = UnitsRegister.Instance.GetItem(unit).Hotkey;
 
                 if (_commands.ContainsKey(hotkey))

@@ -87,7 +87,7 @@ public class GameManager : Singleton<GameManager>
 
     public void StartBuilding(BuildingType buildingType)
     {
-        var buildingCost = BuildingsRegister.Instance.GetItem(buildingType).EntityData.SpawningCost;
+        var buildingCost = BuildingsRegister.Instance.GetItem(buildingType).SpawningCost;
 
         // check if we has enought resources, otherwise we create error message
         if (_resources.HasEnoughResources(buildingCost))

@@ -14,7 +14,7 @@ public class BuildingState : OwnedState<GameManager>
     #endregion
 
     #region Properties
-    private ResourcesWrapper CurrentBuildingCost { get => BuildingsRegister.Instance.GetItem(_buildingType).EntityData.SpawningCost; }
+    private ResourcesWrapper CurrentBuildingCost { get => BuildingsRegister.Instance.GetItem(_buildingType).SpawningCost; }
     #endregion
 
     #region Methods

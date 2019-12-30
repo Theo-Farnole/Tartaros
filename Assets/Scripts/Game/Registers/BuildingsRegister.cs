@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Registers
 {
-    public class BuildingsRegister : Register<RegisterData, BuildingType>
+    public class BuildingsRegister : Register<EntityData, BuildingType>
     {
         [EnumNamedArray(typeof(BuildingType))]
-        [SerializeField] private RegisterData[] _buildingsData;
+        [SerializeField] private EntityData[] _buildingsData;
 
-        protected override RegisterData[] Prefabs { get => _buildingsData; set => _buildingsData = value; }
+        protected override EntityData[] Prefabs { get => _buildingsData; set => _buildingsData = value; }
         protected override int DeltaIndex { get => EntitiesSystem.STARTING_INDEX_BUILDING; }
     }
 }

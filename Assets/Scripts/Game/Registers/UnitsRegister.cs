@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace Registers
 {
-    public class UnitsRegister : Register<RegisterData, UnitType>
+    public class UnitsRegister : Register<EntityData, UnitType>
     {
         [EnumNamedArray(typeof(UnitType))]
-        [SerializeField] private RegisterData[] _unitsData;
+        [SerializeField] private EntityData[] _unitsData;
 
-        protected override RegisterData[] Prefabs { get => _unitsData; set => _unitsData = value; }
+        protected override EntityData[] Prefabs { get => _unitsData; }
     }
 }
