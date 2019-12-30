@@ -98,7 +98,7 @@ public class BuildingState : OwnedState<GameManager>
 
     void EnableBuildingComponents(bool enabled)
     {
-        var fowEntity = _building.GetComponent<EntityFog>();
+        var fowEntity = _building.GetComponent<EntityFogVision>();
         if (fowEntity) fowEntity.enabled = enabled;
 
         var collider = _building.GetComponent<Collider>();

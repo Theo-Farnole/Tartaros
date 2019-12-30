@@ -107,7 +107,7 @@ namespace Game.Selection
         public void AddEntity(Entity selectableEntity)
         {
             // prevent covered entity by fog to be selected
-            if (selectableEntity.GetCharacterComponent<EntityFog>().IsCover)
+            if (selectableEntity.GetCharacterComponent<EntityFogCoverable>().IsCover)
                 return;
 
             Group groupOfSameEntity = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);

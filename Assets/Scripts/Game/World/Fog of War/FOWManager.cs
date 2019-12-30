@@ -12,8 +12,8 @@ namespace Game.FogOfWar
         [SerializeField] private SnapGrid _snapGrid;
         [SerializeField, HideInInspector] private FogState[,] _visiblityMap; // allow hot reloading in Editor
 
-        private List<EntityFog> _viewers = new List<EntityFog>();
-        private List<EntityFog> _coverables = new List<EntityFog>();
+        private List<EntityFogVision> _viewers = new List<EntityFogVision>();
+        private List<EntityFogCoverable> _coverables = new List<EntityFogCoverable>();
         #endregion
 
         #region Methods
@@ -49,22 +49,22 @@ namespace Game.FogOfWar
         #endregion
 
         #region Entities Manager
-        public void AddViewer(EntityFog entity)
+        public void AddViewer(EntityFogVision entity)
         {
             _viewers.Add(entity);
         }
 
-        public void RemoveViewer(EntityFog entity)
+        public void RemoveViewer(EntityFogVision entity)
         {
             _viewers.Remove(entity);
         }
 
-        public void RemoveCoverable(EntityFog entity)
+        public void RemoveCoverable(EntityFogCoverable entity)
         {
             _coverables.Remove(entity);
         }
 
-        public void AddCoverable(EntityFog entity)
+        public void AddCoverable(EntityFogCoverable entity)
         {
             _coverables.Add(entity);
         }
@@ -113,7 +113,7 @@ namespace Game.FogOfWar
                     }
                 }
 
-                _coverables[i].Coverable.IsCover = isCover;
+                _coverables[i].IsCover = isCover;
             }
         }
 

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 455334535001722546}
   m_Layer: 10
-  m_Name: model
+  m_Name: root model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,11 +43,12 @@ GameObject:
   - component: {fileID: 1857228485785385176}
   - component: {fileID: 1664664131638771059}
   - component: {fileID: 1991522610364982485}
-  - component: {fileID: 6261583799851675639}
   - component: {fileID: 5768891148569738931}
   - component: {fileID: 1973910105360460874}
   - component: {fileID: 740102528687251293}
   - component: {fileID: 3143762813810147004}
+  - component: {fileID: 379675412609147244}
+  - component: {fileID: 6438216404893168145}
   m_Layer: 10
   m_Name: _PF_Entity_TEMPLATE
   m_TagString: Untagged
@@ -125,22 +126,6 @@ MonoBehaviour:
   _sliderCanvas: {fileID: 5046857017774301124}
   _healthSlider: {fileID: 4858297113472359025}
   _hideHealthSliderIfFull: 1
---- !u!114 &6261583799851675639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8927950564186908724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ad8dab8740215841b69d608251c99e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _fogOfWarVision: {fileID: 581013801734161498}
-  _coverable:
-    _renderer: {fileID: 615816181766502727}
-    collider: {fileID: 0}
 --- !u!114 &5768891148569738931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +174,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fc4ca9f61958b4190196c33bf94d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &379675412609147244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927950564186908724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a33c2b115e0154b84fa87c4da4b850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rootModelRenderer: {fileID: 615816181766502727}
+--- !u!114 &6438216404893168145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927950564186908724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5356d1c21afc8944ebf291ab4f766329, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fogOfWarVision: {fileID: 581013801734161498}
 --- !u!1 &9025644110156182020
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,7 +216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6340307448227594121
 Transform:
   m_ObjectHideFlags: 0

@@ -43,6 +43,9 @@ public class Entity : MonoBehaviour
     void Start()
     {
         _data = Registers.EntitiesRegister.GetRegisterData(_type).EntityData;
+
+        if (_team == Team.Sparta) Destroy(GetCharacterComponent<EntityFogCoverable>());
+        else Destroy(GetCharacterComponent<EntityFogVision>());
     }
 
     void Update()
