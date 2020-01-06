@@ -24,7 +24,7 @@ namespace UI.Game
         #endregion
 
         #region Methods
-        public override void Initialize()
+        public override void Initialize<T>(T uiManager)
         {
             _waveIndicator.gameObject.SetActive(false);
 

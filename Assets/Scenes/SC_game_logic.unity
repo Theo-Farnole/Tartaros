@@ -3706,7 +3706,7 @@ MonoBehaviour:
   _attackSlotsData: {fileID: 11400000, guid: 68f195092593ef145a60ecd840aff05e, type: 2}
   _grid:
     _data: {fileID: 11400000, guid: cec9b11254a888f41b35a2d0a91e718d, type: 2}
-    _debugDrawGrid: 1
+    _debugDrawGrid: 0
     _gridColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!222 &1929407581235524849
 CanvasRenderer:

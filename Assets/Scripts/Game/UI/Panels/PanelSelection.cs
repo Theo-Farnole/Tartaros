@@ -26,7 +26,7 @@ namespace UI.Game
         #endregion
 
         #region Methods
-        public override void Initialize()
+        public override void Initialize<T>(T uiManager)
         {
             for (int i = 0; i < _selectedGroupWrapper.Length; i++)
             {

@@ -12,7 +12,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class UIManager : AbstractUIManager<UIManager>
+public class UIManager : AbstractUIManager
 {
     #region Fields
     [SerializeField] private PanelGameInformation _panelGameInformation;
@@ -24,13 +24,16 @@ public class UIManager : AbstractUIManager<UIManager>
     public PanelGameInformation PanelGameInformation { get => _panelGameInformation; set => _panelGameInformation = value; }
     public PanelSelection PanelSelection { get => _panelSelection; }
     public PanelConstruction PanelConstruction { get => _panelConstruction; }
+
+    protected override Type[] OwnedPanels
+    {
+        get => new Type[] { typeof(PanelSelection), typeof(PanelConstruction) };
+    }
     #endregion
 
     #region Methods
     void Start()
     {
-        AddAlwaysDisplay<PanelGameInformation>();
-
         DisplayPanel<PanelConstruction>();
 
         SelectionManager.OnSelectionUpdated += ManagePanelDisplay;

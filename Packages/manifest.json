@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.lortedo.utilities": "https://github.com/Lortedo29/Utilities.git#c435facff64d2f1861f5ff75984373c644c9a55f",
+    "com.lortedo.utilities": "https://github.com/Lortedo29/Utilities.git#560c1e97df955b8d8f5bfcc85d392651bb4cfc79",
     "com.unity.memoryprofiler": "0.1.0-preview.9",
     "com.unity.package-manager-ui": "2.1.2",
     "com.unity.postprocessing": "2.1.7",
@@ -40,8 +40,8 @@
   },
   "lock": {
     "com.lortedo.utilities": {
-      "hash": "c435facff64d2f1861f5ff75984373c644c9a55f",
-      "revision": "c435facff64d2f1861f5ff75984373c644c9a55f"
+      "hash": "560c1e97df955b8d8f5bfcc85d392651bb4cfc79",
+      "revision": "560c1e97df955b8d8f5bfcc85d392651bb4cfc79"
     }
   }
 }
