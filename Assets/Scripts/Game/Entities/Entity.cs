@@ -38,12 +38,11 @@ public class Entity : MonoBehaviour
     void Awake()
     {
         InitializeComponents();
+        _data = Registers.EntitiesRegister.GetRegisterData(_type);
     }
 
     void Start()
     {
-        _data = Registers.EntitiesRegister.GetRegisterData(_type);
-
         if (_team == Team.Sparta) Destroy(GetCharacterComponent<EntityFogCoverable>());
         else Destroy(GetCharacterComponent<EntityFogVision>());
     }
