@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.Pattern;
+using Game.Selection;
+using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,11 @@ public class SecondClickListener : Singleton<SecondClickListener>
     void Awake()
     {
         _raycastLayer = LayerMask.GetMask("Entity", "Terrain");
+    }
+
+    void Start()
+    {
+        SelectionManager.OnSelectionUpdated += (SelectionManager.Group[] selectedGroups, int highlightGroupIndex) => StopListening();
     }
 
     void LateUpdate()
