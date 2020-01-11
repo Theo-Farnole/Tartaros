@@ -1,4 +1,4 @@
-using Game.Selection;
+﻿using Game.Selection;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -76,6 +76,17 @@ public class SecondClickListener : Singleton<SecondClickListener>
         _actionOnClick = (RaycastHit hit) =>
         {
             SelectedGroupsActionsCaller.OrderMoveToPosition(hit.point);
+        };
+    }
+
+    public void ListenToPatrol()
+    {
+        _listenToClick = true;
+        _cursorOverride = CursorAspectManager.CursorState.OverAlly;
+
+        _actionOnClick = (RaycastHit hit) =>
+        {
+            SelectedGroupsActionsCaller.OrderPatrol(hit.point);
         };
     }
 

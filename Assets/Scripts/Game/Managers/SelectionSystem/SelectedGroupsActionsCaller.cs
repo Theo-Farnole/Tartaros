@@ -80,6 +80,19 @@ public static class SelectedGroupsActionsCaller
         }
     }
 
+    public static void OrderPatrol(Vector3 targetPosition)
+    {
+        foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
+        {
+            for (int j = 0; j < group.unitsSelected.Count; j++)
+            {
+                var action = new ActionPatrol(group.unitsSelected[j], targetPosition);
+
+                group.unitsSelected[j].SetAction(action);
+            }
+        }
+    }
+
     public static void OrderMoveAggressively(Vector3 destination)
     {
         foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)

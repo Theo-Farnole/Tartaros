@@ -125,6 +125,9 @@ public class EntityData : ScriptableObject
 
             case OverallAction.Attack:
                 return CanAttack;
+
+            case OverallAction.Patrol:
+                return CanMove;
         }
 
         return false;

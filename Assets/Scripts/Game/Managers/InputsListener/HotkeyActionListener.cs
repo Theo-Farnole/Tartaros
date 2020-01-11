@@ -40,11 +40,16 @@ public class HotkeyActionListener : MonoBehaviour
 
         EntityData data = EntitiesRegister.GetRegisterData(typeToListenHotkey);
 
-        // move
+        // movement
         if (data.CanMove)
         {
+            // move hotkey
             var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Move).Hotkey;
             _commands.Add(hotkey, new ListenSecondClickToMoveCommand());
+
+            // patrol hotkey
+            var patrolHotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Patrol).Hotkey;
+            _commands.Add(patrolHotkey, new ListenSecondClickToPatrolCommand());
         }
 
         // attack
