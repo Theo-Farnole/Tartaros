@@ -89,28 +89,31 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public void AddActionToQueue(Action action)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="action"></param>
+    /// <param name="addToActionQueue"></param>
+    public void SetAction(Action action, bool addToActionQueue = false)
     {
-        // instant play the action if not queue
-        if (_queueAction.Count == 0)
+        if (addToActionQueue)
         {
-            SetCurrentAction(action);
+            if (HasCurrentAction)
+            {
+                Debug.Log("Enqueu");
+                _queueAction.Enqueue(action);
+            }
+            else
+            {
+                Debug.Log("SetCurrentAction");
+                SetCurrentAction(action);
+            }
         }
         else
         {
-            _queueAction.Enqueue(action);
+            _queueAction.Clear();
+            SetCurrentAction(action);
         }
-    }
-
-    /// <summary>
-    /// Clear queue and play param action.
-    /// </summary>
-    /// <param name="action"></param>
-    public void SetAction(Action action)
-    {
-        _queueAction.Clear();
-
-        SetCurrentAction(action);
     }
 
     /// <summary>
