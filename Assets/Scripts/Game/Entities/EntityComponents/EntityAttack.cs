@@ -14,7 +14,13 @@ public class EntityAttack : EntityComponent
     #region Mono Callbacks
     void Update()
     {
-        _attackTimer += Time.deltaTime;   
+        _attackTimer += Time.deltaTime;
+
+        // if Entity is idling, try to attack nearest enemy
+        if (!Entity.HasCurrentAction)
+        {
+            TryStartActionAttackNearestEnemy();
+        }
     }
     #endregion
 
@@ -51,8 +57,11 @@ public class EntityAttack : EntityComponent
     /// <returns>Return true if an enemy has been founded</returns>
     public bool TryStartActionAttackNearestEnemy()
     {
-        var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestEnemyInViewRadius();
+        if (!Entity.Data.CanAttack)
+            return false;
 
+        var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestEnemyInViewRadius();
+        
         if (nearestEnemy != null)
         {
             var action = new ActionAttackEntity(Entity, nearestEnemy);
