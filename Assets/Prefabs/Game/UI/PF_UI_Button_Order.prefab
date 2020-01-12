@@ -130,6 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1880664378730579395}
   - component: {fileID: 4602556526125682752}
+  - component: {fileID: 954740455925789920}
   m_Layer: 5
   m_Name: PF_UI_Button_Order
   m_TagString: Untagged
@@ -173,6 +174,19 @@ MonoBehaviour:
   button: {fileID: 1082892843217889454}
   backgroundButton: {fileID: 1516936385855576852}
   hotkey: {fileID: 7602652597009528482}
+--- !u!114 &954740455925789920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4365979022446068711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 228ad402a3089e946a9db184dfee24aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverPopupData: {fileID: 0}
 --- !u!1 &8543971686736582634
 GameObject:
   m_ObjectHideFlags: 0

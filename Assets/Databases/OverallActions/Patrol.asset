@@ -14,3 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _portrait: {fileID: 21300000, guid: 990f18308e5fad542a564f88b7076bb1, type: 3}
   _hotkey: 112
+  _hoverPopupData:
+    _title: Patrol
+    _description: Make the entity patrol between his current location and the clicked
+      one.
+    _hotkeyEnabled: 1
+    _hotkey: 112
+    _creationTimeEnabled: 0
+    _creationTime: 0
+    _resourcesEnabled: 0
+    _resources:
+      food: 0
+      wood: 0
+      gold: 0

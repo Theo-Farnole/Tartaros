@@ -43,6 +43,7 @@ namespace UI.Game
         public override void OnValidate()
         {
             _ordersWrapper.ResizeArrayIfNeeded();
+            _ordersWrapper.Initialize();
         }        
 
         public void UpdateSelection(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)

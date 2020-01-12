@@ -4,6 +4,7 @@ using Registers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UI.Game.HoverPopup;
 using UnityEngine;
 
 namespace UI.Game
@@ -19,6 +20,16 @@ namespace UI.Game
             if (_overallOrders.Length != Enum.GetValues(typeof(OverallAction)).Length)
             {
                 Array.Resize(ref _overallOrders, Enum.GetValues(typeof(OverallAction)).Length);
+            }
+        }
+
+        public void Initialize()
+        {
+            foreach (OverallAction action in Enum.GetValues(typeof(OverallAction)))
+            {
+                int index = (int)action;
+
+                _overallOrders[index].GetComponent<HoverDisplayPopup>().hoverPopupData = OverallActionsRegister.Instance.GetItem(action).HoverPopupData;
             }
         }
 
