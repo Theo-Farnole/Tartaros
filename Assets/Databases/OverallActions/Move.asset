@@ -18,7 +18,7 @@ MonoBehaviour:
     _title: Move
     _description: Move to player to the cursor click.
     _hotkeyEnabled: 1
-    _hotkey: 0
+    _hotkey: 109
     _creationTimeEnabled: 0
     _creationTime: 0
     _resourcesEnabled: 0
