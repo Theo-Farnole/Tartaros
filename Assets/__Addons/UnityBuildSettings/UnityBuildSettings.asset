@@ -17,8 +17,8 @@ MonoBehaviour:
     buildPath: $VERSION/
     openFolderPostBuild: 1
   _productParameters:
-    buildCounter: 3
-    lastGeneratedVersion: alpha1.1.0_build3
+    buildCounter: 5
+    lastGeneratedVersion: alpha1.1.0_build5
     version: alpha1.1.0_build$BUILD
     autoGenerate: 1
   _releaseTypeList:
@@ -80,7 +80,7 @@ MonoBehaviour:
     showBuildInfo: 0
     hideDisabled: 0
     treeView: 0
-    selectedKeyChain: 
+    selectedKeyChain: dev_build/PC/Windows x64
   _preBuildActions:
     buildActions: []
   _postBuildActions:

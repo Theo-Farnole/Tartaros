@@ -93,7 +93,7 @@ PlayerSettings:
   visibleInBackground: 1
   allowFullscreenSwitch: 1
   graphicsJobMode: 0
-  fullscreenMode: 1
+  fullscreenMode: 3
   xboxSpeechDB: 0
   xboxEnableHeadOrientation: 0
   xboxEnableGuest: 0
@@ -119,7 +119,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: alpha1.1.0_build3
+  bundleVersion: alpha1.1.0_build6
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -544,7 +544,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: AMPLIFY_SHADER_EDITOR;CROSS_PLATFORM_INPUT;UNITY_POST_PROCESSING_STACK_V2
+    1: BUILD_TYPE_DEV_BUILD;BUILD_PLATFORM_PC;BUILD_ARCH_WINDOWSX64;UNITY_POST_PROCESSING_STACK_V2;CROSS_PLATFORM_INPUT;AMPLIFY_SHADER_EDITOR
     4: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     7: CROSS_PLATFORM_INPUT;MOBILE_INPUT;UNITY_POST_PROCESSING_STACK_V2
     13: UNITY_POST_PROCESSING_STACK_V2
