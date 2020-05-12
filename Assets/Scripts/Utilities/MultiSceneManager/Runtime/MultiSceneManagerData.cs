@@ -44,9 +44,6 @@ namespace TF.MultiSceneManager
 
             AddAdditionalScenesFromRule(correspondingRules, ref output);
 
-            foreach (var o in output)
-                Debug.Log(o);
-
             return output.ToArray();
         }
         #endregion
