@@ -26,7 +26,16 @@ public class Entity : MonoBehaviour
     #endregion
 
     #region Properties
-    public EntityData Data { get => _data; }
+    public EntityData Data
+    {
+        get
+        {
+            if (_data == null)
+                _data = Registers.EntitiesRegister.GetRegisterData(_type);
+
+            return _data;
+        }
+    }
     public EntityType Type { get => _type; }
     public Team Team { get => _team; set => _team = value; }
     public bool HasCurrentAction { get => (_currentAction != null); }
@@ -37,8 +46,7 @@ public class Entity : MonoBehaviour
     #region Mono Callbacks
     void Awake()
     {
-        InitializeComponents();
-        _data = Registers.EntitiesRegister.GetRegisterData(_type);
+        InitializeComponents();        
     }
 
     void Start()
