@@ -3,8 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityFogCoverable : EntityComponent
+public delegate void OnFog(IFogCoverable fogCoverable);
+
+
+public class EntityFogCoverable : EntityComponent, IFogCoverable
 {
+    public event OnFog OnFogCover;
+    public event OnFog OnFogUncover;
+
     [SerializeField] private GameObject _rootModelRenderer;
     private Collider _collider;
 
@@ -16,10 +22,11 @@ public class EntityFogCoverable : EntityComponent
 
         set
         {
-            _isCover = value;
+            if (value && !_isCover) OnFogCover?.Invoke(this);
+            else if (!value && _isCover) OnFogUncover?.Invoke(this);
 
-            _rootModelRenderer.SetActive(!value);
-            _collider.enabled = !value;
+            _isCover = value;
+            UpdateVisibility();
         }
     }
 
@@ -36,5 +43,11 @@ public class EntityFogCoverable : EntityComponent
     void OnDestroy()
     {
         FOWManager.Instance?.RemoveCoverable(this);    
+    }
+
+    void UpdateVisibility()
+    {
+        _rootModelRenderer.SetActive(!_isCover);
+        _collider.enabled = !_isCover;
     }
 }
