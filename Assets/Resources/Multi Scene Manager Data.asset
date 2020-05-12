@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultAddionalScenesAssets:
   - {fileID: 102900000, guid: 9fc0d4010bbf28b4594072e72b8655ab, type: 3}
+  - {fileID: 102900000, guid: 2fc2b61fd47de7140bdbbb792cf1a6e0, type: 3}
   _rules: []
   _defaultAdditionalScenes:
-  - SC_game_logic
+  - SC_AdditionalScene_Managers
+  - SC_AdditionalScene_GameUI
