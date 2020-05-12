@@ -1,0 +1,17 @@
+{
+    "name": "TF.Utilities.MultiSceneManager.Editor",
+    "references": [
+        "GUID:34a9d95a51e3edf43b021718c6e3eb08"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
