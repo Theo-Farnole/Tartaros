@@ -20,28 +20,29 @@ public class ResourcesWrapperDrawer : PropertyDrawer
 
         // ===
         // content
-        GUILayout.BeginHorizontal();
+        EditorGUI.indentLevel++;
+        EditorGUILayout.BeginHorizontal();
 
         foreach (Resource resource in Enum.GetValues(typeof(Resource)))
-        {
-            // resource label
-            GUILayout.Label(resource.ToString());
-            //var iconStyle = new GUIStyle
-            //{
-            //    fixedHeight = EditorGUIUtility.singleLineHeight,
-            //    fixedWidth = EditorGUIUtility.singleLineHeight
-            //};
+            DrawResource(property, resource);
+        
 
-            //GUILayout.Box(_icons[resource], iconStyle);
+        EditorGUILayout.EndHorizontal();
+        EditorGUI.indentLevel--;
+    }
 
-            // int label
-            var resourceProperty = property.FindPropertyRelative(resource.ToString().ToLower());
-            var resourceCount = resourceProperty.intValue;
+    private static void DrawResource(SerializedProperty property, Resource resource)
+    {
+        GUILayoutOption[] options = { GUILayout.MaxWidth(100.0f), GUILayout.MinWidth(10.0f) };
 
-            resourceProperty.intValue = EditorGUILayout.IntField(resourceCount);
-        }
+        // resource label
+        EditorGUILayout.LabelField(resource.ToString(), options);
 
-        GUILayout.EndHorizontal();
+        // int label
+        var resourceProperty = property.FindPropertyRelative(resource.ToString().ToLower());
+        var resourceCount = resourceProperty.intValue;
+
+        resourceProperty.intValue = EditorGUILayout.IntField(resourceCount, options);
     }
 
     private static void LoadIcons()
@@ -58,5 +59,10 @@ public class ResourcesWrapperDrawer : PropertyDrawer
             Texture tex = Resources.Load<Texture>("Sprites/Icons/" + resource.ToString()) as Texture;
             _icons.Add(resource, tex);
         }
+    }
+
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        return EditorGUIUtility.singleLineHeight * 0;
     }
 }
