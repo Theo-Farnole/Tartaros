@@ -1,3 +1,3 @@
-[submodule "Assets/Scripts/"]
-	path = Assets/Scripts/
-	url = https://github.com/Lortedo29/Utils
+[submodule "Assets/Scripts/Utilities/MultiScene Manager"]
+	path = Assets/Scripts/Utilities/MultiScene Manager
+	url = https://github.com/Theo-Farnole/MultiSceneManager
