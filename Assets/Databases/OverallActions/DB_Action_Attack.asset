@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 767c740e702facb40b97e03ca64db6fa, type: 3}
-  m_Name: Attack
+  m_Name: DB_Action_Attack
   m_EditorClassIdentifier: 
   _portrait: {fileID: 21300000, guid: 46350d279cd6628489086b4326df7338, type: 3}
   _hotkey: 97
   _hoverPopupData:
-    _title: Attack
-    _description: Attack the clicked enemy.
-    _hotkeyEnabled: 1
-    _hotkey: 97
+    _title: 
+    _description: 
+    _hotkeyEnabled: 0
+    _hotkey: 0
     _creationTimeEnabled: 0
     _creationTime: 0
     _resourcesEnabled: 0

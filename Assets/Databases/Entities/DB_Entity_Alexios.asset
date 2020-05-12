@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: Alexios
+  m_Name: DB_Entity_Alexios
   m_EditorClassIdentifier: 
   _portrait: {fileID: 21300000, guid: b6f0dbbeaac11b6458da5818f795668b, type: 3}
   _prefab: {fileID: 7475237624608698167, guid: 2f518b8a25b2bc5438162ad3b222c4ba, type: 3}

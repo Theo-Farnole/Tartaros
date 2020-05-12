@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: Barracks
+  m_Name: DB_Entity_Barracks
   m_EditorClassIdentifier: 
   _portrait: {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 5223a26d9e803f04ab7c98100babab8f, type: 3}

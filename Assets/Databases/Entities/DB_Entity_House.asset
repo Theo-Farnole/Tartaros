@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: House
+  m_Name: DB_Entity_House
   m_EditorClassIdentifier: 
   _portrait: {fileID: 21300000, guid: 04beb25e868cb264791c0ba773f4fff5, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 07c235988da8f0d449a461fff451a456, type: 3}
