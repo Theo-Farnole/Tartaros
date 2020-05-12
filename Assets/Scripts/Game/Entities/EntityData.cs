@@ -30,10 +30,11 @@ public class EntityData : ScriptableObject
     #region Health Settings
     [Header("Health Settings")]
     [SerializeField] private bool _isInvincible = false;
-    public bool IsInvincible { get => _isInvincible; }
 
     [DrawIf("_isInvincible", false, ComparisonType.Equals, DisablingType.ReadOnly)]
     [SerializeField] private int _hp = 10;
+
+    public bool IsInvincible { get => _isInvincible; }
     public int Hp { get => _hp; }
     #endregion
 
