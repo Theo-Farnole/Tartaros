@@ -25,12 +25,24 @@ public static class EditorMultiSceneManager
             if (GetScenePath(additionalSceneName, out string scenePath))
             {
                 // loading scene
-                var additionalScene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
-
-                // set master scene at the end of the scenes list
-                EditorSceneManager.MoveSceneBefore(additionalScene, masterScene);
+                EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
             }
         }
+
+                // set master scene at the end of the scenes list
+        MoveSceneAtTheEnd(masterScene);
+    }
+
+    public static void MoveSceneAtTheEnd(Scene scene)
+    {
+        EditorSceneManager.MoveSceneAfter(scene, GetSceneAtTheEnd());
+    }
+
+    public static Scene GetSceneAtTheEnd()
+    {
+        int sceneCount = EditorSceneManager.sceneCount;
+
+        return EditorSceneManager.GetSceneAt(sceneCount-1);
     }
 
     public static bool IsSceneLoaded(string sceneToCheck)
