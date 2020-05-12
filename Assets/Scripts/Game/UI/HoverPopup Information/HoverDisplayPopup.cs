@@ -7,7 +7,7 @@ namespace UI.Game.HoverPopup
 {
     public class HoverDisplayPopup : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public HoverPopupInfo hoverPopupData;
+        [SerializeField] HoverPopupData _hoverPopupData;
 
         private RectTransform _rectTransform;
 
@@ -23,10 +23,11 @@ namespace UI.Game.HoverPopup
             }
         }
 
+        public HoverPopupData HoverPopupData { get => _hoverPopupData; set => _hoverPopupData = value; }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
-            HoverPopupManager.Instance.DisplayHoverPopup(RectTransform, hoverPopupData);
+            HoverPopupManager.Instance.DisplayHoverPopup(RectTransform, _hoverPopupData);
         }
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)

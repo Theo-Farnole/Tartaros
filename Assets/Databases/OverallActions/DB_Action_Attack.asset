@@ -14,15 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _portrait: {fileID: 21300000, guid: 46350d279cd6628489086b4326df7338, type: 3}
   _hotkey: 97
-  _hoverPopupData:
-    _title: 
-    _description: 
-    _hotkeyEnabled: 0
-    _hotkey: 0
-    _creationTimeEnabled: 0
-    _creationTime: 0
-    _resourcesEnabled: 0
-    _resources:
-      food: 0
-      wood: 0
-      gold: 0
+  _hoverPopupData: {fileID: 11400000, guid: 45a9c4be50d86154b858f8ae252abc94, type: 2}

@@ -29,7 +29,7 @@ namespace UI.Game
             {
                 int index = (int)action;
 
-                _overallOrders[index].GetComponent<HoverDisplayPopup>().hoverPopupData = OverallActionsRegister.Instance.GetItem(action).HoverPopupData;
+                _overallOrders[index].GetComponent<HoverDisplayPopup>().HoverPopupData = OverallActionsRegister.Instance.GetItem(action).HoverPopupData;
             }
         }
 

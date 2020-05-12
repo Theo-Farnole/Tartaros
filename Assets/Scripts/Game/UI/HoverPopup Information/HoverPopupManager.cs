@@ -24,7 +24,7 @@ namespace UI.Game.HoverPopup
             HidePopUp();    
         }
 
-        public void DisplayHoverPopup(RectTransform hoverDisplayPopup, HoverPopupInfo hoverPopupData)
+        public void DisplayHoverPopup(RectTransform hoverDisplayPopup, HoverPopupData hoverPopupData)
         {
             _hoverPopupCanvas.SetActive(true);
 
@@ -37,7 +37,7 @@ namespace UI.Game.HoverPopup
             _hoverPopupCanvas.SetActive(false);
         }
 
-        private void UpdateContent(HoverPopupInfo hoverPopupData)
+        private void UpdateContent(HoverPopupData hoverPopupData)
         {
             _titleText.text = hoverPopupData.Title;
             _descriptionText.text = hoverPopupData.Description;
