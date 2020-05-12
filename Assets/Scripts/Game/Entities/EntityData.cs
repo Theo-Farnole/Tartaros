@@ -1,5 +1,6 @@
 ﻿using Lortedo.Utilities.Inspector;
 using MyBox;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,22 +17,50 @@ public enum OrdersType
 [CreateAssetMenu(menuName = "Leonidas Legacy/Entity")]
 public class EntityData : ScriptableObject
 {
+    private const string attackSettingsHeaderName = "Can Attack";
+    private const string movementSettingsHeaderName = "Can Move";
+    private const string createUnitSettingsHeaderName = "Can Create Unit";
+    private const string generateResourcesHeaderName = "Can Generate Resources";
+    private const string portraitAndPrefabGroupName = "Portrait & Prefab";
+
     #region Misc
-    [SerializeField] private Sprite _portrait;
-    [SerializeField] private GameObject _prefab;
-    [Space]
+
+
+    [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
+    [SerializeField] private string _entityName;
+
+    [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
     [SerializeField] private KeyCode _hotkey;
+
+    [HorizontalGroup(portraitAndPrefabGroupName, 55)]
+    [HideLabel, PreviewField(55, ObjectFieldAlignment.Left)]
+    [SerializeField] private Sprite _portrait;
+
+    [HorizontalGroup(portraitAndPrefabGroupName, 55)]
+    [Required]
+    [HideLabel, PreviewField(55, ObjectFieldAlignment.Left)]
+    [SerializeField] private GameObject _prefab;
+
 
     public Sprite Portrait { get => _portrait; }
     public KeyCode Hotkey { get => _hotkey; }
     public GameObject Prefab { get => _prefab; }
     #endregion
 
+    void DrawPreview()
+    {
+        if (_portrait == null) return;
+
+        GUILayout.Label(_portrait.texture, GUILayout.Height(50));
+    }
+
+
     #region Health Settings
-    [Header("Health Settings")]
+    [BoxGroup("Health Settings")]
     [SerializeField] private bool _isInvincible = false;
 
-    [DrawIf("_isInvincible", false, ComparisonType.Equals, DisablingType.ReadOnly)]
+    [BoxGroup("Health Settings")]
+    [EnableIf("_isInvincible")]
     [SerializeField] private int _hp = 10;
 
     public bool IsInvincible { get => _isInvincible; }
@@ -39,43 +68,53 @@ public class EntityData : ScriptableObject
     #endregion
 
     #region Spawning Cost Settings
-    [Header("Spawning Cost Settings")]
+    [BoxGroup("Spawning Cost Settings")]
     [SerializeField] private ResourcesWrapper _spawningCost;
     public ResourcesWrapper SpawningCost { get => _spawningCost; }
     #endregion
 
     #region Vision Settings
-    [Header("Vision Settings")]
+    [BoxGroup("Vision Settings")]
     [SerializeField, Range(1, 15)] private float _viewRadius = 3;
     public float ViewRadius { get => _viewRadius; }
     #endregion
 
     #region Orders: MOVE, ATTACK, CREATE UNITS, CREATE RESOURCES
-    [Header("Orders")]
-    [SerializeField, EnumFlag] private OrdersType _availableOrders;    
+    public bool CanMove { get => _canMove; }
+    public bool CanAttack { get => _canAttack; }
+    public bool CanSpawnUnit { get => _canCreateUnit; }
+    public bool CanCreateResources { get => _canGenerateResources; }
 
-    public bool CanMove { get => _availableOrders.HasFlag(OrdersType.Move); }
-    public bool CanAttack { get => _availableOrders.HasFlag(OrdersType.Attack); }
-    public bool CanSpawnUnit { get => _availableOrders.HasFlag(OrdersType.CreateUnits); }
-    public bool CanCreateResources { get => _availableOrders.HasFlag(OrdersType.CreateResources); }
+    #region Attack     
+    [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
+    [SerializeField] private bool _canAttack;
 
-    #region Attack
-    [Separator("Attack Settings", true)]
-    [Space]
-    [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
     [SerializeField] private bool _isMelee = true;
-    [DrawIf(nameof(_isMelee), false, ComparisonType.Equals, DisablingType.DontDraw)]
+
+    [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
+    [DisableIf(nameof(_isMelee))]
     [SerializeField] private GameObject _prefabProjectile;
+
     [Space]
-    [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [PositiveValueOnly, SerializeField] private int _damage = 3;
-    [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [PositiveValueOnly, SerializeField, Tooltip("Time between each attack")] private float _attackSpeed = 1f;
+    [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
+    [PositiveValueOnly]
+    [SerializeField] private int _damage = 3;
+
+    [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
+    [PositiveValueOnly]
+    [Tooltip("Time between each attack")]
+    [SerializeField] private float _attackSpeed = 1f;
+
     [Space]
-    [DrawIf(nameof(_availableOrders), OrdersType.Attack, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [PositiveValueOnly, SerializeField, Range(0, 15)] private float _attackRadius = 3f;
+    [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
+    [PositiveValueOnly]
+    [Range(0, 15)] private float _attackRadius = 3f;
+
     [Space]
-    [SerializeField, ShowOnly] private float _damagePerSecond;
+    [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
+    [Sirenix.OdinInspector.ReadOnly]
+    [SerializeField] private float _damagePerSecond;
 
     public bool IsMelee { get => _isMelee; }
     public GameObject PrefabProjectile { get => _prefabProjectile;}
@@ -85,28 +124,35 @@ public class EntityData : ScriptableObject
     #endregion
 
     #region Movement
-    [Separator("Movement Settings", true)]
-    [Space]
-    [DrawIf(nameof(_availableOrders), OrdersType.Move, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [SerializeField, PositiveValueOnly, Tooltip("Units per second")] private float _speed = 3;
+    [ToggleGroup(nameof(_canMove), movementSettingsHeaderName)]
+    [SerializeField] private bool _canMove;
+
+    [ToggleGroup(nameof(_canMove), movementSettingsHeaderName)]
+    [Tooltip("Units per second")]
+    [PositiveValueOnly]
+    [SerializeField] private float _speed = 3;
 
     public float Speed { get => _speed; }
     #endregion
 
     #region Units Creation
-    [Separator("Units Creation Settings", true)]
-    [Space]
-    [DrawIf(nameof(_availableOrders), OrdersType.CreateUnits, ComparisonType.HasFlag, DisablingType.ReadOnly)]
+    [ToggleGroup(nameof(_canCreateUnit), createUnitSettingsHeaderName)]
+    [SerializeField] private bool _canCreateUnit;
+
+    [ToggleGroup(nameof(_canCreateUnit), createUnitSettingsHeaderName)]
     [SerializeField] private UnitType[] _availableUnitsForCreation;
 
     public UnitType[] AvailableUnitsForCreation { get => _availableUnitsForCreation; }
     #endregion
 
     #region Resources Generation
-    [Separator("Resources Generation", true)]
-    [Space]
-    [DrawIf(nameof(_availableOrders), OrdersType.CreateResources, ComparisonType.HasFlag, DisablingType.ReadOnly)]
-    [SerializeField, PositiveValueOnly, Tooltip("In seconds")] private float _generationTick;
+    [ToggleGroup(nameof(_canGenerateResources), generateResourcesHeaderName)]
+    [SerializeField] private bool _canGenerateResources;
+
+    [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
+    [SerializeField] private float _generationTick;
+
+    [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
     [SerializeField] private ResourcesWrapper _resourcesAmount;
 
     public float GenerationTick { get => _generationTick; }    
