@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.lortedo.utilities": "https://github.com/Lortedo29/Utilities.git#560c1e97df955b8d8f5bfcc85d392651bb4cfc79",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.ide.rider": "1.1.4",
@@ -43,11 +42,5 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  },
-  "lock": {
-    "com.lortedo.utilities": {
-      "revision": "560c1e97df955b8d8f5bfcc85d392651bb4cfc79",
-      "hash": "560c1e97df955b8d8f5bfcc85d392651bb4cfc79"
-    }
   }
 }

@@ -1,0 +1,11 @@
+{
+"name": "com.lortedo.utilities",
+"version": "1.0.0",
+"displayName": "Utilities",
+
+"unity": "2019.1",
+"dependencies": { "com.unity.textmeshpro" : "com.unity.textmeshpro"},
+
+"keywords": ["utilities", "extensions", "editor tools"],
+"author": { "name" : "Theo Farnole"}
+}
