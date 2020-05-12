@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace UI.Game.HoverPopup
@@ -32,6 +33,12 @@ namespace UI.Game.HoverPopup
 
         public void DisplayHoverPopup(RectTransform hoverDisplayPopup, HoverPopupData hoverPopupData)
         {
+            if (hoverDisplayPopup == null)
+            {
+                Debug.LogErrorFormat("Can't display hover popup with null 'hoverPopupData'. Abortinging display of hover popup.");
+                return;
+            }
+
             _hoverPopupCanvas.SetActive(true);
 
             UpdateContent(hoverPopupData);
@@ -55,22 +62,30 @@ namespace UI.Game.HoverPopup
 
         void SetDescription(HoverPopupData hoverPopupData)
         {
+            Assert.IsNotNull(hoverPopupData);
+
             _descriptionText.text = hoverPopupData.Description;
         }
 
         void SetTitle(HoverPopupData hoverPopupData)
         {
+            Assert.IsNotNull(hoverPopupData);
+
             _titleText.text = hoverPopupData.Title;
         }
 
         void SetHotkey(HoverPopupData hoverPopupData)
         {
+            Assert.IsNotNull(hoverPopupData);
+
             if (hoverPopupData.HotkeyEnabled)
                 _titleText.text += " (" + hoverPopupData.Hotkey + ")";
         }
 
         void SetTimeCreationContent(HoverPopupData hoverPopupData)
-        {            
+        {
+            Assert.IsNotNull(hoverPopupData);
+
             if (hoverPopupData.CreationTimeEnabled)
             {
                 _creationTimeWrapper.gameObject.SetActive(true);
@@ -84,6 +99,8 @@ namespace UI.Game.HoverPopup
 
         void SetResourceContent(HoverPopupData hoverPopupData)
         {
+            Assert.IsNotNull(hoverPopupData);
+
             if (hoverPopupData.ResourcesEnabled)
             {
                 _resourcesWrapper.gameObject.SetActive(true);
@@ -100,6 +117,8 @@ namespace UI.Game.HoverPopup
 
         private void UpdatePosition(RectTransform hoverDisplayPopup)
         {
+            Assert.IsNotNull(hoverDisplayPopup, "The display popup passed in arg is null. Can't update popup position");
+
             _hoverPopup.position = hoverDisplayPopup.position
                 + Vector3.up * _hoverPopup.rect.height / 4; // center vertically
         }
