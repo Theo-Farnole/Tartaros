@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 122832973}
-  - component: {fileID: 8757567738293500436}
+  - component: {fileID: 122832972}
   m_Layer: 0
   m_Name: ObjectPooling
   m_TagString: Untagged
@@ -205,6 +205,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &122832972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 122832971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 958b6268cb966264d882bf407cc02305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolsUserInput:
+  - tag: SelectionCircle
+    prefab: {fileID: 75726643763961423, guid: 36da5f7c11d4d514a8172e00d9c31f52, type: 3}
 --- !u!4 &122832973
 Transform:
   m_ObjectHideFlags: 0
@@ -775,8 +790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8a70efdd5b6f2449b374ad4bdf57b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parentsTag:
-  - Building
 --- !u!1 &5682737043787708817
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,6 +880,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9c8c19eb7597f8c42ae1c998ec68282f, type: 2}
   - {fileID: 11400000, guid: 6a1997c83280ffd478dffdae9191d1a8, type: 2}
   - {fileID: 11400000, guid: 2885a22bbf77a124fa2c0c52e70bc16c, type: 2}
+  - {fileID: 0}
 --- !u!114 &7380496137556652473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -898,24 +912,6 @@ Transform:
   m_Father: {fileID: 50587642}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &8757567738293500436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 122832971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80732e8a65e870438a57168d8af4792, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _poolsUserInput:
-  - tag: selection_circle
-    prefab: {fileID: 75726643763961423, guid: 36da5f7c11d4d514a8172e00d9c31f52, type: 3}
-  - tag: projectile_spear
-    prefab: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
-      type: 3}
 --- !u!1 &9192183616193895345
 GameObject:
   m_ObjectHideFlags: 0
