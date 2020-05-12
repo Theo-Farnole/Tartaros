@@ -30,6 +30,8 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
         }
     }
 
+    public Transform Transform { get => transform; }
+
     private void Awake()
     {
         _collider = GetComponent<Collider>();
@@ -37,12 +39,12 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
 
     void Start()
     {
-        FOWManager.Instance.AddCoverable(this);    
+        FOWManager.Instance.AddCoverable(this);
     }
 
     void OnDestroy()
     {
-        FOWManager.Instance?.RemoveCoverable(this);    
+        FOWManager.Instance?.RemoveCoverable(this);
     }
 
     void UpdateVisibility()

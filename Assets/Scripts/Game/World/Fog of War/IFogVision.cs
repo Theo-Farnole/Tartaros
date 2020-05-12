@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.FogOfWar
-{    
-    public interface IFogCoverable
+{
+    public interface IFogVision
     {
-        bool IsCover { get; set; }
+        float ViewRadius { get; }
         Transform Transform { get; }
     }
 }

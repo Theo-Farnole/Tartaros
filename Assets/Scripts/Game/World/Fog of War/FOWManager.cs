@@ -12,8 +12,8 @@ namespace Game.FogOfWar
         [SerializeField] private SnapGrid _snapGrid;
         [SerializeField, HideInInspector] private FogState[,] _visiblityMap; // allow hot reloading in Editor
 
-        private List<EntityFogVision> _viewers = new List<EntityFogVision>();
-        private List<EntityFogCoverable> _coverables = new List<EntityFogCoverable>();
+        private List<IFogVision> _viewers = new List<IFogVision>();
+        private List<IFogCoverable> _coverables = new List<IFogCoverable>();
         #endregion
 
         #region Methods
@@ -89,8 +89,8 @@ namespace Game.FogOfWar
             // draw VISIBLE circle from viewers
             for (int i = 0; i < _viewers.Count; i++)
             {
-                Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].transform.position);
-                int viewRadius = Mathf.RoundToInt(_viewers[i].Entity.Data.ViewRadius / _snapGrid.Data.CellSize);
+                Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].Transform.position);
+                int viewRadius = Mathf.RoundToInt(_viewers[i].ViewRadius / _snapGrid.Data.CellSize);
 
                 _visiblityMap.DrawCircleInside(viewersCoords.x, viewersCoords.y, viewRadius, FogState.Visible);
             }
@@ -100,7 +100,7 @@ namespace Game.FogOfWar
         {
             for (int i = 0; i < _coverables.Count; i++)
             {
-                Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].transform.position);
+                Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].Transform.position);
 
                 bool isCover = true;
 

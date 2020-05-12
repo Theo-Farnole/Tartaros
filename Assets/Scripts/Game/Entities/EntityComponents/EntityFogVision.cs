@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityFogVision : EntityComponent
+public class EntityFogVision : EntityComponent, IFogVision
 {
     [Header("Viewer Settings")]
     [SerializeField] private SpriteRenderer _fogOfWarVision = null;
+
+    public float ViewRadius => Entity.Data.ViewRadius;
+    public Transform Transform => transform;
 
     void Start()
     {
