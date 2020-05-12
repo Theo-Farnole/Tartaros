@@ -4,6 +4,7 @@ using Registers;
 using System;
 using System.Collections.Generic;
 using TMPro;
+using UI.Game.HoverPopup;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -26,63 +27,88 @@ namespace UI.Game
         #endregion
 
         #region Methods
-        public override void SubscribeToEvents<T>(T uiManager) 
+        #region Public override
+        public override void SubscribeToEvents<T>(T uiManager)
         {
             CheckIfThereIsEnoughtBuildingButtons();
 
-            for (int i = 0; i < _buildingButtons.Length; i++)
-            {
-                BuildingType buildingType = (BuildingType)Enum.GetValues(typeof(BuildingType)).GetValue(i);
-                _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
-            }
+            BrowseThrowBuildingType(
+                (BuildingType buildingType, int index) =>
+                {
+                    _buildingButtons[index].onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
+                }
+            );
         }
 
         public override void UnsubscribeToEvents<T>(T uiManager)
         {
-            for (int i = 0; i < _buildingButtons.Length; i++)
-            {
-                BuildingType buildingType = (BuildingType)Enum.GetValues(typeof(BuildingType)).GetValue(i);
-                _buildingButtons[i].onClick.RemoveListener(() => GameManager.Instance.StartBuilding(buildingType));
-            }
+            BrowseThrowBuildingType(
+                (BuildingType buildingType, int index) =>
+                {
+                    _buildingButtons[index].onClick.RemoveListener(() => GameManager.Instance.StartBuilding(buildingType));
+                }
+            );
         }
+        #endregion
 
+        #region Public methods
         public void CreateConstructionButtons()
-        {                  
+        {
             // destroy older buttons
             _parentConstructionButton.transform.DestroyImmediateChildren();
 
             int buildingEnumLength = Enum.GetValues(typeof(BuildingType)).Length;
+            buildingEnumLength--; // we remove 'BuildingType.None'
             _buildingButtons = new Button[buildingEnumLength];
 
-            for (int i = 0; i < buildingEnumLength; i++)
-            {
-                BuildingType buildingType = (BuildingType)Enum.GetValues(typeof(BuildingType)).GetValue(i);
-                CreateConstructionButton(buildingType, i);
-            }
+            BrowseThrowBuildingType(
+                (BuildingType buildingType, int index) =>
+                {
+                    CreateConstructionButton(buildingType, index);
+                }
+            );
 
             Canvas.ForceUpdateCanvases();
+        }
+        #endregion
 
+        #region Private methods
+        private void BrowseThrowBuildingType(Action<BuildingType, int> action)
+        {
             CheckIfThereIsEnoughtBuildingButtons();
+
+            int index = 0;
+
+            foreach (BuildingType buildingType in Enum.GetValues(typeof(BuildingType)))
+            {
+                if (buildingType == BuildingType.None)
+                    continue;
+
+                action?.Invoke(buildingType, index);
+                index++;
+            }
         }
 
         private void CreateConstructionButton(BuildingType buildingType, int buttonIndex)
-        {            
+        {
             Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
 
             buildingButton.GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(buildingType).Portrait;
-            buildingButton.transform.SetParent(_parentConstructionButton, false);
+            buildingButton.transform.SetParent(_parentConstructionButton, false);            
 
             _buildingButtons[buttonIndex] = buildingButton;
         }
 
-        
+
         private void CheckIfThereIsEnoughtBuildingButtons()
         {
             int buildingEnumLength = Enum.GetValues(typeof(BuildingType)).Length;
+            buildingEnumLength--; // we remove 'BuildingType.None'
 
-            Assert.AreEqual(buildingEnumLength, _buildingButtons.Length, 
+            Assert.AreEqual(buildingEnumLength, _buildingButtons.Length,
                 string.Format("<color=yellow>Panel construction</color> should have {0} building buttons, but there is only {1}.", buildingEnumLength, _buildingButtons.Length));
         }
+        #endregion
         #endregion
     }
 }
