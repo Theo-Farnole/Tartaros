@@ -101,9 +101,7 @@ namespace UI.Game.HoverPopup
         private void UpdatePosition(RectTransform hoverDisplayPopup)
         {
             _hoverPopup.position = hoverDisplayPopup.position
-                + Vector3.up * hoverDisplayPopup.rect.height / 2
-                + Vector3.up * _hoverPopup.rect.height / 2
-                + Vector3.up * _heightMargin;
+                + Vector3.up * _hoverPopup.rect.height / 4; // center vertically
         }
     }
 }
