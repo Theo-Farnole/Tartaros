@@ -33,7 +33,7 @@ namespace UI.Game.HoverPopup
 
         public void DisplayHoverPopup(RectTransform hoverDisplayPopup, HoverPopupData hoverPopupData)
         {
-            if (hoverDisplayPopup == null)
+            if (hoverPopupData == null)
             {
                 Debug.LogErrorFormat("Can't display hover popup with null 'hoverPopupData'. Abortinging display of hover popup.");
                 return;
