@@ -1,3 +1,6 @@
 [submodule "Assets/Scripts/Utilities/MultiScene Manager"]
 	path = Assets/Scripts/Utilities/MultiScene Manager
 	url = https://github.com/Theo-Farnole/MultiSceneManager
+[submodule "Assets/Scripts/Utilities/StandardUtilities"]
+	path = Assets/Scripts/Utilities/StandardUtilities
+	url = https://github.com/Theo-Farnole/Unity-StandardUtilities
