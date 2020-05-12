@@ -38,8 +38,6 @@ public class AutoScaleHoverPopup : MonoBehaviour
         float delta = -_verticalLayoutGroup.offsetMax.y + _verticalLayoutGroup.offsetMin.y;
         totalHeight += delta;
 
-        Debug.LogFormat("delta is min: {0} | max {1} => delta is {2}", _verticalLayoutGroup.offsetMax.y, _verticalLayoutGroup.offsetMin.y, delta);
-
         return totalHeight;
     }
 }

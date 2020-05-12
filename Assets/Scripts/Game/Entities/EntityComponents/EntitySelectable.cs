@@ -38,11 +38,11 @@ public class EntitySelectable : EntityComponent
         Quaternion rot = Quaternion.Euler(90, 0, 0);
 
         _selectionCircle = ObjectPooler.Instance.SpawnFromPool(ObjectPoolingTags.keySelectionCircle, pos, rot);
-        
+
         if (_selectionCircle)
         {
-        _selectionCircle.transform.parent = transform;
-        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(Entity.Team);
+            _selectionCircle.transform.parent = transform;
+            _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(Entity.Team);
         }
         else
         {

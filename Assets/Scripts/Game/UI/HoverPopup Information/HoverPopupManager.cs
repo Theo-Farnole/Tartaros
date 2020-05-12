@@ -12,8 +12,14 @@ namespace UI.Game.HoverPopup
         [SerializeField] private GameObject _hoverPopupCanvas;
         [SerializeField] private RectTransform _hoverPopup;
         [Space]
+        [Header("WRAPPERS")]
+        [SerializeField] private RectTransform _creationTimeWrapper;
+        [SerializeField] private RectTransform _resourcesWrapper;
+        [Header("TEXTS")]
         [SerializeField] private TextMeshProUGUI _titleText;
-        [SerializeField] private TextMeshProUGUI _resourcesText;
+        [SerializeField] private TextMeshProUGUI _foodResourcesText;
+        [SerializeField] private TextMeshProUGUI _woodResourcesText;
+        [SerializeField] private TextMeshProUGUI _goldResourcesText;
         [SerializeField] private TextMeshProUGUI _creationTimeText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [Space]
@@ -39,33 +45,56 @@ namespace UI.Game.HoverPopup
 
         private void UpdateContent(HoverPopupData hoverPopupData)
         {
-            _titleText.text = hoverPopupData.Title;
-            _descriptionText.text = hoverPopupData.Description;
+            SetTitle(hoverPopupData);
+            SetDescription(hoverPopupData);
 
-            // add hotkey
+            SetHotkey(hoverPopupData);
+            SetResourceContent(hoverPopupData);
+            SetTimeCreationContent(hoverPopupData);
+        }
+
+        void SetDescription(HoverPopupData hoverPopupData)
+        {
+            _descriptionText.text = hoverPopupData.Description;
+        }
+
+        void SetTitle(HoverPopupData hoverPopupData)
+        {
+            _titleText.text = hoverPopupData.Title;
+        }
+
+        void SetHotkey(HoverPopupData hoverPopupData)
+        {
             if (hoverPopupData.HotkeyEnabled)
                 _titleText.text += " (" + hoverPopupData.Hotkey + ")";
+        }
 
-            // resources
-            if (hoverPopupData.ResourcesEnabled)
-            {
-                _resourcesText.gameObject.SetActive(true);
-                _resourcesText.text = hoverPopupData.Resources.ToString();
-            }
-            else
-            {
-                _resourcesText.gameObject.SetActive(false);
-            }
-
-            // creation time
+        void SetTimeCreationContent(HoverPopupData hoverPopupData)
+        {            
             if (hoverPopupData.CreationTimeEnabled)
             {
-                _creationTimeText.gameObject.SetActive(true);
+                _creationTimeWrapper.gameObject.SetActive(true);
                 _creationTimeText.text = hoverPopupData.CreationTime.ToString();
             }
             else
             {
-                _creationTimeText.gameObject.SetActive(false);
+                _creationTimeWrapper.gameObject.SetActive(false);
+            }
+        }
+
+        void SetResourceContent(HoverPopupData hoverPopupData)
+        {
+            if (hoverPopupData.ResourcesEnabled)
+            {
+                _resourcesWrapper.gameObject.SetActive(true);
+
+                _foodResourcesText.text = hoverPopupData.Resources.food.ToString();
+                _woodResourcesText.text = hoverPopupData.Resources.wood.ToString();
+                _goldResourcesText.text = hoverPopupData.Resources.gold.ToString();
+            }
+            else
+            {
+                _resourcesWrapper.gameObject.SetActive(false);
             }
         }
 
