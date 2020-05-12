@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace UI.Game
@@ -25,16 +26,23 @@ namespace UI.Game
         #endregion
 
         #region Methods
-        public override void Initialize<T>(T uiManager)
+        public override void SubscribeToEvents<T>(T uiManager) 
         {
-            // add StartBuilding listener to buttons
-            int buildingEnumLength = Enum.GetValues(typeof(BuildingType)).Length;
+            CheckIfThereIsEnoughtBuildingButtons();
 
-            for (int i = 0; i < buildingEnumLength; i++)
+            for (int i = 0; i < _buildingButtons.Length; i++)
             {
                 BuildingType buildingType = (BuildingType)Enum.GetValues(typeof(BuildingType)).GetValue(i);
+                _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
+            }
+        }
 
-                _buildingButtons[i].onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));                
+        public override void UnsubscribeToEvents<T>(T uiManager)
+        {
+            for (int i = 0; i < _buildingButtons.Length; i++)
+            {
+                BuildingType buildingType = (BuildingType)Enum.GetValues(typeof(BuildingType)).GetValue(i);
+                _buildingButtons[i].onClick.RemoveListener(() => GameManager.Instance.StartBuilding(buildingType));
             }
         }
 
@@ -48,17 +56,32 @@ namespace UI.Game
 
             for (int i = 0; i < buildingEnumLength; i++)
             {
-                BuildingType buildingType = (BuildingType) Enum.GetValues(typeof(BuildingType)).GetValue(i);
-
-                Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
-                
-                buildingButton.GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(buildingType).Portrait;
-                buildingButton.transform.SetParent(_parentConstructionButton, false);
-
-                _buildingButtons[i] = buildingButton;
+                BuildingType buildingType = (BuildingType)Enum.GetValues(typeof(BuildingType)).GetValue(i);
+                CreateConstructionButton(buildingType, i);
             }
 
             Canvas.ForceUpdateCanvases();
+
+            CheckIfThereIsEnoughtBuildingButtons();
+        }
+
+        private void CreateConstructionButton(BuildingType buildingType, int buttonIndex)
+        {            
+            Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
+
+            buildingButton.GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(buildingType).Portrait;
+            buildingButton.transform.SetParent(_parentConstructionButton, false);
+
+            _buildingButtons[buttonIndex] = buildingButton;
+        }
+
+        
+        private void CheckIfThereIsEnoughtBuildingButtons()
+        {
+            int buildingEnumLength = Enum.GetValues(typeof(BuildingType)).Length;
+
+            Assert.AreEqual(buildingEnumLength, _buildingButtons.Length, 
+                string.Format("<color=yellow>Panel construction</color> should have {0} building buttons, but there is only {1}.", buildingEnumLength, _buildingButtons.Length));
         }
         #endregion
     }
