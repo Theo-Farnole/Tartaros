@@ -3,6 +3,7 @@ using MyBox;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using UI.Game.HoverPopup;
 using UnityEngine;
 
 [System.Flags]
@@ -24,8 +25,6 @@ public class EntityData : ScriptableObject
     private const string portraitAndPrefabGroupName = "Portrait & Prefab";
 
     #region Misc
-
-
     [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
     [SerializeField] private string _entityName;
 
@@ -41,10 +40,14 @@ public class EntityData : ScriptableObject
     [HideLabel, PreviewField(55, ObjectFieldAlignment.Left)]
     [SerializeField] private GameObject _prefab;
 
+    [InlineEditor]
+    [SerializeField] private HoverPopupData _hoverPopupData;
+
 
     public Sprite Portrait { get => _portrait; }
     public KeyCode Hotkey { get => _hotkey; }
     public GameObject Prefab { get => _prefab; }
+    public HoverPopupData HoverPopupData { get => _hoverPopupData; }
     #endregion
 
     void DrawPreview()
