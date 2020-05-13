@@ -19,7 +19,7 @@ namespace UI.Game
         [SerializeField] private GameObject _prefabConstructionButton;
         [SerializeField] private Transform _parentConstructionButton;
 
-        [HideInInspector, SerializeField] private Button[] _buildingButtons = new Button[0];
+        [HideInInspector, SerializeField] private Button[] _buildingButtons;
         #endregion
 
         #region Properties
@@ -36,12 +36,22 @@ namespace UI.Game
 
         public override void SubscribeToEvents<T>(T uiManager)
         {
+            if (_buildingButtons == null)
+                CreateConstructionButtons();
+
             CheckIfThereIsEnoughtBuildingButtons();
 
             BrowseThrowBuildingType(
                 (BuildingType buildingType, int index) =>
                 {
-                    _buildingButtons[index].onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
+                    if (_buildingButtons[index] != null)
+                    {
+                        _buildingButtons[index].onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
+                    }
+                    else
+                    {
+                        Debug.LogErrorFormat("Panel Construction : button at index {0} is null.", index);
+                    }
                 }
             );
         }
@@ -60,22 +70,30 @@ namespace UI.Game
         #region Public methods
         public void CreateConstructionButtons()
         {
+            if (_buildingButtons != null)
+            {
+                Debug.LogWarningFormat("Panel Construction : Recreate building buttons.");
+            }
+
             // destroy older buttons
             _parentConstructionButton.transform.DestroyImmediateChildren();
 
+            // get building enum length
             int buildingEnumLength = Enum.GetValues(typeof(BuildingType)).Length;
             buildingEnumLength--; // we remove 'BuildingType.None'
+
+            
             _buildingButtons = new Button[buildingEnumLength];
 
             BrowseThrowBuildingType(
                 (BuildingType buildingType, int index) =>
-                {
+                {                    
                     CreateConstructionButton(buildingType, index);
                 }
             );
 
             CheckIfThereIsEnoughtBuildingButtons();
-
+            
             Canvas.ForceUpdateCanvases();
         }
         #endregion
@@ -97,13 +115,35 @@ namespace UI.Game
             }
         }
 
-        private void CreateConstructionButton(BuildingType buildingType, int buttonIndex)
+        private void CreateConstructionButton(BuildingType buildingType, int index)
         {
             Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
+
             buildingButton.transform.SetParent(_parentConstructionButton, false);
             TrySetPortraitOnButton(buildingButton, buildingType);
+            TrySetHoverPopupDisplay(buildingType, buildingButton);
 
-            _buildingButtons[buttonIndex] = buildingButton;
+            _buildingButtons[index] = buildingButton;
+        }
+
+        private static void TrySetHoverPopupDisplay(BuildingType buildingType, Button buildingButton)
+        {
+            // set hoverdisplay popup
+            if (buildingButton.gameObject.TryGetComponent(out HoverDisplayPopup hoverDisplayPopup))
+            {
+                if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData entityData))
+                {
+                    hoverDisplayPopup.HoverPopupData = entityData.HoverPopupData;
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Panel Construction : Can't find entityData of {0} building for construction button {1}.", buildingType, buildingButton.name);
+                }
+            }
+            else
+            {
+                Debug.LogErrorFormat("Panel Construction : Construction button '{0}' miss a HoverDisplayPopup component.", buildingButton.name);
+            }
         }
 
         private static void TrySetPortraitOnButton(Button buildingButton, BuildingType buildingType)
