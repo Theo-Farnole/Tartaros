@@ -3,6 +3,7 @@ using Lortedo.Utilities.Managers;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace UI.Game
 {
@@ -28,10 +29,19 @@ namespace UI.Game
         {
             _waveIndicator.gameObject.SetActive(false);
 
+            UpdateResourcesLabel(GameManager.Instance.Resources);            
+        }
+
+        public override void SubscribeToEvents<T>(T uiManager)
+        {
             GameManager.OnGameResourcesUpdate += UpdateResourcesLabel;
             WaveManager.OnWaveTimerUpdate += SetWaveText;
+        }
 
-            UpdateResourcesLabel(GameManager.Instance.Resources);
+        public override void UnsubscribeToEvents<T>(T uiManager)
+        {
+            GameManager.OnGameResourcesUpdate -= UpdateResourcesLabel;
+            WaveManager.OnWaveTimerUpdate -= SetWaveText;
         }
 
         public override void OnValidate()
@@ -44,6 +54,12 @@ namespace UI.Game
 
         public void UpdateResourcesLabel(ResourcesWrapper currentResources)
         {
+            Debug.Log("UpdateResourcesLabel");
+
+            int enumResourcesLength = Enum.GetValues(typeof(Resource)).Length;
+            Assert.AreEqual(_resourcesLabel.Length, enumResourcesLength, 
+                string.Format("Resources label should have a length of {0}. Currently, it has a length of {1}", enumResourcesLength, _resourcesLabel.Length));
+
             _resourcesLabel[(int)Resource.Food].text = "food " + currentResources.food;
             _resourcesLabel[(int)Resource.Wood].text = "wood " + currentResources.wood;
             _resourcesLabel[(int)Resource.Gold].text = "gold " + currentResources.gold;

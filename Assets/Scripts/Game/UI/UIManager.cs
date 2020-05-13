@@ -20,20 +20,24 @@ public class UIManager : AbstractUIManager
     #endregion
 
     #region Properties
-    public PanelGameInformation PanelGameInformation { get => _panelGameInformation; set => _panelGameInformation = value; }
+    public PanelGameInformation PanelGameInformation { get => _panelGameInformation; }
     public PanelSelection PanelSelection { get => _panelSelection; }
     public PanelConstruction PanelConstruction { get => _panelConstruction; }
 
     protected override Type[] OwnedPanels
     {
-        get => new Type[] { typeof(PanelSelection), typeof(PanelConstruction) };
+        get => new Type[] { typeof(PanelGameInformation), typeof(PanelSelection), typeof(PanelConstruction) };
     }
     #endregion
 
     #region Methods
-    void Start()
+    protected override void Start()
     {
-        DisplayPanel<PanelConstruction>();
+        base.Start();
+        
+        _panelConstruction.Show();
+        _panelSelection.Hide();
+        _panelGameInformation.Show();
 
         SelectionManager.OnSelectionUpdated += ManagePanelDisplay;
     }
@@ -42,11 +46,13 @@ public class UIManager : AbstractUIManager
     {
         if (selectedGroups.Length == 0)
         {
-            DisplayPanel<PanelConstruction>();
+            _panelConstruction.Show();
+            _panelSelection.Hide();
         }
         else
         {
-            DisplayPanel<PanelSelection>();
+            _panelSelection.Show();
+            _panelConstruction.Hide();
         }
     }
     #endregion
