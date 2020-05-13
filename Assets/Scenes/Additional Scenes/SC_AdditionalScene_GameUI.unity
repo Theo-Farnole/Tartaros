@@ -937,7 +937,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3639
 --- !u!114 &351236410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5132,17 +5132,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panelGameInformation:
-    _root: {fileID: 932302543}
+    _canvas: {fileID: 932302547}
     _waveIndicator: {fileID: 7579696990709770497}
     _resourcesLabel:
     - {fileID: 1929407581235524862}
     - {fileID: 1929407582517403340}
     - {fileID: 1929407583113396560}
   _panelSelection:
-    _root: {fileID: 1930926695}
-    _prefabSelectedGroup: {fileID: 4893341851094223833, guid: a5d740a9dad2f2646be531c91c1b1e05,
+    _canvas: {fileID: 1930926699}
+    _prefabSelectionPortrait: {fileID: 4893341851094223833, guid: a5d740a9dad2f2646be531c91c1b1e05,
       type: 3}
-    _parentSelectedGroup: {fileID: 1190016296}
+    _parentSelectionPortraits: {fileID: 1190016296}
     _ordersWrapper:
       _overallOrders:
       - {fileID: 2030014892}
@@ -5156,7 +5156,7 @@ MonoBehaviour:
       - {fileID: 75624765}
       - {fileID: 1602829045}
   _panelConstruction:
-    _root: {fileID: 351236407}
+    _canvas: {fileID: 351236411}
     _prefabConstructionButton: {fileID: 1826093270694937108, guid: 1fb622ff9e092974d87faec333afe53e,
       type: 3}
     _parentConstructionButton: {fileID: 1300319502}

@@ -1,9 +1,11 @@
 ﻿using Game.Selection;
 using Lortedo.Utilities.Inspector;
 using Lortedo.Utilities.Managers;
+using Sirenix.OdinInspector;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace UI.Game
 {
@@ -13,26 +15,22 @@ namespace UI.Game
         #region Fields
         [Space(order = 0)]
         [Header("Selected Groups", order = 1)]
-        [SerializeField] private GameObject _prefabSelectedGroup;
-        [SerializeField] private Transform _parentSelectedGroup;
+        [SerializeField, Required] private GameObject _prefabSelectionPortrait;
+        [SerializeField, Required] private Transform _parentSelectionPortraits;
         [Header("Orders")]
         [SerializeField] private OrdersWrapper _ordersWrapper;
 
-        private UISelectionGroup[] _uiSelectionGroupsWrapper = new UISelectionGroup[5];
+        private UISelectionGroupPortrait[] _selectionPortraitUI = new UISelectionGroupPortrait[5];
         #endregion
 
         #region Properties
         #endregion
 
         #region Methods
+        #region Public Override
         public override void Initialize<T>(T uiManager)
         {
-            for (int i = 0; i < _uiSelectionGroupsWrapper.Length; i++)
-            {
-                _uiSelectionGroupsWrapper[i] = GameObject.Instantiate(_prefabSelectedGroup).GetComponent<UISelectionGroup>();
-                _uiSelectionGroupsWrapper[i].transform.SetParent(_parentSelectedGroup.transform, false);
-                _uiSelectionGroupsWrapper[i].gameObject.SetActive(false);
-            }
+            CreationSelectionPortraitUI();
 
             _ordersWrapper.HideOrders();
 
@@ -43,6 +41,30 @@ namespace UI.Game
         {
             _ordersWrapper.ResizeArrayIfNeeded();
             _ordersWrapper.Initialize();
+        }
+        #endregion
+
+        private void CreationSelectionPortraitUI()
+        {
+            for (int i = 0; i < _selectionPortraitUI.Length; i++)
+            {
+                var uiSelectedGroup = GameObject.Instantiate(_prefabSelectionPortrait);
+
+                if (uiSelectedGroup.TryGetComponent(out UISelectionGroupPortrait uiSelectionGroup))
+                {
+                    _selectionPortraitUI[i] = uiSelectionGroup;
+                    _selectionPortraitUI[i].gameObject.SetActive(false);
+
+                    if (_parentSelectionPortraits != null)
+                        _selectionPortraitUI[i].transform.SetParent(_parentSelectionPortraits.transform, false);
+                    else
+                        Debug.LogErrorFormat("Panel information : Can't set parent of selection group, because _parentSelectedGroup is null!");
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Panel information : Can't get UISelectionGroup component of uiSelectionGroups!");
+                }
+            }
         }
 
         public void UpdateSelection(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
@@ -62,21 +84,21 @@ namespace UI.Game
         /// <param name="selection"></param>
         void UpdateSelectedGroups(SelectionManager.SelectionGroup[] selection)
         {
-            for (int i = 0; i < _uiSelectionGroupsWrapper.Length; i++)
+            for (int i = 0; i < _selectionPortraitUI.Length; i++)
             {
                 if (i >= selection.Length)
                 {
-                    _uiSelectionGroupsWrapper[i].gameObject.SetActive(false);
+                    _selectionPortraitUI[i].gameObject.SetActive(false);
                     continue;
                 }
 
-                _uiSelectionGroupsWrapper[i].gameObject.SetActive(true);
-                _uiSelectionGroupsWrapper[i].unitsCount.text = selection[i].unitsSelected.Count.ToString();
-                TrySetPortrait(_uiSelectionGroupsWrapper[i], selection[i].entityType);
+                _selectionPortraitUI[i].gameObject.SetActive(true);
+                _selectionPortraitUI[i].unitsCount.text = selection[i].unitsSelected.Count.ToString();
+                TrySetPortrait(_selectionPortraitUI[i], selection[i].entityType);
             }
         }
 
-        private void TrySetPortrait(UISelectionGroup group, EntityType entityType)
+        private void TrySetPortrait(UISelectionGroupPortrait group, EntityType entityType)
         {
             if (MainRegister.Instance.TryGetEntityData(entityType, out EntityData entityData))
             {
@@ -94,11 +116,11 @@ namespace UI.Game
         /// </summary>
         void HighlightGroup(int highlightGroupIndex)
         {
-            for (int i = 0; i < _uiSelectionGroupsWrapper.Length; i++)
+            for (int i = 0; i < _selectionPortraitUI.Length; i++)
             {
                 bool isHighlight = (i == highlightGroupIndex);
 
-                _uiSelectionGroupsWrapper[i].SetHighlight(isHighlight);
+                _selectionPortraitUI[i].SetHighlight(isHighlight);
             }
         }
 
