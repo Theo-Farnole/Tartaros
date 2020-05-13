@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: DB_Entity_Kassandra
+  m_Name: DB_Unit_Kassandra
   m_EditorClassIdentifier: 
-  _entityName: 
-  _hotkey: 121
+  _entityName: Kassandra
+  _hotkey: 97
   _portrait: {fileID: 21300000, guid: 3968e96966b82274594aef90285ee9a9, type: 3}
   _prefab: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775, type: 3}
+  _hoverPopupData: {fileID: 11400000, guid: 4d613de1ed0e4694590c2a31afd07026, type: 2}
   _isInvincible: 0
   _hp: 10
   _spawningCost:
