@@ -94,5 +94,27 @@ public struct ResourcesWrapper
 
     public static bool operator !=(ResourcesWrapper a, ResourcesWrapper b) =>
         !(a == b);
+
+    public override bool Equals(object obj)
+    {
+        if (!(obj is ResourcesWrapper))
+        {
+            return false;
+        }
+
+        var wrapper = (ResourcesWrapper)obj;
+        return food == wrapper.food &&
+               wood == wrapper.wood &&
+               gold == wrapper.gold;
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = -1301703148;
+        hashCode = hashCode * -1521134295 + food.GetHashCode();
+        hashCode = hashCode * -1521134295 + wood.GetHashCode();
+        hashCode = hashCode * -1521134295 + gold.GetHashCode();
+        return hashCode;
+    }
     #endregion
 }
