@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80732e8a65e870438a57168d8af4792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _poolsUserInput:
+  _prefabsPool:
   - tag: SelectionCircle
     prefab: {fileID: 75726643763961423, guid: 36da5f7c11d4d514a8172e00d9c31f52, type: 3}
 --- !u!4 &122832973
