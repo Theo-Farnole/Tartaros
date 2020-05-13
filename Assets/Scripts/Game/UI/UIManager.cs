@@ -34,7 +34,7 @@ public class UIManager : AbstractUIManager
     protected override void Start()
     {
         base.Start();
-        
+
         _panelConstruction.Show();
         _panelSelection.Hide();
         _panelGameInformation.Show();

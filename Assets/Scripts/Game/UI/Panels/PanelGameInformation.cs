@@ -28,8 +28,6 @@ namespace UI.Game
         public override void Initialize<T>(T uiManager)
         {
             _waveIndicator.gameObject.SetActive(false);
-
-            UpdateResourcesLabel(GameManager.Instance.Resources);            
         }
 
         public override void SubscribeToEvents<T>(T uiManager)
@@ -55,7 +53,7 @@ namespace UI.Game
         public void UpdateResourcesLabel(ResourcesWrapper currentResources)
         {
             int enumResourcesLength = Enum.GetValues(typeof(Resource)).Length;
-            Assert.AreEqual(_resourcesLabel.Length, enumResourcesLength, 
+            Assert.AreEqual(_resourcesLabel.Length, enumResourcesLength,
                 string.Format("Resources label should have a length of {0}. Currently, it has a length of {1}", enumResourcesLength, _resourcesLabel.Length));
 
             _resourcesLabel[(int)Resource.Food].text = "food " + currentResources.food;
@@ -68,8 +66,8 @@ namespace UI.Game
             int remainingMinutes = Mathf.FloorToInt(remainingTime / 60);
             int remainingSeconds = Mathf.FloorToInt(remainingTime % 60);
 
-            string stringTime = string.Format(TIME_FORMAT, remainingMinutes, remainingSeconds);            
-            
+            string stringTime = string.Format(TIME_FORMAT, remainingMinutes, remainingSeconds);
+
             _waveIndicator.text = string.Format(WAVE_FORMAT, waveCount, stringTime);
         }
         #endregion

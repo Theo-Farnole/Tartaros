@@ -27,6 +27,13 @@ namespace UI.Game
 
         #region Methods
         #region Public override
+        public override void Initialize<T>(T uiManager)
+        {
+            base.Initialize(uiManager);
+
+            CreateConstructionButtons();
+        }
+
         public override void SubscribeToEvents<T>(T uiManager)
         {
             CheckIfThereIsEnoughtBuildingButtons();
@@ -66,6 +73,8 @@ namespace UI.Game
                     CreateConstructionButton(buildingType, index);
                 }
             );
+
+            CheckIfThereIsEnoughtBuildingButtons();
 
             Canvas.ForceUpdateCanvases();
         }
