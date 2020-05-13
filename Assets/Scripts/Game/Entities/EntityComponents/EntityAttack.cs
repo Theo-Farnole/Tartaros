@@ -3,6 +3,7 @@ using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class EntityAttack : EntityComponent
 {
@@ -45,15 +46,29 @@ public class EntityAttack : EntityComponent
             }
             else
             {
-                GameObject gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity, true);
-
-                if (gameObjectProjectile.TryGetComponent(out Projectile projectile))
+                if (Entity.Data.PrefabProjectile != null)
                 {
-                    projectile.Throw(target, Entity);
+                    GameObject gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity, true);
+
+                    if (gameObjectProjectile != null)
+                    {
+                        if (gameObjectProjectile.TryGetComponent(out Projectile projectile))
+                        {
+                            projectile.Throw(target, Entity);
+                        }
+                        else
+                        {
+                            Debug.LogErrorFormat("Prefab projectile of {0} is missing Projectile component. Please, add one.", name);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogErrorFormat("Entity Attack : Projectile from object pooler is null. Aborting projectile throw");
+                    }
                 }
                 else
                 {
-                    Debug.LogErrorFormat("Prefab projectile of {0} is missing Projectile component. Please, add one.", name);
+                    Debug.LogErrorFormat("Entity Attack : Projectile set in EntityData is null for {0} of type {1}", name, Entity.Type);
                 }
             }
         }
