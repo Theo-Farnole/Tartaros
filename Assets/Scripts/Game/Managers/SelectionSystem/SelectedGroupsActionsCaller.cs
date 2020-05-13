@@ -29,7 +29,7 @@ public static class SelectedGroupsActionsCaller
 
     public static void OrderStop()
     {
-        foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
+        foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
             for (int i = 0; i < group.unitsSelected.Count; i++)
             {
@@ -40,7 +40,7 @@ public static class SelectedGroupsActionsCaller
 
     public static void OrderSpawnUnits(UnitType unit)
     {
-        foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
+        foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
             for (int i = 0; i < group.unitsSelected.Count; i++)
             {
@@ -60,7 +60,7 @@ public static class SelectedGroupsActionsCaller
 
         bool addToActionQueue = Input.GetKey(additiveKeycode);
 
-        foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
+        foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
             for (int i = 0; i < group.unitsSelected.Count; i++)
             {
@@ -75,7 +75,7 @@ public static class SelectedGroupsActionsCaller
     {
         bool addToActionQueue = Input.GetKey(additiveKeycode);
 
-        foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
+        foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
             for (int j = 0; j < group.unitsSelected.Count; j++)
             {
@@ -90,7 +90,7 @@ public static class SelectedGroupsActionsCaller
     {
         bool addToActionQueue = Input.GetKey(additiveKeycode);
 
-        foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
+        foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
             for (int j = 0; j < group.unitsSelected.Count; j++)
             {
@@ -105,7 +105,7 @@ public static class SelectedGroupsActionsCaller
     {
         bool addToActionQueue = Input.GetKey(additiveKeycode);
 
-        foreach (SelectionManager.Group group in SelectionManager.Instance.SpartanGroups)
+        foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
             for (int j = 0; j < group.unitsSelected.Count; j++)
             {

@@ -1,5 +1,4 @@
 ﻿using Lortedo.Utilities.Pattern;
-using Registers;
 using UnityEngine;
 
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
@@ -87,16 +86,23 @@ public class GameManager : Singleton<GameManager>
 
     public void StartBuilding(BuildingType buildingType)
     {
-        var buildingCost = BuildingsRegister.Instance.GetItem(buildingType).SpawningCost;
-
-        // check if we has enought resources, otherwise we create error message
-        if (_resources.HasEnoughResources(buildingCost))
+        if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))
         {
-            State = new BuildingState(this, buildingType);            
+            var buildingCost = buildingData.SpawningCost;
+
+            // check if we has enought resources, otherwise we create error message
+            if (_resources.HasEnoughResources(buildingCost))
+            {
+                State = new BuildingState(this, buildingType);
+            }
+            else
+            {
+                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enough resources to build " + buildingType);
+            }
         }
         else
         {
-            UIMessagesLogger.Instance.AddErrorMessage("GameManager doesn't have enough resources to build " + buildingType);
+            Debug.LogErrorFormat("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingType);
         }
     }
     #endregion

@@ -1,6 +1,5 @@
 ﻿using Lortedo.Utilities.Debugging;
 using Lortedo.Utilities.Pattern;
-using Registers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,10 +10,20 @@ public class BuildingState : OwnedState<GameManager>
     #region Fields
     private GameObject _building = null;
     private BuildingType _buildingType;
+    private EntityData _buildingData;
     #endregion
 
     #region Properties
-    private ResourcesWrapper CurrentBuildingCost { get => BuildingsRegister.Instance.GetItem(_buildingType).SpawningCost; }
+    private ResourcesWrapper CurrentBuildingCost
+    {
+        get
+        {
+            if (_buildingData == null)
+                Debug.LogFormat("Can't get CurrentBuildingCost because _buildingData is null!");
+
+            return _buildingData.SpawningCost;
+        }
+    }
     #endregion
 
     #region Methods
@@ -27,42 +36,59 @@ public class BuildingState : OwnedState<GameManager>
     {
         UpdateBuildingPosition();
 
-        // Can we build ?
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2Int coords = _owner.TileSystem.WorldPositionToCoords(_building.transform.position);
-            GameObject tile = _owner.TileSystem.GetTile(coords);
+        ProcessInputs();
+    }
 
-            // Is tile where we want to build is free ?
-            if (tile == null)
-            {
-                ConstructBuilding(coords);
-            }
-            else
-            {
-                UIMessagesLogger.Instance.AddErrorMessage("Can't build on non-empty tile");
-            }
-        }
-
+    private void ProcessInputs()
+    {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             DestroyAndRefundBuilding();
-
             _owner.State = null;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            TryConstructBuilding();
         }
     }
 
-    void SetCurrentBuilding(BuildingType building)
+    void TryConstructBuilding()
     {
-        _buildingType = building;
-        _owner.Resources -= CurrentBuildingCost;
-                 
-        // get prefab then instantiate
-        GameObject prefab = BuildingsRegister.Instance.GetItem(building).Prefab;
-        _building = Object.Instantiate(prefab);
+        Vector2Int coords = _owner.TileSystem.WorldPositionToCoords(_building.transform.position);
+        GameObject tile = _owner.TileSystem.GetTile(coords);
 
-        EnableBuildingComponents(false);
-        UpdateBuildingPosition();
+        // Is tile where we want to build is free ?
+        if (tile == null)
+        {
+            ConstructBuilding(coords);
+        }
+        else
+        {
+            UIMessagesLogger.Instance.AddErrorMessage("Can't build on non-empty tile");
+        }
+    }
+
+    void SetCurrentBuilding(BuildingType buildingType)
+    {
+        // try to get prefab for instantiation
+        if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))
+        {
+            _buildingData = buildingData;
+            _buildingType = buildingType;
+            _owner.Resources -= CurrentBuildingCost;
+
+            // get prefab then instantiate
+            GameObject prefab = buildingData.Prefab;
+            _building = Object.Instantiate(prefab);
+
+            EnableBuildingComponents(false);
+            UpdateBuildingPosition();
+        }
+        else
+        {
+            Debug.LogErrorFormat("Building State : can't SetCurrentBuilding because cannot get building data from MainRegister of {0}.", buildingType);
+        }
     }
 
     void UpdateBuildingPosition()
@@ -78,7 +104,7 @@ public class BuildingState : OwnedState<GameManager>
     void ConstructBuilding(Vector2Int coords)
     {
         EnableBuildingComponents(true);
-        
+
         _building.GetComponent<Entity>().Team = Team.Sparta;
 
         DynamicsObjects.Instance.SetToParent(_building.transform, "Building");

@@ -2,7 +2,6 @@
 using Lortedo.Utilities.Inspector;
 using Lortedo.Utilities.Managers;
 using Lortedo.Utilities.Pattern;
-using Registers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +38,7 @@ public class UIManager : AbstractUIManager
         SelectionManager.OnSelectionUpdated += ManagePanelDisplay;
     }
 
-    void ManagePanelDisplay(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
+    void ManagePanelDisplay(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
     {
         if (selectedGroups.Length == 0)
         {

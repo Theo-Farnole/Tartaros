@@ -1,7 +1,6 @@
 ﻿using Game.Selection;
 using Lortedo.Utilities.Inspector;
 using Lortedo.Utilities.Managers;
-using Registers;
 using System;
 using TMPro;
 using UnityEngine;
@@ -19,7 +18,7 @@ namespace UI.Game
         [Header("Orders")]
         [SerializeField] private OrdersWrapper _ordersWrapper;
 
-        private Group[] _selectedGroupWrapper = new Group[5];
+        private UISelectionGroup[] _uiSelectionGroupsWrapper = new UISelectionGroup[5];
         #endregion
 
         #region Properties
@@ -28,11 +27,11 @@ namespace UI.Game
         #region Methods
         public override void Initialize<T>(T uiManager)
         {
-            for (int i = 0; i < _selectedGroupWrapper.Length; i++)
+            for (int i = 0; i < _uiSelectionGroupsWrapper.Length; i++)
             {
-                _selectedGroupWrapper[i] = GameObject.Instantiate(_prefabSelectedGroup).GetComponent<Group>();
-                _selectedGroupWrapper[i].transform.SetParent(_parentSelectedGroup.transform, false);
-                _selectedGroupWrapper[i].gameObject.SetActive(false);
+                _uiSelectionGroupsWrapper[i] = GameObject.Instantiate(_prefabSelectedGroup).GetComponent<UISelectionGroup>();
+                _uiSelectionGroupsWrapper[i].transform.SetParent(_parentSelectedGroup.transform, false);
+                _uiSelectionGroupsWrapper[i].gameObject.SetActive(false);
             }
 
             _ordersWrapper.HideOrders();
@@ -44,9 +43,9 @@ namespace UI.Game
         {
             _ordersWrapper.ResizeArrayIfNeeded();
             _ordersWrapper.Initialize();
-        }        
+        }
 
-        public void UpdateSelection(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
+        public void UpdateSelection(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
         {
             UpdateSelectedGroups(selectedGroups);
             HighlightGroup(highlightGroupIndex);
@@ -60,20 +59,33 @@ namespace UI.Game
         /// <summary>
         /// Set sprite & units number
         /// </summary>
-        /// <param name="groupsSelected"></param>
-        void UpdateSelectedGroups(SelectionManager.Group[] groupsSelected)
+        /// <param name="selection"></param>
+        void UpdateSelectedGroups(SelectionManager.SelectionGroup[] selection)
         {
-            for (int i = 0; i < _selectedGroupWrapper.Length; i++)
+            for (int i = 0; i < _uiSelectionGroupsWrapper.Length; i++)
             {
-                if (i >= groupsSelected.Length)
+                if (i >= selection.Length)
                 {
-                    _selectedGroupWrapper[i].gameObject.SetActive(false);
+                    _uiSelectionGroupsWrapper[i].gameObject.SetActive(false);
                     continue;
                 }
 
-                _selectedGroupWrapper[i].gameObject.SetActive(true);
-                _selectedGroupWrapper[i].portrait.sprite = EntitiesRegister.GetRegisterData(groupsSelected[i].entityType).Portrait;
-                _selectedGroupWrapper[i].unitsCount.text = groupsSelected[i].unitsSelected.Count.ToString();
+                _uiSelectionGroupsWrapper[i].gameObject.SetActive(true);
+                _uiSelectionGroupsWrapper[i].unitsCount.text = selection[i].unitsSelected.Count.ToString();
+                TrySetPortrait(_uiSelectionGroupsWrapper[i], selection[i].entityType);
+            }
+        }
+
+        private void TrySetPortrait(UISelectionGroup group, EntityType entityType)
+        {
+            if (MainRegister.Instance.TryGetEntityData(entityType, out EntityData entityData))
+            {
+                Sprite portrait = entityData.Portrait;
+                group.portrait.sprite = portrait;
+            }
+            else
+            {
+                Debug.LogErrorFormat("Panel Selection: can't set portrait of {0} entity.", entityType);
             }
         }
 
@@ -82,11 +94,11 @@ namespace UI.Game
         /// </summary>
         void HighlightGroup(int highlightGroupIndex)
         {
-            for (int i = 0; i < _selectedGroupWrapper.Length; i++)
+            for (int i = 0; i < _uiSelectionGroupsWrapper.Length; i++)
             {
                 bool isHighlight = (i == highlightGroupIndex);
 
-                _selectedGroupWrapper[i].SetHighlight(isHighlight);
+                _uiSelectionGroupsWrapper[i].SetHighlight(isHighlight);
             }
         }
 

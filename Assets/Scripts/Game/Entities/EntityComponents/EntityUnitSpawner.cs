@@ -1,5 +1,4 @@
 ﻿using LeonidasLegacy.IA.Action;
-using Registers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ public class EntityUnitSpawner : EntityComponent
 
     void Start()
     {
-        _anchorPosition = transform.position + transform.forward * 1f;    
+        _anchorPosition = transform.position + transform.forward * 1f;
     }
 
     public void SetAnchorPosition(Vector3 anchorPosition)
@@ -29,23 +28,28 @@ public class EntityUnitSpawner : EntityComponent
             return;
         }
 
-        var unitData = UnitsRegister.Instance.GetItem(unitType);
-
-        if (GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost) == false)
+        if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData unitData))
         {
-            UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitType + ".");
-            return;
+            if (GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost) == false)
+            {
+                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitType + ".");
+                return;
+            }
+
+            // remove resources
+            GameManager.Instance.Resources -= unitData.SpawningCost;
+
+            // instantiate
+            var instantiatedObject = Instantiate(unitData.Prefab, transform.position, Quaternion.identity);
+
+            // make the entity go to the anchor position
+            var entity = instantiatedObject.GetComponent<Entity>();
+            Action moveToAnchorAction = new ActionMoveToPosition(entity, _anchorPosition);
+            entity.SetAction(moveToAnchorAction);
         }
-
-        // remove resources
-        GameManager.Instance.Resources -= unitData.SpawningCost;
-
-        // instantiate
-        var instantiatedObject = Object.Instantiate(unitData.Prefab, transform.position, Quaternion.identity);
-
-        // set action
-        var entity = instantiatedObject.GetComponent<Entity>();
-        Action moveToAnchorAction = new ActionMoveToPosition(entity, _anchorPosition);
-        entity.SetAction(moveToAnchorAction);
+        else
+        {
+            Debug.LogErrorFormat("Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitType);;
+        }
     }
 }

@@ -274,9 +274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 302805440}
-  - component: {fileID: 5183215179919336728}
-  - component: {fileID: 7218729057405989290}
-  - component: {fileID: 7380496137556652473}
+  - component: {fileID: 302805441}
   m_Layer: 0
   m_Name: Registers
   m_TagString: Untagged
@@ -298,6 +296,235 @@ Transform:
   m_Father: {fileID: 424333282}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &302805441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302805439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b965516c1b5d45489d0a8f1e5715b76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 9c8c19eb7597f8c42ae1c998ec68282f, type: 2}
+    - {fileID: 11400000, guid: 6a1997c83280ffd478dffdae9191d1a8, type: 2}
+    - {fileID: 11400000, guid: 2885a22bbf77a124fa2c0c52e70bc16c, type: 2}
+    - {fileID: 11400000, guid: 2299761eaefd7ea49aad12db7978c5e7, type: 2}
+    - {fileID: 11400000, guid: f0fc01d18dfe7644f9e2418f0d534d15, type: 2}
+    - {fileID: 11400000, guid: 4763c579653748b40b4dd2e488b021af, type: 2}
+    - {fileID: 11400000, guid: 74889946139d707488b53b8deef72764, type: 2}
+    - {fileID: 11400000, guid: d65e210e04d278d49b604c93a8d75a15, type: 2}
+    - {fileID: 11400000, guid: 5b1c55666a90466449d0422ab25c147c, type: 2}
+    - {fileID: 11400000, guid: b9f84278e7c7f40429666daa10722a1f, type: 2}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _buildingsRegister
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[BuildingType, Assembly-CSharp],[EntityData,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[BuildingType, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1000
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1001
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1002
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _unitsRegister
+      Entry: 7
+      Data: 2|System.Collections.Generic.Dictionary`2[[UnitType, Assembly-CSharp],[EntityData,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[UnitType, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _overallActionsRegister
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[OverallAction, Assembly-CSharp],[OverallActionData,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[OverallAction, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 4
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 10
+      Data: 6
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 7
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 8
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 10
+      Data: 9
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
 --- !u!1 &424333281
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,22 +975,6 @@ Transform:
   m_Father: {fileID: 424333282}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5183215179919336728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302805439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 054a53fd6e1b21649859faa7fa597912, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _unitsData:
-  - {fileID: 11400000, guid: 2299761eaefd7ea49aad12db7978c5e7, type: 2}
-  - {fileID: 11400000, guid: f0fc01d18dfe7644f9e2418f0d534d15, type: 2}
-  - {fileID: 11400000, guid: 4763c579653748b40b4dd2e488b021af, type: 2}
 --- !u!4 &5248040381766499477
 Transform:
   m_ObjectHideFlags: 0
@@ -865,40 +1076,6 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &7218729057405989290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302805439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52f6f14ab59cdee4a99a8ccd8438aa45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _buildingsData:
-  - {fileID: 11400000, guid: 9c8c19eb7597f8c42ae1c998ec68282f, type: 2}
-  - {fileID: 11400000, guid: 6a1997c83280ffd478dffdae9191d1a8, type: 2}
-  - {fileID: 11400000, guid: 2885a22bbf77a124fa2c0c52e70bc16c, type: 2}
-  - {fileID: 0}
---- !u!114 &7380496137556652473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302805439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8916f2830dd79e429186c2b755c0dad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _overallActionsdata:
-  - {fileID: 11400000, guid: 74889946139d707488b53b8deef72764, type: 2}
-  - {fileID: 11400000, guid: d65e210e04d278d49b604c93a8d75a15, type: 2}
-  - {fileID: 11400000, guid: 5b1c55666a90466449d0422ab25c147c, type: 2}
-  - {fileID: 11400000, guid: b9f84278e7c7f40429666daa10722a1f, type: 2}
 --- !u!4 &7885626693014256376
 Transform:
   m_ObjectHideFlags: 0

@@ -1,11 +1,11 @@
 ﻿using CommandPattern;
 using Lortedo.Utilities.Inspector;
-using Registers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UI.Game.HoverPopup;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace UI.Game
 {
@@ -23,15 +23,32 @@ namespace UI.Game
             }
         }
 
+        #region Initialization
         public void Initialize()
         {
-            foreach (OverallAction action in Enum.GetValues(typeof(OverallAction)))
-            {
-                int index = (int)action;
+            SetHoverPopupOnOverallActionOrders();
+        }
 
-                _overallOrders[index].GetComponent<HoverDisplayPopup>().HoverPopupData = OverallActionsRegister.Instance.GetItem(action).HoverPopupData;
+        void SetHoverPopupOnOverallActionOrders()
+        {
+            var overallActionEnumLength = Enum.GetValues(typeof(OverallAction)).Length;
+            Assert.AreEqual(_overallOrders.Length, overallActionEnumLength, string.Format("Overall action orders should have {0} buttons. However, it have only {1}.", overallActionEnumLength, _overallOrders.Length));
+
+            for (int i = 0; i < _overallOrders.Length && i < overallActionEnumLength; i++)
+            {
+                OverallAction action = (OverallAction)i;
+
+                if (MainRegister.Instance.TryGetOverallActionData(action, out OverallActionData overallActionData))
+                {
+                    _overallOrders[i].GetComponent<HoverDisplayPopup>().HoverPopupData = overallActionData.HoverPopupData;
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Orders Wrapper: Could set hover popup on action {0}", action);
+                }
             }
         }
+        #endregion
 
         public void HideOrders()
         {
@@ -46,78 +63,113 @@ namespace UI.Game
             }
         }
 
-        public void UpdateOrders(Entity unit)
+        public void UpdateOrders(Entity entity)
         {
             HideOrders();
 
-            if (unit == null)
+            if (entity == null)
                 return;
 
-            UpdateOverallOrders(unit);
-            UpdateSpawnUnitsOrder(unit);
+            DisplayOverallOrders(entity);
+            DisplayCreateUnitsOrders(entity);
         }
 
-        void UpdateSpawnUnitsOrder(Entity unit)
+        void DisplayCreateUnitsOrders(Entity entity)
         {
-            if (!unit.Data.CanSpawnUnit)
+            if (!entity.Data.CanSpawnUnit)
                 return;
 
-            for (int i = 0; i < _spawnUnitsOrders.Length && i < unit.Data.AvailableUnitsForCreation.Length; i++)
+            for (int i = 0; i < _spawnUnitsOrders.Length && i < entity.Data.AvailableUnitsForCreation.Length; i++)
             {
-                _spawnUnitsOrders[i].gameObject.SetActive(true);
+                Order order = _spawnUnitsOrders[i];
+                UnitType unitType = entity.Data.AvailableUnitsForCreation[i];
 
-                UnitType unitType = unit.Data.AvailableUnitsForCreation[i];
-                _spawnUnitsOrders[i].hotkey.text = UnitsRegister.Instance.GetItem(unitType).Hotkey.ToString();
-                _spawnUnitsOrders[i].backgroundButton.sprite = UnitsRegister.Instance.GetItem(unitType).Portrait;
-
-                _spawnUnitsOrders[i].button.onClick.RemoveAllListeners();
-                _spawnUnitsOrders[i].button.onClick.AddListener(() => SelectedGroupsActionsCaller.OrderSpawnUnits(unitType));
+                SetContent_UnitOrder(entity, order, unitType);
             }
         }
 
-        void UpdateOverallOrders(Entity unit)
+        private void SetContent_UnitOrder(Entity entity, Order order, UnitType unitType)
         {
-            foreach (OverallAction action in Enum.GetValues(typeof(OverallAction)))
+            order.gameObject.SetActive(true);
+
+            if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData entityData))
             {
-                int index = (int)action;
+                order.hotkey.text = entityData.Hotkey.ToString();
+                order.backgroundButton.sprite = entityData.Portrait;
+            }
+            else
+            {
+                order.hotkey.text = "MISSING HOTKEY";
+                Debug.LogErrorFormat("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", entityData);
+            }
 
-                if (unit.Data.CanDoOverallAction(action))
+            order.button.onClick.RemoveAllListeners();
+            order.button.onClick.AddListener(() => SelectedGroupsActionsCaller.OrderSpawnUnits(unitType));
+        }
+
+        void DisplayOverallOrders(Entity unit)
+        {
+            foreach (OverallAction overallAction in Enum.GetValues(typeof(OverallAction)))
+            {
+                int index = (int)overallAction;
+
+                if (unit.Data.CanDoOverallAction(overallAction))
                 {
-                    _overallOrders[index].gameObject.SetActive(true);
-
-                    _overallOrders[index].hotkey.text = OverallActionsRegister.Instance.GetItem(action).Hotkey.ToString();
-                    _overallOrders[index].backgroundButton.sprite = OverallActionsRegister.Instance.GetItem(action).Portrait;
-
-                    _overallOrders[index].button.onClick.RemoveAllListeners();
-
-                    switch (action)
-                    {
-                        case OverallAction.Stop:
-                            _overallOrders[index].button.onClick.AddListener(() =>
-                            {
-                                SelectedGroupsActionsCaller.OrderStop();
-                            });
-                            break;
-
-                        case OverallAction.Move:
-                            _overallOrders[index].button.onClick.AddListener(() =>
-                            {
-                                SecondClickListener.Instance.ListenToMove();
-                            });
-                            break;
-
-                        case OverallAction.Attack:
-                            _overallOrders[index].button.onClick.AddListener(() =>
-                            {
-                                SecondClickListener.Instance.ListenToAttack();
-                            });
-                            break;
-                    }
+                    SetOverallOrderContent(overallAction, index);
                 }
                 else
                 {
                     _overallOrders[index].gameObject.SetActive(false);
                 }
+            }
+        }
+
+        void SetOverallOrderContent(OverallAction overallAction, int index)
+        {
+            _overallOrders[index].gameObject.SetActive(true);
+
+            // try display hotkey and backgroundButton
+            if (MainRegister.Instance.TryGetOverallActionData(overallAction, out OverallActionData overallActionData))
+            {
+                _overallOrders[index].hotkey.text = overallActionData.Hotkey.ToString();
+                _overallOrders[index].backgroundButton.sprite = overallActionData.Portrait;
+            }
+            else
+            {
+                _overallOrders[index].hotkey.text = "MISSING HOTKEY";
+
+                Debug.LogErrorFormat("Orders Wrapper: Could set hotkey and portrait of action {0}", overallActionData);
+            }
+
+            AddCommandOnClick(overallAction, index);
+        }
+
+        void AddCommandOnClick(OverallAction overallAction, int index)
+        {
+            _overallOrders[index].button.onClick.RemoveAllListeners();
+
+            switch (overallAction)
+            {
+                case OverallAction.Stop:
+                    _overallOrders[index].button.onClick.AddListener(() =>
+                    {
+                        SelectedGroupsActionsCaller.OrderStop();
+                    });
+                    break;
+
+                case OverallAction.Move:
+                    _overallOrders[index].button.onClick.AddListener(() =>
+                    {
+                        SecondClickListener.Instance.ListenToMove();
+                    });
+                    break;
+
+                case OverallAction.Attack:
+                    _overallOrders[index].button.onClick.AddListener(() =>
+                    {
+                        SecondClickListener.Instance.ListenToAttack();
+                    });
+                    break;
             }
         }
     }

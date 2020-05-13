@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
   m_Name: DB_Entity_House
   m_EditorClassIdentifier: 
+  _entityName: 
+  _hotkey: 106
   _portrait: {fileID: 21300000, guid: 04beb25e868cb264791c0ba773f4fff5, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 07c235988da8f0d449a461fff451a456, type: 3}
-  _hotkey: 106
   _isInvincible: 0
   _hp: 10
   _spawningCost:
@@ -22,15 +23,17 @@ MonoBehaviour:
     wood: 5
     gold: 0
   _viewRadius: 2
-  _availableOrders: 0
+  _canAttack: 0
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
   _damage: 3
   _attackSpeed: 1
-  _attackRadius: 3
   _damagePerSecond: 3
+  _canMove: 0
   _speed: 3
+  _canCreateUnit: 0
   _availableUnitsForCreation: 0000000001000000
+  _canGenerateResources: 0
   _generationTick: 1
   _resourcesAmount:
     food: 10

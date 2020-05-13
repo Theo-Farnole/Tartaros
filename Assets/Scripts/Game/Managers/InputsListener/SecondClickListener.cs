@@ -22,7 +22,7 @@ public class SecondClickListener : Singleton<SecondClickListener>
 
     void Start()
     {
-        SelectionManager.OnSelectionUpdated += (SelectionManager.Group[] selectedGroups, int highlightGroupIndex) => StopListening();
+        SelectionManager.OnSelectionUpdated += (SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex) => StopListening();
     }
 
     void LateUpdate()

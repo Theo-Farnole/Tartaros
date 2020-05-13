@@ -1,7 +1,7 @@
 ﻿using CommandPattern;
 using Game.Selection;
 using Lortedo.Utilities.Pattern;
-using Registers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,88 +19,24 @@ public class HotkeyActionListener : MonoBehaviour
 
     #region Methods
     #region MonoBehaviour Callbacks
-    void Start()
-    {
-        SelectionManager.OnSelectionUpdated += OnSelectionUpdated;   
-    }
     void Update()
     {
-        ManageHotkeyInput();
+        ManageHotkeyInputs();
+    }
+
+    void OnEnable()
+    {
+        SelectionManager.OnSelectionUpdated += OnSelectionUpdated;
+    }
+
+    void OnDisable()
+    {
+        SelectionManager.OnSelectionUpdated -= OnSelectionUpdated;
     }
     #endregion
 
-    #region Private methods
-    /// <summary>
-    /// Clear and re-set _commands dictionary.
-    /// </summary>
-    /// <param name="typeToListenHotkey">Type of entity which we listen to hotkey</param>
-    public void SetHotkeyHandler(EntityType typeToListenHotkey)
-    {
-        ClearCommandsHandler();
-
-        EntityData data = EntitiesRegister.GetRegisterData(typeToListenHotkey);
-
-        // movement
-        if (data.CanMove)
-        {
-            // move hotkey
-            var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Move).Hotkey;
-            _commands.Add(hotkey, new ListenSecondClickToMoveCommand());
-
-            // patrol hotkey
-            var patrolHotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Patrol).Hotkey;
-            _commands.Add(patrolHotkey, new ListenSecondClickToPatrolCommand());
-        }
-
-        // attack
-        if (data.CanAttack)
-        {
-            var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Attack).Hotkey;
-            _commands.Add(hotkey, new ListenSecondClickToAttackCommand());
-        }
-
-        // stop
-        if (data.CanMove || data.CanAttack)
-        {
-            var hotkey = OverallActionsRegister.Instance.GetItem(OverallAction.Stop).Hotkey;
-            _commands.Add(hotkey, new StopCommand());
-        }
-
-        // CreateUnits
-        if (data.CanCreateResources)
-        {
-            for (int i = 0; i < data.AvailableUnitsForCreation.Length; i++)
-            {
-                UnitType unit = data.AvailableUnitsForCreation[i];
-                KeyCode hotkey = UnitsRegister.Instance.GetItem(unit).Hotkey;
-
-                if (_commands.ContainsKey(hotkey))
-                {
-                    Debug.LogWarningFormat("Hotkey {0} is already register.", hotkey);
-                    continue;
-                }
-                _commands.Add(UnitsRegister.Instance.GetItem(unit).Hotkey, new CreateUnitCommand(unit));
-            }
-        }
-    }
-
-    public void ClearCommandsHandler()
-    {
-        _commands.Clear();
-    }
-    
-    private void ManageHotkeyInput()
-    {
-        foreach (var kvp in _commands)
-        {
-            if (Input.GetKeyDown(kvp.Key))
-            {
-                kvp.Value.Execute();
-            }
-        }
-    }
-
-    private void OnSelectionUpdated(SelectionManager.Group[] selectedGroups, int highlightGroupIndex)
+    #region Events Handlers
+    private void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
     {
         if (selectedGroups.Length > 0 && selectedGroups[0] != null)
         {
@@ -110,6 +46,119 @@ public class HotkeyActionListener : MonoBehaviour
         {
             ClearCommandsHandler();
         }
+    }
+    #endregion
+
+    #region Inputs management
+    private void ManageHotkeyInputs()
+    {
+        foreach (var kvp in _commands)
+        {
+            if (Input.GetKeyDown(kvp.Key))
+            {
+                kvp.Value.Execute();
+            }
+        }
+    }
+    #endregion
+
+    public void ClearCommandsHandler()
+    {
+        _commands.Clear();
+    }
+
+    void AddHotkey(KeyCode hotkey, Command command)
+    {
+        if (_commands.ContainsKey(hotkey))
+        {
+            Debug.LogErrorFormat("Hotkey {0} is already register. Aborting", hotkey);
+            return;
+        }
+
+        _commands.Add(hotkey, command);
+    }
+
+    void AddHotkeyFromOverallAction(OverallAction overallAction, Command command)
+    {
+        bool overallActionDataFounded = MainRegister.Instance.TryGetOverallActionData(overallAction, out OverallActionData overallActionData);
+
+        if (!overallActionDataFounded)
+        {
+            Debug.LogErrorFormat("Hotkey Listener: Cannot find hotkey of attack. Aborting listening of hotkey attack.");
+            return;
+        }
+
+        var hotkey = overallActionData.Hotkey;
+
+        AddHotkey(hotkey, command);
+    }
+
+    /// <summary>
+    /// Clear and re-set _commands dictionary.
+    /// </summary>
+    /// <param name="typeToListenHotkey">Type of entity which we listen to hotkey</param>
+    public void SetHotkeyHandler(EntityType typeToListenHotkey)
+    {
+        ClearCommandsHandler();
+
+        if (MainRegister.Instance.TryGetEntityData(typeToListenHotkey, out EntityData data))
+        {
+            AddHotkeys(data);
+        }
+        else
+        {
+            Debug.LogErrorFormat("Hotkey Listener: cannot find entity data for {0}. Aborting input listening.", typeToListenHotkey);
+        }
+    }
+
+    #region Add Hotkeys methods
+    void AddHotkeys(EntityData data)
+    {
+        if (data.CanMove)
+            AddMoveHotkeys();
+
+        if (data.CanAttack)
+            AddAttackHotkey();
+
+        if (data.CanMove || data.CanAttack)
+            AddStopActionHotkey();
+
+        if (data.CanCreateResources)
+            AddCreateResourcesHotkey(data);
+    }
+
+    private void AddCreateResourcesHotkey(EntityData data)
+    {
+        for (int i = 0; i < data.AvailableUnitsForCreation.Length; i++)
+        {
+            UnitType unitType = data.AvailableUnitsForCreation[i];
+
+            if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData unitData))
+            {
+                KeyCode hotkey = unitData.Hotkey;
+                AddHotkey(hotkey, new CreateUnitCommand(unitType));
+            }
+            else
+            {
+                Debug.LogErrorFormat("Hotkey Listener: Couldn't not find EntityData of unit {0}.", unitType);
+            }
+        }
+    }
+
+    private void AddStopActionHotkey()
+    {
+        AddHotkeyFromOverallAction(OverallAction.Stop, new StopCommand());
+    }
+
+    void AddAttackHotkey()
+    {
+        AddHotkeyFromOverallAction(OverallAction.Attack, new ListenSecondClickToAttackCommand());
+    }
+
+    void AddMoveHotkeys()
+    {
+        AddHotkeyFromOverallAction(OverallAction.Move, new ListenSecondClickToMoveCommand());
+        AddHotkeyFromOverallAction(OverallAction.Patrol, new ListenSecondClickToPatrolCommand());
     }
     #endregion
     #endregion

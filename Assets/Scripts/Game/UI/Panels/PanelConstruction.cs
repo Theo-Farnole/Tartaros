@@ -1,6 +1,5 @@
 ﻿using Lortedo.Utilities.Inspector;
 using Lortedo.Utilities.Managers;
-using Registers;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -92,13 +91,24 @@ namespace UI.Game
         private void CreateConstructionButton(BuildingType buildingType, int buttonIndex)
         {
             Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
-
-            buildingButton.GetComponent<Image>().sprite = BuildingsRegister.Instance.GetItem(buildingType).Portrait;
-            buildingButton.transform.SetParent(_parentConstructionButton, false);            
+            buildingButton.transform.SetParent(_parentConstructionButton, false);
+            TrySetPortraitOnButton(buildingButton, buildingType);
 
             _buildingButtons[buttonIndex] = buildingButton;
         }
 
+        private static void TrySetPortraitOnButton(Button buildingButton, BuildingType buildingType)
+        {
+            if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))
+            {
+                Sprite portrait = buildingData.Portrait;
+                buildingButton.GetComponent<Image>().sprite = portrait;
+            }
+            else
+            {
+                Debug.LogErrorFormat("Panel Construction: Couldn't set a portrait of building {0} on button {1}", buildingType, buildingButton);
+            }
+        }
 
         private void CheckIfThereIsEnoughtBuildingButtons()
         {

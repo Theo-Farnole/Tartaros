@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
       propertyPath: m_Name
-      value: PF_Entity_Unit
+      value: PF_Entity_Unit_Xerxes
       objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295659, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
@@ -70,7 +70,7 @@ PrefabInstance:
     - target: {fileID: 3544501673025177916, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
       propertyPath: _type
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3544501673025177916, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}

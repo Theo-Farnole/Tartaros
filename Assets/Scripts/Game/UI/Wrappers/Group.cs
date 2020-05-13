@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace UI.Game
 {
-    public class Group : MonoBehaviour
+    public class UISelectionGroup : MonoBehaviour
     {
         public Image portrait;
         public TextMeshProUGUI unitsCount;

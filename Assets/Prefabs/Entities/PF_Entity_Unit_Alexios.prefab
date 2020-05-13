@@ -54,6 +54,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -65,6 +66,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -84,11 +86,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4771539138824889506, guid: 17f6498f739b0224e8b8470456c0c5ff,
-        type: 3}
-      propertyPath: m_Name
-      value: PF_Entity_Unit_Alexios
-      objectReference: {fileID: 0}
     - target: {fileID: 4771539138824889505, guid: 17f6498f739b0224e8b8470456c0c5ff,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -142,6 +139,21 @@ PrefabInstance:
     - target: {fileID: 4771539138824889505, guid: 17f6498f739b0224e8b8470456c0c5ff,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771539138824889506, guid: 17f6498f739b0224e8b8470456c0c5ff,
+        type: 3}
+      propertyPath: m_Name
+      value: PF_Entity_Unit_Alexios
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925508277373191862, guid: 17f6498f739b0224e8b8470456c0c5ff,
+        type: 3}
+      propertyPath: _type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925508277373191862, guid: 17f6498f739b0224e8b8470456c0c5ff,
+        type: 3}
+      propertyPath: _team
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -31,7 +31,18 @@ public class Entity : MonoBehaviour
         get
         {
             if (_data == null)
-                _data = Registers.EntitiesRegister.GetRegisterData(_type);
+            {
+                if (MainRegister.Instance == null)
+                    Debug.LogErrorFormat("MainRegister is missing the scene. There'll be a lot of errors!");
+
+                bool dataFounded = MainRegister.Instance.TryGetEntityData(_type, out EntityData data);
+                _data = data; // without this line, there is plenty of errors
+
+                if (!dataFounded)
+                    Debug.LogErrorFormat("Entity : EntityData not founded for entity {1} of type {0} :/", _type, name);
+                else if (_data == null)
+                    Debug.LogErrorFormat("Entity : EntityData founded is null for entity {1} of type {0} :/", _type, name);
+            }
 
             return _data;
         }

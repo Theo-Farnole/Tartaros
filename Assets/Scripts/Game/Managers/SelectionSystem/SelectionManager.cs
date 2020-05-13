@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 namespace Game.Selection
 {
 
-    public delegate void OnSelectionUpdated(SelectionManager.Group[] selectedGroups, int highlightGroupIndex);
+    public delegate void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex);
 
     /// <summary>
     /// Manage the player's selection.
@@ -17,13 +17,13 @@ namespace Game.Selection
     public class SelectionManager : Singleton<SelectionManager>
     {
         #region Struct
-        public class Group
+        public class SelectionGroup
         {
             public EntityType entityType;
             public Team owner;
             public List<Entity> unitsSelected = new List<Entity>();
 
-            public Group(EntityType entityType, Team owner)
+            public SelectionGroup(EntityType entityType, Team owner)
             {
                 this.entityType = entityType;
                 this.owner = owner;
@@ -36,14 +36,14 @@ namespace Game.Selection
 
         [SerializeField] private SelectionRectangle _selectionRectangle;
 
-        private List<Group> _selectedGroups = new List<Group>();
+        private List<SelectionGroup> _selectedGroups = new List<SelectionGroup>();
         private int _highlightGroupIndex = -1;
         #endregion
 
         #region Properties
         public bool HasSelection { get => _selectedGroups.Count > 0; }
-        public Group[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Team.Sparta select x).ToArray(); }
-        public List<Group> SelectedGroups { get => _selectedGroups; }
+        public SelectionGroup[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Team.Sparta select x).ToArray(); }
+        public List<SelectionGroup> SelectedGroups { get => _selectedGroups; }
         #endregion
 
         #region Methods
@@ -110,12 +110,12 @@ namespace Game.Selection
             if (selectableEntity.GetCharacterComponent<EntityFogCoverable>().IsCover)
                 return;
 
-            Group groupOfSameEntity = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
+            SelectionGroup groupOfSameEntity = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
 
             // create group if no groud of the same entity exist
             if (groupOfSameEntity == null)
             {
-                groupOfSameEntity = new Group(selectableEntity.Type, selectableEntity.Team);
+                groupOfSameEntity = new SelectionGroup(selectableEntity.Type, selectableEntity.Team);
                 _selectedGroups.Add(groupOfSameEntity);
 
                 if (_highlightGroupIndex == -1) _highlightGroupIndex = 0;
@@ -136,7 +136,7 @@ namespace Game.Selection
 
         public void RemoveEntity(Entity selectableEntity)
         {
-            Group groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
+            SelectionGroup groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
 
             // don't remove unselected unit
             if (groupWithSameType == null ||
