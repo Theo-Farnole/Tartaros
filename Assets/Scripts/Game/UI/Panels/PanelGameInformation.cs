@@ -54,8 +54,6 @@ namespace UI.Game
 
         public void UpdateResourcesLabel(ResourcesWrapper currentResources)
         {
-            Debug.Log("UpdateResourcesLabel");
-
             int enumResourcesLength = Enum.GetValues(typeof(Resource)).Length;
             Assert.AreEqual(_resourcesLabel.Length, enumResourcesLength, 
                 string.Format("Resources label should have a length of {0}. Currently, it has a length of {1}", enumResourcesLength, _resourcesLabel.Length));
