@@ -57,7 +57,8 @@ public class Entity : MonoBehaviour
     #region Mono Callbacks
     void Awake()
     {
-        InitializeComponents();        
+        SetTeam();
+        InitializeComponents();
     }
 
     void Start()
@@ -73,7 +74,13 @@ public class Entity : MonoBehaviour
 
     void OnValidate()
     {
-        if (_type.GetUnitType() != null)
+        SetTeam();
+    }
+
+    void SetTeam()
+    {
+        // only set team if it's a unit
+        if (_type.TryGetUnitType(out UnitType unitType))
         {
             _team = _type.GetOwner();
         }
