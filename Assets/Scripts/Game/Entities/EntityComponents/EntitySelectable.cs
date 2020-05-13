@@ -7,10 +7,23 @@ public class EntitySelectable : EntityComponent
 {
     #region Fields
     private GameObject _selectionCircle = null;
+    private bool _isSelected = false;
     #endregion
 
     #region Methods
     #region Mono Callbacks
+    void OnEnable()
+    {
+        Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover += OnFogCover;
+        Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover += OnFogUncover;
+    }
+
+    void OnDisable()
+    {
+        Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover -= OnFogCover;        
+        Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover -= OnFogUncover;
+    }
+
     void OnDestroy()
     {
         if (GameManager.ApplicationIsQuitting)
@@ -25,12 +38,40 @@ public class EntitySelectable : EntityComponent
     }
     #endregion
 
+    #region Events handlers
+    void OnFogCover(Game.FogOfWar.IFogCoverable fogCoverable)
+    {
+        HideSelectionCircle();
+    }
+
+    void OnFogUncover(Game.FogOfWar.IFogCoverable fogCoverable)
+    {
+        DisplaySelectionCircle();
+    }
+    #endregion
+
     #region Public methods
     public void OnSelected()
     {
+        _isSelected = true;
+
+        DisplaySelectionCircle();
+    }
+
+    public void OnDeselect()
+    {
+        _isSelected = false;
+
+        HideSelectionCircle();        
+    }
+    #endregion
+
+    #region Private methods
+    private void DisplaySelectionCircle()
+    {
         if (_selectionCircle != null)
         {
-            Debug.LogWarning("SelectionCircle is already existing");
+            //Debug.LogWarning("Entity Selectable : Cannot display selection, it's already displayed. But it's okay.");
             return;
         }
 
@@ -46,17 +87,19 @@ public class EntitySelectable : EntityComponent
         }
         else
         {
-            Debug.LogErrorFormat("On entity selection: no selection circle pool found. Please check your ObjectPooler.");
+            Debug.LogErrorFormat("Entity Selectable : No selection circle pool in found. Please check your ObjectPooler.");
         }
     }
 
-    public void OnDeselect()
+    private void HideSelectionCircle()
     {
-        if (_selectionCircle != null)
+        if (_selectionCircle == null)
         {
-            ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keySelectionCircle, _selectionCircle);
+            //Debug.LogWarning("Entity Selectable : Cannot hide selection, it's already hide. It's okay.");
+            return;
         }
 
+        ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keySelectionCircle, _selectionCircle);
         _selectionCircle = null;
     }
     #endregion
