@@ -45,7 +45,7 @@ public class EntityAttack : EntityComponent
             }
             else
             {
-                Projectile projectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
+                Projectile projectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity, true).GetComponent<Projectile>();
                 projectile.Throw(target, Entity);
             }
         }
