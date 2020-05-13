@@ -29,6 +29,7 @@ MonoBehaviour:
     type: 3}
   _damage: 1
   _attackSpeed: 2
+  _attackRadius: 5
   _damagePerSecond: 0.5
   _canMove: 1
   _speed: 3

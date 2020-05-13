@@ -109,7 +109,8 @@ public class EntityData : ScriptableObject
     [Space]
     [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
     [PositiveValueOnly]
-    [Range(0, 15)] private float _attackRadius = 3f;
+    [Range(0, 15)]
+    [SerializeField] private float _attackRadius = 3f;
 
     [Space]
     [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
