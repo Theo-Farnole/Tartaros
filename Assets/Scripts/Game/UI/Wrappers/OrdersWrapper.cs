@@ -92,19 +92,29 @@ namespace UI.Game
         {
             order.gameObject.SetActive(true);
 
+            order.button.onClick.RemoveAllListeners();
+            order.button.onClick.AddListener(() => SelectedGroupsActionsCaller.OrderSpawnUnits(unitType));
+
+
             if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData entityData))
             {
                 order.hotkey.text = entityData.Hotkey.ToString();
-                order.backgroundButton.sprite = entityData.Portrait;
+                order.backgroundButton.sprite = entityData.Portrait;       
+                
+                if (order.HoverDisplayPopup != null)
+                {
+                    order.HoverDisplayPopup.HoverPopupData = entityData.HoverPopupData;
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Order : HoverDisplayPopup is missing in {0}.", order.name);
+                }
             }
             else
             {
                 order.hotkey.text = "MISSING HOTKEY";
                 Debug.LogErrorFormat("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", entityData);
             }
-
-            order.button.onClick.RemoveAllListeners();
-            order.button.onClick.AddListener(() => SelectedGroupsActionsCaller.OrderSpawnUnits(unitType));
         }
 
         void DisplayOverallOrders(Entity unit)
