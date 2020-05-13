@@ -45,8 +45,16 @@ public class EntityAttack : EntityComponent
             }
             else
             {
-                Projectile projectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity, true).GetComponent<Projectile>();
-                projectile.Throw(target, Entity);
+                GameObject gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity, true);
+
+                if (gameObjectProjectile.TryGetComponent(out Projectile projectile))
+                {
+                    projectile.Throw(target, Entity);
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Prefab projectile of {0} is missing Projectile component. Please, add one.", name);
+                }
             }
         }
     }
@@ -61,7 +69,7 @@ public class EntityAttack : EntityComponent
             return false;
 
         var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestEnemyInViewRadius();
-        
+
         if (nearestEnemy != null)
         {
             var action = new ActionAttackEntity(Entity, nearestEnemy);
