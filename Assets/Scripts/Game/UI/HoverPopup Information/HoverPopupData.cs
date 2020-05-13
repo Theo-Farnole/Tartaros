@@ -28,7 +28,10 @@ namespace UI.Game.HoverPopup
         [SerializeField] private ResourcesWrapper _resources;
 
         #region Properties
+        public bool HasTitle { get => _title != string.Empty; }
         public string Title { get => _title; }
+
+        public bool HasDescription { get => _description != string.Empty; }
         public string Description { get => _description;  }
 
         public bool HotkeyEnabled { get => _displayHotkey; }

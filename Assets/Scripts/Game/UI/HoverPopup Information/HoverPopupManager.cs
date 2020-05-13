@@ -64,6 +64,7 @@ namespace UI.Game.HoverPopup
         {
             Assert.IsNotNull(hoverPopupData);
 
+            _descriptionText.gameObject.SetActive(hoverPopupData.HasDescription);
             _descriptionText.text = hoverPopupData.Description;
         }
 
@@ -71,6 +72,7 @@ namespace UI.Game.HoverPopup
         {
             Assert.IsNotNull(hoverPopupData);
 
+            _titleText.gameObject.SetActive(hoverPopupData.HasTitle);
             _titleText.text = hoverPopupData.Title;
         }
 
