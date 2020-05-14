@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.Pattern;
+﻿using LeonidasLegacy.MapCellEditor;
+using Lortedo.Utilities.Pattern;
 using UnityEngine;
 
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
@@ -13,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private AttackSlotsData _attackSlotsData;
     [Space]    
     [SerializeField] private SnapGridDatabase _grid;
+    [SerializeField] private MapCells _mapCells;
     [Header("DEBUG")]
     [SerializeField] private bool _debugDrawSnapGrid;
 
@@ -84,6 +86,8 @@ public class GameManager : Singleton<GameManager>
     {
         if (_debugDrawSnapGrid)
             _grid?.DrawGizmos();
+
+        _mapCells?.DrawGizmos();
     }
     #endregion
 
