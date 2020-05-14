@@ -17,6 +17,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         private static readonly int TAB_SIZE = 25;
 
         private CellBrush _currentCellBrush;
+        private Shortcut_CellBrushType _shortcutCellBrushType;
 
         private Vector2 _scrollPosition;
         #endregion
@@ -30,6 +31,26 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             window.Show();
         }
 
+
+        void OnEnable()
+        {
+            SceneView.duringSceneGui += OnSceneGUI;
+
+            CreateBrush();
+        }
+
+        void OnDisable()
+        {
+            SceneView.duringSceneGui -= OnSceneGUI;            
+
+            _currentCellBrush?.DisableBrush();
+        }
+
+        void OnSceneGUI(SceneView sceneView)
+        {
+            ProcessShorcutsEvents();
+        }
+
         #region Editor Window Callbacks
         void OnGUI()
         {
@@ -38,17 +59,15 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             OnGUI_DrawCellsButtons();
             OnGUI_DrawBrushSettings();
 
-            GUILayout.EndScrollView();
+            GUILayout.EndScrollView();            
         }
 
-        void OnEnable()
+        private void ProcessShorcutsEvents()
         {
-            CreateBrush();
-        }
+            if (_shortcutCellBrushType == null)
+                _shortcutCellBrushType = new Shortcut_CellBrushType(this);
 
-        void OnDisable()
-        {
-            _currentCellBrush?.DisableBrush();
+            _shortcutCellBrushType.ProcessEvent(Event.current);           
         }
         #endregion
 
@@ -102,12 +121,8 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             }
             else
             {
-                //EditorGUILayout.BeginHorizontal();
-
                 EditorGUILayout.PrefixLabel("Brush Radius");
                 _currentCellBrush.Radius = EditorGUILayout.Slider(_currentCellBrush.Radius, 0.1f, 10);
-
-                //EditorGUILayout.EndHorizontal();
             }
 
             EditorGUI.indentLevel--;
@@ -191,9 +206,15 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         {
             if (DoUserClickOnRect(presetRect))
             {
-                _currentCellBrush.CellType = cellType;
+                SetBrushCellType(cellType);
                 GUI.changed = true;
             }
+        }
+
+        public void SetBrushCellType(CellType cellType)
+        {
+            _currentCellBrush.CellType = cellType;
+            this.Repaint();
         }
 
         private static bool DoUserClickOnRect(Rect presetRect)
