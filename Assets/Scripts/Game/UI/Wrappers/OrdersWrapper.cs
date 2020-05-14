@@ -15,7 +15,12 @@ namespace UI.Game
         [SerializeField, EnumNamedArray(typeof(OverallAction))] private Order[] _overallOrders = new Order[2];
         [SerializeField] private Order[] _spawnUnitsOrders = new Order[2];
 
-        public void ResizeArrayIfNeeded()
+        public void OnValidate()
+        {
+            ResizeArrayIfNeeded();
+        }
+
+        void ResizeArrayIfNeeded()
         {
             if (_overallOrders.Length != Enum.GetValues(typeof(OverallAction)).Length)
             {
@@ -99,8 +104,8 @@ namespace UI.Game
             if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData entityData))
             {
                 order.hotkey.text = entityData.Hotkey.ToString();
-                order.backgroundButton.sprite = entityData.Portrait;       
-                
+                order.backgroundButton.sprite = entityData.Portrait;
+
                 if (order.HoverDisplayPopup != null)
                 {
                     order.HoverDisplayPopup.HoverPopupData = entityData.HoverPopupData;

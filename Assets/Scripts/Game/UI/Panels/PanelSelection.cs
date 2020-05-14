@@ -39,8 +39,7 @@ namespace UI.Game
 
         public override void OnValidate()
         {
-            _ordersWrapper.ResizeArrayIfNeeded();
-            _ordersWrapper.Initialize();
+            _ordersWrapper.OnValidate();
         }
         #endregion
 
