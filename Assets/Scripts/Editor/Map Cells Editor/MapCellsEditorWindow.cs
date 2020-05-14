@@ -10,8 +10,8 @@ namespace LeonidasLegacy.MapCellEditor.Editor
     public class MapCellsEditorWindow : EditorWindow
     {
         private static readonly string debugLogHeader = "<color=cyan>Map Cells editor</color> : ";
-        private static readonly int cellPresetSize = 25;
-        private static readonly float spacing = 2;
+        private static readonly int cellButtonSize = 25;
+        private static readonly float cellButtonSpacing = 2;
         private static readonly Color selectedBackgroundColor = "30336b".HexToColor();
 
         private CellBrush _cellBrush;
@@ -28,7 +28,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
 
         void OnGUI()
         {
-            OnGUI_DrawCellsPreset();
+            OnGUI_DrawCellsButtons();
         }
 
         void OnEnable()
@@ -76,17 +76,17 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         }
 
         #region GUI Methods
-        void OnGUI_DrawCellsPreset()
+        void OnGUI_DrawCellsButtons()
         {
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
-            GUILayout.Space(spacing);
+            GUILayout.Space(cellButtonSpacing);
 
             GUILayout.BeginVertical();
 
             foreach (CellType cellType in Enum.GetValues(typeof(CellType)))
             {
                 OnGUI_DrawCellPreset(cellType);
-                GUILayout.Space(spacing);
+                GUILayout.Space(cellButtonSpacing);
             }
 
             GUILayout.EndVertical();
@@ -100,7 +100,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             if (_cellBrush != null && _cellBrush.CellType == cellType)
                 cellBackgroundStyle.normal.background = GUIHelper.GenerateTexture2D(selectedBackgroundColor);
 
-            GUILayout.BeginHorizontal(cellBackgroundStyle, GUILayout.Height(cellPresetSize));
+            GUILayout.BeginHorizontal(cellBackgroundStyle, GUILayout.Height(cellButtonSize));
 
             GUI_DrawCell_Color(cellType);
             GUI_DrawCell_Name(cellType);
@@ -118,7 +118,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             GUILayout.Label(cellType.ToString());
 
             Rect labelRect = GUILayoutUtility.GetLastRect();
-            labelRect.height = cellPresetSize; // height of labelRect as cell size
+            labelRect.height = cellButtonSize; // height of labelRect as cell size
             ProcessPresetEventClick(labelRect, cellType);
 
             // end of vertical center
@@ -134,7 +134,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             guiStyle.normal.background = presetTexture;
 
             // draw color of cell
-            GUILayout.Box(presetTexture, guiStyle, GUILayout.Width(cellPresetSize), GUILayout.Height(cellPresetSize));
+            GUILayout.Box(presetTexture, guiStyle, GUILayout.Width(cellButtonSize), GUILayout.Height(cellButtonSize));
 
             Rect boxRect = GUILayoutUtility.GetLastRect();
             ProcessPresetEventClick(boxRect, cellType);
