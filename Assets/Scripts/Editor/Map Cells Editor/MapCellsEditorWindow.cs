@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -10,7 +10,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
     public class MapCellsEditorWindow : EditorWindow
     {
         private static readonly string debugLogHeader = "<color=cyan>Map Cells editor</color> : ";
-        private static readonly int cellPresetSize = 50;
+        private static readonly int cellPresetSize = 25;
         private static readonly float spacing = 2;
         private static readonly Color selectedBackgroundColor = "30336b".HexToColor();
 
