@@ -9,9 +9,11 @@ namespace LeonidasLegacy.MapCellEditor.Editor
     {
         private MapCells _mapCells;
         private CellType _cellType;
+        private float _radius = 1;
 
         public CellType CellType { get => _cellType; set => _cellType = value; }
 
+        #region ctor
         public CellBrush(MapCells mapCells, CellType cellType)
         {
             _mapCells = mapCells;
@@ -19,7 +21,9 @@ namespace LeonidasLegacy.MapCellEditor.Editor
 
             EnableBrush();
         }
+        #endregion
 
+        #region Methods
         public void EnableBrush()
         {
             SceneView.duringSceneGui += OnSceneGUI;
@@ -31,6 +35,19 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         }
 
         void OnSceneGUI(SceneView sceneView)
+        {            
+            if (GetBrushApplyPoint(out Vector3 applyPoint))
+            {
+                TryApplyBrush(applyPoint);
+                DrawBrushRadius(applyPoint);
+            }
+            else
+            {
+                Debug.LogErrorFormat("Cell Brush : Can't get apply point of brush.");
+            }
+        }
+
+        private void TryApplyBrush(Vector3 applyPoint)
         {
             Event currentEvent = Event.current;
 
@@ -41,15 +58,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             // Si on clique gauche, on récupère l'objet sous le curseur.
             if (leftMouseButtonDown)
             {
-                if (GetBrushApplyPoint(out Vector3 applyPoint))
-                {
-                    ApplyBrush(applyPoint);
-                    Debug.DrawLine(Camera.current.transform.position, applyPoint, Color.red, 5f);
-                }
-                else
-                {
-                    Debug.LogErrorFormat("Cell Brush : Can't get apply point of brush.");
-                }
+                ApplyBrush(applyPoint);
             }
         }
 
@@ -60,10 +69,16 @@ namespace LeonidasLegacy.MapCellEditor.Editor
                 Debug.LogErrorFormat("Cell Brush : You must assign a map cells to draw.");
                 return;
             }
-            
-            _mapCells.SetCellTypeFromWorldPosition(hitPoint.x, hitPoint.z, _cellType);
+
+            _mapCells.SetCellType_WorldPosition(hitPoint.x, hitPoint.z, _cellType, _radius);
         }
 
+        void DrawBrushRadius(Vector3 applyPoint)
+        {
+            Handles.DrawWireDisc(applyPoint, Vector3.up, _radius);
+        }
+
+        #region Brush Apply Point method
         bool GetBrushApplyPoint(out Vector3 point)
         {
             if (Camera.current == null)
@@ -135,5 +150,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             }
 
         }
+        #endregion
+        #endregion
     }
 }

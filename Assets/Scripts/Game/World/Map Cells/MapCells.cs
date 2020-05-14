@@ -25,28 +25,49 @@ namespace LeonidasLegacy.MapCellEditor
         // we hide _mapContent for performance reason       
         [SerializeField, HideInInspector] private CellType[,] _mapContent = new CellType[5, 5];
 
-
-        public void SetCellTypeFromWorldPosition(float x, float y, CellType cellType)
-        {
-            int worldX = Mathf.RoundToInt(x * _snapGrid.CellSize);
-            int worldY = Mathf.RoundToInt(y * _snapGrid.CellSize);
-
-            SetCellTypeFromLocalPosition(worldX, worldY, cellType);
+        #region Setter
+        public void SetCellType_WorldPosition(float worldX, float worldY, CellType cellType)
+        {            
+            ToLocalPosition(worldX, worldY, out int localX, out int localY);
+            SetCellType_LocalPosition(localX, localY, cellType);
         }
 
-        public void SetCellTypeFromLocalPosition(int x, int y, CellType cellType)
+        public void SetCellType_LocalPosition(int localX, int localY, CellType cellType)
         {
-            if (x < 0 || x >= _mapContent.GetLength(0) ||
-                y < 0 || y >= _mapContent.GetLength(1))
+            if (localX < 0 || localX >= _mapContent.GetLength(0) ||
+                localY < 0 || localY >= _mapContent.GetLength(1))
             {
-                Debug.LogErrorFormat("Map Cells : Can't set cell at coords [{0}; {1}], because it's out of map.", x, y);
+                Debug.LogErrorFormat("Map Cells : Can't set cell at coords [{0}; {1}], because it's out of map.", localX, localY);
                 return;
             }
 
-            _mapContent[x, y] = cellType;
+            _mapContent[localX, localY] = cellType;
+
+            Debug.LogFormat("Map Cells : " + "Set cellType {0} at coords [{1};{2}]", cellType, localX, localY);
+        }
+
+        public void SetCellType_WorldPosition(float worldX, float worldY, CellType cellType, float radius)
+        {
+            ToLocalPosition(worldX, worldY, out int localX, out int localY);
+            int localRadius = Mathf.RoundToInt(radius * _snapGrid.CellSize);
+
+            SetCellType_LocalPosition(localX, localY, cellType, localRadius);
+        }
+
+        public void SetCellType_LocalPosition(int x, int y, CellType cellType, int radius)
+        {
+            _mapContent.DrawCircleInside(x, y, radius, cellType);
 
             Debug.LogFormat("Map Cells : " + "Set cellType {0} at coords [{1};{2}]", cellType, x, y);
         }
+
+        private void ToLocalPosition(float worldX, float worldY, out int localX, out int localY)
+        {
+            localX = Mathf.RoundToInt(worldX * _snapGrid.CellSize);
+            localY = Mathf.RoundToInt(worldY * _snapGrid.CellSize);
+        }
+
+        #endregion
 
         #region Draw Gizmos
         private Dictionary<CellType, Color> _debugGizmosColor;
