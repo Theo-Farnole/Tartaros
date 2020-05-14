@@ -26,7 +26,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         #region Methods
         public void EnableBrush()
         {
-            SceneView.duringSceneGui += OnSceneGUI;
+            SceneView.duringSceneGui += OnSceneGUI;            
         }
 
         public void DisableBrush()
@@ -35,11 +35,14 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         }
 
         void OnSceneGUI(SceneView sceneView)
-        {            
+        {
             if (GetBrushApplyPoint(out Vector3 applyPoint))
             {
                 TryApplyBrush(applyPoint);
                 DrawBrushRadius(applyPoint);
+
+                // disable mouse selection in editor
+                HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
             }
             else
             {
@@ -51,11 +54,8 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         {
             Event currentEvent = Event.current;
 
-            // En mode editor, on n'utilise le Input.GetMouseButton(0).
-            // Si possible, on favorise l'utilisation de le variable Event.current
-            bool leftMouseButtonDown = currentEvent.type == EventType.MouseDown && currentEvent.button == 0;
+            bool leftMouseButtonDown = (currentEvent.type == EventType.MouseDown || currentEvent.type == EventType.MouseDrag) && currentEvent.button == 0;
 
-            // Si on clique gauche, on récupère l'objet sous le curseur.
             if (leftMouseButtonDown)
             {
                 ApplyBrush(applyPoint);
@@ -144,7 +144,6 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             }
             else
             {
-                Debug.Log("No intersection");
                 output = Vector3.zero;
                 return false;
             }
