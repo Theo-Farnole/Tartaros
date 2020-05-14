@@ -12,6 +12,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         private float _radius = 1;
 
         public CellType CellType { get => _cellType; set => _cellType = value; }
+        public float Radius { get => _radius; set => _radius = value; }
 
         #region ctor
         public CellBrush(MapCells mapCells, CellType cellType)

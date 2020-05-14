@@ -9,15 +9,19 @@ namespace LeonidasLegacy.MapCellEditor.Editor
 {
     public class MapCellsEditorWindow : EditorWindow
     {
+        #region Fields
         private static readonly string debugLogHeader = "<color=cyan>Map Cells editor</color> : ";
         private static readonly int cellButtonSize = 25;
         private static readonly float cellButtonSpacing = 2;
         private static readonly Color selectedBackgroundColor = "30336b".HexToColor();
+        private static readonly int TAB_SIZE = 25;
 
-        private CellBrush _cellBrush;
+        private CellBrush _currentCellBrush;
 
         private Vector2 _scrollPosition;
+        #endregion
 
+        #region Methods
         [MenuItem("Tartaros/Open map editor")]
         public static void OpenMapEditor()
         {
@@ -26,9 +30,15 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             window.Show();
         }
 
+        #region Editor Window Callbacks
         void OnGUI()
         {
+            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+
             OnGUI_DrawCellsButtons();
+            OnGUI_DrawBrushSettings();
+
+            GUILayout.EndScrollView();
         }
 
         void OnEnable()
@@ -38,19 +48,21 @@ namespace LeonidasLegacy.MapCellEditor.Editor
 
         void OnDisable()
         {
-            _cellBrush?.DisableBrush();
+            _currentCellBrush?.DisableBrush();
         }
+        #endregion
 
+        #region Brush creation
         private void CreateBrush()
         {
-            if (_cellBrush != null)
+            if (_currentCellBrush != null)
             {
                 Debug.LogWarningFormat("Map Cells : Can't create brush because it already exists.");
                 return;
             }
 
             MapCells mapCells = GetFirstMapCells();
-            _cellBrush = new CellBrush(mapCells, CellType.Walkable);
+            _currentCellBrush = new CellBrush(mapCells, CellType.Walkable);
         }
 
         public MapCells GetFirstMapCells()
@@ -74,11 +86,40 @@ namespace LeonidasLegacy.MapCellEditor.Editor
 
             return mapCells;
         }
+        #endregion
 
         #region GUI Methods
+        #region GUI Brush Settings Drawer
+        void OnGUI_DrawBrushSettings()
+        {
+            EditorGUILayout.LabelField("Brush Settings", EditorStyles.boldLabel);
+
+            EditorGUI.indentLevel++;
+
+            if (_currentCellBrush == null)
+            {
+                EditorGUILayout.LabelField("Please, click on a cell before modify the brush.");
+            }
+            else
+            {
+                //EditorGUILayout.BeginHorizontal();
+
+                EditorGUILayout.PrefixLabel("Brush Radius");
+                _currentCellBrush.Radius = EditorGUILayout.Slider(_currentCellBrush.Radius, 0.1f, 10);
+
+                //EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUI.indentLevel--;
+        }
+        #endregion
+
+        #region GUI Buttons Draw
         void OnGUI_DrawCellsButtons()
         {
-            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+            EditorGUILayout.LabelField("Cell Selection", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+
             GUILayout.Space(cellButtonSpacing);
 
             GUILayout.BeginVertical();
@@ -90,18 +131,21 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             }
 
             GUILayout.EndVertical();
-            GUILayout.EndScrollView();
+
+            EditorGUI.indentLevel--;
         }
 
         void OnGUI_DrawCellPreset(CellType cellType)
         {
             GUIStyle cellBackgroundStyle = new GUIStyle();
 
-            if (_cellBrush != null && _cellBrush.CellType == cellType)
+            if (_currentCellBrush != null && _currentCellBrush.CellType == cellType)
                 cellBackgroundStyle.normal.background = GUIHelper.GenerateTexture2D(selectedBackgroundColor);
 
             GUILayout.BeginHorizontal(cellBackgroundStyle, GUILayout.Height(cellButtonSize));
 
+
+            GUILayout.Space(EditorGUI.indentLevel * TAB_SIZE);
             GUI_DrawCell_Color(cellType);
             GUI_DrawCell_Name(cellType);
 
@@ -140,13 +184,14 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             ProcessPresetEventClick(boxRect, cellType);
         }
         #endregion
+        #endregion
 
         #region Process events
         void ProcessPresetEventClick(Rect presetRect, CellType cellType)
         {
             if (DoUserClickOnRect(presetRect))
             {
-                _cellBrush.CellType = cellType;
+                _currentCellBrush.CellType = cellType;
                 GUI.changed = true;
             }
         }
@@ -155,6 +200,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         {
             return Event.current != null && Event.current.isMouse && presetRect.Contains(Event.current.mousePosition);
         }
+        #endregion
         #endregion
     }
 }
