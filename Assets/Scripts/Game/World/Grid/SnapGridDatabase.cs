@@ -77,9 +77,14 @@ public class SnapGridDatabase : ScriptableObject
 
     public Vector3 GetNearestPosition(Vector3 position)
     {
-        float xCount = Mathf.Round(position.x / _cellSize);
-        float yCount = Mathf.Round(position.y / _cellSize);
-        float zCount = Mathf.Round(position.z / _cellSize);
+        return GetNearestPosition(position.x, position.y, position.z);
+    }
+
+    public Vector3 GetNearestPosition(float x, float y, float z)
+    {
+        float xCount = Mathf.Round(x / _cellSize);
+        float yCount = Mathf.Round(y / _cellSize);
+        float zCount = Mathf.Round(z / _cellSize);
 
         Vector3 result = new Vector3(
              xCount * _cellSize,
