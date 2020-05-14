@@ -15,8 +15,6 @@ namespace LeonidasLegacy.MapCellEditor.Editor
 
         public void ProcessEvent(Event e)
         {
-            Debug.Log("Shortcut process events");
-
             if (e.type == EventType.KeyDown && e.shift)
             {
                 if (e.keyCode == KeyCode.Alpha1) _window.SetBrushCellType(CellType.Walkable);
