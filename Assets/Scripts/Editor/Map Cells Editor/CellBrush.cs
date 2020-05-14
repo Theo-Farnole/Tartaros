@@ -11,14 +11,21 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         private CellType _cellType;
         private float _radius = 1;
 
+        private Shortcut_CellBrushRadius _shortcutBrushRadius;
+        private bool _isLock;
+        private Vector3 _positionOnLock;
+        private Vector3 _lastApplyPoint;
+
         public CellType CellType { get => _cellType; set => _cellType = value; }
-        public float Radius { get => _radius; set => _radius = value; }
+        public float Radius { get => _radius; set => _radius = Mathf.Clamp(value, 0, 15); }
 
         #region ctor
         public CellBrush(MapCells mapCells, CellType cellType)
         {
             _mapCells = mapCells;
             _cellType = cellType;
+
+            _shortcutBrushRadius = new Shortcut_CellBrushRadius(this, KeyCode.B);
 
             EnableBrush();
         }
@@ -27,7 +34,7 @@ namespace LeonidasLegacy.MapCellEditor.Editor
         #region Methods
         public void EnableBrush()
         {
-            SceneView.duringSceneGui += OnSceneGUI;            
+            SceneView.duringSceneGui += OnSceneGUI;
         }
 
         public void DisableBrush()
@@ -42,17 +49,27 @@ namespace LeonidasLegacy.MapCellEditor.Editor
                 TryApplyBrush(applyPoint);
                 DrawBrushRadius(applyPoint);
 
+                _shortcutBrushRadius.ProcessEvent(Event.current);
+
                 // disable mouse selection in editor
                 HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive));
+
+                _lastApplyPoint = applyPoint;
             }
             else
             {
-                Debug.LogErrorFormat("Cell Brush : Can't get apply point of brush.");
+                // don't throw error
+                // because the current focused window is not scene, the error is thrown
+                //Debug.LogErrorFormat("Cell Brush : Can't get apply point of brush.");
             }
         }
 
+        #region Brush apply
         private void TryApplyBrush(Vector3 applyPoint)
         {
+            if (_isLock)
+                return;
+
             Event currentEvent = Event.current;
 
             bool leftMouseButtonDown = (currentEvent.type == EventType.MouseDown || currentEvent.type == EventType.MouseDrag) && currentEvent.button == 0;
@@ -73,11 +90,28 @@ namespace LeonidasLegacy.MapCellEditor.Editor
 
             _mapCells.SetCellType_WorldPosition(hitPoint.x, hitPoint.z, _cellType, _radius);
         }
+        #endregion
 
+        #region Draw methods
         void DrawBrushRadius(Vector3 applyPoint)
         {
-            Handles.DrawWireDisc(applyPoint, Vector3.up, _radius);
+            Vector3 position = _isLock ? _positionOnLock : applyPoint;
+            Handles.DrawWireDisc(position, Vector3.up, _radius);
         }
+        #endregion
+
+        #region Lock methods
+        public void Lock()
+        {
+            _isLock = true;
+            _positionOnLock = _lastApplyPoint;
+        }
+
+        public void Unlock()
+        {
+            _isLock = false;
+        }
+        #endregion
 
         #region Brush Apply Point method
         bool GetBrushApplyPoint(out Vector3 point)
