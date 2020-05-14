@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -36,6 +36,11 @@ namespace LeonidasLegacy.MapCellEditor.Editor
             CreateBrush();
         }
 
+        void OnDisable()
+        {
+            _cellBrush?.DisableBrush();
+        }
+
         private void CreateBrush()
         {
             if (_cellBrush != null)
@@ -46,11 +51,6 @@ namespace LeonidasLegacy.MapCellEditor.Editor
 
             MapCells mapCells = GetFirstMapCells();
             _cellBrush = new CellBrush(mapCells, CellType.Walkable);
-        }
-
-        void OnDisable()
-        {
-
         }
 
         public MapCells GetFirstMapCells()
