@@ -47,7 +47,7 @@ public class TileSystem
     {
         Vector3 gridPosition = GameManager.Instance.Grid.GetNearestPosition(worldPosition);
 
-        var cellSize = GameManager.Instance.Grid.Data.CellSize;
+        var cellSize = GameManager.Instance.Grid.CellSize;
         Vector2Int result = new Vector2Int((int)(gridPosition.x / cellSize), (int)(gridPosition.z / cellSize));
 
         return result;
@@ -60,7 +60,7 @@ public class TileSystem
     /// </summary>
     private void ResetAllTiles()
     {
-        int midCellCount = GameManager.Instance.Grid.Data.CellCount / 2;
+        int midCellCount = GameManager.Instance.Grid.CellCount / 2;
 
         for (int x = -midCellCount; x <= midCellCount; x++)
         {

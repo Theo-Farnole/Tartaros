@@ -11,8 +11,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameManagerData _data;
     [SerializeField] private CollisionScalerData _collisionScalerData;
     [SerializeField] private AttackSlotsData _attackSlotsData;
-    [Space]
-    [SerializeField] private SnapGrid _grid;
+    [Space]    
+    [SerializeField] private SnapGridDatabase _grid;
+    [Header("DEBUG")]
+    [SerializeField] private bool _debugDrawSnapGrid;
 
     private OwnedState<GameManager> _state = null;
     private ResourcesWrapper _resources = new ResourcesWrapper();
@@ -22,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Properties
-    public SnapGrid Grid { get => _grid; }
+    public SnapGridDatabase Grid { get => _grid; }
     public ResourcesWrapper Resources
     {
         get
@@ -80,7 +82,8 @@ public class GameManager : Singleton<GameManager>
 
     void OnDrawGizmos()
     {
-        _grid.DrawGizmos();
+        if (_debugDrawSnapGrid)
+            _grid?.DrawGizmos();
     }
     #endregion
 

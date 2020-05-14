@@ -9,8 +9,11 @@ namespace Game.FogOfWar
     public class FOWManager : Singleton<FOWManager>
     {
         #region Fields
-        [SerializeField] private SnapGrid _snapGrid;
+        [SerializeField] private SnapGridDatabase _snapGrid;
         [SerializeField, HideInInspector] private FogState[,] _visiblityMap; // allow hot reloading in Editor
+
+        [Header("DEBUGS")]
+        [SerializeField] private bool _debugDrawSnapGrid = false;
 
         private List<IFogVision> _viewers = new List<IFogVision>();
         private List<IFogCoverable> _coverables = new List<IFogCoverable>();
@@ -20,7 +23,7 @@ namespace Game.FogOfWar
         #region MonoBehaviour Callbacks
         void Awake()
         {
-            _visiblityMap = new FogState[_snapGrid.Data.CellCount, _snapGrid.Data.CellCount];
+            _visiblityMap = new FogState[_snapGrid.CellCount, _snapGrid.CellCount];
 
             // initialize circle with NOT_VISIBLE
             int lenghtOne = _visiblityMap.GetLength(0);
@@ -44,7 +47,8 @@ namespace Game.FogOfWar
 
         void OnDrawGizmos()
         {
-            _snapGrid.DrawGizmos();
+            if (_debugDrawSnapGrid)
+                _snapGrid?.DrawGizmos();
         }
         #endregion
 
@@ -90,7 +94,7 @@ namespace Game.FogOfWar
             for (int i = 0; i < _viewers.Count; i++)
             {
                 Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].Transform.position);
-                int viewRadius = Mathf.RoundToInt(_viewers[i].ViewRadius / _snapGrid.Data.CellSize);
+                int viewRadius = Mathf.RoundToInt(_viewers[i].ViewRadius / _snapGrid.CellSize);
 
                 _visiblityMap.DrawCircleInside(viewersCoords.x, viewersCoords.y, viewRadius, FogState.Visible);
             }

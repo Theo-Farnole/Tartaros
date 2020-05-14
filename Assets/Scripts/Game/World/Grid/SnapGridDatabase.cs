@@ -24,4 +24,68 @@ public class SnapGridDatabase : ScriptableObject
 
         _cellsTotalCount = _cellCount * _cellCount;
     }
+
+
+    public void DrawGizmos()
+    {
+        DrawGizmos(Color.red);
+    }
+
+    public void DrawGizmos(Color gridColor)
+    {
+        Gizmos.color = gridColor;
+
+        for (int x = 0; x <= _cellCount; x++)
+        {
+            for (int z = 0; z <= _cellCount; z++)
+            {
+                var point = new Vector3(x * _cellSize, 0, z * _cellSize);
+                Gizmos.DrawWireCube(point, new Vector3(_cellSize, 0, _cellSize));
+            }
+        }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(Vector3.zero, 0.15f);
+    }
+
+
+    public bool GetNearestPositionFromMouse(out Vector3 positionFromMouse, int layerMask = ~0)
+    {
+        //if (layerMask == -1) layerMask = LayerMask.GetMask("Terrain");
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
+        {
+            positionFromMouse = GetNearestPosition(hit.point);
+            return true;
+        }
+        else
+        {
+            positionFromMouse = Vector3.zero;
+            return false;
+        }
+    }
+
+    public Vector2Int GetNearestCoords(Vector3 position)
+    {
+        int xCount = Mathf.RoundToInt(position.x / _cellSize);
+        int zCount = Mathf.RoundToInt(position.z / _cellSize);
+
+        return new Vector2Int(xCount, zCount);
+    }
+
+    public Vector3 GetNearestPosition(Vector3 position)
+    {
+        float xCount = Mathf.Round(position.x / _cellSize);
+        float yCount = Mathf.Round(position.y / _cellSize);
+        float zCount = Mathf.Round(position.z / _cellSize);
+
+        Vector3 result = new Vector3(
+             xCount * _cellSize,
+             yCount * _cellSize,
+             zCount * _cellSize);
+
+        return result;
+    }
 }

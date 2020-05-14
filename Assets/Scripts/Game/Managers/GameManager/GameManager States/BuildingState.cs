@@ -32,6 +32,7 @@ public class BuildingState : OwnedState<GameManager>
         SetCurrentBuilding(buildingType);
     }
 
+
     public override void Tick()
     {
         UpdateBuildingPosition();
@@ -93,11 +94,13 @@ public class BuildingState : OwnedState<GameManager>
 
     void UpdateBuildingPosition()
     {
-        Vector3? newPosition = GameManager.Instance.Grid.GetNearestPositionFromMouse();
-
-        if (newPosition != null)
+        if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition))
         {
-            _building.transform.position = (Vector3)newPosition;
+            _building.transform.position = newPosition;        
+        }
+        else
+        {
+            Debug.LogWarningFormat("Building State : Can't find nearest position from mouse. We can't update the building position.");
         }
     }
 
