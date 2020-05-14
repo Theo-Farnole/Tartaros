@@ -5,14 +5,22 @@ using UnityEngine;
 
 public static class MapCellsDrawerSettings
 {
+
     private static readonly string keyMaxVisibleCell = "MaxVisibleCell";
+    private static readonly string keyCellOpacity = "MapCell_CellOpacity";
 
     public static int Gizmos_MaxVisibleCells
     {
         get => EditorPrefs.GetInt(keyMaxVisibleCell, 300);
-
         private set => EditorPrefs.SetInt(keyMaxVisibleCell, value);
     }
+
+    public static float Gizmos_CellOpacity
+    {
+        get => EditorPrefs.GetFloat(keyCellOpacity, 0.8f);
+        private set => EditorPrefs.SetFloat(keyCellOpacity, value);
+    }
+
 
     [SettingsProvider()]
     public static SettingsProvider PreferencesGUI()
@@ -38,6 +46,13 @@ public static class MapCellsDrawerSettings
 
         EditorGUILayout.PrefixLabel("Max Visible Cells");                        
         Gizmos_MaxVisibleCells = EditorGUILayout.IntSlider(Gizmos_MaxVisibleCells, 10, 15000);
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+
+        EditorGUILayout.PrefixLabel("Cell Opacity");
+        Gizmos_CellOpacity = EditorGUILayout.Slider(Gizmos_CellOpacity, 0, 1);
 
         GUILayout.EndHorizontal();
     }
