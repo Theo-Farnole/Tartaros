@@ -42,8 +42,6 @@ namespace LeonidasLegacy.MapCellEditor
             }
 
             _mapContent[localX, localY] = cellType;
-
-            Debug.LogFormat("Map Cells : " + "Set cellType {0} at coords [{1};{2}]", cellType, localX, localY);
         }
 
         public void SetCellType_WorldPosition(float worldX, float worldY, CellType cellType, float radius)
@@ -57,8 +55,6 @@ namespace LeonidasLegacy.MapCellEditor
         public void SetCellType_LocalPosition(int x, int y, CellType cellType, int radius)
         {
             _mapContent.DrawCircleInside(x, y, radius, cellType);
-
-            Debug.LogFormat("Map Cells : " + "Set cellType {0} at coords [{1};{2}]", cellType, x, y);
         }
 
         private void ToLocalPosition(float worldX, float worldY, out int localX, out int localY)
