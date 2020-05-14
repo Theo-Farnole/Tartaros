@@ -11,7 +11,7 @@ namespace LeonidasLegacy.MapCellEditor
     public class MapCells : SerializedScriptableObject
     {
         private static readonly float gizmos_cellSizePercent = 0.9f;
-        private static readonly float gizmos_offsetPositionY = 0.1f;             
+        private static readonly float gizmos_offsetPositionY = 0.1f;
 
         // We could have inherited MapsCells from SnapGridDatabase
         // However, MapCells need Odin's serialization
@@ -25,6 +25,28 @@ namespace LeonidasLegacy.MapCellEditor
         // we hide _mapContent for performance reason       
         [SerializeField, HideInInspector] private CellType[,] _mapContent = new CellType[5, 5];
 
+
+        public void SetCellTypeFromWorldPosition(float x, float y, CellType cellType)
+        {
+            int worldX = Mathf.RoundToInt(x * _snapGrid.CellSize);
+            int worldY = Mathf.RoundToInt(y * _snapGrid.CellSize);
+
+            SetCellTypeFromLocalPosition(worldX, worldY, cellType);
+        }
+
+        public void SetCellTypeFromLocalPosition(int x, int y, CellType cellType)
+        {
+            if (x < 0 || x >= _mapContent.GetLength(0) ||
+                y < 0 || y >= _mapContent.GetLength(1))
+            {
+                Debug.LogErrorFormat("Map Cells : Can't set cell at coords [{0}; {1}], because it's out of map.", x, y);
+                return;
+            }
+
+            _mapContent[x, y] = cellType;
+
+            Debug.LogFormat("Map Cells : " + "Set cellType {0} at coords [{1};{2}]", cellType, x, y);
+        }
 
         #region Draw Gizmos
         private Dictionary<CellType, Color> _debugGizmosColor;
@@ -92,7 +114,7 @@ namespace LeonidasLegacy.MapCellEditor
         }
 
         void DrawGizmos_Cell(Vector3 size, Vector3 position, Color fillColor)
-        {           
+        {
             // draw fill collor
             Gizmos.color = fillColor;
             Gizmos.DrawCube(position, size);
