@@ -1,6 +1,7 @@
 ﻿using MyBox;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 
@@ -65,8 +66,51 @@ public struct ResourcesWrapper
         return (this >= b);
     }
 
+    public string ToString(bool cropEmptyResources)
+    {
+        string o = string.Empty;
+
+        if (cropEmptyResources)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            if (food != 0)
+            {
+                stringBuilder.AppendFormat("food: {0}", food);
+            }
+
+            if (wood != 0)
+            {
+                if (food != 0)
+                    stringBuilder.Append(",");
+
+                stringBuilder.AppendFormat("wood: {0}", wood);
+            }
+
+            if (gold != 0)
+            {
+                if (food != 0 && wood != 0 || food != 0 && wood == 0)
+                    stringBuilder.Append(",");
+
+                stringBuilder.AppendFormat("gold: {0}", gold);
+            }
+
+            o = stringBuilder.ToString();
+
+            if (o == string.Empty)
+                o = "RESOURCES EMPTY";
+        }
+        else
+        {
+            o = ToString();
+        }
+
+        return o;
+    }
+
     public override string ToString()
     {
+
         return string.Format("food: {0}, wood: {1}, gold: {2} ", food, wood, gold);
     }
 
