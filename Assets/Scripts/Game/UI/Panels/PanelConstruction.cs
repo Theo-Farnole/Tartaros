@@ -85,18 +85,17 @@ namespace UI.Game
             int buildingEnumLength = Enum.GetValues(typeof(BuildingType)).Length;
             buildingEnumLength--; // we remove 'BuildingType.None'
 
-            
             _buildingButtons = new Button[buildingEnumLength];
 
             BrowseThrowBuildingType(
                 (BuildingType buildingType, int index) =>
-                {                    
+                {
                     CreateConstructionButton(buildingType, index);
                 }
             );
 
             CheckIfThereIsEnoughtBuildingButtons();
-            
+
             Canvas.ForceUpdateCanvases();
         }
         #endregion
@@ -108,7 +107,8 @@ namespace UI.Game
 
             int index = 0;
 
-            foreach (BuildingType buildingType in Enum.GetValues(typeof(BuildingType)))
+            Array buildingTypeValues = Enum.GetValues(typeof(BuildingType));
+            foreach (BuildingType buildingType in buildingTypeValues)
             {
                 if (buildingType == BuildingType.None)
                     continue;
@@ -125,6 +125,15 @@ namespace UI.Game
             buildingButton.transform.SetParent(_parentConstructionButton, false);
             TrySetPortraitOnButton(buildingButton, buildingType);
             TrySetHoverPopupDisplay(buildingType, buildingButton);
+
+            if (GameManager.Instance != null)
+            {
+                buildingButton.onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
+            }
+            else
+            {
+                Debug.LogErrorFormat("Panel Construction : Can't add 'start building' on click because GameManager is missing.");
+            }
 
             _buildingButtons[index] = buildingButton;
         }
