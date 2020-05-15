@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Game.FogOfWar
 {
@@ -23,6 +24,8 @@ namespace Game.FogOfWar
         #region MonoBehaviour Callbacks
         void Awake()
         {
+            Assert.IsNotNull(_snapGrid, "Fog of War : Please assign a snapgrid in inspector.");
+
             _visiblityMap = new FogState[_snapGrid.CellCount, _snapGrid.CellCount];
 
             // initialize circle with NOT_VISIBLE
