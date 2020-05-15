@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void EntityDelegate(Entity ent);
+
 /// <summary>
 /// Manage action tick & queueing. Initialize EntityComponent.
 /// </summary>
@@ -11,6 +13,9 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     #region Fields
+    public static event EntityDelegate OnSpawn;
+    public static event EntityDelegate OnDeath;
+
     [Header("Team Configuration")]
     [SerializeField] private EntityType _type;
 
@@ -65,6 +70,8 @@ public class Entity : MonoBehaviour
     {
         if (_team == Team.Sparta) Destroy(GetCharacterComponent<EntityFogCoverable>());
         else Destroy(GetCharacterComponent<EntityFogVision>());
+
+        OnSpawn?.Invoke(this);
     }
 
     void Update()
@@ -92,6 +99,8 @@ public class Entity : MonoBehaviour
     {
         SetCurrentAction(null);
         Destroy(gameObject);
+
+        OnDeath?.Invoke(this);
     }
 
     /// <summary>

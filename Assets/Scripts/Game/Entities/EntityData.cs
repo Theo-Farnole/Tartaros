@@ -32,6 +32,9 @@ public class EntityData : SerializedScriptableObject
     [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
     [SerializeField] private KeyCode _hotkey;
 
+    [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
+    [SerializeField] private int _populationUse;
+
     [HorizontalGroup(portraitAndPrefabGroupName, 55)]
     [HideLabel, PreviewField(55, ObjectFieldAlignment.Left)]
     [SerializeField] private Sprite _portrait;
@@ -49,6 +52,7 @@ public class EntityData : SerializedScriptableObject
     public KeyCode Hotkey { get => _hotkey; }
     public GameObject Prefab { get => _prefab; }
     public HoverPopupData HoverPopupData { get => _hoverPopupData; }
+    public int PopulationUse { get => _populationUse; }
     #endregion
 
     #region Health Settings
@@ -185,5 +189,5 @@ public class EntityData : SerializedScriptableObject
     void OnValidate()
     {
         _damagePerSecond = _damage / _attackSpeed;
-    }    
+    }
 }
