@@ -88,25 +88,25 @@ namespace LeonidasLegacy.MapCellEditor
                 if (centerX + x >= 0 && centerX + x <= array.GetLength(0) - 1 && centerY + y >= 0 && centerY + y <= array.GetLength(1) - 1 &&
                     centerX + x >= 0 && centerX + x <= array.GetLength(0) - 1 && centerY - y >= 0 && centerY - y <= array.GetLength(1) - 1)
                 {
-                    output.AddRange(GetLine(array, centerX + x, centerY + y, centerX + x, centerY - y));
+                    GetLine(array, centerX + x, centerY + y, centerX + x, centerY - y, ref output);
                 }
 
                 if (centerX - x >= 0 && centerX - x <= array.GetLength(0) - 1 && centerY + y >= 0 && centerY + y <= array.GetLength(1) - 1 &&
                     centerX - x >= 0 && centerX - x <= array.GetLength(0) - 1 && centerY - y >= 0 && centerY - y <= array.GetLength(1) - 1)
                 {
-                    output.AddRange(GetLine(array, centerX - x, centerY - y, centerX - x, centerY + y));
+                    GetLine(array, centerX - x, centerY - y, centerX - x, centerY + y, ref output);
                 }
 
                 if (centerX + y >= 0 && centerX + y <= array.GetLength(0) - 1 && centerY + x >= 0 && centerY + x <= array.GetLength(1) - 1 &&
                     centerX + y >= 0 && centerX + y <= array.GetLength(0) - 1 && centerY - x >= 0 && centerY - x <= array.GetLength(1) - 1)
                 {
-                    output.AddRange(GetLine(array, centerX + y, centerY + x, centerX + y, centerY - x));
+                    GetLine(array, centerX + y, centerY + x, centerX + y, centerY - x, ref output);
                 }
 
                 if (centerX - y >= 0 && centerX - y <= array.GetLength(0) - 1 && centerY + x >= 0 && centerY + x <= array.GetLength(1) - 1 &&
                     centerX - y >= 0 && centerX - y <= array.GetLength(0) - 1 && centerY - x >= 0 && centerY - x <= array.GetLength(1) - 1)
                 {
-                    output.AddRange(GetLine(array, centerX - y, centerY + x, centerX - y, centerY - x));
+                    GetLine(array, centerX - y, centerY + x, centerX - y, centerY - x, ref output);
                 }
 
                 if (d < 0)
@@ -126,24 +126,19 @@ namespace LeonidasLegacy.MapCellEditor
 
         // code from
         // https://rosettacode.org/wiki/Bitmap/Bresenham%27s_line_algorithm#C.23
-        public static List<CellType> GetLine(CellType[,] array, int x0, int y0, int x1, int y1)
+        public static void GetLine(CellType[,] array, int x0, int y0, int x1, int y1, ref List<CellType> output)
         {
-            List<CellType> output = new List<CellType>();
-
             int dx = Mathf.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
             int dy = Mathf.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
             int err = (dx > dy ? dx : -dy) / 2, e2;
             for (; ; )
             {
                 output.Add(array[x0, y0]);
-                //array[x0, y0] = fulfillValue;
                 if (x0 == x1 && y0 == y1) break;
                 e2 = err;
                 if (e2 > -dx) { err -= dy; x0 += sx; }
                 if (e2 < dy) { err += dx; y0 += sy; }
             }
-
-            return output;
         }
     }
 }

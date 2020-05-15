@@ -27,31 +27,31 @@ namespace LeonidasLegacy.MapCellEditor
         [SerializeField, HideInInspector] private CellType[,] _mapContent = new CellType[5, 5];
 
         #region Getter
-        public CellType[] GetCellType_WorldPosition(float worldX, float worldY, float radius, CellType wantedCell)
+        public CellType[] GetCells_WorldPosition(float worldX, float worldY, float radius, CellType wantedCell)
         {
-            ToLocalPosition(worldX, worldY, out int localX, out int localY);
-            int localRadius = Mathf.RoundToInt(radius * _snapGrid.CellSize);
+            ToLocalPosition(worldX, worldY, radius,
+                out int localX, out int localY, out int localRadius);
 
-            return GetCellType_LocalPosition(localX, localY, localRadius).Where(x => x == wantedCell).ToArray();
+            return GetCells_LocalPosition(localX, localY, localRadius).Where(x => x == wantedCell).ToArray();
         }
 
-        public CellType[] GetCellType_WorldPosition(float worldX, float worldY, float radius)
+        public CellType[] GetCells_WorldPosition(float worldX, float worldY, float radius)
         {
-            ToLocalPosition(worldX, worldY, out int localX, out int localY);
-            int localRadius = Mathf.RoundToInt(radius * _snapGrid.CellSize);
+            ToLocalPosition(worldX, worldY, radius,
+                out int localX, out int localY, out int localRadius);
 
-            return GetCellType_LocalPosition(localX, localY, localRadius);
+            return GetCells_LocalPosition(localX, localY, localRadius);
         }
 
-        public CellType[] GetCellType_LocalPosition(int x, int y, int radius)
+        public CellType[] GetCells_LocalPosition(int centerX, int centerY, int radius)
         {
-            return _mapContent.GetCircleInside(x, y, radius);
+            return _mapContent.GetCircleInside(centerX, centerY, radius);
         }
         #endregion
 
         #region Setter
         public void SetCellType_WorldPosition(float worldX, float worldY, CellType cellType)
-        {            
+        {
             ToLocalPosition(worldX, worldY, out int localX, out int localY);
             SetCellType_LocalPosition(localX, localY, cellType);
         }
@@ -70,8 +70,7 @@ namespace LeonidasLegacy.MapCellEditor
 
         public void SetCellType_WorldPosition(float worldX, float worldY, CellType cellType, float radius)
         {
-            ToLocalPosition(worldX, worldY, out int localX, out int localY);
-            int localRadius = Mathf.RoundToInt(radius * _snapGrid.CellSize);
+            ToLocalPosition(worldX, worldY, radius, out int localX, out int localY, out int localRadius);
 
             SetCellType_LocalPosition(localX, localY, cellType, localRadius);
         }
@@ -86,6 +85,12 @@ namespace LeonidasLegacy.MapCellEditor
         {
             localX = Mathf.RoundToInt(worldX * _snapGrid.CellSize);
             localY = Mathf.RoundToInt(worldY * _snapGrid.CellSize);
+        }
+
+        private void ToLocalPosition(float worldX, float worldY, float radius, out int localX, out int localY, out int localRadius)
+        {
+            ToLocalPosition(worldX, worldY, out localX, out localY);
+            localRadius = Mathf.RoundToInt(radius * _snapGrid.CellSize);
         }
 
         #region Draw Gizmos
