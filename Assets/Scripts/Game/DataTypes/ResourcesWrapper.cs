@@ -77,6 +77,12 @@ public struct ResourcesWrapper
     public static ResourcesWrapper operator +(ResourcesWrapper a, ResourcesWrapper b) =>
         new ResourcesWrapper(a.food + b.food, a.wood + b.wood, a.gold + b.gold);
 
+    public static ResourcesWrapper operator *(ResourcesWrapper a, int b) =>
+        new ResourcesWrapper(a.food * b, a.wood * b, a.gold * b);
+
+    public static ResourcesWrapper operator +(ResourcesWrapper a, int b) =>
+        new ResourcesWrapper(a.food + b, a.wood + b, a.gold + b);
+
     public static bool operator <(ResourcesWrapper a, ResourcesWrapper b) =>
         a.food < b.food && a.wood < b.wood && a.gold < b.gold;
 
