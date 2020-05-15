@@ -1,4 +1,4 @@
-﻿using LeonidasLegacy.MapCellEditor;
+using LeonidasLegacy.MapCellEditor;
 using Lortedo.Utilities.Inspector;
 using MyBox;
 using Sirenix.OdinInspector;
@@ -56,7 +56,7 @@ public class EntityData : SerializedScriptableObject
     [SerializeField] private bool _isInvincible = false;
 
     [BoxGroup("Health Settings")]
-    [EnableIf("_isInvincible")]
+    [DisableIf("_isInvincible")]
     [SerializeField] private int _hp = 10;
 
     public bool IsInvincible { get => _isInvincible; }
