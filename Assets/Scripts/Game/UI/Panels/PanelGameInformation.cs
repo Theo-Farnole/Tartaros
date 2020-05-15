@@ -17,6 +17,7 @@ namespace UI.Game
         [Space(order = 0)]
         [Header("Content", order = 1)]
         [SerializeField] private TextMeshProUGUI _waveIndicator;
+        [SerializeField] private TextMeshProUGUI _populationCount;
         [SerializeField, EnumNamedArray(typeof(Resource))] private TextMeshProUGUI[] _resourcesLabel;
         #endregion
 
@@ -33,13 +34,24 @@ namespace UI.Game
         public override void SubscribeToEvents<T>(T uiManager)
         {
             GameManager.OnGameResourcesUpdate += UpdateResourcesLabel;
+            GameManager.OnPopulationUse += SetPopulationCountLabel;
+
             WaveManager.OnWaveTimerUpdate += SetWaveText;
         }
 
         public override void UnsubscribeToEvents<T>(T uiManager)
         {
             GameManager.OnGameResourcesUpdate -= UpdateResourcesLabel;
+            GameManager.OnPopulationUse -= SetPopulationCountLabel;
+
             WaveManager.OnWaveTimerUpdate -= SetWaveText;
+        }
+
+
+        private void SetPopulationCountLabel(int popCount)
+        {
+            Assert.IsNotNull(_populationCount, "Panel Game Information : Please assign a TextMeshProUGUI to _populationCount.");
+            _populationCount.text = "pop: " + popCount.ToString();
         }
 
         public override void OnValidate()
