@@ -1,4 +1,4 @@
-using LeonidasLegacy.MapCellEditor;
+﻿using LeonidasLegacy.MapCellEditor;
 using Lortedo.Utilities.Pattern;
 using UnityEngine;
 
@@ -63,6 +63,7 @@ public class GameManager : Singleton<GameManager>
     public CollisionScalerData CollisionScalerData { get => _collisionScalerData; }
     public AttackSlotsData AttackSlotsData { get => _attackSlotsData; }
     public TileSystem TileSystem { get => _tileSystem; }
+    public MapCells MapCells { get => _mapCells; }
     #endregion
 
     #region Methods
