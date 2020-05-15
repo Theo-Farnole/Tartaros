@@ -1,4 +1,4 @@
-﻿using Lortedo.Utilities.Inspector;
+using Lortedo.Utilities.Inspector;
 using Lortedo.Utilities.Managers;
 using System;
 using System.Collections.Generic;
@@ -131,6 +131,13 @@ namespace UI.Game
             // set hoverdisplay popup
             if (buildingButton.gameObject.TryGetComponent(out HoverDisplayPopup hoverDisplayPopup))
             {
+                if (MainRegister.Instance == null)
+                {
+                    Debug.LogErrorFormat("Panel Construction : MainRegister is missing. Can't set hover popup display on construction button.");
+                    return;
+                }
+
+
                 if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData entityData))
                 {
                     hoverDisplayPopup.HoverPopupData = entityData.HoverPopupData;
@@ -148,6 +155,12 @@ namespace UI.Game
 
         private static void TrySetPortraitOnButton(Button buildingButton, BuildingType buildingType)
         {
+            if (MainRegister.Instance == null)
+            {
+                Debug.LogErrorFormat("Panel Construction : MainRegister is missing. Can't set portrait on construction button.");
+                return;
+            }
+
             if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))
             {
                 Sprite portrait = buildingData.Portrait;
