@@ -50,9 +50,7 @@ public class SnapGridDatabase : ScriptableObject
 
 
     public bool GetNearestPositionFromMouse(out Vector3 positionFromMouse, int layerMask = ~0)
-    {
-        //if (layerMask == -1) layerMask = LayerMask.GetMask("Terrain");
-
+    {        
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))

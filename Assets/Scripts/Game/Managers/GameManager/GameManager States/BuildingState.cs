@@ -8,6 +8,8 @@ using UnityEngine.AI;
 public class BuildingState : OwnedState<GameManager>
 {
     #region Fields
+    public readonly static int TERRAIN_LAYERMASK = LayerMask.GetMask("Terrain");
+
     private GameObject _building = null;
     private BuildingType _buildingType;
     private EntityData _buildingData;
@@ -94,7 +96,7 @@ public class BuildingState : OwnedState<GameManager>
 
     void UpdateBuildingPosition()
     {
-        if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition))
+        if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, TERRAIN_LAYERMASK))
         {
             if (newPosition != _building.transform.position)
             {
