@@ -24,6 +24,7 @@ public class EntityData : SerializedScriptableObject
     private const string createUnitSettingsHeaderName = "Can Create Unit";
     private const string generateResourcesHeaderName = "Can Generate Resources";
     private const string portraitAndPrefabGroupName = "Portrait & Prefab";
+    private const string headerNamePopulation = "Can Give 'Population'";
 
     #region Misc
     [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
@@ -163,6 +164,16 @@ public class EntityData : SerializedScriptableObject
     public float GenerationTick { get => _generationTick; }
     public float RadiusToReachCells { get => _radiusToReachCells; }
     public Dictionary<CellType, ResourcesWrapper> ResourcesPerCell { get => _resourcesPerCell; }
+    #endregion
+
+    #region Give population
+    [ToggleGroup(nameof(_increaseMaxPopulation), headerNamePopulation)]
+    [SerializeField] private bool _increaseMaxPopulation;
+
+    [ToggleGroup(nameof(_increaseMaxPopulation), headerNamePopulation)]
+    [SerializeField] private int _increaseMaxPopulationAmount;
+    
+    public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }
     #endregion
     #endregion
 

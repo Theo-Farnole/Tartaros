@@ -133,6 +133,7 @@ public class GameManager : Singleton<GameManager>
         if (entity.Team == Team.Sparta)
         {
             PopulationCount += entity.Data.PopulationUse;
+            MaxPopulation += entity.Data.IncreaseMaxPopulationAmount;
 
             // On start, if there is already created Entity in scene assert fails.
             //
@@ -149,6 +150,9 @@ public class GameManager : Singleton<GameManager>
             {
                 Assert.AreEqual(_populationCount, GetCurrentPopulation(),
                     "Game Manager : Current population isn't the same as calculated.");
+
+                Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(),
+                    "Game Manager : Max population isn't the same as calculated.");
             }
         }
     }
@@ -158,9 +162,13 @@ public class GameManager : Singleton<GameManager>
         if (entity.Team == Team.Sparta)
         {
             PopulationCount -= entity.Data.PopulationUse;
+            MaxPopulation -= entity.Data.IncreaseMaxPopulationAmount;
 
             Assert.AreEqual(_populationCount, GetCurrentPopulation() - entity.Data.PopulationUse,
                 "Game Manager : Current population isn't the same as calculated.");
+
+            Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(),
+                    "Game Manager : Max population isn't the same as calculated.");
         }
     }
     #endregion
@@ -207,6 +215,22 @@ public class GameManager : Singleton<GameManager>
         }
 
         return populationUsage;
+    }
+
+    int GetCurrentMaxPopulation()
+    {
+        var entities = FindObjectsOfType<Entity>();
+        int maxPopulation = _data.StartMaxPopulationCount;
+
+        foreach (var entity in entities)
+        {
+            if (entity.Team == Team.Sparta)
+            {
+                maxPopulation += entity.Data.IncreaseMaxPopulationAmount;
+            }
+        }
+
+        return maxPopulation;
     }
     #endregion
     #endregion

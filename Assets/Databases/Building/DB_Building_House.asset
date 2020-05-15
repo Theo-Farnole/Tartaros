@@ -12,8 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
   m_Name: DB_Building_House
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _resourcesPerCell
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[LeonidasLegacy.MapCellEditor.CellType,
+        Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[LeonidasLegacy.MapCellEditor.CellType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   _entityName: House
   _hotkey: 106
+  _populationUse: 0
   _portrait: {fileID: 21300000, guid: 04beb25e868cb264791c0ba773f4fff5, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 07c235988da8f0d449a461fff451a456, type: 3}
   _hoverPopupData: {fileID: 11400000, guid: 51107c083f51f6e4981b25f9aac85409, type: 2}
@@ -37,7 +73,6 @@ MonoBehaviour:
   _availableUnitsForCreation: 0000000001000000
   _canGenerateResources: 0
   _generationTick: 1
-  _resourcesAmount:
-    food: 10
-    wood: 5
-    gold: 5
+  _radiusToReachCells: 5
+  _givePopulation: 1
+  _givePopulationAmount: 5

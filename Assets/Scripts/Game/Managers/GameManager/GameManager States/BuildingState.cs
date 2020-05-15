@@ -147,6 +147,9 @@ public class BuildingState : OwnedState<GameManager>
 
         if (_building.TryGetComponent(out EntityResourcesGeneration resourcesGeneration))
             resourcesGeneration.EnableResourceProduction = enabled;
+
+        if (_building.TryGetComponent(out Entity entity))
+            entity.enabled = enabled; // disable OnSpawn call
     }
     #endregion
 }
