@@ -54,7 +54,7 @@ MonoBehaviour:
   _prefab: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775, type: 3}
   _hoverPopupData: {fileID: 11400000, guid: 4d613de1ed0e4694590c2a31afd07026, type: 2}
   _isInvincible: 0
-  _hp: 10
+  _hp: 2
   _spawningCost:
     food: 20
     wood: 5

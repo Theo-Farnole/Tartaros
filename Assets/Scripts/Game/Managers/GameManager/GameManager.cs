@@ -1,6 +1,5 @@
 ﻿using LeonidasLegacy.MapCellEditor;
 using Lortedo.Utilities.Pattern;
-using TF.Cheats;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -11,7 +10,7 @@ public class GameManager : Singleton<GameManager>
 {
     #region Fields
     public static event OnResourcesUpdate OnGameResourcesUpdate;
-    public static event IntDelegate OnPopulationUse;
+    public static event DoubleIntDelegate OnPopulationCountChanged;
 
     [SerializeField] private GameManagerData _data;
     [SerializeField] private CollisionScalerData _collisionScalerData;
@@ -25,7 +24,8 @@ public class GameManager : Singleton<GameManager>
 
     private OwnedState<GameManager> _state = null;
     private ResourcesWrapper _resources = new ResourcesWrapper();
-    private int _populationUse = 0;
+    private int _populationCount = 0;
+    private int _maxPopulation = 0;
 
     private static bool _applicationIsQuitting = false;
     #endregion
@@ -64,14 +64,25 @@ public class GameManager : Singleton<GameManager>
     public AttackSlotsData AttackSlotsData { get => _attackSlotsData; }
     public MapCells MapCells { get => _mapCells; }
 
-    public int PopulationUse
+    public int PopulationCount
     {
-        get => _populationUse;
+        get => _populationCount;
 
         private set
         {
-            _populationUse = value;
-            OnPopulationUse?.Invoke(_populationUse);
+            _populationCount = value;
+            OnPopulationCountChanged?.Invoke(_populationCount, _maxPopulation);
+        }
+    }
+
+    public int MaxPopulation
+    {
+        get => _maxPopulation;
+
+        private set
+        {
+            _maxPopulation = value;
+            OnPopulationCountChanged?.Invoke(_populationCount, _maxPopulation);
         }
     }
     #endregion
@@ -81,6 +92,7 @@ public class GameManager : Singleton<GameManager>
     void Awake()
     {
         Resources = _data.StartingResources;
+        MaxPopulation = _data.StartMaxPopulationCount;
     }
 
     void Update()
@@ -120,7 +132,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (entity.Team == Team.Sparta)
         {
-            PopulationUse += entity.Data.PopulationUse;
+            PopulationCount += entity.Data.PopulationUse;
 
             // On start, if there is already created Entity in scene assert fails.
             //
@@ -135,7 +147,7 @@ public class GameManager : Singleton<GameManager>
             // We could have used frameCount. But there is not 'Time.frameSinceLeveLoad'
             if (Time.timeSinceLevelLoad > 0.2f)
             {
-                Assert.AreEqual(_populationUse, GetCurrentPopulation(),
+                Assert.AreEqual(_populationCount, GetCurrentPopulation(),
                     "Game Manager : Current population isn't the same as calculated.");
             }
         }
@@ -145,15 +157,20 @@ public class GameManager : Singleton<GameManager>
     {
         if (entity.Team == Team.Sparta)
         {
-            PopulationUse -= entity.Data.PopulationUse;
+            PopulationCount -= entity.Data.PopulationUse;
 
-            Assert.AreEqual(_populationUse, GetCurrentPopulation() - entity.Data.PopulationUse,
+            Assert.AreEqual(_populationCount, GetCurrentPopulation() - entity.Data.PopulationUse,
                 "Game Manager : Current population isn't the same as calculated.");
         }
     }
     #endregion
 
     #region Public methods
+    public bool HasEnoughtPopulationToSpawn(EntityData unitData)
+    {
+        return (_populationCount + unitData.PopulationUse <= _maxPopulation);
+    }
+
     public void StartBuilding(BuildingType buildingType)
     {
         if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))

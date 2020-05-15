@@ -34,7 +34,7 @@ namespace UI.Game
         public override void SubscribeToEvents<T>(T uiManager)
         {
             GameManager.OnGameResourcesUpdate += UpdateResourcesLabel;
-            GameManager.OnPopulationUse += SetPopulationCountLabel;
+            GameManager.OnPopulationCountChanged += SetPopulationCountLabel;
 
             WaveManager.OnWaveTimerUpdate += SetWaveText;
         }
@@ -42,16 +42,16 @@ namespace UI.Game
         public override void UnsubscribeToEvents<T>(T uiManager)
         {
             GameManager.OnGameResourcesUpdate -= UpdateResourcesLabel;
-            GameManager.OnPopulationUse -= SetPopulationCountLabel;
+            GameManager.OnPopulationCountChanged -= SetPopulationCountLabel;
 
             WaveManager.OnWaveTimerUpdate -= SetWaveText;
         }
 
 
-        private void SetPopulationCountLabel(int popCount)
+        private void SetPopulationCountLabel(int popCount, int maxPopCount)
         {
             Assert.IsNotNull(_populationCount, "Panel Game Information : Please assign a TextMeshProUGUI to _populationCount.");
-            _populationCount.text = "pop: " + popCount.ToString();
+            _populationCount.text = "pop: " + popCount.ToString() + " / " + maxPopCount.ToString();
         }
 
         public override void OnValidate()
