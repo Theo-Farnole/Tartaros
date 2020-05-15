@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,6 +25,29 @@ namespace LeonidasLegacy.MapCellEditor
 
         // we hide _mapContent for performance reason       
         [SerializeField, HideInInspector] private CellType[,] _mapContent = new CellType[5, 5];
+
+        #region Getter
+        public CellType[] GetCellType_WorldPosition(float worldX, float worldY, float radius, CellType wantedCell)
+        {
+            ToLocalPosition(worldX, worldY, out int localX, out int localY);
+            int localRadius = Mathf.RoundToInt(radius * _snapGrid.CellSize);
+
+            return GetCellType_LocalPosition(localX, localY, localRadius).Where(x => x == wantedCell).ToArray();
+        }
+
+        public CellType[] GetCellType_WorldPosition(float worldX, float worldY, float radius)
+        {
+            ToLocalPosition(worldX, worldY, out int localX, out int localY);
+            int localRadius = Mathf.RoundToInt(radius * _snapGrid.CellSize);
+
+            return GetCellType_LocalPosition(localX, localY, localRadius);
+        }
+
+        public CellType[] GetCellType_LocalPosition(int x, int y, int radius)
+        {
+            return _mapContent.GetCircleInside(x, y, radius);
+        }
+        #endregion
 
         #region Setter
         public void SetCellType_WorldPosition(float worldX, float worldY, CellType cellType)
@@ -56,14 +80,13 @@ namespace LeonidasLegacy.MapCellEditor
         {
             _mapContent.DrawCircleInside(x, y, radius, cellType);
         }
+        #endregion
 
         private void ToLocalPosition(float worldX, float worldY, out int localX, out int localY)
         {
             localX = Mathf.RoundToInt(worldX * _snapGrid.CellSize);
             localY = Mathf.RoundToInt(worldY * _snapGrid.CellSize);
         }
-
-        #endregion
 
         #region Draw Gizmos
         private Dictionary<CellType, Color> _debugGizmosColor;
