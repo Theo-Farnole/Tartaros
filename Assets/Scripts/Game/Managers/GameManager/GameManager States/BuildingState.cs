@@ -56,8 +56,8 @@ public class BuildingState : OwnedState<GameManager>
 
     void TryConstructBuilding()
     {
-        Vector2Int coords = _owner.TileSystem.WorldPositionToCoords(_building.transform.position);
-        GameObject tile = _owner.TileSystem.GetTile(coords);
+        Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(_building.transform.position);
+        GameObject tile = TileSystem.Instance.GetTile(coords);
 
         // Is tile where we want to build is free ?
         if (tile == null)
@@ -117,7 +117,7 @@ public class BuildingState : OwnedState<GameManager>
         DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
 
         // register tile
-        _owner.TileSystem.SetTile(coords, _building);
+        TileSystem.Instance.SetTile(coords, _building);
 
         // then leave
         _owner.State = null;

@@ -3,14 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileSystem
+public delegate void OnTileTerrainChanged(Vector2Int coords, GameObject gameObjectAtCoords);
+
+public class TileSystem : Singleton<TileSystem>
 {
     #region Fields
+    public event OnTileTerrainChanged OnTileTerrainChanged;
+
     private Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>();
     #endregion
 
-    #region Ctor
-    public TileSystem()
+    #region Methods
+    #region MonoBehaviour Callbacks
+    public void Start()
     {
         ResetAllTiles();
     }
@@ -37,7 +42,7 @@ public class TileSystem
 
         _tiles[coords] = gameObject;
 
-        GameManager.Instance.InvokeOnTileTerrainChanged(coords, gameObject);
+        OnTileTerrainChanged?.Invoke(coords, gameObject);
     }
 
     public GameObject GetTileFromWorldCoords(Vector3 worldPosition)
@@ -72,5 +77,6 @@ public class TileSystem
             }
         }
     }
+    #endregion
     #endregion
 }

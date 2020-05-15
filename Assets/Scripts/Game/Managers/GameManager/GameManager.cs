@@ -3,16 +3,12 @@ using Lortedo.Utilities.Pattern;
 using UnityEngine;
 
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
-public delegate void OnTileTerrainChanged(Vector2Int coords, GameObject gameObjectAtCoords);
+
 
 public class GameManager : Singleton<GameManager>
 {
     #region Fields
     public static event OnResourcesUpdate OnGameResourcesUpdate;
-    // refactor: should be in tile system
-    // however, we set here to avoir LawOfDemeter 
-    // ex: GameManager.Instance.TileSystem.OnTileTerrainChanged += [...]
-    public event OnTileTerrainChanged OnTileTerrainChanged;
 
     [SerializeField] private GameManagerData _data;
     [SerializeField] private CollisionScalerData _collisionScalerData;
@@ -22,10 +18,10 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private MapCells _mapCells;
     [Header("DEBUG")]
     [SerializeField] private bool _debugDrawSnapGrid;
+    [SerializeField] private bool _debugDrawMapCells;
 
     private OwnedState<GameManager> _state = null;
-    private ResourcesWrapper _resources = new ResourcesWrapper();    
-    private TileSystem _tileSystem;
+    private ResourcesWrapper _resources = new ResourcesWrapper();
 
     private static bool _applicationIsQuitting = false;
     #endregion
@@ -62,7 +58,6 @@ public class GameManager : Singleton<GameManager>
     public static bool ApplicationIsQuitting { get => _applicationIsQuitting; }
     public CollisionScalerData CollisionScalerData { get => _collisionScalerData; }
     public AttackSlotsData AttackSlotsData { get => _attackSlotsData; }
-    public TileSystem TileSystem { get => _tileSystem; }
     public MapCells MapCells { get => _mapCells; }
     #endregion
 
@@ -71,11 +66,6 @@ public class GameManager : Singleton<GameManager>
     void Awake()
     {
         Resources = _data.StartingResources;
-    }
-
-    void Start()
-    {
-        _tileSystem = new TileSystem();
     }
 
     void Update()
@@ -93,7 +83,8 @@ public class GameManager : Singleton<GameManager>
         if (_debugDrawSnapGrid)
             _grid?.DrawGizmos();
 
-        _mapCells?.DrawGizmos();
+        if (_debugDrawMapCells)
+            _mapCells?.DrawGizmos();
     }
     #endregion
 
@@ -117,14 +108,6 @@ public class GameManager : Singleton<GameManager>
         {
             Debug.LogErrorFormat("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingType);
         }
-    }
-
-    // refactor:
-    // we'll remove this function when TileSystem'll be refactorized
-    // this method is only called by TileSystem.
-    public void InvokeOnTileTerrainChanged(Vector2Int coords, GameObject gameObjectAtCoords)
-    {
-        OnTileTerrainChanged?.Invoke(coords, gameObjectAtCoords);
     }
     #endregion
 }
