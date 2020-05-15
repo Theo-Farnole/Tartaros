@@ -36,6 +36,8 @@ public class TileSystem
         }
 
         _tiles[coords] = gameObject;
+
+        GameManager.Instance.InvokeOnTileTerrainChanged(coords, gameObject);
     }
 
     public GameObject GetTileFromWorldCoords(Vector3 worldPosition)
