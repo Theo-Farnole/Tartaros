@@ -4,3 +4,6 @@
 [submodule "Assets/Scripts/Utilities/StandardUtilities"]
 	path = Assets/Scripts/Utilities/StandardUtilities
 	url = https://github.com/Theo-Farnole/Unity-StandardUtilities
+[submodule "Assets/Scripts/Utilities/Cheats Manager"]
+	path = Assets/Scripts/Utilities/Cheats Manager
+	url = https://github.com/Theo-Farnole/CheatsManager
