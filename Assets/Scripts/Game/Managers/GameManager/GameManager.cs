@@ -1,5 +1,6 @@
 ﻿using LeonidasLegacy.MapCellEditor;
 using Lortedo.Utilities.Pattern;
+using TF.Cheats;
 using UnityEngine;
 
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
@@ -88,6 +89,7 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
+    #region Public methods
     public void StartBuilding(BuildingType buildingType)
     {
         if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))
@@ -109,5 +111,6 @@ public class GameManager : Singleton<GameManager>
             Debug.LogErrorFormat("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingType);
         }
     }
+    #endregion
     #endregion
 }
