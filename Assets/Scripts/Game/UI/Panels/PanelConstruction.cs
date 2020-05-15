@@ -1,4 +1,4 @@
-using Lortedo.Utilities.Inspector;
+﻿using Lortedo.Utilities.Inspector;
 using Lortedo.Utilities.Managers;
 using System;
 using System.Collections.Generic;
@@ -31,7 +31,10 @@ namespace UI.Game
         {
             base.Initialize(uiManager);
 
-            CreateConstructionButtons();
+            // bloat code
+            // but we can't create construction button on Awake
+            // because, MainRegister'll return Null Reference :/
+            uiManager.ExecuteAfterFrame(CreateConstructionButtons);
         }
 
         public override void SubscribeToEvents<T>(T uiManager)
