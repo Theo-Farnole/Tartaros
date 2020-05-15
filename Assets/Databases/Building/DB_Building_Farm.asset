@@ -12,6 +12,113 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
   m_Name: DB_Building_Farm
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _resourcesPerCell
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[LeonidasLegacy.MapCellEditor.CellType,
+        Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[LeonidasLegacy.MapCellEditor.CellType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 7
+      Data: ResourcesWrapper, Assembly-CSharp
+    - Name: food
+      Entry: 3
+      Data: 3
+    - Name: wood
+      Entry: 3
+      Data: 0
+    - Name: gold
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 7
+      Data: ResourcesWrapper, Assembly-CSharp
+    - Name: food
+      Entry: 3
+      Data: 5
+    - Name: wood
+      Entry: 3
+      Data: 0
+    - Name: gold
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 7
+      Data: ResourcesWrapper, Assembly-CSharp
+    - Name: food
+      Entry: 3
+      Data: 10
+    - Name: wood
+      Entry: 3
+      Data: 0
+    - Name: gold
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   _entityName: Farm
   _hotkey: 104
   _portrait: {fileID: 21300000, guid: 611dc461b85e6b74a90d20260a2b768f, type: 3}
@@ -37,7 +144,4 @@ MonoBehaviour:
   _availableUnitsForCreation: 0000000001000000
   _canGenerateResources: 1
   _generationTick: 1
-  _resourcesAmount:
-    food: 10
-    wood: 5
-    gold: 5
+  _radiusToReachCells: 10.47

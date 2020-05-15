@@ -96,7 +96,11 @@ public class BuildingState : OwnedState<GameManager>
     {
         if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition))
         {
-            _building.transform.position = newPosition;        
+            if (newPosition != _building.transform.position)
+            {
+                _building.transform.position = newPosition;
+                _building.GetComponent<EntityResourcesGeneration>().CalculateResourcesPerTick();
+            }
         }
         else
         {
@@ -138,6 +142,9 @@ public class BuildingState : OwnedState<GameManager>
 
         var navMeshObstacle = _building.GetComponent<NavMeshObstacle>();
         if (navMeshObstacle) navMeshObstacle.enabled = enabled;
+
+        if (_building.TryGetComponent(out EntityResourcesGeneration resourcesGeneration))
+            resourcesGeneration.EnableResourceProduction = enabled;
     }
     #endregion
 }

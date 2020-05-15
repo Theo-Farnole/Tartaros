@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.Inspector;
+﻿using LeonidasLegacy.MapCellEditor;
+using Lortedo.Utilities.Inspector;
 using MyBox;
 using Sirenix.OdinInspector;
 using System.Collections;
@@ -16,7 +17,7 @@ public enum OrdersType
 }
 
 [CreateAssetMenu(menuName = "Leonidas Legacy/Entity")]
-public class EntityData : ScriptableObject
+public class EntityData : SerializedScriptableObject
 {
     private const string attackSettingsHeaderName = "Can Attack";
     private const string movementSettingsHeaderName = "Can Move";
@@ -49,14 +50,6 @@ public class EntityData : ScriptableObject
     public GameObject Prefab { get => _prefab; }
     public HoverPopupData HoverPopupData { get => _hoverPopupData; }
     #endregion
-
-    void DrawPreview()
-    {
-        if (_portrait == null) return;
-
-        GUILayout.Label(_portrait.texture, GUILayout.Height(50));
-    }
-
 
     #region Health Settings
     [BoxGroup("Health Settings")]
@@ -121,7 +114,7 @@ public class EntityData : ScriptableObject
     [SerializeField] private float _damagePerSecond;
 
     public bool IsMelee { get => _isMelee; }
-    public GameObject PrefabProjectile { get => _prefabProjectile;}
+    public GameObject PrefabProjectile { get => _prefabProjectile; }
     public int Damage { get => _damage; }
     public float AttackRadius { get => _attackRadius; }
     public float AttackSpeed { get => _attackSpeed; }
@@ -154,13 +147,18 @@ public class EntityData : ScriptableObject
     [SerializeField] private bool _canGenerateResources;
 
     [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
+    [SerializeField] private Dictionary<CellType, ResourcesWrapper> _resourcesPerCell = new Dictionary<CellType, ResourcesWrapper>();
+
+    [Space]
+    [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
     [SerializeField] private float _generationTick;
 
     [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
-    [SerializeField] private ResourcesWrapper _resourcesAmount;
+    [SerializeField] private float _radiusToReachCells = 5;
 
-    public float GenerationTick { get => _generationTick; }    
-    public ResourcesWrapper ResourcesAmount { get => _resourcesAmount; }
+    public float GenerationTick { get => _generationTick; }
+    public float RadiusToReachCells { get => _radiusToReachCells; }
+    public Dictionary<CellType, ResourcesWrapper> ResourcesPerCell { get => _resourcesPerCell; }
     #endregion
     #endregion
 
@@ -187,5 +185,5 @@ public class EntityData : ScriptableObject
     void OnValidate()
     {
         _damagePerSecond = _damage / _attackSpeed;
-    }
+    }    
 }
