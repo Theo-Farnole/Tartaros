@@ -19,7 +19,8 @@ public enum EntityType
     // building
     House = EntitiesSystem.STARTING_INDEX_BUILDING + 0,
     Barracks = EntitiesSystem.STARTING_INDEX_BUILDING + 1,
-    Farm = EntitiesSystem.STARTING_INDEX_BUILDING + 2
+    Farm = EntitiesSystem.STARTING_INDEX_BUILDING + 2,
+    Temple = EntitiesSystem.STARTING_INDEX_BUILDING + 3
 }
 
 public enum BuildingType
@@ -27,7 +28,8 @@ public enum BuildingType
     None  = EntityType.None,
     House = EntityType.House,
     Barracks = EntityType.Barracks,
-    Farm = EntityType.Farm
+    Farm = EntityType.Farm,
+    Temple = EntityType.Temple
 }
 
 public enum UnitType
