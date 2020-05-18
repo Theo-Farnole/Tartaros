@@ -12,12 +12,16 @@ namespace Game.FogOfWar
         #region Fields
         [SerializeField] private SnapGridDatabase _snapGrid;
         [SerializeField, HideInInspector] private FogState[,] _visiblityMap; // allow hot reloading in Editor
+        [Header("COMPONENTS")]
+        [SerializeField] private Projector _projectorFogOfWar;
 
         [Header("DEBUGS")]
         [SerializeField] private bool _debugDrawSnapGrid = false;
 
         private List<IFogVision> _viewers = new List<IFogVision>();
         private List<IFogCoverable> _coverables = new List<IFogCoverable>();
+
+        private bool _isDisabled = false;
         #endregion
 
         #region Methods
@@ -79,6 +83,9 @@ namespace Game.FogOfWar
 
         void UpdateVisibilityMap()
         {
+            if (_isDisabled)
+                return;
+
             // set all VISIBLE coords to REAVEALED
             int lengthOne = _visiblityMap.GetLength(0);
             for (int x = 0; x < lengthOne; x++)
@@ -105,6 +112,9 @@ namespace Game.FogOfWar
 
         void UpdateCoverablesVisibility()
         {
+            if (_isDisabled)
+                return;
+
             for (int i = 0; i < _coverables.Count; i++)
             {
                 Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].Transform.position);
@@ -122,6 +132,28 @@ namespace Game.FogOfWar
 
                 _coverables[i].IsCover = isCover;
             }
+        }
+
+        void DisableFOW()
+        {
+            _isDisabled = true;
+            UncoverAllCoverables();
+
+            _projectorFogOfWar.enabled = false;
+        }
+
+        void UncoverAllCoverables()
+        {
+            foreach (var coverable in _coverables)
+            {
+                coverable.IsCover = false;
+            }
+        }
+
+        void ReactiveFOW()
+        {
+            _isDisabled = false;
+            _projectorFogOfWar.enabled = true;
         }
 
         public void DebugLogVisiblityMap()

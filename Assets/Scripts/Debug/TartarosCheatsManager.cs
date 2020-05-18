@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.FogOfWar;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -71,9 +72,12 @@ namespace LeonidasLegacy.Cheats
                     if (key == CheatsKey.keyInfiniteResources)
                         ManageActivation_InfiniteResources();
 
-                    break;
+                    if (key == CheatsKey.keyDisableFog)
+                        ManageActive_FogOfWar();
+
+                        break;
                 default:
-                    throw new System.NotImplementedException();
+                    throw new NotImplementedException();
             }
         }
         #endregion
@@ -120,11 +124,44 @@ namespace LeonidasLegacy.Cheats
         #region Skip waves
         void StartWave()
         {
-            WaveManager waveManager = FindObjectOfType<WaveManager>();
+            ExecutePrivateMethodWithReflection<WaveManager>("StartWave");
+            return;
+        }
+        #endregion
 
-            if (waveManager == null)
+        #region Disable Fog of War
+        private static bool IsFogDisabled() => CheatsManager.GetBool(CheatsKey.keyDisableFog);
+
+        void ManageActive_FogOfWar()
+        {
+            if (IsFogDisabled()) Disable_FogOfWar();
+            else Active_FogOfWar();
+        }
+
+        void Active_FogOfWar()
+        {
+            ExecutePrivateMethodWithReflection<FOWManager>("ReactiveFOW");
+        }
+
+        void Disable_FogOfWar()
+        {
+            ExecutePrivateMethodWithReflection<FOWManager>("DisableFOW");
+        }
+
+        void Toggle_FogOfWar()
+        {
+            CheatsManager.ToggleBool(CheatsKey.keyDisableFog);
+        }
+        #endregion
+
+        void ExecutePrivateMethodWithReflection<T>(string methodName) where T : UnityEngine.Object
+        {
+            string typeToString = typeof(T).ToString();
+            T manager = FindObjectOfType<T>();
+
+            if (manager == null)
             {
-                Debug.LogErrorFormat(debugLogHeader + "There is no WaveManager. Aborting 'start wave' cheat.");
+                Debug.LogErrorFormat(debugLogHeader + "There is no {0} manager. Aborting {1} cheat.", typeToString, methodName);
                 return;
             }
 
@@ -133,13 +170,13 @@ namespace LeonidasLegacy.Cheats
             // we don't want to set as public.
             //
             // The more there is encapsulation, the better!
-            var type = typeof(WaveManager);
-            MethodInfo methodInfo = type.GetMethod("StartWave", BindingFlags.Instance | BindingFlags.NonPublic);
+            var type = typeof(T);
+            MethodInfo methodInfo = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic);
 
-            methodInfo.Invoke(waveManager, null);
+            Assert.IsNotNull(methodInfo, debugLogHeader + "method " + methodName + " not found in manager " + typeToString + ".");
+
+            methodInfo.Invoke(manager, null);
         }
-        #endregion
-
 
         #region Menu Open/Close
         private void CloseCheatsMenu() => _cheatsMenuOpen = false;
@@ -165,12 +202,13 @@ namespace LeonidasLegacy.Cheats
             if (!_cheatsMenuOpen)
                 return;
 
-            int buttonCount = 3;
+            int buttonCount = 4;
 
             Draw_MenuBackground(buttonCount);
 
             Draw_InfiniteResources(0);
             Draw_StartWave(1);
+            Draw_DisableFow(2);
             Draw_CloseCheatsMenu(buttonCount - 1);
         }
 
@@ -213,6 +251,12 @@ namespace LeonidasLegacy.Cheats
         private void Draw_StartWave(int buttonIndex)
         {
             DrawGenericButton(buttonIndex, "Start wave", StartWave);
+        }
+
+        private void Draw_DisableFow(int buttonIndex)
+        {
+            string label = IsFogDisabled() ? "Active" : "Disable" + " Fog of War";
+            DrawGenericButton(buttonIndex, label, Toggle_FogOfWar);
         }
         #endregion
 
