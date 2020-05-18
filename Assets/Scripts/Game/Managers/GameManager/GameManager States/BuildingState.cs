@@ -36,12 +36,20 @@ public class BuildingState : OwnedState<GameManager>
         SetCurrentBuilding(buildingType);
     }
 
+
+    public override void OnStateEnter()
+    {
+        _owner.Invoke_OnStartBuild();
+    }
+
     public override void OnStateExit()
     {
         if (!_sucessfulBuild)
         {
             DestroyAndRefundBuilding();
         }
+
+        _owner.Invoke_OnStopBuild();
     }
 
     public override void Tick()

@@ -6,6 +6,8 @@ using UnityEngine.Assertions;
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
 public delegate void OnGameOver(GameManager gameManager);
 public delegate void OnVictory(GameManager gameManager);
+public delegate void OnStartBuild(GameManager gameManager);
+public delegate void OnStopBuild(GameManager gameManager);
 
 
 public class GameManager : Singleton<GameManager>
@@ -15,6 +17,8 @@ public class GameManager : Singleton<GameManager>
     public static event DoubleIntDelegate OnPopulationCountChanged;
     public static event OnGameOver OnGameOver;
     public static event OnVictory OnVictory;
+    public static event OnStartBuild OnStartBuild;
+    public static event OnStopBuild OnStopBuild;
 
     [SerializeField] private GameManagerData _data;
     [SerializeField] private CollisionScalerData _collisionScalerData;
@@ -219,6 +223,9 @@ public class GameManager : Singleton<GameManager>
             Debug.LogErrorFormat("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingType);
         }
     }
+
+    public void Invoke_OnStartBuild() => OnStartBuild?.Invoke(this);
+    public void Invoke_OnStopBuild() => OnStopBuild?.Invoke(this);
     #endregion
 
     #region Private methods
