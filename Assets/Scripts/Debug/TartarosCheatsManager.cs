@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TF.Cheats;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -116,6 +117,30 @@ namespace LeonidasLegacy.Cheats
         }
         #endregion
 
+        #region Skip waves
+        void StartWave()
+        {
+            WaveManager waveManager = FindObjectOfType<WaveManager>();
+
+            if (waveManager == null)
+            {
+                Debug.LogErrorFormat(debugLogHeader + "There is no WaveManager. Aborting 'start wave' cheat.");
+                return;
+            }
+
+            // We use reflection to get a private method.
+            // Because we are only calling this method for a cheat,
+            // we don't want to set as public.
+            //
+            // The more there is encapsulation, the better!
+            var type = typeof(WaveManager);
+            MethodInfo methodInfo = type.GetMethod("StartWave", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            methodInfo.Invoke(waveManager, null);
+        }
+        #endregion
+
+
         #region Menu Open/Close
         private void CloseCheatsMenu() => _cheatsMenuOpen = false;
         private void OpenCheatsMenu() => _cheatsMenuOpen = true;
@@ -140,11 +165,12 @@ namespace LeonidasLegacy.Cheats
             if (!_cheatsMenuOpen)
                 return;
 
-            int buttonCount = 2;
+            int buttonCount = 3;
 
             Draw_MenuBackground(buttonCount);
 
             Draw_InfiniteResources(0);
+            Draw_StartWave(1);
             Draw_CloseCheatsMenu(buttonCount - 1);
         }
 
@@ -182,6 +208,11 @@ namespace LeonidasLegacy.Cheats
             string label = "Infinite Resources - " + (IsInfiniteResourcesActive() ? "Disable" : "Active");
 
             DrawGenericButton(buttonIndex, label, Toggle_InfiniteResources);
+        }
+
+        private void Draw_StartWave(int buttonIndex)
+        {
+            DrawGenericButton(buttonIndex, "Start wave", StartWave);
         }
         #endregion
 
