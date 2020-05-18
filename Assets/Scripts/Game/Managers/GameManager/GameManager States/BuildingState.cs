@@ -105,19 +105,22 @@ public class BuildingState : OwnedState<GameManager>
 
     void ConstructBuilding()
     {
+        // register tile
+        bool successfulSetTile = TileSystem.Instance.TrySetTile(_building);
+
+        if (!successfulSetTile)
+            return;
+
         EnableBuildingComponents(true);
 
         _building.GetComponent<Entity>().Team = Team.Sparta;
 
         DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
 
-        // register tile
-        if (TileSystem.Instance.TrySetTile(_building))
-        {
-            // then leave
-            _sucessfulBuild = true;
-            _owner.State = null;
-        }
+        // then leave
+        _sucessfulBuild = true;
+        _owner.State = null;
+
     }
 
     void DestroyAndRefundBuilding()
