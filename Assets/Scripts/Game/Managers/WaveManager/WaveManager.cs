@@ -5,6 +5,7 @@ using UnityEngine.Assertions;
 
 public delegate void OnWaveTimerUpdate(int waveCount, float remainingTime);
 public delegate void OnWaveStart(int waveCount);
+public delegate void OnWaveClear(int waveCountCleared);
 
 /// <summary>
 /// Spawn enemies waves frequently.
@@ -16,6 +17,7 @@ public class WaveManager : MonoBehaviour
 
     public static event OnWaveTimerUpdate OnWaveTimerUpdate;
     public static event OnWaveStart OnWaveStart;
+    public static event OnWaveClear OnWaveClear;
 
     [SerializeField] private WaveManagerData _data;
 
@@ -98,6 +100,10 @@ public class WaveManager : MonoBehaviour
 
         // reset timer
         _timer = 0;
+
+        // TODO:
+        // we should check if all waves has been spawned
+        OnWaveClear?.Invoke(_waveCount);
     }
 
     private float CalculateRemainingTime()

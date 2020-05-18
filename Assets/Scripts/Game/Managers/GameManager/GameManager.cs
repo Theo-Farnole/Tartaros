@@ -5,6 +5,7 @@ using UnityEngine.Assertions;
 
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
 public delegate void OnGameOver(GameManager gameManager);
+public delegate void OnVictory(GameManager gameManager);
 
 
 public class GameManager : Singleton<GameManager>
@@ -13,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     public static event OnResourcesUpdate OnGameResourcesUpdate;
     public static event DoubleIntDelegate OnPopulationCountChanged;
     public static event OnGameOver OnGameOver;
+    public static event OnVictory OnVictory;
 
     [SerializeField] private GameManagerData _data;
     [SerializeField] private CollisionScalerData _collisionScalerData;
@@ -120,12 +122,14 @@ public class GameManager : Singleton<GameManager>
     {
         Entity.OnSpawn += Entity_OnSpawn;
         Entity.OnDeath += Entity_OnDeath;
+        WaveManager.OnWaveClear += WaveManager_OnWaveClear;
     }
 
     void OnDisable()
     {
         Entity.OnSpawn -= Entity_OnSpawn;
         Entity.OnDeath -= Entity_OnDeath;
+        WaveManager.OnWaveClear -= WaveManager_OnWaveClear;
     }
     #endregion
 
@@ -178,6 +182,14 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
+
+    private void WaveManager_OnWaveClear(int waveCountCleared)
+    {
+        if (waveCountCleared == _data.WavesPassedToWin)
+        {
+            Victory();
+        }
+    }
     #endregion
 
     #region Public methods
@@ -210,13 +222,21 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Private methods
+    // called from Entity_OnDeath() if entity was a temple
     void GameOver()
     {        
         _state = null;
+        OnGameOver?.Invoke(this);
 
         Debug.Log("Game over");
+    }
 
-        OnGameOver?.Invoke(this);
+    void Victory()
+    {
+        _state = null;
+        OnVictory?.Invoke(this);
+
+        Debug.Log("Victory");
     }
     #endregion
 
