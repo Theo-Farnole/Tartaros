@@ -118,8 +118,10 @@ public class GameManager : Singleton<GameManager>
         if (_debugDrawSnapGrid)
             _grid?.DrawGizmos();
 
+#if UNITY_EDITOR
         if (_debugDrawMapCells)
             _mapCells?.DrawGizmos();
+#endif
     }
 
     void OnEnable()

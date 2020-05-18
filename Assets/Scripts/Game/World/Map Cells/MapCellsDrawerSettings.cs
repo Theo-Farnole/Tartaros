@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 public static class MapCellsDrawerSettings
 {
 
@@ -57,3 +58,4 @@ public static class MapCellsDrawerSettings
         GUILayout.EndHorizontal();
     }
 }
+#endif

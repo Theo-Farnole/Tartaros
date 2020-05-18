@@ -93,6 +93,7 @@ namespace LeonidasLegacy.MapCellEditor
             localRadius = Mathf.RoundToInt(radius * _snapGrid.CellSize);
         }
 
+#if UNITY_EDITOR
         #region Draw Gizmos
         private Dictionary<CellType, Color> _debugGizmosColor;
 
@@ -180,6 +181,7 @@ namespace LeonidasLegacy.MapCellEditor
             return o;
         }
         #endregion
+#endif
 
         #region Adjust map size
         void TryAdjustMapSize()
