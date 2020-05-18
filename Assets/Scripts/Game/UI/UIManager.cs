@@ -8,31 +8,31 @@ using System.Collections.Generic;
 using TMPro;
 using UI.Game;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 
 public class UIManager : AbstractUIManager
 {
     #region Fields
+    private const string debugLogHeader = "UIManager : ";
+
     [SerializeField] private PanelGameInformation _panelGameInformation;
     [SerializeField] private PanelSelection _panelSelection;
     [SerializeField] private PanelConstruction _panelConstruction;
     [SerializeField] private PanelGameOver _panelGameOver;
+    [SerializeField] private PanelVictory _panelVictory;
     #endregion
 
     #region Properties
-    public PanelGameInformation PanelGameInformation { get => _panelGameInformation; }
-    public PanelSelection PanelSelection { get => _panelSelection; }
-    public PanelConstruction PanelConstruction { get => _panelConstruction; }
-    public PanelGameOver PanelGameOver { get => _panelGameOver; }
-
     protected override Type[] OwnedPanels
     {
         get => new Type[] {
             typeof(PanelGameInformation),
             typeof(PanelSelection),
             typeof(PanelConstruction),
-            typeof(PanelGameOver)
+            typeof(PanelGameOver),
+            typeof(PanelVictory)
         };
     }
     #endregion
@@ -46,14 +46,14 @@ public class UIManager : AbstractUIManager
         _panelSelection.Hide();
         _panelGameInformation.Show();
         _panelGameOver.Hide();
-
-        SelectionManager.OnSelectionUpdated += ManagePanelDisplay;
+        _panelVictory.Hide();        
     }
-
 
     protected override void OnEnable()
     {
         GameManager.OnGameOver += GameManager_OnGameOver;
+        GameManager.OnVictory += GameManager_OnVictory;
+        SelectionManager.OnSelectionUpdated += ManagePanelDisplay;
 
         base.OnEnable();
     }
@@ -61,6 +61,8 @@ public class UIManager : AbstractUIManager
     protected override void OnDisable()
     {
         GameManager.OnGameOver -= GameManager_OnGameOver;
+        GameManager.OnVictory -= GameManager_OnVictory;
+        SelectionManager.OnSelectionUpdated -= ManagePanelDisplay;
 
         base.OnDisable();
     }
@@ -81,9 +83,19 @@ public class UIManager : AbstractUIManager
 
     private void GameManager_OnGameOver(GameManager gameManager)
     {
-        Debug.Log("On game over");
+        Assert.IsFalse(_panelVictory.IsPanelEnable(), debugLogHeader + "panel victory is show, but we just received a 'GameOver' from GameManager.");
 
         _panelGameOver.Show();
+        _panelGameInformation.Hide();
+        _panelSelection.Hide();
+        _panelConstruction.Hide();
+    }
+
+    private void GameManager_OnVictory(GameManager gameManager)
+    {
+        Assert.IsFalse(_panelGameOver.IsPanelEnable(), debugLogHeader + "panel gameover is show, but we just received a 'Victory' from GameManager.");
+
+        _panelVictory.Show();
         _panelGameInformation.Hide();
         _panelSelection.Hide();
         _panelConstruction.Hide();
