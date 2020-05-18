@@ -32,17 +32,35 @@ public class TileSystem : Singleton<TileSystem>
         return null;
     }
 
-    public void SetTile(Vector2Int coords, GameObject gameObject)
+    public bool TrySetTile(GameObject gameObject)
+    {
+        return TrySetTile(gameObject.transform.position, gameObject);
+    }
+
+    private bool TrySetTile(Vector3 worldPosition, GameObject gameObject)
+    {
+        Vector2Int coords = WorldPositionToCoords(worldPosition);
+        return TrySetTile(coords, gameObject);
+    }
+
+    private bool TrySetTile(Vector2Int coords, GameObject gameObject)
     {
         if (_tiles.ContainsKey(coords) == false)
         {
             Debug.LogError("Can't set GameObject on Tile " + coords + ". It doesn't exist!");
-            return;
+            return false;
+        }
+
+        if (_tiles[coords] != null)
+        {
+            UIMessagesLogger.Instance.AddErrorMessage("You can't build on non-empty cell.");
+            return false;
         }
 
         _tiles[coords] = gameObject;
-
         OnTileTerrainChanged?.Invoke(coords, gameObject);
+
+        return true;
     }
 
     public GameObject GetTileFromWorldCoords(Vector3 worldPosition)

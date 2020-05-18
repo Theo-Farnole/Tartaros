@@ -35,7 +35,7 @@ public class BuildingState : OwnedState<GameManager>
     {
         SetCurrentBuilding(buildingType);
     }
-    
+
     public override void OnStateExit()
     {
         if (!_sucessfulBuild)
@@ -61,23 +61,7 @@ public class BuildingState : OwnedState<GameManager>
 
         if (Input.GetMouseButtonDown(0))
         {
-            TryConstructBuilding();
-        }
-    }
-
-    void TryConstructBuilding()
-    {
-        Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(_building.transform.position);
-        GameObject tile = TileSystem.Instance.GetTile(coords);
-
-        // Is tile where we want to build is free ?
-        if (tile == null)
-        {
-            ConstructBuilding(coords);
-        }
-        else
-        {
-            UIMessagesLogger.Instance.AddErrorMessage("Can't build on non-empty tile");
+            ConstructBuilding();
         }
     }
 
@@ -119,7 +103,7 @@ public class BuildingState : OwnedState<GameManager>
         }
     }
 
-    void ConstructBuilding(Vector2Int coords)
+    void ConstructBuilding()
     {
         EnableBuildingComponents(true);
 
@@ -128,11 +112,12 @@ public class BuildingState : OwnedState<GameManager>
         DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
 
         // register tile
-        TileSystem.Instance.SetTile(coords, _building);
-
-        // then leave
-        _sucessfulBuild = true;
-        _owner.State = null;
+        if (TileSystem.Instance.TrySetTile(_building))
+        {
+            // then leave
+            _sucessfulBuild = true;
+            _owner.State = null;
+        }
     }
 
     void DestroyAndRefundBuilding()
