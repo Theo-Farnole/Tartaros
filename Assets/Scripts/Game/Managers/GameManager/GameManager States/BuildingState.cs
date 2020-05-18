@@ -13,6 +13,8 @@ public class BuildingState : OwnedState<GameManager>
     private GameObject _building = null;
     private BuildingType _buildingType;
     private EntityData _buildingData;
+
+    private bool _sucessfulBuild = false;
     #endregion
 
     #region Properties
@@ -33,7 +35,14 @@ public class BuildingState : OwnedState<GameManager>
     {
         SetCurrentBuilding(buildingType);
     }
-
+    
+    public override void OnStateExit()
+    {
+        if (!_sucessfulBuild)
+        {
+            DestroyAndRefundBuilding();
+        }
+    }
 
     public override void Tick()
     {
@@ -122,6 +131,7 @@ public class BuildingState : OwnedState<GameManager>
         TileSystem.Instance.SetTile(coords, _building);
 
         // then leave
+        _sucessfulBuild = true;
         _owner.State = null;
     }
 

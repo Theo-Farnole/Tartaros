@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
+public delegate void OnGameOver(GameManager gameManager);
 
 
 public class GameManager : Singleton<GameManager>
@@ -11,6 +12,7 @@ public class GameManager : Singleton<GameManager>
     #region Fields
     public static event OnResourcesUpdate OnGameResourcesUpdate;
     public static event DoubleIntDelegate OnPopulationCountChanged;
+    public static event OnGameOver OnGameOver;
 
     [SerializeField] private GameManagerData _data;
     [SerializeField] private CollisionScalerData _collisionScalerData;
@@ -169,6 +171,11 @@ public class GameManager : Singleton<GameManager>
 
             Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(),
                     "Game Manager : Max population isn't the same as calculated.");
+
+            if (entity.Type == EntityType.Temple)
+            {
+                GameOver();
+            }
         }
     }
     #endregion
@@ -200,7 +207,20 @@ public class GameManager : Singleton<GameManager>
             Debug.LogErrorFormat("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingType);
         }
     }
+    #endregion
 
+    #region Private methods
+    void GameOver()
+    {        
+        _state = null;
+
+        Debug.Log("Game over");
+
+        OnGameOver?.Invoke(this);
+    }
+    #endregion
+
+    #region Getter / Calculate methods
     int GetCurrentPopulation()
     {
         var entities = FindObjectsOfType<Entity>();
