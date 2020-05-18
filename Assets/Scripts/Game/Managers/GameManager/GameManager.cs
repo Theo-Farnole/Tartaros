@@ -227,16 +227,13 @@ public class GameManager : Singleton<GameManager>
     {        
         _state = null;
         OnGameOver?.Invoke(this);
-
-        Debug.Log("Game over");
     }
 
+    // called from WaveManager_OnWaveClear()
     void Victory()
     {
         _state = null;
         OnVictory?.Invoke(this);
-
-        Debug.Log("Victory");
     }
     #endregion
 
