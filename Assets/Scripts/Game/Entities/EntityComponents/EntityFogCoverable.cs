@@ -38,13 +38,13 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
     }
 
     void OnEnable()
-    {
+    {                
         FOWManager.Instance.AddCoverable(this);
     }
 
     void OnDisable()
     {
-        FOWManager.Instance?.RemoveCoverable(this);
+        FOWManager.Instance.RemoveCoverable(this);
     }
 
     void UpdateVisibility()

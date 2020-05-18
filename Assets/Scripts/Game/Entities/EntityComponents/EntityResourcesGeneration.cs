@@ -49,9 +49,7 @@ public class EntityResourcesGeneration : EntityComponent
 
     void OnEnable()
     {
-        // because of multiscene
-        // OnEnable Entity can't find GameManager
-        this.ExecuteAfterFrame(SubscribeToEvents);
+        SubscribeToEvents();
 
         // don't throw warning the first frame
         if (!_onEnableFirstFrame && !Entity.Data.CanCreateResources)
