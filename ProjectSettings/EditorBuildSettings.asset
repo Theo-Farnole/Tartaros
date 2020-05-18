@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Additional Scenes/SC_AdditionalScene_Managers.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Additional Scenes/SC_AdditionalScene_GameUI.unity
+    guid: 2fc2b61fd47de7140bdbbb792cf1a6e0
   m_configObjects: {}
