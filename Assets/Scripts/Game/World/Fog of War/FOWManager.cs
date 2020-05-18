@@ -10,6 +10,8 @@ namespace Game.FogOfWar
     public class FOWManager : Singleton<FOWManager>
     {
         #region Fields
+        private const string debugLogHeader = "FOWManager : ";
+
         [SerializeField] private SnapGridDatabase _snapGrid;
         [SerializeField, HideInInspector] private FogState[,] _visiblityMap; // allow hot reloading in Editor
         [Header("COMPONENTS")]
@@ -80,6 +82,37 @@ namespace Game.FogOfWar
             _coverables.Add(entity);
         }
         #endregion
+
+        Vector2Int WorldToLocalPosition(Vector3 position)
+        {
+            var gridPosition = _snapGrid.GetNearestPosition(position);
+
+            var cellSize = _snapGrid.CellSize;
+            Vector2Int result = new Vector2Int(
+                (int)(gridPosition.x / cellSize), 
+                (int)(gridPosition.z / cellSize));
+
+            return result;
+        }
+
+        public bool TryGetTile(Vector3 worldPosition, out FogState fogState)
+        {
+            return GetTile(WorldToLocalPosition(worldPosition), out fogState);
+        }
+
+        bool GetTile(Vector2Int coords, out FogState fogState)
+        {
+            if (coords.x < 0 || coords.x >= _visiblityMap.GetLength(0)
+                || coords.y < 0 || coords.y >= _visiblityMap.GetLength(1))
+            {
+                Debug.LogErrorFormat(debugLogHeader + "Coords passed in args aren't in visibility map");
+                fogState = FogState.Visible;
+                return false;
+            }
+
+            fogState = _visiblityMap[coords.x, coords.y];
+            return true;
+        }
 
         void UpdateVisibilityMap()
         {

@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.Pattern;
+﻿using Game.FogOfWar;
+using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,10 +41,10 @@ public class TileSystem : Singleton<TileSystem>
     private bool TrySetTile(Vector3 worldPosition, GameObject gameObject)
     {
         Vector2Int coords = WorldPositionToCoords(worldPosition);
-        return TrySetTile(coords, gameObject);
+        return TrySetTile(coords, gameObject, worldPosition);
     }
 
-    private bool TrySetTile(Vector2Int coords, GameObject gameObject)
+    private bool TrySetTile(Vector2Int coords, GameObject gameObject, Vector3 worldPosition)
     {
         if (_tiles.ContainsKey(coords) == false)
         {
@@ -55,6 +56,23 @@ public class TileSystem : Singleton<TileSystem>
         {
             UIMessagesLogger.Instance.AddErrorMessage("You can't build on non-empty cell.");
             return false;
+        }
+
+        if (FOWManager.Instance != null)
+        {
+            if (FOWManager.Instance.TryGetTile(worldPosition, out FogState fogState))
+            {
+                if (fogState != FogState.Visible)
+                {
+                    UIMessagesLogger.Instance.AddErrorMessage("Can't build in fog of war");
+                    return false;
+                }
+            }
+            else
+            {
+                Debug.LogErrorFormat("Can't get fow of war tile at world position {0}", worldPosition);
+                return false;
+            }
         }
 
         _tiles[coords] = gameObject;
