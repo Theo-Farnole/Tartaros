@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UI.Game;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 
 namespace Game.Selection
@@ -38,6 +39,8 @@ namespace Game.Selection
 
         private List<SelectionGroup> _selectedGroups = new List<SelectionGroup>();
         private int _highlightGroupIndex = -1;
+
+        private bool _selectionEnable = true;
         #endregion
 
         #region Properties
@@ -50,6 +53,9 @@ namespace Game.Selection
         #region MonoBehaviour Callback
         void Update()
         {
+            Assert.AreEqual(_selectionRectangle.enabled, _selectionEnable, 
+                "Selection rectangle should be deactivate if _selectionEnable = false.");
+
             HandleInput_SwitchHighlightGroup();
             HandleInput_ClickOnEntity();
 
@@ -57,6 +63,33 @@ namespace Game.Selection
             {
                 ClearSelection();
             }
+        }
+
+        void OnEnable()
+        {
+            GameManager.OnStartBuild += GameManager_OnStartBuild;
+            GameManager.OnStopBuild += GameManager_OnStopBuild;
+        }
+
+        void OnDisable()
+        {
+            GameManager.OnStartBuild -= GameManager_OnStartBuild;
+            GameManager.OnStopBuild -= GameManager_OnStopBuild;            
+        }
+        #endregion
+
+        #region Events handlers
+        private void GameManager_OnStartBuild(GameManager gameManager)
+        {
+            _selectionEnable = false;
+            _selectionRectangle.enabled = _selectionEnable;
+            ClearSelection();
+        }
+
+        private void GameManager_OnStopBuild(GameManager gameManager)
+        {
+            _selectionEnable = true;
+            _selectionRectangle.enabled = _selectionEnable;
         }
         #endregion
 
@@ -106,6 +139,9 @@ namespace Game.Selection
         #region Public methods
         public void AddEntity(Entity selectableEntity)
         {
+            if (!_selectionEnable)
+                return;
+
             // prevent covered entity by fog to be selected
             if (selectableEntity.GetCharacterComponent<EntityFogCoverable>().IsCover)
                 return;
@@ -136,6 +172,9 @@ namespace Game.Selection
 
         public void RemoveEntity(Entity selectableEntity)
         {
+            if (!_selectionEnable)
+                return;
+
             SelectionGroup groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
 
             // don't remove unselected unit
