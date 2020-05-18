@@ -17,16 +17,23 @@ public class UIManager : AbstractUIManager
     [SerializeField] private PanelGameInformation _panelGameInformation;
     [SerializeField] private PanelSelection _panelSelection;
     [SerializeField] private PanelConstruction _panelConstruction;
+    [SerializeField] private PanelGameOver _panelGameOver;
     #endregion
 
     #region Properties
     public PanelGameInformation PanelGameInformation { get => _panelGameInformation; }
     public PanelSelection PanelSelection { get => _panelSelection; }
     public PanelConstruction PanelConstruction { get => _panelConstruction; }
+    public PanelGameOver PanelGameOver { get => _panelGameOver; }
 
     protected override Type[] OwnedPanels
     {
-        get => new Type[] { typeof(PanelGameInformation), typeof(PanelSelection), typeof(PanelConstruction) };
+        get => new Type[] {
+            typeof(PanelGameInformation),
+            typeof(PanelSelection),
+            typeof(PanelConstruction),
+            typeof(PanelGameOver)
+        };
     }
     #endregion
 
@@ -38,8 +45,24 @@ public class UIManager : AbstractUIManager
         _panelConstruction.Show();
         _panelSelection.Hide();
         _panelGameInformation.Show();
+        _panelGameOver.Hide();
 
         SelectionManager.OnSelectionUpdated += ManagePanelDisplay;
+    }
+
+
+    protected override void OnEnable()
+    {
+        GameManager.OnGameOver += GameManager_OnGameOver;
+
+        base.OnEnable();
+    }
+
+    protected override void OnDisable()
+    {
+        GameManager.OnGameOver -= GameManager_OnGameOver;
+
+        base.OnDisable();
     }
 
     void ManagePanelDisplay(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
@@ -54,6 +77,16 @@ public class UIManager : AbstractUIManager
             _panelSelection.Show();
             _panelConstruction.Hide();
         }
+    }
+
+    private void GameManager_OnGameOver(GameManager gameManager)
+    {
+        Debug.Log("On game over");
+
+        _panelGameOver.Show();
+        _panelGameInformation.Hide();
+        _panelSelection.Hide();
+        _panelConstruction.Hide();
     }
     #endregion
 }
