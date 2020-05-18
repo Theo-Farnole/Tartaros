@@ -18,6 +18,16 @@ public class EntityFogVision : EntityComponent, IFogVision
         FOWManager.Instance.AddViewer(this);
     }
 
+    void OnEnable()
+    {
+        _fogOfWarVision.enabled = true;
+    }
+
+    void OnDisable()
+    {
+        _fogOfWarVision.enabled = false;
+    }
+
     void OnDestroy()
     {
         if (_fogOfWarVision != null)
