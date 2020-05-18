@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: DB_WaveSystem
   m_EditorClassIdentifier: 
   _minutesBetweenWaves: 4.6
+  _timeBeforeStartNewWave: 3
