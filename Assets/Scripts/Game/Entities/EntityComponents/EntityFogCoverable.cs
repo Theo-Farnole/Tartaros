@@ -37,12 +37,12 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
         _collider = GetComponent<Collider>();
     }
 
-    void Start()
+    void OnEnable()
     {
         FOWManager.Instance.AddCoverable(this);
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         FOWManager.Instance?.RemoveCoverable(this);
     }

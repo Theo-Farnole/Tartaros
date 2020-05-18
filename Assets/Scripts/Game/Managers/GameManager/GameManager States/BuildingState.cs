@@ -148,6 +148,9 @@ public class BuildingState : OwnedState<GameManager>
 
         if (_building.TryGetComponent(out Entity entity))
             entity.enabled = enabled; // disable OnSpawn call
+
+        if (_building.TryGetComponent(out EntityFogCoverable entityFogCoverable))
+            entityFogCoverable.enabled = enabled;
     }
     #endregion
 }
