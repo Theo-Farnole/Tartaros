@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UI.Game.HoverPopup;
+using Game.UI.HoverPopup;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Game
+namespace Game.UI
 {
     public class Order : MonoBehaviour
     {

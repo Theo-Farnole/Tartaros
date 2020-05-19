@@ -3,11 +3,11 @@ using Lortedo.Utilities.Inspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UI.Game.HoverPopup;
+using Game.UI.HoverPopup;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace UI.Game
+namespace Game.UI
 {
     [Serializable]
     public class OrdersWrapper

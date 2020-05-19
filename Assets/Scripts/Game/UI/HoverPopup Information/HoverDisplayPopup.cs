@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UI.Game.HoverPopup
+namespace Game.UI.HoverPopup
 {
     public class HoverDisplayPopup : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

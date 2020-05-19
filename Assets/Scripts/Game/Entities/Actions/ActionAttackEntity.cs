@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LeonidasLegacy.IA.Action
+namespace Game.IA.Action
 {
     public class ActionAttackEntity : Action
     {

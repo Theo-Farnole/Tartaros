@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI.Game
+namespace Game.UI
 {
     public class UISelectionGroupPortrait : MonoBehaviour
     {

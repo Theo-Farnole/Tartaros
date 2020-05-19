@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace LeonidasLegacy.MapCellEditor.Editor
+namespace Game.MapCellEditor.Editor
 {
     public class Shortcut_CellBrushRadius
     {

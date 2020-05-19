@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace UI.Game.HoverPopup
+namespace Game.UI.HoverPopup
 {
     public class HoverPopupManager : Singleton<HoverPopupManager>
     {

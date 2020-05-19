@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace LeonidasLegacy.IA.Action
+namespace Game.IA.Action
 {
     public class ActionMoveToPosition : Action
     {

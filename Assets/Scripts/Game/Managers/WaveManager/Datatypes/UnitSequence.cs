@@ -1,4 +1,4 @@
-﻿using LeonidasLegacy.IA.Action;
+﻿using Game.IA.Action;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace LeonidasLegacy.WaveSystem
+namespace Game.WaveSystem
 {
     [System.Serializable]
     public class UnitSequence

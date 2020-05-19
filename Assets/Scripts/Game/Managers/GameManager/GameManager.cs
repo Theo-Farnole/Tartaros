@@ -1,4 +1,4 @@
-﻿using LeonidasLegacy.MapCellEditor;
+﻿using Game.MapCellEditor;
 using Lortedo.Utilities.Pattern;
 using UnityEngine;
 using UnityEngine.Assertions;

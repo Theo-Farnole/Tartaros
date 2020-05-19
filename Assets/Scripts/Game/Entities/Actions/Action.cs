@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LeonidasLegacy.IA.Action
+namespace Game.IA.Action
 {
     public abstract class Action : OwnedState<Entity>
     {

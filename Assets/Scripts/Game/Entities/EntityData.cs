@@ -1,10 +1,10 @@
-using LeonidasLegacy.MapCellEditor;
+using Game.MapCellEditor;
 using Lortedo.Utilities.Inspector;
 using MyBox;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
-using UI.Game.HoverPopup;
+using Game.UI.HoverPopup;
 using UnityEngine;
 
 [System.Flags]

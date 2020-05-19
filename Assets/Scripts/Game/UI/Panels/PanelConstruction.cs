@@ -3,12 +3,12 @@ using Lortedo.Utilities.Managers;
 using System;
 using System.Collections.Generic;
 using TMPro;
-using UI.Game.HoverPopup;
+using Game.UI.HoverPopup;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-namespace UI.Game
+namespace Game.UI
 {
     [Serializable]
     public class PanelConstruction : Panel

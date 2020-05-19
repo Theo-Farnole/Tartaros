@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LeonidasLegacy.MapCellEditor
+namespace Game.MapCellEditor
 {
     public static class CellType2DArrayExtension
     {

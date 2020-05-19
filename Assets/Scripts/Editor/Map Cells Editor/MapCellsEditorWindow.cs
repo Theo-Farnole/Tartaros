@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-namespace LeonidasLegacy.MapCellEditor.Editor
+namespace Game.MapCellEditor.Editor
 {
     public class MapCellsEditorWindow : EditorWindow
     {

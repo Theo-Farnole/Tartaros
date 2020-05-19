@@ -6,7 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UI.Game;
+using Game.UI;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;

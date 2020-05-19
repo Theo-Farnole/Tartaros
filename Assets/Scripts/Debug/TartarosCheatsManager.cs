@@ -7,7 +7,7 @@ using TF.Cheats;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace LeonidasLegacy.Cheats
+namespace Game.Cheats
 {
     public class TartarosCheatsManager : MonoBehaviour
     {

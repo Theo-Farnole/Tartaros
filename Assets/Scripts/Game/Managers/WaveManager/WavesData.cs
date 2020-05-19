@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace LeonidasLegacy.WaveSystem
+namespace Game.WaveSystem
 {
     [CreateAssetMenu(menuName = "Tartaros/System/Waves Content")]
     public class WavesData : ScriptableObject

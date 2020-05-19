@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-namespace LeonidasLegacy.MapCellEditor
+namespace Game.MapCellEditor
 {
     public enum CellType
     {

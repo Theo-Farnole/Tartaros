@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LeonidasLegacy.WaveSystem
+namespace Game.WaveSystem
 {
     [System.Serializable]
     public class Wave

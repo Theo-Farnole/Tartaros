@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace LeonidasLegacy.WaveSystem
+namespace Game.WaveSystem
 {
     /// <summary>
     /// This script start wave sequence when order received from WaveManager.

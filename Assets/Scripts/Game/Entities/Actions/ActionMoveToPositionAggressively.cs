@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace LeonidasLegacy.IA.Action
+namespace Game.IA.Action
 {
     /// <summary>
     /// Walk to the _position until an enemy is seen

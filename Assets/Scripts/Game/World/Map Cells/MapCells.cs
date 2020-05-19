@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace LeonidasLegacy.MapCellEditor
+namespace Game.MapCellEditor
 {
     [CreateAssetMenu(menuName = "Tartaros/World/Map Cell")]
     public class MapCells : SerializedScriptableObject

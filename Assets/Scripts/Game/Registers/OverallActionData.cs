@@ -1,7 +1,7 @@
 ﻿using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
-using UI.Game.HoverPopup;
+using Game.UI.HoverPopup;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Tartaros/System/Overall Action")]

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UI.Game.HoverPopup
+namespace Game.UI.HoverPopup
 {
     [CreateAssetMenu(menuName = "Tartaros/UI/Hover Popup")]
     public class HoverPopupData : ScriptableObject

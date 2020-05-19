@@ -1,4 +1,4 @@
-﻿using LeonidasLegacy.MapCellEditor;
+﻿using Game.MapCellEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace UI.Game
+namespace Game.UI
 {
     [System.Serializable]
     public class PanelGameInformation : Panel
