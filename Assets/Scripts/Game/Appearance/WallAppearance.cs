@@ -13,11 +13,6 @@ public class WallAppearance : MonoBehaviour
     [SerializeField] private GameObject _jointModel;
     [SerializeField] private GameObject _wallModel;
 
-    void Start()
-    {
-        ChangeAppearance();
-    }
-
     void OnEnable()
     {
         if (TileSystem.Instance != null)
@@ -28,6 +23,8 @@ public class WallAppearance : MonoBehaviour
         {
             Debug.LogErrorFormat(debugLogHeader + "TileSystem is missing. Can't update wall apperance.");
         }
+
+        ChangeAppearance();
     }
 
     void OnDisable()
