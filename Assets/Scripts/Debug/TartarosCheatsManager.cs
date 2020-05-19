@@ -256,7 +256,7 @@ namespace Game.Cheats
 
         private void Draw_DisableFow(int buttonIndex)
         {
-            string label = IsFogDisabled() ? "Active" : "Disable" + " Fog of War";
+            string label = (IsFogDisabled() ? "Active" : "Disable") + " Fog of War";
             DrawGenericButton(buttonIndex, label, Toggle_FogOfWar);
         }
         #endregion
