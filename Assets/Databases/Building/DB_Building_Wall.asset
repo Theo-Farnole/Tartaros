@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
+  m_Name: DB_Building_Wall
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _resourcesPerCell
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[Game.MapCellEditor.CellType,
+        Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.MapCellEditor.CellType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  _entityName: Wall
+  _hotkey: 109
+  _populationUse: 0
+  _portrait: {fileID: 21300000, guid: b3561439d7ce3ef4ea00592343b8c42c, type: 3}
+  _prefab: {fileID: 545007711727897807, guid: c42319024a50f144ba0a082d69f98a98, type: 3}
+  _hoverPopupData: {fileID: 11400000, guid: 8f184cd145b314a41a90dd760bde2c3d, type: 2}
+  _isInvincible: 0
+  _hp: 10
+  _spawningCost:
+    food: 0
+    wood: 5
+    gold: 0
+  _viewRadius: 2
+  _canAttack: 0
+  _isMelee: 1
+  _prefabProjectile: {fileID: 0}
+  _damage: 3
+  _attackSpeed: 1
+  _attackRadius: 3
+  _damagePerSecond: 3
+  _canMove: 0
+  _speed: 3
+  _canCreateUnit: 0
+  _availableUnitsForCreation: 0000000001000000
+  _canGenerateResources: 0
+  _generationTick: 1
+  _radiusToReachCells: 5
+  _increaseMaxPopulation: 0
+  _increaseMaxPopulationAmount: 0
