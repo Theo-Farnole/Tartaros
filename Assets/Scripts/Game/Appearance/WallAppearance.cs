@@ -29,7 +29,10 @@ public class WallAppearance : MonoBehaviour
 
     void OnDisable()
     {
-        TileSystem.Instance.OnTileTerrainChanged -= Instance_OnTileTerrainChanged;
+        if (TileSystem.Instance != null)
+        {
+            TileSystem.Instance.OnTileTerrainChanged -= Instance_OnTileTerrainChanged;
+        }
     }
 
     void Instance_OnTileTerrainChanged(Vector2Int changedCoords, GameObject gameObjectAtCoords)
