@@ -122,7 +122,7 @@ namespace Game.Cheats
         #endregion
 
         #region Skip waves
-        void StartWave()
+        public void StartWave()
         {
             ExecutePrivateMethodWithReflection<WaveManager>("StartWave");
             return;
