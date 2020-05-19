@@ -159,6 +159,10 @@ public class BuildingState : OwnedState<GameManager>
 
         if (_building.TryGetComponent(out EntityFogCoverable entityFogCoverable))
             entityFogCoverable.enabled = enabled;
+
+        WallAppearance wallAppearence = _building.GetComponentInChildren<WallAppearance>();        
+        if (wallAppearence)
+            wallAppearence.enabled = enabled;
     }
     #endregion
 }
