@@ -8,6 +8,13 @@ using UnityEngine.Assertions;
 /// </summary>
 public class WallAppearance : MonoBehaviour
 {
+    private enum WallOrientation
+    {
+        NotAWall = 0,
+        NorthToSouth = 1,
+        WestToEast = 2,
+    }
+
     private const string debugLogHeader = "Wall Apperance : ";
 
     [SerializeField] private GameObject _jointModel;
@@ -50,15 +57,19 @@ public class WallAppearance : MonoBehaviour
     {
         Assert.IsNotNull(TileSystem.Instance, "You must have a TileSystem to change appareance.");
 
-        bool isWallJoint = Calculate_IsWallJoint();
+        bool isWallJoint = Calculate_IsWallJoint(out WallOrientation wallOrientation);
 
         _jointModel.SetActive(isWallJoint);
         _wallModel.SetActive(!isWallJoint);
 
-        Debug.LogFormat(debugLogHeader + " changing appearance of {1} to {0}.", isWallJoint ? "joint" : "wall", name);
+        if (!isWallJoint)
+        {
+            Quaternion rotation = WallOrientationToRotation(wallOrientation);
+            _wallModel.transform.rotation = rotation;
+        }
     }
 
-    bool Calculate_IsWallJoint()
+    bool Calculate_IsWallJoint(out WallOrientation wallOrientation)
     {
         Vector2Int myCoords = TileSystem.Instance.WorldPositionToCoords(transform.position);
 
@@ -74,14 +85,17 @@ public class WallAppearance : MonoBehaviour
         
         if (hasNorthWall && hasSouthWall && !hasEastWall && !hasWestWall) // N/S walls only
         {
+            wallOrientation = WallOrientation.NorthToSouth;
             return false;
         }
         else if (!hasNorthWall && !hasSouthWall && hasEastWall && hasWestWall) // E/W walls only
         {
+            wallOrientation = WallOrientation.WestToEast;
             return false;
         }
         else
         {
+            wallOrientation = WallOrientation.NotAWall;            
             return true;
         }
     }
@@ -102,5 +116,20 @@ public class WallAppearance : MonoBehaviour
         }
 
         return false;
+    }
+
+    Quaternion WallOrientationToRotation(WallOrientation wallOrientation)
+    {
+        switch (wallOrientation)
+        {
+            case WallOrientation.NotAWall:                
+            case WallOrientation.NorthToSouth:
+                return Quaternion.Euler(0, 0, 0);
+
+            case WallOrientation.WestToEast:
+                return Quaternion.Euler(0, 90, 0);
+            default:
+                throw new System.NotImplementedException();
+        }
     }
 }
