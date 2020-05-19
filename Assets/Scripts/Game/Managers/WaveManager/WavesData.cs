@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 namespace LeonidasLegacy.WaveSystem
 {
-    [CreateAssetMenu(menuName = "Tartaros/Waves")]
+    [CreateAssetMenu(menuName = "Tartaros/System/Waves Content")]
     public class WavesData : ScriptableObject
     {
         [SerializeField] private Wave[] _waves = new Wave[0];

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leonidas Legacy/System/Collision Scaler")]
+[CreateAssetMenu(menuName = "Tartaros/System/Collision Scaler")]
 public class CollisionScalerData : ScriptableObject
 {
     [SerializeField, Range(0, 100), Tooltip("In Percent")] private int _collisionScaleDownPercent = 50;

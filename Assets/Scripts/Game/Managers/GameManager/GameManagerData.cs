@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leonidas Legacy/System/Game Manager")]
+[CreateAssetMenu(menuName = "Tartaros/System/Game Manager")]
 public class GameManagerData : ScriptableObject
 {
     [SerializeField] private ResourcesWrapper _startingResources = new ResourcesWrapper(10, 5, 0);

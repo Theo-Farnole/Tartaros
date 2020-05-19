@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leonidas Legacy/World/Grid")]
+[CreateAssetMenu(menuName = "Tartaros/World/Grid")]
 public class SnapGridDatabase : ScriptableObject
 {
     [SerializeField] private int _cellCount = 51;

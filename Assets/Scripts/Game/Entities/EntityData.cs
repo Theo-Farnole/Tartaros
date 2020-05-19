@@ -16,7 +16,7 @@ public enum OrdersType
     CreateResources = 1 << 3
 }
 
-[CreateAssetMenu(menuName = "Leonidas Legacy/Entity")]
+[CreateAssetMenu(menuName = "Tartaros/Entity")]
 public class EntityData : SerializedScriptableObject
 {
     private const string attackSettingsHeaderName = "Can Attack";

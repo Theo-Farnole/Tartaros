@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UI.Game.HoverPopup;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Leonidas Legacy/Overall Action")]
+[CreateAssetMenu(menuName = "Tartaros/System/Overall Action")]
 public class OverallActionData : ScriptableObject
 {
     [SerializeField] private Sprite _portrait;
