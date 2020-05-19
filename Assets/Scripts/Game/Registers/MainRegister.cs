@@ -10,6 +10,8 @@ using UnityEngine;
 public class MainRegister : SingletonSerializedMonoBehaviour<MainRegister>
 {
     #region Fields
+    public const string debugLogHeader = "Main Register : ";
+
     [TabGroup("Buildings")]
     [SerializeField] private Dictionary<BuildingType, EntityData> _buildingsRegister = new Dictionary<BuildingType, EntityData>();
 
@@ -77,7 +79,7 @@ public class MainRegister : SingletonSerializedMonoBehaviour<MainRegister>
         }
         else
         {
-            Debug.LogErrorFormat("Register: Can't get EntityData of {0} because it's not a UnitType or BuildingType.", entityType);
+            Debug.LogErrorFormat(debugLogHeader + "Can't get EntityData of {0} because it's not a UnitType or BuildingType.", entityType);
 
             entityData = null;
             return false;
@@ -113,11 +115,11 @@ public class MainRegister : SingletonSerializedMonoBehaviour<MainRegister>
 
             if (!dictionary.ContainsKey(enumValue))
             {
-                Debug.LogErrorFormat("In dictionary {0}, the key {1} is missing.", typeof(TKey).ToString(), enumValue);
+                Debug.LogErrorFormat(debugLogHeader + "In dictionary {0}, the key {1} is missing.", typeof(TKey).ToString(), enumValue);
             }
             else if (dictionary[enumValue] == null)
             {
-                Debug.LogErrorFormat("In dictionary {0}, the value of {1} is null.", typeof(TKey).ToString(), enumValue);
+                Debug.LogErrorFormat(debugLogHeader + "In dictionary {0}, the value of {1} is null.", typeof(TKey).ToString(), enumValue);
             }
         }
     }
