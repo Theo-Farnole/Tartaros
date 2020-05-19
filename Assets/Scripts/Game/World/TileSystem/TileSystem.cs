@@ -1,4 +1,4 @@
-using Game.FogOfWar;
+﻿using Game.FogOfWar;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -94,6 +94,20 @@ public class TileSystem : Singleton<TileSystem>
         Vector2Int result = new Vector2Int((int)(gridPosition.x / cellSize), (int)(gridPosition.z / cellSize));
 
         return result;
+    }
+
+    public bool DoTilesAreNeightboor(Vector2Int coordsOne, Vector2Int coordsTwo)
+    {
+        if (coordsOne.x + 1 == coordsTwo.x) // coordsTwo at EAST of coordsOne
+            return true;
+        else if (coordsOne.x - 1 == coordsTwo.x) // coordsTwo at WEST of coordsOne
+            return true;
+        else if (coordsOne.y + 1 == coordsTwo.y) // coordsTwo at NORTH of coordsOne
+            return true;
+        else if (coordsOne.y - 1 == coordsTwo.y) // coordsTwo at SOUTH of coordsOne
+            return true;
+        else
+            return false;
     }
     #endregion
 
