@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 /// <summary>
 /// Change cursor aspect in fonction of mosue over game object.
@@ -21,7 +22,7 @@ public class CursorAspectManager : MonoBehaviour
 
     #region Fields
     [SerializeField] CursorMode _cursorMode = CursorMode.Auto;
-    [SerializeField, EnumNamedArray(typeof(CursorState))] private Texture2D[] _cursorTextures;
+    [SerializeField] private Texture2D[] _cursorTextures;
 
     private CursorState _cursorState = CursorState.Default;
     private Camera _mainCamera;
@@ -59,6 +60,9 @@ public class CursorAspectManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
         {
+            Assert.IsNotNull(GetComponent<Entity>(), 
+                string.Format("Cursor Aspect Manager : {0} is on layer 'Entity' doesn't have a 'Entity' component. Maybe, you want to remove colliders on model.", name));
+
             // order cursor
             if (SelectionManager.Instance.HasSelection)
             {
