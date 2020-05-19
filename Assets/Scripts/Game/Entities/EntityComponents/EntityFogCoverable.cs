@@ -11,6 +11,7 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
     public event OnFog OnFogCover;
     public event OnFog OnFogUncover;
 
+    private const string debugLogHeader = "Entity Fog Coverable : ";
     [SerializeField] private GameObject _rootModelRenderer;
     private Collider _collider;
 
@@ -39,12 +40,22 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
 
     void OnEnable()
     {                
-        FOWManager.Instance.AddCoverable(this);
+        if (FOWManager.Instance != null)
+        {
+            FOWManager.Instance.AddCoverable(this);
+        }
+        else
+        {
+            Debug.LogErrorFormat(debugLogHeader + "FOWManager is missing. Can't add {0} as a coverable", name);
+        }
     }
 
     void OnDisable()
     {
-        FOWManager.Instance.RemoveCoverable(this);
+        if (FOWManager.Instance != null)
+        {
+            FOWManager.Instance.RemoveCoverable(this);
+        }
     }
 
     void UpdateVisibility()
