@@ -73,11 +73,16 @@ namespace Game.WaveSystem
 
             if (unit.TryGetComponent(out Entity entity))
             {
-                Assert.IsNotNull(templeTarget, debugLogHeader + "No temple found. Can't make Unit move aggressively to it");
-
-                // TODO: make them go to temple
-                Action action = new ActionMoveToPositionAggressively(entity, templeTarget.transform.position);
-                entity.SetAction(action);
+                if (templeTarget != null)
+                {
+                    // make unit go to temple
+                    Action action = new ActionMoveToPositionAggressively(entity, templeTarget.transform.position);
+                    entity.SetAction(action);
+                }
+                else
+                {
+                    Debug.LogErrorFormat(debugLogHeader + "No temple found. Can't make Unit move aggressively to it");
+                }
             }
             else
             {
