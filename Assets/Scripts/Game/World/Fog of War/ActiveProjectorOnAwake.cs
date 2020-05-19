@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Game.FogOfWar
 {
-    public class ActiveProjectorOnStart : MonoBehaviour
+    public class ActiveProjectorOnAwake : MonoBehaviour
     {
-        void Start()
+        void Awake()
         {
             GetComponent<Projector>().enabled = true;
         }

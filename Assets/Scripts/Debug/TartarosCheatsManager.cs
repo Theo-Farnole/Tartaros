@@ -39,6 +39,7 @@ namespace Game.Cheats
         {
             _gameManagerResourcesBeforeInfiniteResources = GameManager.Instance.Resources;
             ManageActivation_InfiniteResources();
+            ManageActive_FogOfWar();
         }
 
         void Update()
