@@ -1,4 +1,4 @@
-﻿using Game.FogOfWar;
+using Game.FogOfWar;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -58,7 +58,7 @@ public class TileSystem : Singleton<TileSystem>
             return false;
         }
 
-        if (FOWManager.Instance != null)
+        if (FOWManager.Instance != null && !FOWManager.Instance.IsDisabled)
         {
             if (FOWManager.Instance.TryGetTile(worldPosition, out FogState fogState))
             {

@@ -26,6 +26,10 @@ namespace Game.FogOfWar
         private bool _isDisabled = false;
         #endregion
 
+        #region properties
+        public bool IsDisabled { get => _isDisabled; }
+        #endregion
+
         #region Methods
         #region MonoBehaviour Callbacks
         void Awake()
