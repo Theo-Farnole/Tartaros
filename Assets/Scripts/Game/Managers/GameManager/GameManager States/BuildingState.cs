@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class BuildingState : OwnedState<GameManager>
 {
     #region Fields
-    public readonly static int TERRAIN_LAYERMASK = LayerMask.GetMask("Terrain");
+    public readonly static int debugLogHeader = LayerMask.GetMask("Terrain");
 
     private GameObject _building = null;
     private BuildingType _buildingType;
@@ -97,12 +97,13 @@ public class BuildingState : OwnedState<GameManager>
 
     void UpdateBuildingPosition()
     {
-        if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, TERRAIN_LAYERMASK))
+        if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, debugLogHeader))
         {
             if (newPosition != _building.transform.position)
             {
                 _building.transform.position = newPosition;
                 _building.GetComponent<EntityResourcesGeneration>().CalculateResourcesPerTick();
+                UpdateBuildingMeshColor();
             }
         }
         else
@@ -129,7 +130,38 @@ public class BuildingState : OwnedState<GameManager>
         _sucessfulBuild = true;
         _owner.State = null;
 
+        ResetBuildingMeshColor();
     }
+
+    #region Building colors
+    private void UpdateBuildingMeshColor()
+    {
+        bool isOnFreeTile = TileSystem.Instance.IsTileFree(_building.transform.position);
+
+        BuildingMesh.State state = isOnFreeTile ? BuildingMesh.State.CanBuild : BuildingMesh.State.CannotBuild;
+
+        if (_building.TryGetComponent(out BuildingMesh buildingMesh))
+        {
+            buildingMesh.SetState(state);
+        }
+        else
+        {
+            Debug.LogErrorFormat(debugLogHeader + "The current building {0} is missing a BuildingMesh component.", _building.name);
+        }
+    }
+
+    private void ResetBuildingMeshColor()
+    {
+        if (_building.TryGetComponent(out BuildingMesh buildingMesh))
+        {
+            buildingMesh.SetState(BuildingMesh.State.NotInBuildState);
+        }
+        else
+        {
+            Debug.LogErrorFormat(debugLogHeader + "The current building {0} is missing a BuildingMesh component.", _building.name);
+        }
+    }
+    #endregion
 
     void DestroyAndRefundBuilding()
     {
