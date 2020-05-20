@@ -23,6 +23,14 @@ public class TileSystem : Singleton<TileSystem>
     #endregion
 
     #region Public Methods
+    public bool IsTileFree(Vector3 position)
+        => IsTileFree(WorldPositionToCoords(position));
+
+    public bool IsTileFree(Vector2Int coords)
+    {
+        return (_tiles.ContainsKey(coords) && _tiles[coords] == null);
+    }
+
     public GameObject GetTile(Vector2Int coords)
     {
         if (_tiles.ContainsKey(coords))
