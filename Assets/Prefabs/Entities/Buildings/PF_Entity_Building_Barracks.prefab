@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3745474351511110255}
   - component: {fileID: 3707399694042918342}
   m_Layer: 10
-  m_Name: Cube (1)
+  m_Name: Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,10 +54,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6deeac9819d429c46ae4301081a88b40, type: 2}
+  - {fileID: 2100000, guid: 25b4fed5bab22ca4a82b277b46ea85f3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -65,6 +66,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -89,7 +91,7 @@ GameObject:
   - component: {fileID: 8148501494660203122}
   - component: {fileID: 1654285845403188992}
   m_Layer: 10
-  m_Name: Cube
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,6 +133,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -142,6 +145,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -161,11 +165,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5000353791765197102, guid: 1f10db5a47a86f24e981e10d671b9984,
-        type: 3}
-      propertyPath: m_Name
-      value: PF_Entity_Building_Barracks
-      objectReference: {fileID: 0}
     - target: {fileID: 5000353791765197101, guid: 1f10db5a47a86f24e981e10d671b9984,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -221,6 +220,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5000353791765197102, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: m_Name
+      value: PF_Entity_Building_Barracks
+      objectReference: {fileID: 0}
+    - target: {fileID: 5645729751930379726, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: _meshes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5645729751930379726, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: _meshes.Array.data[0]
+      value: 
+      objectReference: {fileID: 1654285845403188992}
+    - target: {fileID: 5645729751930379726, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: _meshes.Array.data[1]
+      value: 
+      objectReference: {fileID: 3707399694042918342}
     - target: {fileID: 7444278397786493754, guid: 1f10db5a47a86f24e981e10d671b9984,
         type: 3}
       propertyPath: _type

@@ -29,6 +29,19 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0.5, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &5645729751930379726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5000353791765197102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41824e4017d368e4083173ae814ca53a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshes: []
 --- !u!1001 &4504339579568576794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36,6 +49,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 455334535001722546, guid: ac1f56c1ac0d26840a9e9f678ef58814,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6471042891040377376, guid: ac1f56c1ac0d26840a9e9f678ef58814,
+        type: 3}
+      propertyPath: _type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8927950564186908724, guid: ac1f56c1ac0d26840a9e9f678ef58814,
         type: 3}
       propertyPath: m_Name
@@ -95,16 +118,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6471042891040377376, guid: ac1f56c1ac0d26840a9e9f678ef58814,
-        type: 3}
-      propertyPath: _type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 455334535001722546, guid: ac1f56c1ac0d26840a9e9f678ef58814,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac1f56c1ac0d26840a9e9f678ef58814, type: 3}
