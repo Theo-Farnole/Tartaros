@@ -43,8 +43,6 @@ public class BuildingMesh : MonoBehaviour, IPooledObject
         {
             mesh.material.SetFloat(SHADERID_ISBUILDING, isBuilding);
             mesh.material.SetFloat(SHADERID_CANBUILD, canBuild);
-
-            Debug.Log("Set mat to mesh");
         }
     }
 
