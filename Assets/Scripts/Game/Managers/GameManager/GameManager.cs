@@ -1,4 +1,5 @@
-﻿using Game.MapCellEditor;
+﻿using Game.ConstructionSystem;
+using Game.MapCellEditor;
 using Lortedo.Utilities.Pattern;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -213,7 +214,16 @@ public class GameManager : Singleton<GameManager>
             // check if we has enought resources, otherwise we create error message
             if (_resources.HasEnoughResources(buildingCost))
             {
-                State = new BuildingState(this, buildingType);
+                if (buildingData.IsConstructionChained)
+                {
+                    //State = new ChainedConstructionState(this, buildingType);
+                    throw new System.NotImplementedException();
+                }
+                else
+                {
+
+                    State = new ConstructionState(this, buildingType);
+                }
             }
             else
             {
@@ -233,7 +243,7 @@ public class GameManager : Singleton<GameManager>
     #region Private methods
     // called from Entity_OnDeath() if entity was a temple
     void GameOver()
-    {        
+    {
         _state = null;
         OnGameOver?.Invoke(this);
     }
