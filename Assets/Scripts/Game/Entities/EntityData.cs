@@ -80,6 +80,11 @@ public class EntityData : SerializedScriptableObject
     public float ViewRadius { get => _viewRadius; }
     #endregion
 
+    [BoxGroup("Construction")]
+    [Tooltip("Is construction like a wall ?")]
+    [SerializeField] private bool _isConstructionChained;
+    public bool IsConstructionChained { get => _isConstructionChained; }
+
     #region Orders: MOVE, ATTACK, CREATE UNITS, CREATE RESOURCES
     public bool CanMove { get => _canMove; }
     public bool CanAttack { get => _canAttack; }
@@ -173,7 +178,7 @@ public class EntityData : SerializedScriptableObject
     [ToggleGroup(nameof(_increaseMaxPopulation), headerNamePopulation)]
     [SerializeField] private int _increaseMaxPopulationAmount;
     
-    public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }
+    public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }    
     #endregion
     #endregion
 

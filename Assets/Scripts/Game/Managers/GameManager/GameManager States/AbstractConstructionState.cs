@@ -33,6 +33,7 @@ namespace Game.ConstructionSystem
         }
 
         protected bool SucessfulBuild { get => _sucessfulBuild; set => _sucessfulBuild = value; }
+        public EntityData BuildingData { get => _buildingData; }
         #endregion
 
         #region Methods
@@ -72,7 +73,7 @@ namespace Game.ConstructionSystem
         protected virtual void OnCurrentBuildingSet(BuildingType buildingType, EntityData buildingData) { }
         protected virtual void OnMouseDown() { }
         protected virtual void OnMouseUp() { }
-        protected abstract void DestroyConstructionBuilding();
+        protected abstract void DestroyAllConstructionBuildings();
         #endregion
 
         #region Private methods
@@ -90,7 +91,7 @@ namespace Game.ConstructionSystem
 
             if (!_firstFrame && Input.GetMouseButtonUp(0))
             {
-                OnMouseUp();                
+                OnMouseUp();
             }
         }
 
@@ -98,7 +99,7 @@ namespace Game.ConstructionSystem
         {
             DestroyAndRefundBuilding();
             _owner.State = null;
-        }        
+        }
 
         private void SetCurrentBuilding(BuildingType buildingType)
         {
@@ -109,7 +110,7 @@ namespace Game.ConstructionSystem
                 _buildingType = buildingType;
                 _owner.Resources -= CurrentBuildingCost;
 
-                OnCurrentBuildingSet(buildingType, buildingData);                
+                OnCurrentBuildingSet(buildingType, buildingData);
             }
             else
             {
@@ -119,7 +120,7 @@ namespace Game.ConstructionSystem
 
         private void DestroyAndRefundBuilding()
         {
-            DestroyConstructionBuilding();            
+            DestroyAllConstructionBuildings();
             _owner.Resources += CurrentBuildingCost;
         }
         #endregion

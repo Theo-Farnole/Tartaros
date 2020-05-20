@@ -3,6 +3,7 @@ using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public delegate void OnTileTerrainChanged(Vector2Int coords, GameObject gameObjectAtCoords);
 
@@ -39,6 +40,23 @@ public class TileSystem : Singleton<TileSystem>
         }
 
         return null;
+    }
+
+    public bool IsTileOfType(Vector3 position, EntityType type)
+        => IsTileOfType(WorldPositionToCoords(position), type);
+
+    public bool IsTileOfType(Vector2Int coords, EntityType type)
+    {
+        var tile = GetTile(coords);
+
+        if (tile != null && tile.TryGetComponent(out Entity entity))
+        {
+            return entity.Type == type;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool TrySetTile(GameObject gameObject)
@@ -94,6 +112,12 @@ public class TileSystem : Singleton<TileSystem>
         return GetTile(WorldPositionToCoords(worldPosition));
     }
 
+    public Vector3 CoordsToWorldPosition(Vector2Int coords)
+    {
+        var cellSize = GameManager.Instance.Grid.CellSize;
+        return new Vector3(coords.x * cellSize, 0, coords.y * cellSize);
+    }
+
     public Vector2Int WorldPositionToCoords(Vector3 worldPosition)
     {
         Vector3 gridPosition = GameManager.Instance.Grid.GetNearestPosition(worldPosition);
@@ -116,6 +140,68 @@ public class TileSystem : Singleton<TileSystem>
             return true;
         else
             return false;
+    }
+
+    public Vector2Int[] GetPath(Vector3 from, Vector3 to)
+        => GetPath(WorldPositionToCoords(from), WorldPositionToCoords(to));
+
+    public static float FindDegree(int x, int y)
+    {
+        float value = (float)((Mathf.Atan2(x, y) / Mathf.PI) * 180f);
+        if (value < 0) value += 360f;
+
+        return value;
+    }
+
+    public Vector2Int[] GetPath(Vector2Int from, Vector2Int to)
+    {
+        Debug.DrawRay(to.ToXZ(), Vector3.up * 10, Color.red);
+
+        Vector2 from2Right = Vector2.right - from;
+        Vector2Int from2To = to - from;
+
+        Debug.DrawRay(from.ToXZ(), Vector2.right * 5);
+        Debug.DrawLine(from.ToXZ(), to.ToXZ());
+
+        // calculate angle
+        float angle = Vector2.SignedAngle(from2Right, from2To); // in degrees
+        angle *= Mathf.Deg2Rad; // in rads
+
+        // than, get position from angle
+        float deltaX = Mathf.Cos(angle) * Mathf.Abs(from2To.x);
+        float deltaY = Mathf.Sin(angle) * Mathf.Abs(from2To.y);
+
+        Vector2Int pathDirection;
+        int pathCount;
+        var cellSize = GameManager.Instance.Grid.CellSize;
+
+        // the direction of path is X ?
+        if (Mathf.Abs(deltaX) >= Mathf.Abs(deltaY))
+        {
+            pathDirection = Vector2Int.right * (int)Mathf.Sign(-deltaX);
+            pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.x / cellSize));
+        }
+        else
+        {
+            pathDirection = Vector2Int.up * (int)Mathf.Sign(-deltaY);
+            pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.y / cellSize));
+        }
+
+        // we add one, to include current start
+        pathCount++; 
+
+        Assert.IsTrue(pathCount >= 0, "TileSystem : Path count should greater or equals to '0'!");
+
+        // calculate output
+        Vector2Int[] o = new Vector2Int[pathCount];
+
+        for (int i = 0; i < pathCount; i++)
+        {
+            o[i] = from + pathDirection * i;
+            Debug.DrawRay(o[i].ToXZ(), Vector3.up * 10);
+        }
+
+        return o;
     }
     #endregion
 

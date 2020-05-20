@@ -60,8 +60,8 @@ public class CursorAspectManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
         {
-            Assert.IsNotNull(GetComponent<Entity>(), 
-                string.Format("Cursor Aspect Manager : {0} is on layer 'Entity' doesn't have a 'Entity' component. Maybe, you want to remove colliders on model.", name));
+            Assert.IsNotNull(hit.transform.GetComponent<Entity>(), 
+                string.Format("Cursor Aspect Manager : {0} is on layer 'Entity' doesn't have a 'Entity' component. Maybe, you want to remove colliders on model.", hit.transform.name));
 
             // order cursor
             if (SelectionManager.Instance.HasSelection)

@@ -21,6 +21,7 @@ namespace Game.ConstructionSystem
         public override void Tick()
         {
             UpdateConstructionBuildingPosition();
+
             base.Tick();
         }
         #endregion
@@ -47,30 +48,20 @@ namespace Game.ConstructionSystem
             if (!successfulSetTile)
                 return;
 
-            EnableBuilding(building);
+            _constructionBuilding.SetConstructionAsFinish(Team.Sparta);
 
             // then leave
             SucessfulBuild = true;
             _owner.State = null;
         }
 
-        protected override void DestroyConstructionBuilding()
+        protected override void DestroyAllConstructionBuildings()
         {
             _constructionBuilding.Destroy();
         }
         #endregion
 
         #region Private methods
-        private void EnableBuilding(GameObject building)
-        {
-            _constructionBuilding.EnableBuildingComponents(true);
-            _constructionBuilding.ResetBuildingMeshColor();
-
-            building.GetComponent<Entity>().Team = Team.Sparta;
-
-            DynamicsObjects.Instance.SetToParent(building.transform, "Building");
-        }
-
         private void UpdateConstructionBuildingPosition()
         {
             if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, terrainLayerMask))

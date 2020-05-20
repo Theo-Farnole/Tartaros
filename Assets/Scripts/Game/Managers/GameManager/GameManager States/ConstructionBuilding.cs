@@ -1,10 +1,16 @@
-﻿using System.Collections;
+﻿using Lortedo.Utilities.Debugging;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Game.ConstructionSystem
 {
+    /// <summary>
+    /// This script manages display of a building to be constructed.
+    /// It manages deactivation of components. 
+    /// It manages building shader properties.
+    /// </summary>
     public class ConstructionBuilding
     {
         #region Fields
@@ -80,6 +86,19 @@ namespace Game.ConstructionSystem
             WallAppearance wallAppearence = _building.GetComponentInChildren<WallAppearance>();
             if (wallAppearence)
                 wallAppearence.enabled = enabled;
+        }
+
+        public void SetConstructionAsFinish(Team teamToSet)
+        {
+            EnableBuildingComponents(true);
+            ResetBuildingMeshColor();
+
+            if (Building.TryGetComponent(out Entity entity))
+            {
+                entity.Team = teamToSet;
+            }
+
+            DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
         }
         #endregion
 

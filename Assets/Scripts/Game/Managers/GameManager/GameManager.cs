@@ -216,8 +216,7 @@ public class GameManager : Singleton<GameManager>
             {
                 if (buildingData.IsConstructionChained)
                 {
-                    //State = new ChainedConstructionState(this, buildingType);
-                    throw new System.NotImplementedException();
+                    State = new ChainedConstructionState(this, buildingType);
                 }
                 else
                 {

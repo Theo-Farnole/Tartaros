@@ -34,13 +34,12 @@ namespace Game.UI
             // bloat code
             // but we can't create construction button on Awake
             // because, MainRegister'll return Null Reference :/
-            uiManager.ExecuteAfterFrame(CreateConstructionButtons);
+            CreateConstructionButtons();
         }
 
         public override void SubscribeToEvents<T>(T uiManager)
         {
-            if (_buildingButtons == null)
-                CreateConstructionButtons();
+             CreateConstructionButtons();
 
             CheckIfThereIsEnoughtBuildingButtons();
 

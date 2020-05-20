@@ -12,8 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
   m_Name: DB_Building_Barracks
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _resourcesPerCell
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[Game.MapCellEditor.CellType,
+        Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.MapCellEditor.CellType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   _entityName: Barracks
   _hotkey: 103
+  _populationUse: 0
   _portrait: {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 5223a26d9e803f04ab7c98100babab8f, type: 3}
   _hoverPopupData: {fileID: 11400000, guid: 90c75895089756c4bbf509a0cc644f63, type: 2}
@@ -24,6 +60,7 @@ MonoBehaviour:
     wood: 5
     gold: 0
   _viewRadius: 3
+  _isConstructionChained: 0
   _canAttack: 0
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
@@ -37,7 +74,6 @@ MonoBehaviour:
   _availableUnitsForCreation: 0000000001000000
   _canGenerateResources: 0
   _generationTick: 1
-  _resourcesAmount:
-    food: 10
-    wood: 5
-    gold: 5
+  _radiusToReachCells: 5
+  _increaseMaxPopulation: 0
+  _increaseMaxPopulationAmount: 0
