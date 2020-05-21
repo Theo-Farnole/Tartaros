@@ -1,4 +1,4 @@
-﻿using Lortedo.Utilities.Debugging;
+using Lortedo.Utilities.Debugging;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,6 +63,8 @@ namespace Game.ConstructionSystem
             ProcessInputs();
             _firstFrame = false;
         }
+
+        public virtual void OnGUI() { }
         #endregion
 
         #region Abstract methods

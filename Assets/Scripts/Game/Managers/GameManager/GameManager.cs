@@ -1,4 +1,4 @@
-using Game.ConstructionSystem;
+﻿using Game.ConstructionSystem;
 using Game.MapCellEditor;
 using Lortedo.Utilities.Pattern;
 using UnityEngine;
@@ -123,6 +123,11 @@ public class GameManager : Singleton<GameManager>
         if (_debugDrawMapCells)
             _mapCells?.DrawGizmos();
 #endif
+    }
+
+    void OnGUI()
+    {
+        _state?.OnGUI();    
     }
 
     void OnEnable()
