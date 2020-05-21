@@ -131,8 +131,6 @@ namespace Game.ConstructionSystem
                 if (SucessfulBuild)
                 {
                     _owner.Resources -= constructionCost;
-
-                    Debug.LogFormat("Removed {0}.", constructionCost.ToString());
                 }
                 else
                 {
@@ -279,7 +277,7 @@ namespace Game.ConstructionSystem
         {
             var gameObject = Object.Instantiate(BuildingData.Prefab);
 
-            var constructionBuilding = new ConstructionBuilding(gameObject);
+            var constructionBuilding = new ConstructionBuilding(gameObject, EntityType, true);
             _constructionBuildings.Add(constructionBuilding);
         }
 

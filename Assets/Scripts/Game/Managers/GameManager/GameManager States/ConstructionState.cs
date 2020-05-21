@@ -33,7 +33,7 @@ namespace Game.ConstructionSystem
         protected override void OnCurrentBuildingSet(BuildingType buildingType, EntityData buildingData)
         {
             var buildingPrefab = Object.Instantiate(buildingData.Prefab);            
-            _constructionBuilding = new ConstructionBuilding(buildingPrefab);
+            _constructionBuilding = new ConstructionBuilding(buildingPrefab, (EntityType)buildingType, false);
 
             UpdateConstructionBuildingPosition();
         }

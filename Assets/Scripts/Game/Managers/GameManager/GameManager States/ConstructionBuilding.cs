@@ -16,16 +16,20 @@ namespace Game.ConstructionSystem
         #region Fields
         public readonly static string debugLogHeader = "Construction Building : ";
 
-        private GameObject _building;
+        private readonly GameObject _building;
+        private readonly bool _isChainedBuilding;
+        private readonly EntityType _entityType;
         #endregion
 
         #region Properties
         public GameObject Building { get => _building; }
         #endregion
 
-        public ConstructionBuilding(GameObject gameObject)
+        public ConstructionBuilding(GameObject gameObject, EntityType entityType, bool isChainedBuilding)
         {
             _building = gameObject;
+            _entityType = entityType;
+            _isChainedBuilding = isChainedBuilding;
         }
 
         #region Methods
@@ -105,9 +109,7 @@ namespace Game.ConstructionSystem
         #region Private Methods
         private void UpdateBuildingMeshColor()
         {
-            bool isOnFreeTile = TileSystem.Instance.IsTileFree(_building.transform.position);
-
-            BuildingMesh.State state = isOnFreeTile ? BuildingMesh.State.CanBuild : BuildingMesh.State.CannotBuild;
+            BuildingMesh.State state = CanBeConstruct() ? BuildingMesh.State.CanBuild : BuildingMesh.State.CannotBuild;
 
             if (_building.TryGetComponent(out BuildingMesh buildingMesh))
             {
@@ -117,6 +119,13 @@ namespace Game.ConstructionSystem
             {
                 Debug.LogErrorFormat(debugLogHeader + "The current building {0} is missing a BuildingMesh component.", _building.name);
             }
+        }
+
+        private bool CanBeConstruct()
+        {
+            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(_building.transform.position);
+
+            return TileSystem.Instance.IsTileFree(coords) || TileSystem.Instance.IsTileOfType(coords, _entityType);
         }
         #endregion
         #endregion
