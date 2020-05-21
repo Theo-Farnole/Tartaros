@@ -71,7 +71,7 @@ MonoBehaviour:
   _canMove: 0
   _speed: 3
   _canCreateUnit: 1
-  _availableUnitsForCreation: 0000000001000000
+  _availableUnitsForCreation: 0200000001000000
   _canGenerateResources: 0
   _generationTick: 1
   _radiusToReachCells: 5

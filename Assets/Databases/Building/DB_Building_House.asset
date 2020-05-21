@@ -23,11 +23,11 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _resourcesPerCell
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[LeonidasLegacy.MapCellEditor.CellType,
+      Data: 0|System.Collections.Generic.Dictionary`2[[Game.MapCellEditor.CellType,
         Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[LeonidasLegacy.MapCellEditor.CellType,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.MapCellEditor.CellType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -60,6 +60,7 @@ MonoBehaviour:
     wood: 5
     gold: 0
   _viewRadius: 2
+  _isConstructionChained: 0
   _canAttack: 0
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
@@ -74,5 +75,5 @@ MonoBehaviour:
   _canGenerateResources: 0
   _generationTick: 1
   _radiusToReachCells: 5
-  _givePopulation: 1
-  _givePopulationAmount: 5
+  _increaseMaxPopulation: 1
+  _increaseMaxPopulationAmount: 5
