@@ -19,12 +19,16 @@ namespace Game.UI
         public void SetBuildingType(BuildingType buildingType)
         {
             SetContent(buildingType);
-            AddListeners(buildingType);
         }
 
-        void AddListeners(BuildingType buildingType)
+        public void SubcribeToEvents(BuildingType buildingType)
         {
             _button.onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
+        }
+
+        public void UnsubcribeToEvents(BuildingType buildingType)
+        {
+            _button.onClick.RemoveListener(() => GameManager.Instance.StartBuilding(buildingType));
         }
 
         private void SetContent(BuildingType buildingType)

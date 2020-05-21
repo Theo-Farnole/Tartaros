@@ -16,3 +16,6 @@ MonoBehaviour:
     food: 50
     wood: 30
     gold: 10
+  _startMaxPopulationCount: 10
+  _wavesPassedToWin: 1
+  _buildingsInPanelConstruction: e8030000e9030000ea030000ec030000

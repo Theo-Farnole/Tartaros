@@ -10,7 +10,11 @@ public class GameManagerData : ScriptableObject
     [Header("Victory")]
     [SerializeField] private int _wavesPassedToWin = 1;
 
+    [Header("CONSTRUCTION")]
+    [SerializeField] private BuildingType[] _buildingsInPanelConstruction = new BuildingType[0];
+
     public ResourcesWrapper StartingResources { get => _startingResources; }
     public int StartMaxPopulationCount { get => _startMaxPopulationCount; }
     public int WavesPassedToWin { get => _wavesPassedToWin; }
+    public BuildingType[] BuildingsInPanelConstruction { get => _buildingsInPanelConstruction; }
 }

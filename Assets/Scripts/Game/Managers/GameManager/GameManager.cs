@@ -1,4 +1,4 @@
-﻿using Game.ConstructionSystem;
+using Game.ConstructionSystem;
 using Game.MapCellEditor;
 using Lortedo.Utilities.Pattern;
 using UnityEngine;
@@ -94,6 +94,8 @@ public class GameManager : Singleton<GameManager>
             OnPopulationCountChanged?.Invoke(_populationCount, _maxPopulation);
         }
     }
+
+    public GameManagerData ManagerData { get => _data; }
     #endregion
 
     #region Methods
@@ -127,7 +129,7 @@ public class GameManager : Singleton<GameManager>
 
     void OnGUI()
     {
-        _state?.OnGUI();    
+        _state?.OnGUI();
     }
 
     void OnEnable()
