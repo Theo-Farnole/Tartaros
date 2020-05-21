@@ -118,7 +118,7 @@ namespace Game.UI
             else
             {
                 order.hotkey.text = "MISSING HOTKEY";
-                Debug.LogErrorFormat("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", entityData);
+                Debug.LogErrorFormat("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", unitType);
             }
         }
 
