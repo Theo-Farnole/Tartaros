@@ -14,6 +14,8 @@ namespace Game.UI
     public class PanelConstruction : Panel
     {
         #region Fields
+        private const string debugLogHeader = "Panel Construction : ";
+
         [Space(order = 0)]
         [Header("Construction Button", order = 1)]
         [SerializeField] private GameObject _prefabConstructionButton;
@@ -39,7 +41,7 @@ namespace Game.UI
 
         public override void SubscribeToEvents<T>(T uiManager)
         {
-             CreateConstructionButtons();
+            CreateConstructionButtons();
 
             CheckIfThereIsEnoughtBuildingButtons();
 
@@ -122,65 +124,17 @@ namespace Game.UI
             Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
 
             buildingButton.transform.SetParent(_parentConstructionButton, false);
-            TrySetPortraitOnButton(buildingButton, buildingType);
-            TrySetHoverPopupDisplay(buildingType, buildingButton);
 
-            if (GameManager.Instance != null)
+            if (buildingButton.TryGetComponent(out UI_ConstructionButton constructionButton))
             {
-                buildingButton.onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
+                constructionButton.SetBuildingType(buildingType);
             }
             else
             {
-                Debug.LogErrorFormat("Panel Construction : Can't add 'start building' on click because GameManager is missing.");
+                Debug.Log(debugLogHeader + "Prefab construction button miss a UI_ConstructionButton component.");
             }
 
             _buildingButtons[index] = buildingButton;
-        }
-
-        private static void TrySetHoverPopupDisplay(BuildingType buildingType, Button buildingButton)
-        {
-            // set hoverdisplay popup
-            if (buildingButton.gameObject.TryGetComponent(out HoverDisplayPopup hoverDisplayPopup))
-            {
-                if (MainRegister.Instance == null)
-                {
-                    Debug.LogErrorFormat("Panel Construction : MainRegister is missing. Can't set hover popup display on construction button.");
-                    return;
-                }
-
-
-                if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData entityData))
-                {
-                    hoverDisplayPopup.HoverPopupData = entityData.HoverPopupData;
-                }
-                else
-                {
-                    Debug.LogErrorFormat("Panel Construction : Can't find entityData of {0} building for construction button {1}.", buildingType, buildingButton.name);
-                }
-            }
-            else
-            {
-                Debug.LogErrorFormat("Panel Construction : Construction button '{0}' miss a HoverDisplayPopup component.", buildingButton.name);
-            }
-        }
-
-        private static void TrySetPortraitOnButton(Button buildingButton, BuildingType buildingType)
-        {
-            if (MainRegister.Instance == null)
-            {
-                Debug.LogErrorFormat("Panel Construction : MainRegister is missing. Can't set portrait on construction button.");
-                return;
-            }
-
-            if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))
-            {
-                Sprite portrait = buildingData.Portrait;
-                buildingButton.GetComponent<Image>().sprite = portrait;
-            }
-            else
-            {
-                Debug.LogErrorFormat("Panel Construction: Couldn't set a portrait of building {0} on button {1}", buildingType, buildingButton);
-            }
         }
 
         private void CheckIfThereIsEnoughtBuildingButtons()
