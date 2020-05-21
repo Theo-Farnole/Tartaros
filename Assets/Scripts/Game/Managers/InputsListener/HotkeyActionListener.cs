@@ -4,7 +4,9 @@ using Lortedo.Utilities.Pattern;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class HotkeyActionListener : MonoBehaviour
 {
@@ -123,16 +125,14 @@ public class HotkeyActionListener : MonoBehaviour
         if (data.CanMove || data.CanAttack)
             AddStopActionHotkey();
 
-        if (data.CanCreateResources)
-            AddCreateResourcesHotkey(data);
+        if (data.CanSpawnUnit)
+            AddSpawnUnitHotkeys(data.AvailableUnitsForCreation);
     }
 
-    private void AddCreateResourcesHotkey(EntityData data)
+    private void AddSpawnUnitHotkeys(UnitType[] unitTypes)
     {
-        for (int i = 0; i < data.AvailableUnitsForCreation.Length; i++)
+        foreach (UnitType unitType in unitTypes)
         {
-            UnitType unitType = data.AvailableUnitsForCreation[i];
-
             if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData unitData))
             {
                 KeyCode hotkey = unitData.Hotkey;
