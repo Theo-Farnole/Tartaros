@@ -119,17 +119,25 @@ public class EntityResourcesGeneration : EntityComponent
             return;
         }
 
-        // Draw wood X food X gold X above building
-        Vector2 guiPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if (Entity.Data == null)
+            return;
 
-        // The WorldToScreenPoint functions return and integer starting from 0,0
-        // at the BOTTOM LEFT of the screen.
-        // Because of this, the y-value is flipped.
-        // So to solve the problem, substract the screen height.
-        guiPosition.y = Screen.height - guiPosition.y;
+        // only draw PerCell generation
+        // otherwise, it's a bit useless
+        if (Entity.Data.GenerationType == GenerationType.PerCell)
+        {
+            // Draw wood X food X gold X above building
+            Vector2 guiPosition = Camera.main.WorldToScreenPoint(transform.position);
 
-        Rect labelRect = new Rect(guiPosition.x, guiPosition.y, 300, 50);
-        GUI.Label(labelRect, _resourcesPerTick.ToString(true));
+            // The WorldToScreenPoint functions return and integer starting from 0,0
+            // at the BOTTOM LEFT of the screen.
+            // Because of this, the y-value is flipped.
+            // So to solve the problem, substract the screen height.
+            guiPosition.y = Screen.height - guiPosition.y;
+
+            Rect labelRect = new Rect(guiPosition.x, guiPosition.y, 300, 50);
+            GUI.Label(labelRect, _resourcesPerTick.ToString(true));
+        }
     }
     #endregion
 
@@ -157,12 +165,29 @@ public class EntityResourcesGeneration : EntityComponent
     #region Calculate Resources Per Tick Methods
     public void CalculateResourcesPerTick()
     {
+        if (!Entity.Data.CanCreateResources)
+            return;
+
         ResourcesWrapper resourcesPerTick = new ResourcesWrapper(0, 0, 0);
 
-        foreach (var kvp in Entity.Data.ResourcesPerCell)
+        Debug.Log("Entity.Data.GenerationType" + Entity.Data.GenerationType);
+
+        switch (Entity.Data.GenerationType)
         {
-            int cellCount = GetCellsInGenerationRadius(kvp.Key);
-            resourcesPerTick += kvp.Value * cellCount;
+            case GenerationType.Constant:
+                resourcesPerTick = Entity.Data.ConstantResourcesGeneration;
+                break;
+
+            case GenerationType.PerCell:
+                foreach (var kvp in Entity.Data.ResourcesPerCell)
+                {
+                    int cellCount = GetCellsInGenerationRadius(kvp.Key);
+                    resourcesPerTick += kvp.Value * cellCount;
+                }
+                break;
+
+            default:
+                throw new System.NotImplementedException();
         }
 
         _resourcesPerTick = resourcesPerTick;

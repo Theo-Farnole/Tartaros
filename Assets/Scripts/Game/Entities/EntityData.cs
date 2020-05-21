@@ -7,13 +7,10 @@ using System.Collections.Generic;
 using Game.UI.HoverPopup;
 using UnityEngine;
 
-[System.Flags]
-public enum OrdersType
+public enum GenerationType
 {
-    Move = 1 << 0,
-    Attack = 1 << 1,
-    CreateUnits = 1 << 2,
-    CreateResources = 1 << 3
+    Constant = 1,
+    PerCell = 2
 }
 
 [CreateAssetMenu(menuName = "Tartaros/Entity")]
@@ -156,19 +153,30 @@ public class EntityData : SerializedScriptableObject
     [ToggleGroup(nameof(_canGenerateResources), generateResourcesHeaderName)]
     [SerializeField] private bool _canGenerateResources;
 
-    [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
-    [SerializeField] private Dictionary<CellType, ResourcesWrapper> _resourcesPerCell = new Dictionary<CellType, ResourcesWrapper>();
-
     [Space]
     [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
     [SerializeField] private float _generationTick;
 
     [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
+    [SerializeField] private GenerationType _generationType = GenerationType.Constant;
+
+    [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
+    [ShowIf(nameof(_generationType), Value = GenerationType.PerCell)]
+    [SerializeField] private Dictionary<CellType, ResourcesWrapper> _resourcesPerCell = new Dictionary<CellType, ResourcesWrapper>();
+
+    [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
+    [ShowIf(nameof(_generationType), Value = GenerationType.PerCell)]
     [SerializeField] private float _radiusToReachCells = 5;
+
+    [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
+    [ShowIf(nameof(_generationType), Value = GenerationType.Constant)]
+    [SerializeField] private ResourcesWrapper _constantResourcesGeneration;
 
     public float GenerationTick { get => _generationTick; }
     public float RadiusToReachCells { get => _radiusToReachCells; }
     public Dictionary<CellType, ResourcesWrapper> ResourcesPerCell { get => _resourcesPerCell; }
+    public ResourcesWrapper ConstantResourcesGeneration { get => _constantResourcesGeneration; set => _constantResourcesGeneration = value; }
+    public GenerationType GenerationType { get => _generationType; }
     #endregion
 
     #region Give population
@@ -178,7 +186,7 @@ public class EntityData : SerializedScriptableObject
     [ToggleGroup(nameof(_increaseMaxPopulation), headerNamePopulation)]
     [SerializeField] private int _increaseMaxPopulationAmount;
     
-    public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }    
+    public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }
     #endregion
     #endregion
 

@@ -74,6 +74,11 @@ MonoBehaviour:
   _availableUnitsForCreation: 0200000001000000
   _canGenerateResources: 0
   _generationTick: 1
+  _generationType: 0
   _radiusToReachCells: 5
+  _constantResourcesGeneration:
+    food: 0
+    wood: 0
+    gold: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0

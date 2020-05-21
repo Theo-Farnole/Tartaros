@@ -30,6 +30,8 @@ namespace Game.ConstructionSystem
             _building = gameObject;
             _entityType = entityType;
             _isChainedBuilding = isChainedBuilding;
+
+            EnableBuildingComponents(false);
         }
 
         #region Methods
