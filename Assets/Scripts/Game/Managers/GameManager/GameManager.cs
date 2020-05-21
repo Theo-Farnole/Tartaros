@@ -1,4 +1,4 @@
-﻿using Game.ConstructionSystem;
+using Game.ConstructionSystem;
 using Game.MapCellEditor;
 using Lortedo.Utilities.Pattern;
 using UnityEngine;
@@ -31,7 +31,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private bool _debugDrawSnapGrid;
     [SerializeField] private bool _debugDrawMapCells;
 
-    private OwnedState<GameManager> _state = null;
+    private AbstractConstructionState _state = null;
     private ResourcesWrapper _resources = new ResourcesWrapper();
     private int _populationCount = 0;
     private int _maxPopulation = 0;
@@ -53,7 +53,7 @@ public class GameManager : Singleton<GameManager>
             OnGameResourcesUpdate?.Invoke(_resources);
         }
     }
-    public OwnedState<GameManager> State
+    public AbstractConstructionState State
     {
         get
         {
