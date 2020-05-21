@@ -1,4 +1,4 @@
-using Lortedo.Utilities.Debugging;
+﻿using Lortedo.Utilities.Debugging;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,7 +33,9 @@ namespace Game.ConstructionSystem
         }
 
         protected bool SucessfulBuild { get => _sucessfulBuild; set => _sucessfulBuild = value; }
-        public EntityData BuildingData { get => _buildingData; }
+        protected EntityData BuildingData { get => _buildingData; }
+        protected BuildingType BuildingType { get => _buildingType; }
+        protected EntityType EntityType { get => (EntityType)_buildingType; }
         #endregion
 
         #region Methods

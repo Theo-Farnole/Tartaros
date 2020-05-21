@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -15,10 +16,13 @@ namespace Game.ConstructionSystem
 
         private bool _anchorSet = false;
         private Vector3 _anchorPosition;
+
+        private ResourcesWrapper _cachedConstructionCost;
         #endregion
 
         public ChainedConstructionState(GameManager owner, BuildingType buildingType) : base(owner, buildingType)
         {
+            _cachedConstructionCost = CalculateWholeConstructionCost();
         }
 
         #region Methods
@@ -58,26 +62,50 @@ namespace Game.ConstructionSystem
             }
         }
 
+        public override void OnGUI()
+        {
+            if (Camera.main == null)
+            {
+                Debug.LogErrorFormat("Entity Resources Generation : Camera.main is null. Can't draw resources per tick.");
+                return;
+            }
+
+            // don't if no construction building
+            if (_constructionBuildings.Count == 0)
+                return;
+
+            GameObject nearMouseBuilding = _constructionBuildings.Last().Building;
+
+            // Draw wood X food X gold X above building
+            Vector2 guiPosition = Camera.main.WorldToScreenPoint(nearMouseBuilding.transform.position);
+
+            // The WorldToScreenPoint functions return and integer starting from 0,0
+            // at the BOTTOM LEFT of the screen.
+            // Because of this, the y-value is flipped.
+            // So to solve the problem, substract the screen height.
+            guiPosition.y = Screen.height - guiPosition.y;
+
+            Rect labelRect = new Rect(guiPosition.x, guiPosition.y, 300, 50);
+            GUI.Label(labelRect, _cachedConstructionCost.ToString());
+        }
+
         protected override void ConstructBuilding()
         {
-            bool doBuildingAreOnFreeTiles = true;
+            bool buildingsCanBeBuilt = true;
 
             // check if every cBuilding is on a freetile
             foreach (var cBuilding in _constructionBuildings)
             {
-                Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(cBuilding.Building.transform.position);
-
-                // is tile free and is not a wall
-                if (!TileSystem.Instance.IsTileFree(coords) &&
-                    !TileSystem.Instance.IsTileOfType(coords, EntityType.Wall))
+                // is tile free and is not a wall                
+                if (!CanConstructBuiding(cBuilding))
                 {
-                    doBuildingAreOnFreeTiles = false;
+                    buildingsCanBeBuilt = false;
                 }
             }
 
-            if (doBuildingAreOnFreeTiles)
+            if (buildingsCanBeBuilt)
             {
-                bool aTrySetTileFailed = false;
+                bool trySetTileFailed = false;
 
                 _constructionAchievedBuilding = new List<ConstructionBuilding>();
 
@@ -91,25 +119,16 @@ namespace Game.ConstructionSystem
                     }
                     else
                     {
-                        aTrySetTileFailed = true;
+                        trySetTileFailed = true;
                     }
                 }
 
-                SucessfulBuild = !aTrySetTileFailed;
+                SucessfulBuild = !trySetTileFailed;
 
-                if (aTrySetTileFailed)
+                if (trySetTileFailed)
                 {
                     DestroyAllConstructionBuildings();
-                }
-
-                // Sucessful build should be true:
-                //
-                // We set tile and construction as finish.
-                // If this fail, SucessfulBuild is set to false.                
-                // But that shouldn't happen, because upper, 
-                // we check is every tiles are free.
-                //Assert.IsTrue(SucessfulBuild,
-                //    string.Format(debugLogHeader + "Call your coder please. (Check comments above assert for more info)"));
+                }                
             }
 
             _owner.State = null;
@@ -125,6 +144,15 @@ namespace Game.ConstructionSystem
             _constructionBuildings.Clear();
         }
 
+
+        #endregion
+
+        #region Private methods
+        private bool IsConstructionBuildingAchieved(ConstructionBuilding cBuilding)
+        {
+            return (_constructionAchievedBuilding != null && _constructionAchievedBuilding.Contains(cBuilding));
+        }
+
         void DestroyUnachievedBuilding()
         {
             foreach (var cBuilding in _constructionBuildings)
@@ -136,13 +164,6 @@ namespace Game.ConstructionSystem
             }
         }
 
-        private bool IsConstructionBuildingAchieved(ConstructionBuilding cBuilding)
-        {
-            return (_constructionAchievedBuilding != null && _constructionAchievedBuilding.Contains(cBuilding));
-        }
-        #endregion
-
-        #region Private methods
         private void SetAnchor(Vector3 newPosition)
         {
             _anchorSet = true;
@@ -208,6 +229,7 @@ namespace Game.ConstructionSystem
             }
         }
 
+        #region Set Building Position Methods
         private void SetBuildingsPosition(Vector3 position)
         {
             ResizeConstructionBuildings(1);
@@ -217,6 +239,8 @@ namespace Game.ConstructionSystem
                 AddConstructionBuilding();
 
             _constructionBuildings[0].SetPosition(position);
+
+            _cachedConstructionCost = CalculateWholeConstructionCost();
         }
 
         private void SetBuildingsPosition(Vector2Int[] coords)
@@ -249,8 +273,11 @@ namespace Game.ConstructionSystem
                 _constructionBuildings[i].SetPosition(positions[i]);
             }
 
+            _cachedConstructionCost = CalculateWholeConstructionCost();
         }
+        #endregion
 
+        #region List Modificators
         void AddConstructionBuilding()
         {
             var gameObject = Object.Instantiate(BuildingData.Prefab);
@@ -270,6 +297,34 @@ namespace Game.ConstructionSystem
                 }
             }
         }
+        #endregion
+
+        #region Getter & Calculation methods
+        private bool CanConstructBuiding(ConstructionBuilding cBuilding)
+        {
+            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(cBuilding.Building.transform.position);            
+            return TileSystem.Instance.IsTileFree(coords) || TileSystem.Instance.IsTileOfType(coords, EntityType);
+        }
+
+        private bool DoBuildingConstructionIsPaid(ConstructionBuilding cBuilding)
+        {
+            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(cBuilding.Building.transform.position);
+            return TileSystem.Instance.IsTileFree(coords) && !TileSystem.Instance.IsTileOfType(coords, EntityType);
+        }
+
+        ResourcesWrapper CalculateWholeConstructionCost()
+        {
+            // we assert that all buildings'll be constructed
+            int constructableBuildings = CalculateConstructableBuildingCount();
+
+            return BuildingData.SpawningCost * constructableBuildings;
+        }
+
+        int CalculateConstructableBuildingCount()
+        {
+            return _constructionBuildings.Where(x => DoBuildingConstructionIsPaid(x) == true).Count();
+        }
+        #endregion
         #endregion
         #endregion
     }
