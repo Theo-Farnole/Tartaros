@@ -13,7 +13,7 @@ public class EntityResourcesGeneration : EntityComponent
     private bool _resourceProductionEnable = true;
     #endregion
 
-    #region Fields
+    #region Properties
     public bool EnableResourceProduction
     {
         get => _resourceProductionEnable;
@@ -119,7 +119,7 @@ public class EntityResourcesGeneration : EntityComponent
             return;
         }
 
-        // TODO: Draw wood X food X gold X above building
+        // Draw wood X food X gold X above building
         Vector2 guiPosition = Camera.main.WorldToScreenPoint(transform.position);
 
         // The WorldToScreenPoint functions return and integer starting from 0,0
