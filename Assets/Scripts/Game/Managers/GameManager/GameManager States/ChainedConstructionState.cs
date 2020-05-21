@@ -16,13 +16,10 @@ namespace Game.ConstructionSystem
 
         private bool _anchorSet = false;
         private Vector3 _anchorPosition;
-
-        private ResourcesWrapper _cachedConstructionCost;
         #endregion
 
         public ChainedConstructionState(GameManager owner, BuildingType buildingType) : base(owner, buildingType)
         {
-            _cachedConstructionCost = CalculateWholeConstructionCost();
         }
 
         #region Methods
@@ -86,7 +83,7 @@ namespace Game.ConstructionSystem
             guiPosition.y = Screen.height - guiPosition.y;
 
             Rect labelRect = new Rect(guiPosition.x, guiPosition.y, 300, 50);
-            GUI.Label(labelRect, _cachedConstructionCost.ToString());
+            GUI.Label(labelRect, CalculateWholeConstructionCost().ToString());
         }
 
         protected override void ConstructBuilding()
@@ -100,6 +97,7 @@ namespace Game.ConstructionSystem
                 if (!CanConstructBuiding(cBuilding))
                 {
                     buildingsCanBeBuilt = false;
+                    break;
                 }
             }
 
@@ -108,6 +106,10 @@ namespace Game.ConstructionSystem
                 bool trySetTileFailed = false;
 
                 _constructionAchievedBuilding = new List<ConstructionBuilding>();
+
+                // We calculate cost before setting tiles.
+                // However, after setting tiles 'CalculateWholeConstructionCost' returns 0.
+                ResourcesWrapper constructionCost = CalculateWholeConstructionCost();
 
                 foreach (var cBuilding in _constructionBuildings)
                 {
@@ -120,15 +122,22 @@ namespace Game.ConstructionSystem
                     else
                     {
                         trySetTileFailed = true;
+                        break;
                     }
                 }
 
                 SucessfulBuild = !trySetTileFailed;
 
-                if (trySetTileFailed)
+                if (SucessfulBuild)
+                {
+                    _owner.Resources -= constructionCost;
+
+                    Debug.LogFormat("Removed {0}.", constructionCost.ToString());
+                }
+                else
                 {
                     DestroyAllConstructionBuildings();
-                }                
+                }
             }
 
             _owner.State = null;
@@ -143,17 +152,10 @@ namespace Game.ConstructionSystem
 
             _constructionBuildings.Clear();
         }
-
-
         #endregion
 
         #region Private methods
-        private bool IsConstructionBuildingAchieved(ConstructionBuilding cBuilding)
-        {
-            return (_constructionAchievedBuilding != null && _constructionAchievedBuilding.Contains(cBuilding));
-        }
-
-        void DestroyUnachievedBuilding()
+        private void DestroyUnachievedBuilding()
         {
             foreach (var cBuilding in _constructionBuildings)
             {
@@ -168,37 +170,6 @@ namespace Game.ConstructionSystem
         {
             _anchorSet = true;
             _anchorPosition = newPosition;
-        }
-
-        private void ManageBuildingsPosition()
-        {
-            if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, terrainLayerMask))
-            {
-                if (_anchorSet)
-                {
-                    var path = TileSystem.Instance.GetPath(_anchorPosition, newPosition);
-
-                    bool isPathEmpty = path.Length > 0;
-                    if (isPathEmpty)
-                    {
-                        SetBuildingsPosition(path);
-                    }
-                    else
-                    {
-                        SetBuildingsPosition(newPosition);
-                    }
-
-                }
-                else
-                {
-                    SetBuildingsPosition(newPosition);
-                }
-            }
-            else
-            {
-                Debug.LogWarningFormat("Construction State : " + "Can't find nearest position from mouse. We can't update the building position.");
-            }
-
         }
 
         private bool TrySetTileAndConstructionAsFinish(ConstructionBuilding cBuilding)
@@ -230,6 +201,36 @@ namespace Game.ConstructionSystem
         }
 
         #region Set Building Position Methods
+        private void ManageBuildingsPosition()
+        {
+            if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, terrainLayerMask))
+            {
+                if (_anchorSet)
+                {
+                    var path = TileSystem.Instance.GetPath(_anchorPosition, newPosition);
+
+                    bool isPathEmpty = path.Length > 0;
+                    if (isPathEmpty)
+                    {
+                        SetBuildingsPosition(path);
+                    }
+                    else
+                    {
+                        SetBuildingsPosition(newPosition);
+                    }
+
+                }
+                else
+                {
+                    SetBuildingsPosition(newPosition);
+                }
+            }
+            else
+            {
+                Debug.LogWarningFormat("Construction State : " + "Can't find nearest position from mouse. We can't update the building position.");
+            }
+        }
+
         private void SetBuildingsPosition(Vector3 position)
         {
             ResizeConstructionBuildings(1);
@@ -239,8 +240,6 @@ namespace Game.ConstructionSystem
                 AddConstructionBuilding();
 
             _constructionBuildings[0].SetPosition(position);
-
-            _cachedConstructionCost = CalculateWholeConstructionCost();
         }
 
         private void SetBuildingsPosition(Vector2Int[] coords)
@@ -272,8 +271,6 @@ namespace Game.ConstructionSystem
                 // update construction position
                 _constructionBuildings[i].SetPosition(positions[i]);
             }
-
-            _cachedConstructionCost = CalculateWholeConstructionCost();
         }
         #endregion
 
@@ -300,9 +297,14 @@ namespace Game.ConstructionSystem
         #endregion
 
         #region Getter & Calculation methods
+        private bool IsConstructionBuildingAchieved(ConstructionBuilding cBuilding)
+        {
+            return (_constructionAchievedBuilding != null && _constructionAchievedBuilding.Contains(cBuilding));
+        }
+
         private bool CanConstructBuiding(ConstructionBuilding cBuilding)
         {
-            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(cBuilding.Building.transform.position);            
+            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(cBuilding.Building.transform.position);
             return TileSystem.Instance.IsTileFree(coords) || TileSystem.Instance.IsTileOfType(coords, EntityType);
         }
 
@@ -314,9 +316,7 @@ namespace Game.ConstructionSystem
 
         ResourcesWrapper CalculateWholeConstructionCost()
         {
-            // we assert that all buildings'll be constructed
             int constructableBuildings = CalculateConstructableBuildingCount();
-
             return BuildingData.SpawningCost * constructableBuildings;
         }
 
