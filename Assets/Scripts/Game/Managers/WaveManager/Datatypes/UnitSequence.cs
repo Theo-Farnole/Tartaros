@@ -56,10 +56,13 @@ namespace Game.WaveSystem
             // sequence
             yield return new WaitForSeconds(_waitTimeBeforeSequence);
 
-            for (int i = 0; i < unitCount; i++)
+            if (_spawnUnits)
             {
-                SpawnUnit(prefab, spawnPosition, target);
-                yield return new WaitForSeconds(_timeAfterUnitSpawn);
+                for (int i = 0; i < unitCount; i++)
+                {
+                    SpawnUnit(prefab, spawnPosition, target);
+                    yield return new WaitForSeconds(_timeAfterUnitSpawn);
+                }
             }
 
             yield return new WaitForSeconds(_waitTimeAfterSequence);
