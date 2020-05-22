@@ -104,6 +104,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1725030140573244713}
+  - {fileID: 1435863028723462121}
   m_Father: {fileID: 8802178015158528585}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -278,12 +279,12 @@ PrefabInstance:
     - target: {fileID: -927199367670048503, guid: daee5152fbaddcf458cc07a6e6ae277f,
         type: 3}
       propertyPath: m_Name
-      value: SM_Building_Wall_Joint
+      value: SM_Building_Wall_Joint_Variation01
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: daee5152fbaddcf458cc07a6e6ae277f,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: daee5152fbaddcf458cc07a6e6ae277f, type: 3}
@@ -298,6 +299,81 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2053539643098649277, guid: daee5152fbaddcf458cc07a6e6ae277f,
     type: 3}
   m_PrefabInstance: {fileID: 5947633377265612339}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6239597781786559731
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5163929935599750010}
+    m_Modifications:
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.388
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.336
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: bbbc876671e7c1f44a58797c9c93eba8,
+        type: 3}
+      propertyPath: m_Name
+      value: SM_Building_Wall_Joint_Variation02
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bbbc876671e7c1f44a58797c9c93eba8, type: 3}
+--- !u!4 &1435863028723462121 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: bbbc876671e7c1f44a58797c9c93eba8,
+    type: 3}
+  m_PrefabInstance: {fileID: 6239597781786559731}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8862809433561802146
 PrefabInstance:
