@@ -71,7 +71,7 @@ public class EntitySelectable : EntityComponent
     {
         if (_selectionCircle != null)
         {
-            //Debug.LogWarning("Entity Selectable : Cannot display selection, it's already displayed. But it's okay.");
+            Debug.LogWarning("Entity Selectable : Cannot display selection, it's already displayed. But it's okay.");
             return;
         }
 
@@ -84,6 +84,7 @@ public class EntitySelectable : EntityComponent
         {
             _selectionCircle.transform.parent = transform;
             _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(Entity.Team);
+            _selectionCircle.GetComponent<Projector>().orthographicSize = Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y);
         }
         else
         {
