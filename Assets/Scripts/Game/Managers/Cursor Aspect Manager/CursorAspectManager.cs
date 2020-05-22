@@ -66,7 +66,7 @@ public class CursorAspectManager : MonoBehaviour
             // order cursor
             if (SelectionManager.Instance.HasSelection)
             {
-                if (hit.transform.GetComponent<Entity>().Team == Team.Sparta)                
+                if (hit.transform.GetComponent<Entity>().Team == Team.Player)                
                     _cursorState = CursorState.OrderMove;
                 
                 else
@@ -75,7 +75,7 @@ public class CursorAspectManager : MonoBehaviour
             // over cursor
             else
             {
-                if (hit.transform.GetComponent<Entity>().Team == Team.Sparta)
+                if (hit.transform.GetComponent<Entity>().Team == Team.Player)
                     _cursorState = CursorState.OverAlly;
 
                 else

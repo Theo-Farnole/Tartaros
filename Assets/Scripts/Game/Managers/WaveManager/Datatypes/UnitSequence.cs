@@ -27,7 +27,7 @@ namespace Game.WaveSystem
         [SerializeField] private bool _spawnUnits = true;
 
         [ToggleGroup(nameof(_spawnUnits), headerInspector_SpawnUnit)]
-        [SerializeField] private UnitType _unitType = UnitType.Xerxes;
+        [SerializeField] private UnitType _unitType;
 
         [ToggleGroup(nameof(_spawnUnits), headerInspector_SpawnUnit)]
         [SerializeField] private int _unitCount = 1;

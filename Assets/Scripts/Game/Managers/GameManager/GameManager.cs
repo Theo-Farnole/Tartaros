@@ -150,7 +150,7 @@ public class GameManager : Singleton<GameManager>
     #region Events handlers
     private void Entity_OnSpawn(Entity entity)
     {
-        if (entity.Team == Team.Sparta)
+        if (entity.Team == Team.Player)
         {
             PopulationCount += entity.Data.PopulationUse;
             MaxPopulation += entity.Data.IncreaseMaxPopulationAmount;
@@ -179,7 +179,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Entity_OnDeath(Entity entity)
     {
-        if (entity.Team == Team.Sparta)
+        if (entity.Team == Team.Player)
         {
             PopulationCount -= entity.Data.PopulationUse;
             MaxPopulation -= entity.Data.IncreaseMaxPopulationAmount;
@@ -270,7 +270,7 @@ public class GameManager : Singleton<GameManager>
 
         foreach (var entity in entities)
         {
-            if (entity.Team == Team.Sparta)
+            if (entity.Team == Team.Player)
             {
                 populationUsage += entity.Data.PopulationUse;
             }
@@ -286,7 +286,7 @@ public class GameManager : Singleton<GameManager>
 
         foreach (var entity in entities)
         {
-            if (entity.Team == Team.Sparta)
+            if (entity.Team == Team.Player)
             {
                 maxPopulation += entity.Data.IncreaseMaxPopulationAmount;
             }

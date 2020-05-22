@@ -166,7 +166,7 @@ namespace Game.ConstructionSystem
 
                 if (tileSetSuccessfully)
                 {
-                    cBuilding.SetConstructionAsFinish(Team.Sparta);
+                    cBuilding.SetConstructionAsFinish(Team.Player);
                     _constructionAchievedBuilding.Add(cBuilding);
 
                     return true;

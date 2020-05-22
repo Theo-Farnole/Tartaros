@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: DB_Unit_Alexios
+  m_Name: DB_Unit_Melee_Archer
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,11 +23,11 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _resourcesPerCell
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[LeonidasLegacy.MapCellEditor.CellType,
+      Data: 0|System.Collections.Generic.Dictionary`2[[Game.MapCellEditor.CellType,
         Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[LeonidasLegacy.MapCellEditor.CellType,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.MapCellEditor.CellType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -47,30 +47,40 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  _entityName: Alexios
-  _hotkey: 116
+  _entityName: Archer
+  _hotkey: 97
   _populationUse: 1
-  _portrait: {fileID: 21300000, guid: b6f0dbbeaac11b6458da5818f795668b, type: 3}
-  _prefab: {fileID: 7475237624608698167, guid: 2f518b8a25b2bc5438162ad3b222c4ba, type: 3}
-  _hoverPopupData: {fileID: 11400000, guid: bb1b7339df6d1a8438fbe13439680e61, type: 2}
+  _tileSize: {x: 1, y: 1}
+  _portrait: {fileID: 21300000, guid: eb5ab674716194b458a465e01cafb18d, type: 3}
+  _prefab: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775, type: 3}
+  _hoverPopupData: {fileID: 11400000, guid: 4d613de1ed0e4694590c2a31afd07026, type: 2}
   _isInvincible: 0
-  _hp: 10
+  _hp: 2
   _spawningCost:
     food: 20
     wood: 5
     gold: 0
-  _viewRadius: 4
+  _viewRadius: 8
+  _isConstructionChained: 0
   _canAttack: 1
   _isMelee: 0
-  _prefabProjectile: {fileID: 0}
+  _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
+    type: 3}
   _damage: 1
-  _attackSpeed: 0.5
-  _attackRadius: 3
-  _damagePerSecond: 2
+  _attackSpeed: 2
+  _attackRadius: 5
+  _damagePerSecond: 0.5
   _canMove: 1
   _speed: 3
   _canCreateUnit: 0
-  _availableUnitsForCreation: 000000000000000000000000
+  _availableUnitsForCreation: 
   _canGenerateResources: 0
   _generationTick: 0
+  _generationType: 1
   _radiusToReachCells: 5
+  _constantResourcesGeneration:
+    food: 0
+    wood: 0
+    gold: 0
+  _increaseMaxPopulation: 0
+  _increaseMaxPopulationAmount: 0

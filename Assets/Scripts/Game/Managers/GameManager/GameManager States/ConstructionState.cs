@@ -49,7 +49,7 @@ namespace Game.ConstructionSystem
             if (!successfulSetTile)
                 return;
 
-            _constructionBuilding.SetConstructionAsFinish(Team.Sparta);
+            _constructionBuilding.SetConstructionAsFinish(Team.Player);
 
             // then leave
             SucessfulBuild = true;

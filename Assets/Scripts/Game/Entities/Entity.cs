@@ -68,7 +68,7 @@ public class Entity : MonoBehaviour
 
     void Start()
     {
-        if (_team == Team.Sparta) Destroy(GetCharacterComponent<EntityFogCoverable>());
+        if (_team == Team.Player) Destroy(GetCharacterComponent<EntityFogCoverable>());
         else Destroy(GetCharacterComponent<EntityFogVision>());
 
         OnSpawn?.Invoke(this);

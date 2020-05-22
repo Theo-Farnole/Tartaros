@@ -17,7 +17,7 @@ public static class SelectedGroupsActionsCaller
     /// </summary>
     public static void OnEntityClick(Entity target)
     {
-        if (target.Team == Team.Sparta)
+        if (target.Team == Team.Player)
         {
             OrderMoveToPosition(target.transform.position);
         }

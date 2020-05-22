@@ -45,7 +45,7 @@ namespace Game.Selection
 
         #region Properties
         public bool HasSelection { get => _selectedGroups.Count > 0; }
-        public SelectionGroup[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Team.Sparta select x).ToArray(); }
+        public SelectionGroup[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Team.Player select x).ToArray(); }
         public List<SelectionGroup> SelectedGroups { get => _selectedGroups; }
         #endregion
 

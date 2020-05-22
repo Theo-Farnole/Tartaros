@@ -12,9 +12,8 @@ public enum EntityType
     None = 0,
 
     // units
-    Alexios = EntitiesSystem.STARTING_INDEX_UNIT + 0,
-    Kassandra = EntitiesSystem.STARTING_INDEX_UNIT + 1,
-    Xerxes = EntitiesSystem.STARTING_INDEX_UNIT + 2,
+    Melee_01 = EntitiesSystem.STARTING_INDEX_UNIT + 0,
+    Range_01 = EntitiesSystem.STARTING_INDEX_UNIT + 1,
 
     // building
     House = EntitiesSystem.STARTING_INDEX_BUILDING + 0,
@@ -37,15 +36,14 @@ public enum BuildingType
 public enum UnitType
 {
     None = EntityType.None,
-    Alexios = EntityType.Alexios,
-    Kassandra = EntityType.Kassandra,
-    Xerxes = EntityType.Xerxes,
+    Melee_01 = EntityType.Melee_01,
+    Range_01 = EntityType.Range_01,
 }
 
 public enum Team
 {
-    Sparta,
-    Persian, 
+    Player,
+    Enemy, 
     Nature
 }
 
@@ -55,19 +53,17 @@ public static class EntityTypeExtension
     {
         switch (e)
         {
-            case EntityType.Alexios:
-            case EntityType.Kassandra:
-                return Team.Sparta;
-
-            case EntityType.Xerxes:
-                return Team.Persian;
+            case EntityType.Melee_01:
+            case EntityType.Range_01:
+                return Team.Player;
 
             case EntityType.House:
             case EntityType.Barracks:
-                return Team.Sparta;
-        }
+                return Team.Player;
 
-        return Team.Nature;
+            default:
+                throw new NotImplementedException();
+        }
     }
 
     public static bool IsUnitType(this EntityType e)
@@ -96,37 +92,6 @@ public static class EntityTypeExtension
         return false;
     }
 
-    #region old - TO DELETE
-    [Obsolete("Please use TryGetUnitType instead.")]
-    public static UnitType? GetUnitType(this EntityType e)
-    {
-        foreach (UnitType item in Enum.GetValues(typeof(UnitType)))
-        {
-            if ((int)item == (int)e)
-            {
-                return item;
-            }
-        }
-
-        return null;
-    }
-
-    [Obsolete("Please use TryGetBuildingType instead.")]
-    public static BuildingType? GetBuildingType(this EntityType e)
-    {
-        foreach (BuildingType item in Enum.GetValues(typeof(BuildingType)))
-        {
-            if ((int)item == (int)e)
-            {
-                return item;
-            }
-        }
-
-        return null;
-    }
-    #endregion
-
-    #region new - TO KEEP
     public static bool TryGetUnitType(this EntityType e, out UnitType unitType)
     {
         foreach (UnitType item in Enum.GetValues(typeof(UnitType)))
@@ -155,6 +120,35 @@ public static class EntityTypeExtension
 
         buildingType = BuildingType.None;
         return false;
+    }
+
+    #region Obsolete
+    [Obsolete("Please use TryGetUnitType instead.")]
+    public static UnitType? GetUnitType(this EntityType e)
+    {
+        foreach (UnitType item in Enum.GetValues(typeof(UnitType)))
+        {
+            if ((int)item == (int)e)
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
+    [Obsolete("Please use TryGetBuildingType instead.")]
+    public static BuildingType? GetBuildingType(this EntityType e)
+    {
+        foreach (BuildingType item in Enum.GetValues(typeof(BuildingType)))
+        {
+            if ((int)item == (int)e)
+            {
+                return item;
+            }
+        }
+
+        return null;
     }
     #endregion
 }
