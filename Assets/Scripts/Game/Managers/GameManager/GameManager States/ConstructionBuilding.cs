@@ -18,6 +18,7 @@ namespace Game.ConstructionSystem
         public readonly static string debugLogHeader = "Construction Building : ";
 
         private readonly GameObject _building;
+        private readonly Vector2Int _buildingSize;
         private readonly bool _isChainedBuilding;
         private readonly EntityType _entityType;
         #endregion
@@ -26,11 +27,12 @@ namespace Game.ConstructionSystem
         public GameObject Building { get => _building; }
         #endregion
 
-        public ConstructionBuilding(GameObject gameObject, EntityType entityType, bool isChainedBuilding)
+        public ConstructionBuilding(GameObject gameObject, EntityType entityType, EntityData entityData)
         {
             _building = gameObject;
             _entityType = entityType;
-            _isChainedBuilding = isChainedBuilding;
+            _isChainedBuilding = entityData.IsConstructionChained;
+            _buildingSize = entityData.TileSize;
 
             EnableBuildingComponents(false);
         }
@@ -98,7 +100,7 @@ namespace Game.ConstructionSystem
         public void SetConstructionAsFinish(Team teamToSet)
         {
             EnableBuildingComponents(true);
-            ResetBuildingMeshColor();            
+            ResetBuildingMeshColor();
 
             if (Building.TryGetComponent(out Entity entity))
             {
@@ -130,7 +132,14 @@ namespace Game.ConstructionSystem
         {
             Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(_building.transform.position);
 
-            return TileSystem.Instance.IsTileFree(coords) || TileSystem.Instance.IsTileOfType(coords, _entityType);
+            if (_isChainedBuilding)
+            {
+                return TileSystem.Instance.AreTilesOfTypeOrFree(coords, _buildingSize, _entityType);
+            }
+            else
+            {
+                return TileSystem.Instance.AreTilesFree(coords, _buildingSize);
+            }
         }
         #endregion
         #endregion

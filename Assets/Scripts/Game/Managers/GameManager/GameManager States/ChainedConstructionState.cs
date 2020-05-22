@@ -277,7 +277,7 @@ namespace Game.ConstructionSystem
         {
             var gameObject = Object.Instantiate(BuildingData.Prefab);
 
-            var constructionBuilding = new ConstructionBuilding(gameObject, EntityType, true);
+            var constructionBuilding = new ConstructionBuilding(gameObject, EntityType, BuildingData);
             _constructionBuildings.Add(constructionBuilding);
         }
 

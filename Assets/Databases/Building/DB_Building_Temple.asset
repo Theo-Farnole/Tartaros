@@ -50,7 +50,7 @@ MonoBehaviour:
   _entityName: Temple
   _hotkey: 0
   _populationUse: 0
-  _tileSize: {x: 5, y: 7}
+  _tileSize: {x: 5, y: 8}
   _portrait: {fileID: 21300000, guid: 93738f936b7436b4d8935d79c74ac541, type: 3}
   _prefab: {fileID: 545007711727897807, guid: f9cd4649e773d2e4199850a089ff5003, type: 3}
   _hoverPopupData: {fileID: 11400000, guid: 792246e03ecbdce458895a7da1944788, type: 2}

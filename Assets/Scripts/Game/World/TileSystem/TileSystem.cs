@@ -18,13 +18,13 @@ public class TileSystem : Singleton<TileSystem>
 
     #region Methods
     #region MonoBehaviour Callbacks
-    public void Start()
+    private void Start()
     {
         ResetAllTiles();
     }
     #endregion
 
-    #region Public Methods
+    #region Tile(s) free methods
     public bool IsTileFree(Vector3 position)
         => IsTileFree(WorldPositionToCoords(position));
 
@@ -33,78 +33,8 @@ public class TileSystem : Singleton<TileSystem>
         return (_tiles.ContainsKey(coords) && _tiles[coords] == null);
     }
 
-    public GameObject GetTile(Vector2Int coords)
+    public bool AreTilesFree(Vector2Int coords, Vector2Int buildingSize)
     {
-        if (_tiles.ContainsKey(coords))
-        {
-            return _tiles[coords];
-        }
-
-        return null;
-    }
-
-    public bool IsTileOfType(Vector3 position, EntityType type)
-        => IsTileOfType(WorldPositionToCoords(position), type);
-
-    public bool IsTileOfType(Vector2Int coords, EntityType type)
-    {
-        var tile = GetTile(coords);
-
-        if (tile != null && tile.TryGetComponent(out Entity entity))
-        {
-            return entity.Type == type;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public bool TrySetTile(GameObject gameObject)
-    {
-        return TrySetTile(gameObject.transform.position, gameObject);
-    }
-
-    public bool TrySetTile(GameObject gameObject, Vector2Int buildingSize)
-    {
-        Vector2Int coords = WorldPositionToCoords(gameObject.transform.position);
-        bool tilesFree = DoTilesAreFree(coords, buildingSize);
-
-        if (tilesFree)
-        {
-            SetTile(gameObject, buildingSize);
-            return true;
-        }
-        else
-        {
-            Debug.LogFormat(debugLogHeader + "Can't set tile on non empty cells.");
-            return false;
-        }
-    }
-
-    private void SetTile(GameObject gameObject, Vector2Int buildingSize)
-    {
-        Vector3 gameObjectPosition = gameObject.transform.position;
-        Vector2Int coords = WorldPositionToCoords(gameObjectPosition);
-        Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
-
-        for (int x = 0; x < buildingSize.x; x++)
-        {
-            for (int y = 0; y < buildingSize.y; y++)
-            {
-                Vector2Int coordsOffset = new Vector2Int(x, y);
-                Vector2Int tileCoords = uncenteredCoords + coordsOffset;
-
-                bool setTileSuccesful = TrySetTile(tileCoords, gameObject, gameObjectPosition);
-
-                Debug.DrawRay(CoordsToWorldPosition(tileCoords), Vector3.up * 5, setTileSuccesful ? Color.green : Color.red, 5f);
-                Assert.IsTrue(setTileSuccesful, "At this code section, 'setTileSuccessful' should always be true.");
-            }
-        }
-    }
-
-    private bool DoTilesAreFree(Vector2Int coords, Vector2Int buildingSize)
-    {        
         Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
 
         for (int x = 0; x < buildingSize.x; x++)
@@ -123,24 +53,130 @@ public class TileSystem : Singleton<TileSystem>
 
         return true;
     }
+    #endregion
 
-    private Vector2Int CoordsToUncenteredCoords(Vector2Int centeredCoords, Vector2Int size)
+    #region Tile of type methods
+    public bool AreTilesOfType(Vector2Int coords, Vector2Int buildingSize, EntityType type)
     {
-        if (size.x % 2 != 0) size.x--;
-        if (size.y % 2 != 0) size.y--;
+        Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
 
-        Vector2Int uncenteredCoords = centeredCoords - size / 2;
+        for (int x = 0; x < buildingSize.x; x++)
+        {
+            for (int y = 0; y < buildingSize.y; y++)
+            {
+                Vector2Int coordsOffset = new Vector2Int(x, y);
+                Vector2Int tileCoords = uncenteredCoords + coordsOffset;
 
-        return uncenteredCoords;
+                if (!IsTileOfType(tileCoords, type))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
-    private bool TrySetTile(Vector3 worldPosition, GameObject gameObject)
+    public bool IsTileOfType(Vector3 position, EntityType type)
+        => IsTileOfType(WorldPositionToCoords(position), type);
+
+    public bool IsTileOfType(Vector2Int coords, EntityType type)
     {
-        Vector2Int coords = WorldPositionToCoords(worldPosition);
-        return TrySetTile(coords, gameObject, worldPosition);
+        var tile = GetTile(coords);
+
+        if (tile != null && tile.TryGetComponent(out Entity entity))
+        {
+            return entity.Type == type;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    #endregion
+
+    #region Tile of Type or Free Methods
+    public bool AreTilesOfTypeOrFree(Vector2Int coords, Vector2Int buildingSize, EntityType entityType)
+    {
+        Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
+
+        for (int x = 0; x < buildingSize.x; x++)
+        {
+            for (int y = 0; y < buildingSize.y; y++)
+            {
+                Vector2Int coordsOffset = new Vector2Int(x, y);
+                Vector2Int tileCoords = uncenteredCoords + coordsOffset;
+
+                if (!IsTileOfTypeOrFree(tileCoords, entityType))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
-    private bool TrySetTile(Vector2Int coords, GameObject gameObject, Vector3 worldPosition)
+    public bool IsTileOfTypeOrFree(Vector2Int coords, EntityType entityType)
+        => IsTileFree(coords) || IsTileOfType(coords, entityType);
+    #endregion
+
+    #region Get Tiles Methods
+    public GameObject GetTile(Vector2Int coords)
+    {
+        if (_tiles.ContainsKey(coords))
+        {
+            return _tiles[coords];
+        }
+
+        return null;
+    }
+
+    public GameObject GetTile(Vector3 worldPosition)
+        => GetTile(WorldPositionToCoords(worldPosition));
+
+    public bool DoTilesAreNeightboor(Vector2Int coordsOne, Vector2Int coordsTwo)
+    {
+        if (coordsOne.x + 1 == coordsTwo.x) // coordsTwo at EAST of coordsOne
+            return true;
+        else if (coordsOne.x - 1 == coordsTwo.x) // coordsTwo at WEST of coordsOne
+            return true;
+        else if (coordsOne.y + 1 == coordsTwo.y) // coordsTwo at NORTH of coordsOne
+            return true;
+        else if (coordsOne.y - 1 == coordsTwo.y) // coordsTwo at SOUTH of coordsOne
+            return true;
+        else
+            return false;
+    }
+    #endregion
+
+    #region Set Tiles Methods
+    public bool TrySetTile(GameObject gameObject, Vector2Int coords, Vector2Int buildingSize)
+    {
+        bool tilesFree = AreTilesFree(coords, buildingSize);
+
+        if (tilesFree)
+        {
+            SetTile(gameObject, buildingSize);
+            return true;
+        }
+        else
+        {
+            Debug.LogFormat(debugLogHeader + "Can't set tile on non empty cells.");
+            return false;
+        }
+    }
+
+    public bool TrySetTile(GameObject gameObject, Vector2Int buildingSize)
+    => TrySetTile(gameObject, WorldPositionToCoords(gameObject.transform.position), buildingSize);
+
+    public bool TrySetTile(GameObject gameObject)
+        => TrySetTile(gameObject, gameObject.transform.position);
+
+    public bool TrySetTile(GameObject gameObject, Vector3 worldPosition)
+        => TrySetTile(gameObject, WorldPositionToCoords(worldPosition), worldPosition);
+
+    public bool TrySetTile(GameObject gameObject, Vector2Int coords, Vector3 worldPosition)
     {
         if (_tiles.ContainsKey(coords) == false)
         {
@@ -177,9 +213,51 @@ public class TileSystem : Singleton<TileSystem>
         return true;
     }
 
-    public GameObject GetTileFromWorldCoords(Vector3 worldPosition)
+    private void SetTile(GameObject gameObject, Vector2Int buildingSize)
     {
-        return GetTile(WorldPositionToCoords(worldPosition));
+        Vector3 gameObjectPosition = gameObject.transform.position;
+
+        Vector2Int coords = WorldPositionToCoords(gameObjectPosition);
+        Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
+
+        for (int x = 0; x < buildingSize.x; x++)
+        {
+            for (int y = 0; y < buildingSize.y; y++)
+            {
+                Vector2Int coordsOffset = new Vector2Int(x, y);
+                Vector2Int tileCoords = uncenteredCoords + coordsOffset;
+
+                bool setTileSuccesful = TrySetTile(gameObject, tileCoords, gameObjectPosition);
+
+                Debug.DrawRay(CoordsToWorldPosition(tileCoords), Vector3.up * 5, setTileSuccesful ? Color.green : Color.red, 5f);
+                Assert.IsTrue(setTileSuccesful, "At this code section, 'setTileSuccessful' should always be true.");
+            }
+        }
+    }
+
+    private void ResetAllTiles()
+    {
+        int midCellCount = GameManager.Instance.Grid.CellCount / 2;
+
+        for (int x = -midCellCount; x <= midCellCount; x++)
+        {
+            for (int y = -midCellCount; y <= midCellCount; y++)
+            {
+                _tiles.Add(new Vector2Int(x, y), null);
+            }
+        }
+    }
+    #endregion
+
+    #region Conversion methods
+    private Vector2Int CoordsToUncenteredCoords(Vector2Int centeredCoords, Vector2Int size)
+    {
+        if (size.x % 2 != 0) size.x--;
+        if (size.y % 2 != 0) size.y--;
+
+        Vector2Int uncenteredCoords = centeredCoords - size / 2;
+
+        return uncenteredCoords;
     }
 
     public Vector3 CoordsToWorldPosition(Vector2Int coords)
@@ -197,31 +275,11 @@ public class TileSystem : Singleton<TileSystem>
 
         return result;
     }
+    #endregion
 
-    public bool DoTilesAreNeightboor(Vector2Int coordsOne, Vector2Int coordsTwo)
-    {
-        if (coordsOne.x + 1 == coordsTwo.x) // coordsTwo at EAST of coordsOne
-            return true;
-        else if (coordsOne.x - 1 == coordsTwo.x) // coordsTwo at WEST of coordsOne
-            return true;
-        else if (coordsOne.y + 1 == coordsTwo.y) // coordsTwo at NORTH of coordsOne
-            return true;
-        else if (coordsOne.y - 1 == coordsTwo.y) // coordsTwo at SOUTH of coordsOne
-            return true;
-        else
-            return false;
-    }
-
+    #region Path Finding methods
     public Vector2Int[] GetPath(Vector3 from, Vector3 to)
-        => GetPath(WorldPositionToCoords(from), WorldPositionToCoords(to));
-
-    public static float FindDegree(int x, int y)
-    {
-        float value = (float)((Mathf.Atan2(x, y) / Mathf.PI) * 180f);
-        if (value < 0) value += 360f;
-
-        return value;
-    }
+    => GetPath(WorldPositionToCoords(from), WorldPositionToCoords(to));
 
     public Vector2Int[] GetPath(Vector2Int from, Vector2Int to)
     {
@@ -273,24 +331,7 @@ public class TileSystem : Singleton<TileSystem>
 
         return o;
     }
-    #endregion
 
-    #region Private methods
-    /// <summary>
-    /// Set each tile to null.
-    /// </summary>
-    private void ResetAllTiles()
-    {
-        int midCellCount = GameManager.Instance.Grid.CellCount / 2;
-
-        for (int x = -midCellCount; x <= midCellCount; x++)
-        {
-            for (int y = -midCellCount; y <= midCellCount; y++)
-            {
-                _tiles.Add(new Vector2Int(x, y), null);
-            }
-        }
-    }
     #endregion
     #endregion
 }

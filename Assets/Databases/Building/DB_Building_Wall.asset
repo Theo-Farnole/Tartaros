@@ -50,6 +50,7 @@ MonoBehaviour:
   _entityName: Wall
   _hotkey: 109
   _populationUse: 0
+  _tileSize: {x: 1, y: 1}
   _portrait: {fileID: 21300000, guid: b3561439d7ce3ef4ea00592343b8c42c, type: 3}
   _prefab: {fileID: 545007711727897807, guid: c42319024a50f144ba0a082d69f98a98, type: 3}
   _hoverPopupData: {fileID: 11400000, guid: 8f184cd145b314a41a90dd760bde2c3d, type: 2}
@@ -74,6 +75,11 @@ MonoBehaviour:
   _availableUnitsForCreation: 0000000001000000
   _canGenerateResources: 0
   _generationTick: 1
+  _generationType: 1
   _radiusToReachCells: 5
+  _constantResourcesGeneration:
+    food: 0
+    wood: 0
+    gold: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0
