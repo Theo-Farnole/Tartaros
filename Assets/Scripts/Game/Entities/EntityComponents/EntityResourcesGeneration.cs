@@ -170,8 +170,6 @@ public class EntityResourcesGeneration : EntityComponent
 
         ResourcesWrapper resourcesPerTick = new ResourcesWrapper(0, 0, 0);
 
-        Debug.Log("Entity.Data.GenerationType" + Entity.Data.GenerationType);
-
         switch (Entity.Data.GenerationType)
         {
             case GenerationType.Constant:

@@ -130,16 +130,10 @@ namespace Game.ConstructionSystem
 
         private bool CanBeConstruct()
         {
-            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(_building.transform.position);
+            TileFlag condition = TileFlag.Free | TileFlag.Visible;
+            EntityType typeCondition = _isChainedBuilding ? _entityType : EntityType.None;
 
-            if (_isChainedBuilding)
-            {
-                return TileSystem.Instance.AreTilesOfTypeOrFree(coords, _buildingSize, _entityType);
-            }
-            else
-            {
-                return TileSystem.Instance.AreTilesFree(coords, _buildingSize);
-            }
+            return TileSystem.Instance.DoTilesFillConditions(_building.transform.position, _buildingSize, condition, typeCondition);
         }
         #endregion
         #endregion

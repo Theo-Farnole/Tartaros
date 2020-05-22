@@ -87,24 +87,52 @@ namespace Game.FogOfWar
         }
         #endregion
 
-        Vector2Int WorldToLocalPosition(Vector3 position)
+        #region Get Tiles Methods
+        private Vector2Int CoordsToUncenteredCoords(Vector2Int centeredCoords, Vector2Int size)
         {
-            var gridPosition = _snapGrid.GetNearestPosition(position);
+            if (size.x % 2 != 0) size.x--;
+            if (size.y % 2 != 0) size.y--;
 
-            var cellSize = _snapGrid.CellSize;
-            Vector2Int result = new Vector2Int(
-                (int)(gridPosition.x / cellSize), 
-                (int)(gridPosition.z / cellSize));
+            Vector2Int uncenteredCoords = centeredCoords - size / 2;
 
-            return result;
+            return uncenteredCoords;
+        }
+
+        public bool AreTilesVisible(Vector3 position, Vector2Int size)
+            => AreTilesVisible(WorldToCoords(position), size);
+
+        public Vector2Int WorldToCoords(Vector3 position)
+            => _snapGrid.WorldToCoords(position);
+
+        public Vector3 CoordsToWorld(Vector2Int coords)
+            => _snapGrid.CoordsToWorldPosition(coords);
+
+        public bool AreTilesVisible(Vector2Int coords, Vector2Int size)
+        {
+            Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, size);
+
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    Vector2Int coordsOffset = new Vector2Int(x, y);
+                    Vector2Int tileCoords = uncenteredCoords + coordsOffset;
+
+                    // can't get tile, or fog state isn't visible
+                    if (!TryGetTile(tileCoords, out FogState fogState) || (fogState != FogState.Visible))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         public bool TryGetTile(Vector3 worldPosition, out FogState fogState)
-        {
-            return GetTile(WorldToLocalPosition(worldPosition), out fogState);
-        }
+            => TryGetTile(_snapGrid.WorldToCoords(worldPosition), out fogState);
 
-        bool GetTile(Vector2Int coords, out FogState fogState)
+        private bool TryGetTile(Vector2Int coords, out FogState fogState)
         {
             if (coords.x < 0 || coords.x >= _visiblityMap.GetLength(0)
                 || coords.y < 0 || coords.y >= _visiblityMap.GetLength(1))
@@ -112,12 +140,18 @@ namespace Game.FogOfWar
                 Debug.LogErrorFormat(debugLogHeader + "Coords passed in args aren't in visibility map");
                 fogState = FogState.Visible;
                 return false;
-            }
+            }            
 
             fogState = _visiblityMap[coords.x, coords.y];
+
+            // overwrite output
+            if (_isDisabled) fogState = FogState.Visible;
+            
             return true;
         }
+        #endregion
 
+        #region Visibility Map Routine Methods
         void UpdateVisibilityMap()
         {
             if (_isDisabled)
@@ -170,6 +204,7 @@ namespace Game.FogOfWar
                 _coverables[i].IsCover = isCover;
             }
         }
+        #endregion
 
         void DisableFOW()
         {
@@ -193,7 +228,7 @@ namespace Game.FogOfWar
             _projectorFogOfWar.enabled = true;
         }
 
-        public void DebugLogVisiblityMap()
+        void DebugLogVisiblityMap()
         {
             StringBuilder sb = new StringBuilder();
 

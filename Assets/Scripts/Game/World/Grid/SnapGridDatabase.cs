@@ -91,4 +91,25 @@ public class SnapGridDatabase : ScriptableObject
 
         return result;
     }
+
+    public Vector2Int WorldToCoords(Vector3 position)
+    {
+        var gridPosition = GetNearestPosition(position);
+
+        var cellSize = _cellSize;
+        Vector2Int result = new Vector2Int(
+            (int)(gridPosition.x / cellSize),
+            (int)(gridPosition.z / cellSize));
+
+        Debug.LogFormat("{0}: gridPosition {1} become coords{2}", name, gridPosition, result);
+
+        return result;
+    }
+
+
+    public Vector3 CoordsToWorldPosition(Vector2Int coords)
+    {
+        var cellSize = _cellSize;
+        return new Vector3(coords.x * cellSize, 0, coords.y * cellSize);
+    }
 }

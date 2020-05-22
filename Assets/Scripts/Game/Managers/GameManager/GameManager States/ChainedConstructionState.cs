@@ -87,58 +87,37 @@ namespace Game.ConstructionSystem
         }
 
         protected override void ConstructBuilding()
-        {
-            bool buildingsCanBeBuilt = true;
+        {            
+            ResourcesWrapper constructionCost = CalculateWholeConstructionCost();
+            bool constructionSuccessful = TryConstructBuildings();
 
-            // check if every cBuilding is on a freetile
-            foreach (var cBuilding in _constructionBuildings)
-            {
-                // is tile free and is not a wall                
-                if (!CanConstructBuiding(cBuilding))
-                {
-                    buildingsCanBeBuilt = false;
-                    break;
-                }
+            if (constructionSuccessful)
+            {                
+                SucessfulBuild = true;
+                _owner.Resources -= constructionCost;
             }
-
-            if (buildingsCanBeBuilt)
+            else
             {
-                bool trySetTileFailed = false;
-
-                _constructionAchievedBuilding = new List<ConstructionBuilding>();
-
-                // We calculate cost before setting tiles.
-                // However, after setting tiles 'CalculateWholeConstructionCost' returns 0.
-                ResourcesWrapper constructionCost = CalculateWholeConstructionCost();
-
-                foreach (var cBuilding in _constructionBuildings)
-                {
-                    bool trySetTileSucessful = TrySetTileAndConstructionAsFinish(cBuilding);
-
-                    if (trySetTileSucessful)
-                    {
-                        _constructionAchievedBuilding.Add(cBuilding);
-                    }
-                    else
-                    {
-                        trySetTileFailed = true;
-                        break;
-                    }
-                }
-
-                SucessfulBuild = !trySetTileFailed;
-
-                if (SucessfulBuild)
-                {
-                    _owner.Resources -= constructionCost;
-                }
-                else
-                {
-                    DestroyAllConstructionBuildings();
-                }
+                SucessfulBuild = false;
+                DestroyAllConstructionBuildings();
             }
 
             _owner.State = null;
+        }
+
+        private bool TryConstructBuildings()
+        {            
+            _constructionAchievedBuilding = new List<ConstructionBuilding>();
+
+            foreach (var cBuilding in _constructionBuildings)
+            {
+                bool constructionSuccessful = TryConstructBuilding(cBuilding);
+
+                if (!constructionSuccessful)
+                    return false;
+            }
+
+            return true;
         }
 
         protected override void DestroyAllConstructionBuildings()
@@ -153,6 +132,7 @@ namespace Game.ConstructionSystem
         #endregion
 
         #region Private methods
+        #region Construction / Destroy Methods
         private void DestroyUnachievedBuilding()
         {
             foreach (var cBuilding in _constructionBuildings)
@@ -164,38 +144,45 @@ namespace Game.ConstructionSystem
             }
         }
 
-        private void SetAnchor(Vector3 newPosition)
-        {
-            _anchorSet = true;
-            _anchorPosition = newPosition;
-        }
-
-        private bool TrySetTileAndConstructionAsFinish(ConstructionBuilding cBuilding)
+        private bool TryConstructBuilding(ConstructionBuilding cBuilding)
         {
             GameObject building = cBuilding.Building;
-            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(building.transform.position);
+            Vector3 buildingPosition = building.transform.position;
 
-            // allow building on walls
-            if (TileSystem.Instance.IsTileOfType(coords, EntityType.Wall))
+            TileSystem tileSystem = TileSystem.Instance;
+
+            // don't make construction unsuccessful because building on the same entiy
+            if (tileSystem.GetTile(buildingPosition) != null &&
+                tileSystem.DoTileContainsEntityOfType(buildingPosition, EntityType))
             {
+                // destroy, but don't interupt construction
                 cBuilding.Destroy();
                 return true;
             }
             else
             {
-                bool successfulSetTile = TileSystem.Instance.TrySetTile(building);
+                const TileFlag condition = TileFlag.Free | TileFlag.Visible;
+                bool tileSetSuccessfully = tileSystem.TrySetTile(building, BuildingData.TileSize, condition, EntityType);
 
-                if (successfulSetTile)
+                if (tileSetSuccessfully)
                 {
                     cBuilding.SetConstructionAsFinish(Team.Sparta);
+                    _constructionAchievedBuilding.Add(cBuilding);
+
                     return true;
                 }
                 else
                 {
-                    Debug.LogErrorFormat(debugLogHeader + "Failed to set tile. Successfulbuild set to false");
                     return false;
                 }
             }
+        }
+        #endregion
+
+        private void SetAnchor(Vector3 newPosition)
+        {
+            _anchorSet = true;
+            _anchorPosition = newPosition;
         }
 
         #region Set Building Position Methods
@@ -246,7 +233,7 @@ namespace Game.ConstructionSystem
 
             for (int i = 0; i < positions.Length; i++)
             {
-                positions[i] = TileSystem.Instance.CoordsToWorldPosition(coords[i]);
+                positions[i] = TileSystem.Instance.CoordsToWorld(coords[i]);
             }
 
             SetBuildingsPosition(positions);
@@ -300,16 +287,14 @@ namespace Game.ConstructionSystem
             return (_constructionAchievedBuilding != null && _constructionAchievedBuilding.Contains(cBuilding));
         }
 
-        private bool CanConstructBuiding(ConstructionBuilding cBuilding)
+        private bool DoBuildingConstructionHasACost(ConstructionBuilding cBuilding)
         {
-            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(cBuilding.Building.transform.position);
-            return TileSystem.Instance.IsTileFree(coords) || TileSystem.Instance.IsTileOfType(coords, EntityType);
-        }
+            Vector2Int coords = TileSystem.Instance.WorldToCoords(cBuilding.Building.transform.position);
 
-        private bool DoBuildingConstructionIsPaid(ConstructionBuilding cBuilding)
-        {
-            Vector2Int coords = TileSystem.Instance.WorldPositionToCoords(cBuilding.Building.transform.position);
-            return TileSystem.Instance.IsTileFree(coords) && !TileSystem.Instance.IsTileOfType(coords, EntityType);
+            GameObject tile = TileSystem.Instance.GetTile(coords);
+            
+            return (tile == null) || 
+                (TileSystem.Instance.IsTileFree(coords) && !TileSystem.Instance.DoTileContainsEntityOfType(coords, EntityType));
         }
 
         ResourcesWrapper CalculateWholeConstructionCost()
@@ -320,7 +305,7 @@ namespace Game.ConstructionSystem
 
         int CalculateConstructableBuildingCount()
         {
-            return _constructionBuildings.Where(x => DoBuildingConstructionIsPaid(x) == true).Count();
+            return _constructionBuildings.Where(x => DoBuildingConstructionHasACost(x) == true).Count();
         }
         #endregion
         #endregion

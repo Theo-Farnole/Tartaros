@@ -44,7 +44,7 @@ public class WallAppearance : MonoBehaviour
 
     void Instance_OnTileTerrainChanged(Vector2Int changedCoords, GameObject gameObjectAtCoords)
     {
-        Vector2Int myCoords = TileSystem.Instance.WorldPositionToCoords(transform.position);
+        Vector2Int myCoords = TileSystem.Instance.WorldToCoords(transform.position);
 
         // only change appearance if tiles are neightboor
         if (TileSystem.Instance.DoTilesAreNeightboor(myCoords, changedCoords))
@@ -71,7 +71,7 @@ public class WallAppearance : MonoBehaviour
 
     bool Calculate_IsWallJoint(out WallOrientation wallOrientation)
     {
-        Vector2Int myCoords = TileSystem.Instance.WorldPositionToCoords(transform.position);
+        Vector2Int myCoords = TileSystem.Instance.WorldToCoords(transform.position);
 
         Vector2Int northCoords = new Vector2Int(myCoords.x, myCoords.y + 1);
         Vector2Int southCoords = new Vector2Int(myCoords.x, myCoords.y - 1);

@@ -43,7 +43,8 @@ namespace Game.ConstructionSystem
             GameObject building = _constructionBuilding.Building;
 
             // register tile
-            bool successfulSetTile = TileSystem.Instance.TrySetTile(building, BuildingData.TileSize);
+            const TileFlag tileFlagCondition = TileFlag.Free | TileFlag.Visible;
+            bool successfulSetTile = TileSystem.Instance.TrySetTile(building, BuildingData.TileSize, tileFlagCondition);
 
             if (!successfulSetTile)
                 return;
