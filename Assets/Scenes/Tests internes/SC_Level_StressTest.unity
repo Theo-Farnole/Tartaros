@@ -1206,6 +1206,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 599860584}
     m_Modifications:
+    - target: {fileID: 341288624616211950, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
+        type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 3639
+      objectReference: {fileID: 0}
     - target: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775,
         type: 3}
       propertyPath: m_Name
@@ -1530,7 +1535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad07d5dcb15544f4e8fd2c00cf466716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
+  _data: {fileID: 11400000, guid: 18f72b6787b444e4395cc0e108601425, type: 2}
 --- !u!81 &832544457
 AudioListener:
   m_ObjectHideFlags: 0

@@ -17,7 +17,27 @@ MonoBehaviour:
     - _waitTimeBeforeSequence: 0
       _waitTimeAfterSequence: 1
       _spawnUnits: 1
-      _unitType: 3
-      _unitCount: 600
+      _unitType: 1
+      _unitCount: 300
       _timeAfterUnitSpawn: 0.1
-  - _unitSequences: []
+  - _unitSequences:
+    - _waitTimeBeforeSequence: 0
+      _waitTimeAfterSequence: 1
+      _spawnUnits: 1
+      _unitType: 1
+      _unitCount: 300
+      _timeAfterUnitSpawn: 0.05
+  - _unitSequences:
+    - _waitTimeBeforeSequence: 0
+      _waitTimeAfterSequence: 1
+      _spawnUnits: 1
+      _unitType: 1
+      _unitCount: 300
+      _timeAfterUnitSpawn: 0.05
+  - _unitSequences:
+    - _waitTimeBeforeSequence: 0
+      _waitTimeAfterSequence: 1
+      _spawnUnits: 1
+      _unitType: 1
+      _unitCount: 300
+      _timeAfterUnitSpawn: 0.05

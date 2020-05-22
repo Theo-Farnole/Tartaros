@@ -779,14 +779,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38584bfa730fd7e4aae8e2250e447cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _activeOnStart: 0
-  _toggleKey: 283
-  _giveKey: 284
-  _giveResources:
-    food: 100
-    wood: 100
-    gold: 100
-  _displayMapKey: 285
 --- !u!4 &994698239
 Transform:
   m_ObjectHideFlags: 0
