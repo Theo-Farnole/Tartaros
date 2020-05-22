@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 3143762813810147004}
   - component: {fileID: 379675412609147244}
   - component: {fileID: 6438216404893168145}
+  - component: {fileID: 5282470303608120372}
   m_Layer: 10
   m_Name: _PF_Entity_TEMPLATE
   m_TagString: Untagged
@@ -259,6 +260,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fogOfWarVision: {fileID: 581013801734161498}
+--- !u!114 &5282470303608120372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927950564186908724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e41ca93b9e8f9f4fa935d79b34e78fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9025644110156182020
 GameObject:
   m_ObjectHideFlags: 0
