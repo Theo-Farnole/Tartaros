@@ -77,7 +77,7 @@ public class EntityDetection : EntityComponent
     #region Public methods
     public bool IsEntityInAttackRange(Entity target)
     {
-        return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius;
+        return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius + Mathf.Max(target.Data.TileSize.x, target.Data.TileSize.y);
     }
 
     public bool IsNearFromEntity(Entity target)
