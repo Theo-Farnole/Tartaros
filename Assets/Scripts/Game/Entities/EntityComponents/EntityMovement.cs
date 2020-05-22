@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class EntityMovement : EntityComponent
 {
     #region Fields
+    private const string debugLogHeader = "Entity Movement : ";
+
     private NavMeshAgent _navMeshAgent;
     #endregion
 
@@ -20,7 +22,7 @@ public class EntityMovement : EntityComponent
     {
         if (_navMeshAgent != null)
         {
-            _navMeshAgent.speed = Entity.Data.Speed;
+            SetupNavMeshAgent();
         }
     }
     #endregion
@@ -81,6 +83,21 @@ public class EntityMovement : EntityComponent
         }
 
         return false;
+    }
+    #endregion
+
+    #region Private methods
+    private void SetupNavMeshAgent()
+    {
+        _navMeshAgent.speed = Entity.Data.Speed;
+
+        if (Entity.Data.TileSize.x != Entity.Data.TileSize.y)
+        {
+            Debug.LogWarningFormat(debugLogHeader + "TileSize isn't a square. We set nav mesh agent's radius with highest value of tile size.");
+        }
+
+        float diameter = Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y);
+        _navMeshAgent.radius = diameter / 2;
     }
     #endregion
     #endregion
