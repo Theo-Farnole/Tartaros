@@ -50,6 +50,7 @@ MonoBehaviour:
   _entityName: Barracks
   _hotkey: 103
   _populationUse: 0
+  _tileSize: {x: 1, y: 1}
   _portrait: {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 5223a26d9e803f04ab7c98100babab8f, type: 3}
   _hoverPopupData: {fileID: 11400000, guid: 90c75895089756c4bbf509a0cc644f63, type: 2}
@@ -74,7 +75,7 @@ MonoBehaviour:
   _availableUnitsForCreation: 0200000001000000
   _canGenerateResources: 0
   _generationTick: 1
-  _generationType: 0
+  _generationType: 1
   _radiusToReachCells: 5
   _constantResourcesGeneration:
     food: 0

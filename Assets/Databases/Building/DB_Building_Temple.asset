@@ -23,11 +23,11 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _resourcesPerCell
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[LeonidasLegacy.MapCellEditor.CellType,
+      Data: 0|System.Collections.Generic.Dictionary`2[[Game.MapCellEditor.CellType,
         Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[LeonidasLegacy.MapCellEditor.CellType,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.MapCellEditor.CellType,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
@@ -50,6 +50,7 @@ MonoBehaviour:
   _entityName: Temple
   _hotkey: 0
   _populationUse: 0
+  _tileSize: {x: 5, y: 7}
   _portrait: {fileID: 21300000, guid: 93738f936b7436b4d8935d79c74ac541, type: 3}
   _prefab: {fileID: 545007711727897807, guid: f9cd4649e773d2e4199850a089ff5003, type: 3}
   _hoverPopupData: {fileID: 11400000, guid: 792246e03ecbdce458895a7da1944788, type: 2}
@@ -60,6 +61,7 @@ MonoBehaviour:
     wood: 5
     gold: 0
   _viewRadius: 2
+  _isConstructionChained: 0
   _canAttack: 0
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
@@ -73,6 +75,11 @@ MonoBehaviour:
   _availableUnitsForCreation: 0000000001000000
   _canGenerateResources: 0
   _generationTick: 1
+  _generationType: 0
   _radiusToReachCells: 5
+  _constantResourcesGeneration:
+    food: 0
+    wood: 0
+    gold: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0

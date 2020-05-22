@@ -33,7 +33,7 @@ namespace Game.UI
         public override void Initialize<T>(T uiManager)
         {
             base.Initialize(uiManager);
-            
+
             if (_buildingButtons == null)
                 CreateConstructionButtons();
         }
@@ -59,9 +59,13 @@ namespace Game.UI
             BrowseThrowBuildingType(
                 (BuildingType buildingType, int index) =>
                 {
-                    UI_ConstructionButton constructionButton = _buildingButtons[index].GetComponent<UI_ConstructionButton>();
-                    Assert.IsNotNull(constructionButton, "Missing a UI_ConstructionButton component.");
-                    constructionButton.UnsubcribeToEvents(buildingType);
+                    if (_buildingButtons != null && _buildingButtons[index] != null)
+                    {
+                        if (_buildingButtons[index].TryGetComponent(out UI_ConstructionButton constructionButton))
+                        {
+                            constructionButton.UnsubcribeToEvents(buildingType);
+                        }
+                    }
                 }
             );
         }
@@ -115,7 +119,7 @@ namespace Game.UI
         private void CreateConstructionButton(BuildingType buildingType, int index)
         {
             Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
-            buildingButton.transform.SetParent(_parentConstructionButton, false);            
+            buildingButton.transform.SetParent(_parentConstructionButton, false);
 
             // set building type on construction button
             UI_ConstructionButton constructionButton = buildingButton.GetComponent<UI_ConstructionButton>();

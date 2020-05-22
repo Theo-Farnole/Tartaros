@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions;
 
 namespace Game.ConstructionSystem
 {
@@ -97,12 +98,14 @@ namespace Game.ConstructionSystem
         public void SetConstructionAsFinish(Team teamToSet)
         {
             EnableBuildingComponents(true);
-            ResetBuildingMeshColor();
+            ResetBuildingMeshColor();            
 
             if (Building.TryGetComponent(out Entity entity))
             {
                 entity.Team = teamToSet;
             }
+
+            Assert.IsNotNull(entity);
 
             DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
         }

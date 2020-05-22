@@ -33,16 +33,18 @@ public class EntityData : SerializedScriptableObject
     [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
     [SerializeField] private int _populationUse;
 
-    [HorizontalGroup(portraitAndPrefabGroupName, 55)]
-    [HideLabel, PreviewField(55, ObjectFieldAlignment.Left)]
+    [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
+    [SerializeField] private Vector2Int _tileSize = Vector2Int.one;
+
+    [HorizontalGroup(portraitAndPrefabGroupName, 72)]
+    [HideLabel, PreviewField(72, ObjectFieldAlignment.Left)]
     [SerializeField] private Sprite _portrait;
 
-    [HorizontalGroup(portraitAndPrefabGroupName, 55)]
+    [HorizontalGroup(portraitAndPrefabGroupName, 72)]
     [Required]
-    [HideLabel, PreviewField(55, ObjectFieldAlignment.Left)]
+    [HideLabel, PreviewField(72, ObjectFieldAlignment.Left)]
     [SerializeField] private GameObject _prefab;
 
-    [InlineEditor]
     [SerializeField] private HoverPopupData _hoverPopupData;
 
 
@@ -51,6 +53,7 @@ public class EntityData : SerializedScriptableObject
     public GameObject Prefab { get => _prefab; }
     public HoverPopupData HoverPopupData { get => _hoverPopupData; }
     public int PopulationUse { get => _populationUse; }
+    public Vector2Int TileSize { get => _tileSize; }
     #endregion
 
     #region Health Settings

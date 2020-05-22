@@ -12,6 +12,7 @@ public class TileSystem : Singleton<TileSystem>
     #region Fields
     public event OnTileTerrainChanged OnTileTerrainChanged;
 
+    private const string debugLogHeader = "Tile System : ";
     private Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>();
     #endregion
 
@@ -62,6 +63,75 @@ public class TileSystem : Singleton<TileSystem>
     public bool TrySetTile(GameObject gameObject)
     {
         return TrySetTile(gameObject.transform.position, gameObject);
+    }
+
+    public bool TrySetTile(GameObject gameObject, Vector2Int buildingSize)
+    {
+        Vector2Int coords = WorldPositionToCoords(gameObject.transform.position);
+        bool tilesFree = DoTilesAreFree(coords, buildingSize);
+
+        if (tilesFree)
+        {
+            SetTile(gameObject, buildingSize);
+            return true;
+        }
+        else
+        {
+            Debug.LogFormat(debugLogHeader + "Can't set tile on non empty cells.");
+            return false;
+        }
+    }
+
+    private void SetTile(GameObject gameObject, Vector2Int buildingSize)
+    {
+        Vector3 gameObjectPosition = gameObject.transform.position;
+        Vector2Int coords = WorldPositionToCoords(gameObjectPosition);
+        Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
+
+        for (int x = 0; x < buildingSize.x; x++)
+        {
+            for (int y = 0; y < buildingSize.y; y++)
+            {
+                Vector2Int coordsOffset = new Vector2Int(x, y);
+                Vector2Int tileCoords = uncenteredCoords + coordsOffset;
+
+                bool setTileSuccesful = TrySetTile(tileCoords, gameObject, gameObjectPosition);
+
+                Debug.DrawRay(CoordsToWorldPosition(tileCoords), Vector3.up * 5, setTileSuccesful ? Color.green : Color.red, 5f);
+                Assert.IsTrue(setTileSuccesful, "At this code section, 'setTileSuccessful' should always be true.");
+            }
+        }
+    }
+
+    private bool DoTilesAreFree(Vector2Int coords, Vector2Int buildingSize)
+    {        
+        Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
+
+        for (int x = 0; x < buildingSize.x; x++)
+        {
+            for (int y = 0; y < buildingSize.y; y++)
+            {
+                Vector2Int coordsOffset = new Vector2Int(x, y);
+                Vector2Int tileCoords = uncenteredCoords + coordsOffset;
+
+                if (!IsTileFree(tileCoords))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private Vector2Int CoordsToUncenteredCoords(Vector2Int centeredCoords, Vector2Int size)
+    {
+        if (size.x % 2 != 0) size.x--;
+        if (size.y % 2 != 0) size.y--;
+
+        Vector2Int uncenteredCoords = centeredCoords - size / 2;
+
+        return uncenteredCoords;
     }
 
     private bool TrySetTile(Vector3 worldPosition, GameObject gameObject)
@@ -188,7 +258,7 @@ public class TileSystem : Singleton<TileSystem>
         }
 
         // we add one, to include current start
-        pathCount++; 
+        pathCount++;
 
         Assert.IsTrue(pathCount >= 0, "TileSystem : Path count should greater or equals to '0'!");
 

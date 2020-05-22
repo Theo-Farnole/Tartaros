@@ -18,4 +18,4 @@ MonoBehaviour:
     gold: 10
   _startMaxPopulationCount: 10
   _wavesPassedToWin: 1
-  _buildingsInPanelConstruction: e8030000e9030000ea030000ec030000
+  _buildingsInPanelConstruction: e8030000e9030000ea030000ec030000eb030000
