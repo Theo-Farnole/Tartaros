@@ -10,6 +10,7 @@ namespace Game.WaveSystem
     public class WavesData : ScriptableObject
     {
         [SerializeField] private Wave[] _waves = new Wave[0];
+        [SerializeField] private string _entityIDToAttack = "building_temple";
 
         /// <summary>
         /// Don't pass the wave index (starts from '0'), but the actual wave count (starts from '1)
@@ -26,7 +27,17 @@ namespace Game.WaveSystem
             Assert.IsTrue(waveIndex >= 0, "Wave index must be greater or equals to zero.");
             Assert.IsTrue(waveIndex < _waves.Length, string.Format("There is no wave setted at wave {0} for object {1}.", waveCount, name));
             
-            yield return _waves[waveIndex].WaveSequence(position, GameManager.Instance.GetWaveAttackTarget());
+            yield return _waves[waveIndex].WaveSequence(position, GetWaveAttackTarget());
+        }
+
+        
+        public Transform GetWaveAttackTarget()
+        {
+            var foundedEntity = FindObjectsOfType<Entity>()
+                    .Where(x => x.EntityID == _entityIDToAttack)
+                    .FirstOrDefault();
+
+            return foundedEntity != null ? foundedEntity.transform : null;
         }
     }
 }
