@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.16788375, g: 0.21073635, b: 0.28994125, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -121,7 +121,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 98f5d932e35f87d41a9ca62831f66555, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 19595733d73ee4e40a9861ef29cbfe5f, type: 2}
 --- !u!1 &50587641
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,13 +313,13 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 11400000, guid: 9c8c19eb7597f8c42ae1c998ec68282f, type: 2}
     - {fileID: 11400000, guid: 6a1997c83280ffd478dffdae9191d1a8, type: 2}
     - {fileID: 11400000, guid: 2885a22bbf77a124fa2c0c52e70bc16c, type: 2}
+    - {fileID: 11400000, guid: 9c8c19eb7597f8c42ae1c998ec68282f, type: 2}
     - {fileID: 11400000, guid: c35f6ea4acf66d34dab6f301adc7f610, type: 2}
     - {fileID: 11400000, guid: 5dd26269360472c45845b32dc21ce345, type: 2}
-    - {fileID: 11400000, guid: 2299761eaefd7ea49aad12db7978c5e7, type: 2}
     - {fileID: 11400000, guid: f0fc01d18dfe7644f9e2418f0d534d15, type: 2}
+    - {fileID: 11400000, guid: 2299761eaefd7ea49aad12db7978c5e7, type: 2}
     - {fileID: 11400000, guid: 74889946139d707488b53b8deef72764, type: 2}
     - {fileID: 11400000, guid: d65e210e04d278d49b604c93a8d75a15, type: 2}
     - {fileID: 11400000, guid: 5b1c55666a90466449d0422ab25c147c, type: 2}
@@ -329,32 +329,26 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: _buildingsRegister
+    - Name: _entitiesRegisters
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[BuildingType, Assembly-CSharp],[EntityData,
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[EntityData,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[BuildingType, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
+      Data: 1|System.Collections.Generic.GenericEqualityComparer`1[[System.String,
+        mscorlib]], mscorlib
     - Name: 
       Entry: 8
       Data: 
     - Name: 
       Entry: 12
-      Data: 5
+      Data: 7
     - Name: 
       Entry: 7
       Data: 
     - Name: $k
-      Entry: 3
-      Data: 1000
+      Entry: 1
+      Data: building_barracks
     - Name: $v
       Entry: 10
       Data: 0
@@ -365,8 +359,8 @@ MonoBehaviour:
       Entry: 7
       Data: 
     - Name: $k
-      Entry: 3
-      Data: 1001
+      Entry: 1
+      Data: building_resources_food
     - Name: $v
       Entry: 10
       Data: 1
@@ -377,8 +371,8 @@ MonoBehaviour:
       Entry: 7
       Data: 
     - Name: $k
-      Entry: 3
-      Data: 1002
+      Entry: 1
+      Data: building_house
     - Name: $v
       Entry: 10
       Data: 2
@@ -389,8 +383,8 @@ MonoBehaviour:
       Entry: 7
       Data: 
     - Name: $k
-      Entry: 3
-      Data: 1003
+      Entry: 1
+      Data: building_temple
     - Name: $v
       Entry: 10
       Data: 3
@@ -401,8 +395,8 @@ MonoBehaviour:
       Entry: 7
       Data: 
     - Name: $k
-      Entry: 3
-      Data: 1004
+      Entry: 1
+      Data: building_wall
     - Name: $v
       Entry: 10
       Data: 4
@@ -410,37 +404,11 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _unitsRegister
-      Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[UnitType, Assembly-CSharp],[EntityData,
-        Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[UnitType, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 2
-    - Name: 
       Entry: 7
       Data: 
     - Name: $k
-      Entry: 3
-      Data: 1
+      Entry: 1
+      Data: unit_range_archer
     - Name: $v
       Entry: 10
       Data: 5
@@ -451,8 +419,8 @@ MonoBehaviour:
       Entry: 7
       Data: 
     - Name: $k
-      Entry: 3
-      Data: 2
+      Entry: 1
+      Data: unit_melee_hoplite
     - Name: $v
       Entry: 10
       Data: 6
@@ -467,11 +435,11 @@ MonoBehaviour:
       Data: 
     - Name: _overallActionsRegister
       Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[OverallAction, Assembly-CSharp],[OverallActionData,
+      Data: 2|System.Collections.Generic.Dictionary`2[[OverallAction, Assembly-CSharp],[OverallActionData,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[OverallAction, Assembly-CSharp]],
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[OverallAction, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12

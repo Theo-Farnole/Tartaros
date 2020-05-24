@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: DB_Unit_Melee_Archer
+  m_Name: DB_Unit_Range_Archer
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -73,7 +73,7 @@ MonoBehaviour:
   _canMove: 1
   _speed: 3
   _canCreateUnit: 0
-  _availableUnitsForCreation: 
+  _availableUnitsForCreation: []
   _canGenerateResources: 0
   _generationTick: 0
   _generationType: 1

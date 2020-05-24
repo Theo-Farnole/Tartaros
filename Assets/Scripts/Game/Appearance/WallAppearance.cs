@@ -17,8 +17,12 @@ public class WallAppearance : MonoBehaviour
 
     private const string debugLogHeader = "Wall Apperance : ";
 
+    [Header("OBJECTS LINKING")]
     [SerializeField] private GameObject _jointModel;
     [SerializeField] private GameObject _wallModel;
+
+    [Header("IDS")]
+    [SerializeField] private string _wallID = "building_wall";
 
     void OnEnable()
     {
@@ -111,7 +115,7 @@ public class WallAppearance : MonoBehaviour
 
         if (tile.TryGetComponent(out Entity entity))
         {
-            if (entity.Type == EntityType.Wall)
+            if (entity.EntityID == _wallID)
                 return true;
         }
 

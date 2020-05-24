@@ -18,7 +18,7 @@ namespace Game.ConstructionSystem
         private Vector3 _anchorPosition;
         #endregion
 
-        public ChainedConstructionState(GameManager owner, BuildingType buildingType) : base(owner, buildingType)
+        public ChainedConstructionState(GameManager owner, string buildingID) : base(owner, buildingID)
         {
         }
 
@@ -152,8 +152,7 @@ namespace Game.ConstructionSystem
             TileSystem tileSystem = TileSystem.Instance;
 
             // don't make construction unsuccessful because building on the same entiy
-            if (tileSystem.GetTile(buildingPosition) != null &&
-                tileSystem.DoTileContainsEntityOfType(buildingPosition, EntityType))
+            if (tileSystem.GetTile(buildingPosition) != null && tileSystem.DoTileContainsEntityOfID(buildingPosition, EntityID))
             {
                 // destroy, but don't interupt construction
                 cBuilding.Destroy();
@@ -162,7 +161,7 @@ namespace Game.ConstructionSystem
             else
             {
                 const TileFlag condition = TileFlag.Free | TileFlag.Visible;
-                bool tileSetSuccessfully = tileSystem.TrySetTile(building, BuildingData.TileSize, condition, EntityType);
+                bool tileSetSuccessfully = tileSystem.TrySetTile(building, EntityData.TileSize, condition, EntityID);
 
                 if (tileSetSuccessfully)
                 {
@@ -262,9 +261,9 @@ namespace Game.ConstructionSystem
         #region List Modificators
         void AddConstructionBuilding()
         {
-            var gameObject = Object.Instantiate(BuildingData.Prefab);
+            var gameObject = Object.Instantiate(EntityData.Prefab);
 
-            var constructionBuilding = new ConstructionBuilding(gameObject, EntityType, BuildingData);
+            var constructionBuilding = new ConstructionBuilding(gameObject, EntityID, EntityData);
             _constructionBuildings.Add(constructionBuilding);
         }
 
@@ -294,13 +293,13 @@ namespace Game.ConstructionSystem
             GameObject tile = TileSystem.Instance.GetTile(coords);
             
             return (tile == null) || 
-                (TileSystem.Instance.IsTileFree(coords) && !TileSystem.Instance.DoTileContainsEntityOfType(coords, EntityType));
+                (TileSystem.Instance.IsTileFree(coords) && !TileSystem.Instance.DoTileContainsEntityOfID(coords, EntityID));
         }
 
         ResourcesWrapper CalculateWholeConstructionCost()
         {
             int constructableBuildings = CalculateConstructableBuildingCount();
-            return BuildingData.SpawningCost * constructableBuildings;
+            return EntityData.SpawningCost * constructableBuildings;
         }
 
         int CalculateConstructableBuildingCount()

@@ -25,7 +25,7 @@ namespace Game.UI
         #endregion
 
         #region Properties
-        private BuildingType[] GameManager_BuildingsInPanelConstruction => GameManager.Instance.ManagerData.BuildingsInPanelConstruction;
+        private string[] GameManager_IDsInPanelConstruction => GameManager.Instance.ManagerData.IDsInPanelConstruction;
         #endregion
 
         #region Methods
@@ -41,29 +41,29 @@ namespace Game.UI
         public override void SubscribeToEvents<T>(T uiManager)
         {
             // make sure there is enought button
-            Assert.AreEqual(GameManager_BuildingsInPanelConstruction.Length, _buildingButtons.Length,
-                string.Format("<color=yellow>Panel construction</color> should have {0} building buttons, but there is {1}.", GameManager_BuildingsInPanelConstruction.Length, _buildingButtons.Length));
+            Assert.AreEqual(GameManager_IDsInPanelConstruction.Length, _buildingButtons.Length,
+                string.Format("<color=yellow>Panel construction</color> should have {0} building buttons, but there is {1}.", GameManager_IDsInPanelConstruction.Length, _buildingButtons.Length));
 
-            BrowseThrowBuildingType(
-                (BuildingType buildingType, int index) =>
+            BrowseIDsInPanelConstruction(
+                (string id, int index) =>
                 {
                     UI_ConstructionButton constructionButton = _buildingButtons[index].GetComponent<UI_ConstructionButton>();
                     Assert.IsNotNull(constructionButton, "Missing a UI_ConstructionButton component.");
-                    constructionButton.SubcribeToEvents(buildingType);
+                    constructionButton.SubcribeToEvents(id);
                 }
             );
         }
 
         public override void UnsubscribeToEvents<T>(T uiManager)
         {
-            BrowseThrowBuildingType(
-                (BuildingType buildingType, int index) =>
+            BrowseIDsInPanelConstruction(
+                (string id, int index) =>
                 {
                     if (_buildingButtons != null && _buildingButtons[index] != null)
                     {
                         if (_buildingButtons[index].TryGetComponent(out UI_ConstructionButton constructionButton))
                         {
-                            constructionButton.UnsubcribeToEvents(buildingType);
+                            constructionButton.UnsubcribeToEvents(id);
                         }
                     }
                 }
@@ -83,40 +83,33 @@ namespace Game.UI
             _parentConstructionButton.transform.DestroyImmediateChildren();
 
             // get building enum length
-            _buildingButtons = new Button[GameManager_BuildingsInPanelConstruction.Length];
+            _buildingButtons = new Button[GameManager_IDsInPanelConstruction.Length];
 
             // create a button for each entries in game manager 'buildings in panel construction'
-            BrowseThrowBuildingType(CreateConstructionButton);
+            BrowseIDsInPanelConstruction(CreateConstructionButton);
 
             // make sure that we have created enought buttons
-            Assert.AreEqual(GameManager_BuildingsInPanelConstruction.Length, _buildingButtons.Length,
-                string.Format("<color=yellow>Panel construction</color> should have {0} building buttons, but there is {1}.", GameManager_BuildingsInPanelConstruction.Length, _buildingButtons.Length));
+            Assert.AreEqual(GameManager_IDsInPanelConstruction.Length, _buildingButtons.Length,
+                string.Format("<color=yellow>Panel construction</color> should have {0} building buttons, but there is {1}.", GameManager_IDsInPanelConstruction.Length, _buildingButtons.Length));
 
             Canvas.ForceUpdateCanvases();
         }
         #endregion
 
         #region Private methods
-        private void BrowseThrowBuildingType(Action<BuildingType, int> action)
+        private void BrowseIDsInPanelConstruction(Action<string, int> action)
         {
-            var array = GameManager.Instance.ManagerData.BuildingsInPanelConstruction;
+            var array = GameManager.Instance.ManagerData.IDsInPanelConstruction;
 
             for (int i = 0; i < array.Length; i++)
             {
-                BuildingType buildingType = array[i];
+                string entityID = array[i];
 
-                // skip building type
-                if (buildingType == BuildingType.None)
-                {
-                    Debug.LogWarningFormat(debugLogHeader + "Skipping 'BuildingType.None'. Please remove it from GameManagerData.");
-                    continue;
-                }
-
-                action?.Invoke(buildingType, i);
+                action?.Invoke(entityID, i);
             }
         }
 
-        private void CreateConstructionButton(BuildingType buildingType, int index)
+        private void CreateConstructionButton(string entityID, int index)
         {
             Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
             buildingButton.transform.SetParent(_parentConstructionButton, false);
@@ -124,7 +117,7 @@ namespace Game.UI
             // set building type on construction button
             UI_ConstructionButton constructionButton = buildingButton.GetComponent<UI_ConstructionButton>();
             Assert.IsNotNull(constructionButton, "Prefab construction prefab misses a UI_ConstructionButton component.");
-            constructionButton.SetBuildingType(buildingType);
+            constructionButton.SetBuildingType(entityID);
 
             _buildingButtons[index] = buildingButton;
         }

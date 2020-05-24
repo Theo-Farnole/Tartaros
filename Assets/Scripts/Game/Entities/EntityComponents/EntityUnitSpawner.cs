@@ -20,23 +20,23 @@ public class EntityUnitSpawner : EntityComponent
         _anchorPosition = anchorPosition;
     }
 
-    public void SpawnUnit(UnitType unitType)
+    public void SpawnUnit(string unitID)
     {
         if (!Entity.Data.CanSpawnUnit) return;
 
-        if (Entity.Data.AvailableUnitsForCreation.Contains(unitType) == false)
+        if (Entity.Data.AvailableUnitsForCreation.Contains(unitID) == false)
         {
-            Debug.LogWarningFormat(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", unitType, name);
+            Debug.LogWarningFormat(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", unitID, name);
             return;
         }
 
-        if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData unitData))
+        if (MainRegister.Instance.TryGetEntityData(unitID, out EntityData unitData))
         {
             if (GameManager.Instance != null)
             {
                 if (!GameManager.Instance.HasEnoughtPopulationToSpawn(unitData))
                 {
-                    UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", unitType));
+                    UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", unitID));
                     return;
                 }
             }
@@ -47,7 +47,7 @@ public class EntityUnitSpawner : EntityComponent
 
             if (GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost) == false)
             {
-                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitType + ".");
+                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitID + ".");
                 return;
             }
 
@@ -59,7 +59,7 @@ public class EntityUnitSpawner : EntityComponent
         }
         else
         {
-            Debug.LogErrorFormat(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitType); ;
+            Debug.LogErrorFormat(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitID); ;
         }
     }
 

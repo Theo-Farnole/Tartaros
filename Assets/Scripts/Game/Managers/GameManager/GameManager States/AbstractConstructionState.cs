@@ -13,8 +13,8 @@ namespace Game.ConstructionSystem
         public static readonly string debugLogHeader = "Abstract Building State";
         public static readonly int terrainLayerMask = LayerMask.GetMask("Terrain");
 
-        private BuildingType _buildingType;
-        private EntityData _buildingData;
+        private string _entityID;
+        private EntityData _entityData;
 
         private bool _sucessfulBuild = false;
         private bool _firstFrame = true;
@@ -25,23 +25,22 @@ namespace Game.ConstructionSystem
         {
             get
             {
-                if (_buildingData == null)
+                if (_entityData == null)
                     Debug.LogFormat("Can't get CurrentBuildingCost because _buildingData is null!");
 
-                return _buildingData.SpawningCost;
+                return _entityData.SpawningCost;
             }
         }
 
         protected bool SucessfulBuild { get => _sucessfulBuild; set => _sucessfulBuild = value; }
-        protected EntityData BuildingData { get => _buildingData; }
-        protected BuildingType BuildingType { get => _buildingType; }
-        protected EntityType EntityType { get => (EntityType)_buildingType; }
+        protected EntityData EntityData { get => _entityData; }
+        protected string EntityID { get => _entityID; }
         #endregion
 
         #region Methods
-        public AbstractConstructionState(GameManager owner, BuildingType buildingType) : base(owner)
+        public AbstractConstructionState(GameManager owner, string buildingID) : base(owner)
         {
-            SetCurrentBuilding(buildingType);
+            SetCurrentBuilding(buildingID);
         }
 
         #region Public override Methods
@@ -74,7 +73,7 @@ namespace Game.ConstructionSystem
         #endregion
 
         #region Protected Methods
-        protected virtual void OnCurrentBuildingSet(BuildingType buildingType, EntityData buildingData) { }
+        protected virtual void OnCurrentBuildingSet(string buildingID, EntityData buildingData) { }
         protected virtual void OnMouseDown() { }
         protected virtual void OnMouseUp() { }
         protected abstract void DestroyAllConstructionBuildings();
@@ -105,20 +104,20 @@ namespace Game.ConstructionSystem
             _owner.State = null;
         }
 
-        private void SetCurrentBuilding(BuildingType buildingType)
+        private void SetCurrentBuilding(string buildingID)
         {
             // try to get prefab for instantiation
-            if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))
+            if (MainRegister.Instance.TryGetEntityData(buildingID, out EntityData buildingData))
             {
-                _buildingData = buildingData;
-                _buildingType = buildingType;
+                _entityData = buildingData;
+                _entityID = buildingID;
                 _owner.Resources -= CurrentBuildingCost;
 
-                OnCurrentBuildingSet(buildingType, buildingData);
+                OnCurrentBuildingSet(buildingID, buildingData);
             }
             else
             {
-                Debug.LogErrorFormat("Building State : can't SetCurrentBuilding because cannot get building data from MainRegister of {0}.", buildingType);
+                Debug.LogErrorFormat("Building State : can't SetCurrentBuilding because cannot get building data from MainRegister of {0}.", buildingID);
             }
         }
 

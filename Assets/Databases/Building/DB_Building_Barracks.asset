@@ -72,7 +72,9 @@ MonoBehaviour:
   _canMove: 0
   _speed: 3
   _canCreateUnit: 1
-  _availableUnitsForCreation: 0200000001000000
+  _availableUnitsForCreation:
+  - unit_melee_hoplite
+  - unit_range_archer
   _canGenerateResources: 0
   _generationTick: 1
   _generationType: 1

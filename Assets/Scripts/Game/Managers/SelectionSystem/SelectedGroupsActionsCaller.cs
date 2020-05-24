@@ -38,13 +38,13 @@ public static class SelectedGroupsActionsCaller
         }
     }
 
-    public static void OrderSpawnUnits(UnitType unit)
+    public static void OrderSpawnUnits(string unitID)
     {
         foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
             for (int i = 0; i < group.unitsSelected.Count; i++)
             {
-                group.unitsSelected[i].GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(unit);
+                group.unitsSelected[i].GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(unitID);
             }
         }
     }

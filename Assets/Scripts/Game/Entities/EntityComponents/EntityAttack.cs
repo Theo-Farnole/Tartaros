@@ -68,7 +68,7 @@ public class EntityAttack : EntityComponent
                 }
                 else
                 {
-                    Debug.LogErrorFormat("Entity Attack : Projectile set in EntityData is null for {0} of type {1}", name, Entity.Type);
+                    Debug.LogErrorFormat("Entity Attack : Projectile set in EntityData is null for {0} of type {1}", name, Entity.EntityID);
                 }
             }
         }

@@ -93,20 +93,20 @@ namespace Game.UI
 
                 _selectionPortraitUI[i].gameObject.SetActive(true);
                 _selectionPortraitUI[i].unitsCount.text = selection[i].unitsSelected.Count.ToString();
-                TrySetPortrait(_selectionPortraitUI[i], selection[i].entityType);
+                TrySetPortrait(_selectionPortraitUI[i], selection[i].entityID);
             }
         }
 
-        private void TrySetPortrait(UISelectionGroupPortrait group, EntityType entityType)
+        private void TrySetPortrait(UISelectionGroupPortrait group, string entityID)
         {
-            if (MainRegister.Instance.TryGetEntityData(entityType, out EntityData entityData))
+            if (MainRegister.Instance.TryGetEntityData(entityID, out EntityData entityData))
             {
                 Sprite portrait = entityData.Portrait;
                 group.portrait.sprite = portrait;
             }
             else
             {
-                Debug.LogErrorFormat("Panel Selection: can't set portrait of {0} entity.", entityType);
+                Debug.LogErrorFormat("Panel Selection: can't set portrait of {0} entity.", entityID);
             }
         }
 

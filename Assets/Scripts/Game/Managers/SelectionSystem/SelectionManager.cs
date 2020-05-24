@@ -20,13 +20,13 @@ namespace Game.Selection
         #region Struct
         public class SelectionGroup
         {
-            public EntityType entityType;
+            public string entityID;
             public Team owner;
             public List<Entity> unitsSelected = new List<Entity>();
 
-            public SelectionGroup(EntityType entityType, Team owner)
+            public SelectionGroup(string entityID, Team owner)
             {
-                this.entityType = entityType;
+                this.entityID = entityID;
                 this.owner = owner;
             }
         }
@@ -146,12 +146,12 @@ namespace Game.Selection
             if (selectableEntity.GetCharacterComponent<EntityFogCoverable>().IsCover)
                 return;
 
-            SelectionGroup groupOfSameEntity = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
+            SelectionGroup groupOfSameEntity = _selectedGroups.FirstOrDefault(x => x.entityID == selectableEntity.EntityID);
 
             // create group if no groud of the same entity exist
             if (groupOfSameEntity == null)
             {
-                groupOfSameEntity = new SelectionGroup(selectableEntity.Type, selectableEntity.Team);
+                groupOfSameEntity = new SelectionGroup(selectableEntity.EntityID, selectableEntity.Team);
                 _selectedGroups.Add(groupOfSameEntity);
 
                 if (_highlightGroupIndex == -1) _highlightGroupIndex = 0;
@@ -175,7 +175,7 @@ namespace Game.Selection
             if (!_selectionEnable)
                 return;
 
-            SelectionGroup groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityType == selectableEntity.Type);
+            SelectionGroup groupWithSameType = _selectedGroups.FirstOrDefault(x => x.entityID == selectableEntity.EntityID);
 
             // don't remove unselected unit
             if (groupWithSameType == null ||

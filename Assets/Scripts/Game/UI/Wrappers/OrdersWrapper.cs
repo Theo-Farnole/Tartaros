@@ -87,21 +87,21 @@ namespace Game.UI
             for (int i = 0; i < _spawnUnitsOrders.Length && i < entity.Data.AvailableUnitsForCreation.Length; i++)
             {
                 Order order = _spawnUnitsOrders[i];
-                UnitType unitType = entity.Data.AvailableUnitsForCreation[i];
+                string entityID = entity.Data.AvailableUnitsForCreation[i];
 
-                SetContent_UnitOrder(entity, order, unitType);
+                SetContent_UnitOrder(entity, order, entityID);
             }
         }
 
-        private void SetContent_UnitOrder(Entity entity, Order order, UnitType unitType)
+        private void SetContent_UnitOrder(Entity entity, Order order, string unitID)
         {
             order.gameObject.SetActive(true);
 
             order.button.onClick.RemoveAllListeners();
-            order.button.onClick.AddListener(() => SelectedGroupsActionsCaller.OrderSpawnUnits(unitType));
+            order.button.onClick.AddListener(() => SelectedGroupsActionsCaller.OrderSpawnUnits(unitID));
 
 
-            if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData entityData))
+            if (MainRegister.Instance.TryGetEntityData(unitID, out EntityData entityData))
             {
                 order.hotkey.text = entityData.Hotkey.ToString();
                 order.backgroundButton.sprite = entityData.Portrait;
@@ -118,7 +118,7 @@ namespace Game.UI
             else
             {
                 order.hotkey.text = "MISSING HOTKEY";
-                Debug.LogErrorFormat("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", unitType);
+                Debug.LogErrorFormat("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", unitID);
             }
         }
 

@@ -1,5 +1,6 @@
 using Game.IA.Action;
 using Lortedo.Utilities;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,10 +18,8 @@ public class Entity : MonoBehaviour
     public static event EntityDelegate OnDeath;
 
     [Header("Team Configuration")]
-    [SerializeField] private EntityType _type;
-
-    [DrawIf(nameof(_type), EntitiesSystem.STARTING_INDEX_BUILDING, ComparisonType.GreaterOrEqual, DisablingType.ReadOnly)]
-    [SerializeField] private Team _team;
+    [SerializeField] private string _entityID;
+    [SerializeField, ReadOnly] private Team _team;
 
     private EntityData _data;
     private Action _currentAction;
@@ -40,19 +39,19 @@ public class Entity : MonoBehaviour
                 if (MainRegister.Instance == null)
                     Debug.LogErrorFormat("MainRegister is missing the scene. There'll be a lot of errors!");
 
-                bool dataFounded = MainRegister.Instance.TryGetEntityData(_type, out EntityData data);
+                bool dataFounded = MainRegister.Instance.TryGetEntityData(_entityID, out EntityData data);
                 _data = data; // without this line, there is plenty of errors
 
                 if (!dataFounded)
-                    Debug.LogErrorFormat("Entity : EntityData not founded for entity {1} of type {0} :/", _type, name);
+                    Debug.LogErrorFormat("Entity : EntityData not founded for entity {1} of type {0} :/", _entityID, name);
                 else if (_data == null)
-                    Debug.LogErrorFormat("Entity : EntityData founded is null for entity {1} of type {0} :/", _type, name);
+                    Debug.LogErrorFormat("Entity : EntityData founded is null for entity {1} of type {0} :/", _entityID, name);
             }
 
             return _data;
         }
     }
-    public EntityType Type { get => _type; }
+    public string EntityID { get => _entityID; }
     public Team Team { get => _team; set => _team = value; }
     public bool HasCurrentAction { get => (_currentAction != null); }
     public Action CurrentAction { get => _currentAction; }
@@ -62,7 +61,6 @@ public class Entity : MonoBehaviour
     #region Mono Callbacks
     void Awake()
     {
-        SetTeam();
         InitializeComponents();
     }
 
@@ -77,20 +75,6 @@ public class Entity : MonoBehaviour
     void Update()
     {
         _currentAction?.Tick();
-    }
-
-    void OnValidate()
-    {
-        SetTeam();
-    }
-
-    void SetTeam()
-    {
-        // only set team if it's a unit
-        if (_type.TryGetUnitType(out UnitType unitType))
-        {
-            _team = _type.GetOwner();
-        }
     }
     #endregion
 

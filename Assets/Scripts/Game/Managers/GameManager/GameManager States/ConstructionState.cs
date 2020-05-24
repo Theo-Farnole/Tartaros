@@ -13,7 +13,7 @@ namespace Game.ConstructionSystem
         ConstructionBuilding _constructionBuilding;
         #endregion
 
-        public ConstructionState(GameManager owner, BuildingType buildingType) : base(owner, buildingType)
+        public ConstructionState(GameManager owner, string entityID) : base(owner, entityID)
         { }
 
         #region Methods
@@ -30,10 +30,10 @@ namespace Game.ConstructionSystem
         protected override void OnMouseUp()
             => ConstructBuilding();
 
-        protected override void OnCurrentBuildingSet(BuildingType buildingType, EntityData buildingData)
+        protected override void OnCurrentBuildingSet(string entityID, EntityData buildingData)
         {
             var buildingPrefab = Object.Instantiate(buildingData.Prefab);            
-            _constructionBuilding = new ConstructionBuilding(buildingPrefab, (EntityType)buildingType, buildingData);
+            _constructionBuilding = new ConstructionBuilding(buildingPrefab, entityID, buildingData);
 
             UpdateConstructionBuildingPosition();
         }
@@ -44,7 +44,7 @@ namespace Game.ConstructionSystem
 
             // register tile
             const TileFlag tileFlagCondition = TileFlag.Free | TileFlag.Visible;
-            bool successfulSetTile = TileSystem.Instance.TrySetTile(building, BuildingData.TileSize, tileFlagCondition);
+            bool successfulSetTile = TileSystem.Instance.TrySetTile(building, EntityData.TileSize, tileFlagCondition);
 
             if (!successfulSetTile)
                 return;

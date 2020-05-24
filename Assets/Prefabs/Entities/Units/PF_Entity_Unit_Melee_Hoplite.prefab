@@ -77,6 +77,11 @@ PrefabInstance:
       propertyPath: _team
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6925508277373191862, guid: 17f6498f739b0224e8b8470456c0c5ff,
+        type: 3}
+      propertyPath: _entityID
+      value: unit_melee_hoplite
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17f6498f739b0224e8b8470456c0c5ff, type: 3}
 --- !u!4 &1876522094507493809 stripped

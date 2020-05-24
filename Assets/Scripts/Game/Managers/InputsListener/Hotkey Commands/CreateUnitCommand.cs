@@ -7,16 +7,16 @@ namespace CommandPattern
 {
     public class CreateUnitCommand : Command
     {
-        private UnitType _unit;
+        private string _unitID;
 
-        public CreateUnitCommand(UnitType unit)
+        public CreateUnitCommand(string unitID)
         {
-            _unit = unit;
+            _unitID = unitID;
         }
 
         public override void Execute()
         {
-            SelectedGroupsActionsCaller.OrderSpawnUnits(_unit);
+            SelectedGroupsActionsCaller.OrderSpawnUnits(_unitID);
         }
     }
 }

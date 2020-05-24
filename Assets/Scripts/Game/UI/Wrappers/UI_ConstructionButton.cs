@@ -16,31 +16,33 @@ namespace Game.UI
         [Required, SerializeField] private Image _portrait;
         [Required, SerializeField] private HoverDisplayPopup _hoverDisplayPopup;
 
-        public void SetBuildingType(BuildingType buildingType)
+        public void SetBuildingType(string buildingID)
         {
-            SetContent(buildingType);
+            SetContent(buildingID);
         }
 
-        public void SubcribeToEvents(BuildingType buildingType)
+        public void SubcribeToEvents(string buildingID)
         {
-            _button.onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingType));
+            _button.onClick.AddListener(() => GameManager.Instance.StartBuilding(buildingID));
         }
 
-        public void UnsubcribeToEvents(BuildingType buildingType)
+        public void UnsubcribeToEvents(string buildingID)
         {
-            _button.onClick.RemoveListener(() => GameManager.Instance.StartBuilding(buildingType));
+            _button.onClick.RemoveListener(() => GameManager.Instance.StartBuilding(buildingID));
         }
 
-        private void SetContent(BuildingType buildingType)
+        private void SetContent(string buildingID)
         {
             Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing.");
 
-            MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData entityData);
-
-            Assert.IsNotNull(entityData,
-                string.Format("Missing data for entity {0}", buildingType));
-
-            SetContent(entityData);
+            if (MainRegister.Instance.TryGetEntityData(buildingID, out EntityData entityData))
+            {
+                SetContent(entityData);
+            }
+            else
+            {
+                throw new System.NotSupportedException("EntityData is null");
+            }
         }
 
         void SetContent(EntityData entityData)

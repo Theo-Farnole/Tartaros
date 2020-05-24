@@ -101,8 +101,6 @@ public class SnapGridDatabase : ScriptableObject
             (int)(gridPosition.x / cellSize),
             (int)(gridPosition.z / cellSize));
 
-        Debug.LogFormat("{0}: gridPosition {1} become coords{2}", name, gridPosition, result);
-
         return result;
     }
 

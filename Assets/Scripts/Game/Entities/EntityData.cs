@@ -147,9 +147,9 @@ public class EntityData : SerializedScriptableObject
     [SerializeField] private bool _canCreateUnit;
 
     [ToggleGroup(nameof(_canCreateUnit), createUnitSettingsHeaderName)]
-    [SerializeField] private UnitType[] _availableUnitsForCreation;
+    [SerializeField] private string[] _availableUnitsForCreation;
 
-    public UnitType[] AvailableUnitsForCreation { get => _availableUnitsForCreation; }
+    public string[] AvailableUnitsForCreation { get => _availableUnitsForCreation; }
     #endregion
 
     #region Resources Generation

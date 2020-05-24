@@ -190,7 +190,7 @@ public class GameManager : Singleton<GameManager>
             Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(),
                     "Game Manager : Max population isn't the same as calculated.");
 
-            if (entity.Type == EntityType.Temple)
+            if (entity.EntityID == "building_temple")
             {
                 GameOver();
             }
@@ -212,9 +212,9 @@ public class GameManager : Singleton<GameManager>
         return (_populationCount + unitData.PopulationUse <= _maxPopulation);
     }
 
-    public void StartBuilding(BuildingType buildingType)
+    public void StartBuilding(string buildingID)
     {
-        if (MainRegister.Instance.TryGetBuildingData(buildingType, out EntityData buildingData))
+        if (MainRegister.Instance.TryGetEntityData(buildingID, out EntityData buildingData))
         {
             var buildingCost = buildingData.SpawningCost;
 
@@ -223,22 +223,22 @@ public class GameManager : Singleton<GameManager>
             {
                 if (buildingData.IsConstructionChained)
                 {
-                    State = new ChainedConstructionState(this, buildingType);
+                    State = new ChainedConstructionState(this, buildingID);
                 }
                 else
                 {
 
-                    State = new ConstructionState(this, buildingType);
+                    State = new ConstructionState(this, buildingID);
                 }
             }
             else
             {
-                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enough resources to build " + buildingType);
+                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enough resources to build " + buildingID);
             }
         }
         else
         {
-            Debug.LogErrorFormat("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingType);
+            Debug.LogErrorFormat("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingID);
         }
     }
 

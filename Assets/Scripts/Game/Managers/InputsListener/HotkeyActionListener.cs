@@ -42,7 +42,7 @@ public class HotkeyActionListener : MonoBehaviour
     {
         if (selectedGroups.Length > 0 && selectedGroups[0] != null)
         {
-            SetHotkeyHandler(selectedGroups[0].entityType);
+            SetHotkeyHandler(selectedGroups[0].entityID);
         }
         else
         {
@@ -98,18 +98,18 @@ public class HotkeyActionListener : MonoBehaviour
     /// <summary>
     /// Clear and re-set _commands dictionary.
     /// </summary>
-    /// <param name="typeToListenHotkey">Type of entity which we listen to hotkey</param>
-    public void SetHotkeyHandler(EntityType typeToListenHotkey)
+    /// <param name="entityIDToListen">Type of entity which we listen to hotkey</param>
+    public void SetHotkeyHandler(string entityIDToListen)
     {
         ClearCommandsHandler();
 
-        if (MainRegister.Instance.TryGetEntityData(typeToListenHotkey, out EntityData data))
+        if (MainRegister.Instance.TryGetEntityData(entityIDToListen, out EntityData data))
         {
             AddHotkeys(data);
         }
         else
         {
-            Debug.LogErrorFormat("Hotkey Listener: cannot find entity data for {0}. Aborting input listening.", typeToListenHotkey);
+            Debug.LogErrorFormat("Hotkey Listener: cannot find entity data for {0}. Aborting input listening.", entityIDToListen);
         }
     }
 
@@ -129,18 +129,18 @@ public class HotkeyActionListener : MonoBehaviour
             AddSpawnUnitHotkeys(data.AvailableUnitsForCreation);
     }
 
-    private void AddSpawnUnitHotkeys(UnitType[] unitTypes)
+    private void AddSpawnUnitHotkeys(string[] unitsIDs)
     {
-        foreach (UnitType unitType in unitTypes)
+        foreach (string unitID in unitsIDs)
         {
-            if (MainRegister.Instance.TryGetUnitData(unitType, out EntityData unitData))
+            if (MainRegister.Instance.TryGetEntityData(unitID, out EntityData unitData))
             {
                 KeyCode hotkey = unitData.Hotkey;
-                AddHotkey(hotkey, new CreateUnitCommand(unitType));
+                AddHotkey(hotkey, new CreateUnitCommand(unitID));
             }
             else
             {
-                Debug.LogErrorFormat("Hotkey Listener: Couldn't not find EntityData of unit {0}.", unitType);
+                Debug.LogErrorFormat("Hotkey Listener: Couldn't not find EntityData of unit {0}.", unitID);
             }
         }
     }

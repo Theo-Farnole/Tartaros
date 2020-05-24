@@ -20,17 +20,17 @@ namespace Game.ConstructionSystem
         private readonly GameObject _building;
         private readonly Vector2Int _buildingSize;
         private readonly bool _isChainedBuilding;
-        private readonly EntityType _entityType;
+        private readonly string _entityID;
         #endregion
 
         #region Properties
         public GameObject Building { get => _building; }
         #endregion
 
-        public ConstructionBuilding(GameObject gameObject, EntityType entityType, EntityData entityData)
+        public ConstructionBuilding(GameObject gameObject, string entityID, EntityData entityData)
         {
             _building = gameObject;
-            _entityType = entityType;
+            _entityID = entityID;
             _isChainedBuilding = entityData.IsConstructionChained;
             _buildingSize = entityData.TileSize;
 
@@ -131,9 +131,9 @@ namespace Game.ConstructionSystem
         private bool CanBeConstruct()
         {
             TileFlag condition = TileFlag.Free | TileFlag.Visible;
-            EntityType typeCondition = _isChainedBuilding ? _entityType : EntityType.None;
+            string idCondition = _isChainedBuilding ? _entityID : string.Empty;
 
-            return TileSystem.Instance.DoTilesFillConditions(_building.transform.position, _buildingSize, condition, typeCondition);
+            return TileSystem.Instance.DoTilesFillConditions(_building.transform.position, _buildingSize, condition, idCondition);
         }
         #endregion
         #endregion

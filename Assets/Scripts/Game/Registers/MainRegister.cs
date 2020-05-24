@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 /// <summary>
 /// Get EntityData from EntityType
@@ -12,77 +14,25 @@ public class MainRegister : SingletonSerializedMonoBehaviour<MainRegister>
     #region Fields
     public const string debugLogHeader = "Main Register : ";
 
-    [TabGroup("Buildings")]
-    [SerializeField] private Dictionary<BuildingType, EntityData> _buildingsRegister = new Dictionary<BuildingType, EntityData>();
-
-    [TabGroup("Units")]
-    [SerializeField] private Dictionary<UnitType, EntityData> _unitsRegister = new Dictionary<UnitType, EntityData>();
+    [TabGroup("Entities")]
+    [SerializeField] private Dictionary<string, EntityData> _entitiesRegisters = new Dictionary<string, EntityData>();
 
     [TabGroup("Overall Actions")]
     [SerializeField] private Dictionary<OverallAction, OverallActionData> _overallActionsRegister = new Dictionary<OverallAction, OverallActionData>();
     #endregion
 
     #region Methods
-    #region MonoBehaviour Callbacks
-    void Start()
-    {
-        CheckForErrorsInRegisters();
-    }
-
-    void OnValidate()
-    {
-        CheckForErrorsInRegisters();
-    }
-
-    private void CheckForErrorsInRegisters()
-    {
-        CheckForErrorsInRegister(_buildingsRegister);
-        CheckForErrorsInRegister(_unitsRegister);
-        CheckForErrorsInRegister(_overallActionsRegister);
-    }
-    #endregion
-
     #region Public methods
-    public bool TryGetUnitData(UnitType unitType, out EntityData unitData)
+    public bool TryGetEntityData(string entityID, out EntityData entityData)
     {
-        if (_unitsRegister != null && _unitsRegister.ContainsKey(unitType))
+        if (_entitiesRegisters.ContainsKey(entityID))
         {
-            unitData = _unitsRegister[unitType];
+            entityData = _entitiesRegisters[entityID];
             return true;
-        }
-
-        unitData = null;
-        return false;
-    }
-
-    public bool TryGetBuildingData(BuildingType buildingType, out EntityData buildingData)
-    {
-        if (_buildingsRegister != null && _buildingsRegister.ContainsKey(buildingType))
-        {
-            buildingData = _buildingsRegister[buildingType];
-            return true;
-        }
-
-        buildingData = null;
-        return false;
-    }
-
-    public bool TryGetEntityData(EntityType entityType, out EntityData entityData)
-    {
-        if (entityType.TryGetUnitType(out UnitType unitType))
-        {
-            return TryGetUnitData(unitType, out entityData);
-        }
-        else if (entityType.TryGetBuildingType(out BuildingType buildingType))
-        {
-            return TryGetBuildingData(buildingType, out entityData);
         }
         else
         {
-            Debug.LogErrorFormat(debugLogHeader + "Can't get EntityData of {0} because it's not a UnitType or BuildingType.", entityType);
-
-            entityData = null;
-            return false;
+            throw new MissingFieldException(string.Format(debugLogHeader + "ID: {0} doesn't exist in register.", entityID));
         }
     }
 
@@ -93,34 +43,9 @@ public class MainRegister : SingletonSerializedMonoBehaviour<MainRegister>
             overallActionData = _overallActionsRegister[overallAction];
             return true;
         }
-
-        overallActionData = null;
-        return false;
-
-    }
-    #endregion
-
-    #region Private methods
-    void CheckForErrorsInRegister<TKey, TValue>(Dictionary<TKey, TValue> dictionary) where TKey : struct, Enum
-    {
-        var enumValues = Enum.GetValues(typeof(TKey));
-
-        // browse the 'TKey' enum
-        foreach (TKey enumValue in enumValues)
+        else
         {
-            // ignore 'None' value
-            // because we don't want a prefab as 'None'
-            if (enumValue.ToString() == "None")
-                continue;
-
-            if (!dictionary.ContainsKey(enumValue))
-            {
-                Debug.LogErrorFormat(debugLogHeader + "In dictionary {0}, the key {1} is missing.", typeof(TKey).ToString(), enumValue);
-            }
-            else if (dictionary[enumValue] == null)
-            {
-                Debug.LogErrorFormat(debugLogHeader + "In dictionary {0}, the value of {1} is null.", typeof(TKey).ToString(), enumValue);
-            }
+            throw new MissingFieldException(string.Format(debugLogHeader + "OverallAction: {0} doesn't exist in register.", overallAction));
         }
     }
     #endregion

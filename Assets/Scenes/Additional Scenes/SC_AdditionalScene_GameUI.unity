@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.16788375, g: 0.21073635, b: 0.28994125, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -121,7 +121,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 98f5d932e35f87d41a9ca62831f66555, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 19595733d73ee4e40a9861ef29cbfe5f, type: 2}
 --- !u!1 &9321151
 GameObject:
   m_ObjectHideFlags: 0
@@ -5982,10 +5982,6 @@ MonoBehaviour:
     _prefabConstructionButton: {fileID: 1826093270694937108, guid: 1fb622ff9e092974d87faec333afe53e,
       type: 3}
     _parentConstructionButton: {fileID: 1300319502}
-    _buildingButtons:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
   _panelGameOver:
     _canvas: {fileID: 1345570581}
   _panelVictory:
