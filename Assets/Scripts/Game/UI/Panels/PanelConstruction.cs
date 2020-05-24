@@ -56,18 +56,21 @@ namespace Game.UI
 
         public override void UnsubscribeToEvents<T>(T uiManager)
         {
-            BrowseIDsInPanelConstruction(
-                (string id, int index) =>
-                {
-                    if (_buildingButtons != null && _buildingButtons[index] != null)
+            if (GameManager.Instance != null)
+            {
+                BrowseIDsInPanelConstruction(
+                    (string id, int index) =>
                     {
-                        if (_buildingButtons[index].TryGetComponent(out UI_ConstructionButton constructionButton))
+                        if (_buildingButtons != null && _buildingButtons[index] != null)
                         {
-                            constructionButton.UnsubcribeToEvents(id);
+                            if (_buildingButtons[index].TryGetComponent(out UI_ConstructionButton constructionButton))
+                            {
+                                constructionButton.UnsubcribeToEvents(id);
+                            }
                         }
                     }
-                }
-            );
+                );
+            }
         }
         #endregion
 
@@ -99,6 +102,8 @@ namespace Game.UI
         #region Private methods
         private void BrowseIDsInPanelConstruction(Action<string, int> action)
         {
+            Assert.IsNotNull(GameManager.Instance, debugLogHeader + "Missing GameManager. Can't browse IDs.");
+
             var array = GameManager.Instance.ManagerData.IDsInPanelConstruction;
 
             for (int i = 0; i < array.Length; i++)
