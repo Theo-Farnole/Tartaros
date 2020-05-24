@@ -191,7 +191,7 @@ public class GameManager : Singleton<GameManager>
             Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(),
                     "Game Manager : Max population isn't the same as calculated.");
 
-            if (entity.EntityID == "building_temple")
+            if (entity.EntityID == _data.LoseOnDestroyedEntityID)
             {
                 GameOver();
             }
