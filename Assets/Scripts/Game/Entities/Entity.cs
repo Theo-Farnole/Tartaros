@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public delegate void EntityDelegate(Entity ent);
 
@@ -36,16 +37,12 @@ public class Entity : MonoBehaviour
         {
             if (_data == null)
             {
-                if (MainRegister.Instance == null)
-                    Debug.LogErrorFormat("MainRegister is missing the scene. There'll be a lot of errors!");
+                Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing the scene.There'll be a lot of errors!");
 
-                bool dataFounded = MainRegister.Instance.TryGetEntityData(_entityID, out EntityData data);
-                _data = data; // without this line, there is plenty of errors
+                _data = MainRegister.Instance.GetEntityData(_entityID);
 
-                if (!dataFounded)
-                    Debug.LogErrorFormat("Entity : EntityData not founded for entity {1} of type {0} :/", _entityID, name);
-                else if (_data == null)
-                    Debug.LogErrorFormat("Entity : EntityData founded is null for entity {1} of type {0} :/", _entityID, name);
+                Assert.IsNotNull(_data,
+                    string.Format("Entity : EntityData not founded or is null for entity {1} of type {0} :/", _entityID, name));
             }
 
             return _data;

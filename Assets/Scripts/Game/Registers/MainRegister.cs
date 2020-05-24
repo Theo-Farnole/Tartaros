@@ -23,30 +23,22 @@ public class MainRegister : SingletonSerializedMonoBehaviour<MainRegister>
 
     #region Methods
     #region Public methods
-    public bool TryGetEntityData(string entityID, out EntityData entityData)
+    public EntityData GetEntityData(string entityID)
     {
-        if (_entitiesRegisters.ContainsKey(entityID))
-        {
-            entityData = _entitiesRegisters[entityID];
-            return true;
-        }
-        else
-        {
-            throw new MissingFieldException(string.Format(debugLogHeader + "ID: {0} doesn't exist in register.", entityID));
-        }
+        Assert.IsNotNull(_entitiesRegisters);
+        Assert.IsTrue(_entitiesRegisters.ContainsKey(entityID),
+            string.Format(debugLogHeader + "ID: {0} doesn't exist in register.", entityID));
+
+        return _entitiesRegisters[entityID];
     }
 
-    public bool TryGetOverallActionData(OverallAction overallAction, out OverallActionData overallActionData)
+    public OverallActionData GetOverallActionData(OverallAction overallAction)
     {
-        if (_overallActionsRegister != null && _overallActionsRegister.ContainsKey(overallAction))
-        {
-            overallActionData = _overallActionsRegister[overallAction];
-            return true;
-        }
-        else
-        {
-            throw new MissingFieldException(string.Format(debugLogHeader + "OverallAction: {0} doesn't exist in register.", overallAction));
-        }
+        Assert.IsNotNull(_overallActionsRegister);
+        Assert.IsTrue(_overallActionsRegister.ContainsKey(overallAction),
+            string.Format(debugLogHeader + "OverallAction: {0} doesn't exist in register.", overallAction));
+
+        return _overallActionsRegister[overallAction];
     }
     #endregion
     #endregion

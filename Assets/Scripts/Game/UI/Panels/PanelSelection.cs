@@ -99,15 +99,13 @@ namespace Game.UI
 
         private void TrySetPortrait(UISelectionGroupPortrait group, string entityID)
         {
-            if (MainRegister.Instance.TryGetEntityData(entityID, out EntityData entityData))
-            {
-                Sprite portrait = entityData.Portrait;
-                group.portrait.sprite = portrait;
-            }
-            else
-            {
-                Debug.LogErrorFormat("Panel Selection: can't set portrait of {0} entity.", entityID);
-            }
+            var entityData = MainRegister.Instance.GetEntityData(entityID);
+
+            Assert.IsNotNull(entityData,
+                string.Format("Panel Selection: can't set portrait of {0} entity.", entityID));
+
+            Sprite portrait = entityData.Portrait;
+            group.portrait.sprite = portrait;
         }
 
         /// <summary>

@@ -82,16 +82,11 @@ public class HotkeyActionListener : MonoBehaviour
 
     void AddHotkeyFromOverallAction(OverallAction overallAction, Command command)
     {
-        bool overallActionDataFounded = MainRegister.Instance.TryGetOverallActionData(overallAction, out OverallActionData overallActionData);
+        OverallActionData overallActionData = MainRegister.Instance.GetOverallActionData(overallAction);
 
-        if (!overallActionDataFounded)
-        {
-            Debug.LogErrorFormat("Hotkey Listener: Cannot find hotkey of attack. Aborting listening of hotkey attack.");
-            return;
-        }
+        Assert.IsNotNull(overallActionData, "Hotkey Listener: Cannot find hotkey of attack. Aborting listening of hotkey attack.");
 
         var hotkey = overallActionData.Hotkey;
-
         AddHotkey(hotkey, command);
     }
 
@@ -103,14 +98,12 @@ public class HotkeyActionListener : MonoBehaviour
     {
         ClearCommandsHandler();
 
-        if (MainRegister.Instance.TryGetEntityData(entityIDToListen, out EntityData data))
-        {
-            AddHotkeys(data);
-        }
-        else
-        {
-            Debug.LogErrorFormat("Hotkey Listener: cannot find entity data for {0}. Aborting input listening.", entityIDToListen);
-        }
+        var data = MainRegister.Instance.GetEntityData(entityIDToListen);
+
+        Assert.IsNotNull(data,
+            string.Format("Hotkey Listener: cannot find entity data for {0}. Aborting input listening.", entityIDToListen));
+
+        AddHotkeys(data);
     }
 
     #region Add Hotkeys methods
@@ -133,7 +126,9 @@ public class HotkeyActionListener : MonoBehaviour
     {
         foreach (string unitID in unitsIDs)
         {
-            if (MainRegister.Instance.TryGetEntityData(unitID, out EntityData unitData))
+            var unitData = MainRegister.Instance.GetEntityData(unitID);
+
+            if (unitData != null)
             {
                 KeyCode hotkey = unitData.Hotkey;
                 AddHotkey(hotkey, new CreateUnitCommand(unitID));
@@ -141,6 +136,7 @@ public class HotkeyActionListener : MonoBehaviour
             else
             {
                 Debug.LogErrorFormat("Hotkey Listener: Couldn't not find EntityData of unit {0}.", unitID);
+                continue;
             }
         }
     }

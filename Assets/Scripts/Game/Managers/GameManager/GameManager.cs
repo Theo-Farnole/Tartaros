@@ -214,31 +214,29 @@ public class GameManager : Singleton<GameManager>
 
     public void StartBuilding(string buildingID)
     {
-        if (MainRegister.Instance.TryGetEntityData(buildingID, out EntityData buildingData))
+        EntityData buildingData = MainRegister.Instance.GetEntityData(buildingID);
+
+        Assert.IsNotNull(buildingData,
+            string.Format("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingID));
+
+        var buildingCost = buildingData.SpawningCost;
+
+        // check if we has enought resources, otherwise we create error message
+        if (_resources.HasEnoughResources(buildingCost))
         {
-            var buildingCost = buildingData.SpawningCost;
-
-            // check if we has enought resources, otherwise we create error message
-            if (_resources.HasEnoughResources(buildingCost))
+            if (buildingData.IsConstructionChained)
             {
-                if (buildingData.IsConstructionChained)
-                {
-                    State = new ChainedConstructionState(this, buildingID);
-                }
-                else
-                {
-
-                    State = new ConstructionState(this, buildingID);
-                }
+                State = new ChainedConstructionState(this, buildingID);
             }
             else
             {
-                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enough resources to build " + buildingID);
+
+                State = new ConstructionState(this, buildingID);
             }
         }
         else
         {
-            Debug.LogErrorFormat("GameManager: can't start building {0}, because the corresponding EntityData cannont be get.", buildingID);
+            UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enough resources to build " + buildingID);
         }
     }
 

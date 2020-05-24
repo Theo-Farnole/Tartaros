@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class EntityUnitSpawner : EntityComponent
 {
@@ -30,37 +31,35 @@ public class EntityUnitSpawner : EntityComponent
             return;
         }
 
-        if (MainRegister.Instance.TryGetEntityData(unitID, out EntityData unitData))
-        {
-            if (GameManager.Instance != null)
-            {
-                if (!GameManager.Instance.HasEnoughtPopulationToSpawn(unitData))
-                {
-                    UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", unitID));
-                    return;
-                }
-            }
-            else
-            {
-                Debug.LogErrorFormat(debugLogHeader + " Missing GameManager. Can't prevent spawning if max population reached.");
-            }
+        var unitData = MainRegister.Instance.GetEntityData(unitID);
 
-            if (GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost) == false)
+        Assert.IsNotNull(unitData,
+            string.Format(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitID));
+
+        if (GameManager.Instance != null)
+        {
+            if (!GameManager.Instance.HasEnoughtPopulationToSpawn(unitData))
             {
-                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitID + ".");
+                UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", unitID));
                 return;
             }
-
-            // remove resources
-            GameManager.Instance.Resources -= unitData.SpawningCost;
-            
-            var instantiatedObject = Instantiate(unitData.Prefab, transform.position, Quaternion.identity);            
-            MoveGameObjectToAnchor(instantiatedObject);
         }
         else
         {
-            Debug.LogErrorFormat(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitID); ;
+            Debug.LogErrorFormat(debugLogHeader + " Missing GameManager. Can't prevent spawning if max population reached.");
         }
+
+        if (GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost) == false)
+        {
+            UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitID + ".");
+            return;
+        }
+
+        // remove resources
+        GameManager.Instance.Resources -= unitData.SpawningCost;
+
+        var instantiatedObject = Instantiate(unitData.Prefab, transform.position, Quaternion.identity);
+        MoveGameObjectToAnchor(instantiatedObject);
     }
 
     private void MoveGameObjectToAnchor(GameObject instantiatedObject)

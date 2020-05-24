@@ -35,14 +35,11 @@ namespace Game.UI
         {
             Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing.");
 
-            if (MainRegister.Instance.TryGetEntityData(buildingID, out EntityData entityData))
-            {
-                SetContent(entityData);
-            }
-            else
-            {
-                throw new System.NotSupportedException("EntityData is null");
-            }
+            var entityData = MainRegister.Instance.GetEntityData(buildingID);
+
+            Assert.IsNotNull(entityData, "Missing data for " + buildingID + ". Can't set content of Ui_ConstructionButton.");
+
+            SetContent(entityData);
         }
 
         void SetContent(EntityData entityData)

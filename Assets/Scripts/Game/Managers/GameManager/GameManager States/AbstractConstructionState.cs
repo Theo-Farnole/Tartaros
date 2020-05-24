@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions;
 
 namespace Game.ConstructionSystem
 {
@@ -107,18 +108,16 @@ namespace Game.ConstructionSystem
         private void SetCurrentBuilding(string buildingID)
         {
             // try to get prefab for instantiation
-            if (MainRegister.Instance.TryGetEntityData(buildingID, out EntityData buildingData))
-            {
-                _entityData = buildingData;
-                _entityID = buildingID;
-                _owner.Resources -= CurrentBuildingCost;
+            var buildingData = MainRegister.Instance.GetEntityData(buildingID);
 
-                OnCurrentBuildingSet(buildingID, buildingData);
-            }
-            else
-            {
-                Debug.LogErrorFormat("Building State : can't SetCurrentBuilding because cannot get building data from MainRegister of {0}.", buildingID);
-            }
+            Assert.IsNotNull(buildingData,
+                string.Format("Building State : can't SetCurrentBuilding because cannot get building data from MainRegister of {0}.", buildingID));
+
+            _entityData = buildingData;
+            _entityID = buildingID;
+            _owner.Resources -= CurrentBuildingCost;
+
+            OnCurrentBuildingSet(buildingID, buildingData);
         }
 
         private void DestroyAndRefundBuilding()

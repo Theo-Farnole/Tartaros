@@ -43,14 +43,12 @@ namespace Game.UI
             {
                 OverallAction action = (OverallAction)i;
 
-                if (MainRegister.Instance.TryGetOverallActionData(action, out OverallActionData overallActionData))
-                {
-                    _overallOrders[i].GetComponent<HoverDisplayPopup>().HoverPopupData = overallActionData.HoverPopupData;
-                }
-                else
-                {
-                    Debug.LogErrorFormat("Orders Wrapper: Could set hover popup on action {0}", action);
-                }
+                var overallActionData = MainRegister.Instance.GetOverallActionData(action);
+
+                Assert.IsNotNull(overallActionData,
+                    string.Format("Orders Wrapper: OverallActionData of {0} missing in MainRegister. Can't set hover popup.", action));
+
+                _overallOrders[i].GetComponent<HoverDisplayPopup>().HoverPopupData = overallActionData.HoverPopupData;
             }
         }
         #endregion
@@ -101,25 +99,14 @@ namespace Game.UI
             order.button.onClick.AddListener(() => SelectedGroupsActionsCaller.OrderSpawnUnits(unitID));
 
 
-            if (MainRegister.Instance.TryGetEntityData(unitID, out EntityData entityData))
-            {
-                order.hotkey.text = entityData.Hotkey.ToString();
-                order.backgroundButton.sprite = entityData.Portrait;
+            var entityData = MainRegister.Instance.GetEntityData(unitID);
 
-                if (order.HoverDisplayPopup != null)
-                {
-                    order.HoverDisplayPopup.HoverPopupData = entityData.HoverPopupData;
-                }
-                else
-                {
-                    Debug.LogErrorFormat("Order : HoverDisplayPopup is missing in {0}.", order.name);
-                }
-            }
-            else
-            {
-                order.hotkey.text = "MISSING HOTKEY";
-                Debug.LogErrorFormat("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", unitID);
-            }
+            Assert.IsNotNull(entityData,
+                string.Format("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", unitID));
+
+            order.hotkey.text = entityData.Hotkey.ToString();
+            order.backgroundButton.sprite = entityData.Portrait;
+            order.HoverDisplayPopup.HoverPopupData = entityData.HoverPopupData;
         }
 
         void DisplayOverallOrders(Entity unit)
@@ -144,17 +131,13 @@ namespace Game.UI
             _overallOrders[index].gameObject.SetActive(true);
 
             // try display hotkey and backgroundButton
-            if (MainRegister.Instance.TryGetOverallActionData(overallAction, out OverallActionData overallActionData))
-            {
-                _overallOrders[index].hotkey.text = overallActionData.Hotkey.ToString();
-                _overallOrders[index].backgroundButton.sprite = overallActionData.Portrait;
-            }
-            else
-            {
-                _overallOrders[index].hotkey.text = "MISSING HOTKEY";
+            OverallActionData overallActionData = MainRegister.Instance.GetOverallActionData(overallAction);
 
-                Debug.LogErrorFormat("Orders Wrapper: Could set hotkey and portrait of action {0}", overallActionData);
-            }
+            Assert.IsNotNull(overallActionData,
+                string.Format("Orders Wrapper: Could set hotkey and portrait of action {0}", overallActionData));
+
+            _overallOrders[index].hotkey.text = overallActionData.Hotkey.ToString();
+            _overallOrders[index].backgroundButton.sprite = overallActionData.Portrait;
 
             AddCommandOnClick(overallAction, index);
         }

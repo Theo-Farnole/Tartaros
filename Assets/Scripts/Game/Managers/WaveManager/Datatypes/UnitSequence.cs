@@ -40,9 +40,9 @@ namespace Game.WaveSystem
 
         public IEnumerator StartSequence(Vector3 spawnPosition)
         {
-            bool hasFoundEntityData = MainRegister.Instance.TryGetEntityData(_entityID, out EntityData entityData);
+            EntityData entityData = MainRegister.Instance.GetEntityData(_entityID);
 
-            if (!hasFoundEntityData)
+            if (entityData == null)
             {
                 Debug.LogErrorFormat(debugLogHeader + "Cannot find prefab of {0}. Skipping unit spawn sequence.", _entityID);
                 yield return null;
