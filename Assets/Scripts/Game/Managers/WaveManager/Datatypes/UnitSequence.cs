@@ -38,7 +38,7 @@ namespace Game.WaveSystem
         #endregion
 
 
-        public IEnumerator StartSequence(Vector3 spawnPosition)
+        public IEnumerator StartSequence(Vector3 spawnPosition, Transform attackTarget)
         {
             EntityData entityData = MainRegister.Instance.GetEntityData(_entityID);
 
@@ -51,7 +51,6 @@ namespace Game.WaveSystem
             // getting needed variable
             int unitCount = _unitCount; // heap to stack
             GameObject prefab = entityData.Prefab;
-            Transform target = Object.FindObjectsOfType<Entity>().Where(x => x.EntityID == "building_temple").FirstOrDefault().transform; // get temple            
 
             // sequence
             yield return new WaitForSeconds(_waitTimeBeforeSequence);
@@ -60,7 +59,7 @@ namespace Game.WaveSystem
             {
                 for (int i = 0; i < unitCount; i++)
                 {
-                    SpawnUnit(prefab, spawnPosition, target);
+                    SpawnUnit(prefab, spawnPosition, attackTarget);
                     yield return new WaitForSeconds(_timeAfterUnitSpawn);
                 }
             }
@@ -68,7 +67,7 @@ namespace Game.WaveSystem
             yield return new WaitForSeconds(_waitTimeAfterSequence);
         }
 
-        void SpawnUnit(GameObject prefab, Vector3 position, Transform templeTarget)
+        void SpawnUnit(GameObject prefab, Vector3 position, Transform attackTarget)
         {
             Assert.IsNotNull(prefab, debugLogHeader + " prefab of " + _entityID + " should be not null. Aborting unit sequence.");
 
@@ -80,10 +79,10 @@ namespace Game.WaveSystem
 
             instanciatedPrefabEntity.Team = Team.Enemy;
 
-            if (templeTarget != null)
+            if (attackTarget != null)
             {
                 // make unit go to temple
-                Action action = new ActionMoveToPositionAggressively(instanciatedPrefabEntity, templeTarget.transform.position);
+                Action action = new ActionMoveToPositionAggressively(instanciatedPrefabEntity, attackTarget.position);
                 instanciatedPrefabEntity.SetAction(action);
             }
             else

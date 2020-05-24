@@ -11,11 +11,11 @@ namespace Game.WaveSystem
 
         public UnitSequence[] UnitSequences { get => _unitSequences; }
 
-        public IEnumerator WaveSequence(Vector3 spawnPosition)
+        public IEnumerator WaveSequence(Vector3 spawnPosition, Transform attackTarget)
         {
             foreach (UnitSequence unitSequence in _unitSequences)
             {
-                yield return unitSequence.StartSequence(spawnPosition);
+                yield return unitSequence.StartSequence(spawnPosition, attackTarget);
             }
         }
     }

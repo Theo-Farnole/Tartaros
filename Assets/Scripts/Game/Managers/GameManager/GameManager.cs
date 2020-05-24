@@ -1,6 +1,7 @@
 using Game.ConstructionSystem;
 using Game.MapCellEditor;
 using Lortedo.Utilities.Pattern;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -261,6 +262,15 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Getter / Calculate methods
+    public Transform GetWaveAttackTarget()
+    {
+        var foundedEntity = FindObjectsOfType<Entity>()
+                .Where(x => x.EntityID == _data.EntityIDToAttack)
+                .FirstOrDefault();
+
+        return foundedEntity != null ? foundedEntity.transform : null;
+    }
+
     int GetCurrentPopulation()
     {
         var entities = FindObjectsOfType<Entity>();

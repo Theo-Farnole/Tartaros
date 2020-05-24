@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -24,8 +25,8 @@ namespace Game.WaveSystem
 
             Assert.IsTrue(waveIndex >= 0, "Wave index must be greater or equals to zero.");
             Assert.IsTrue(waveIndex < _waves.Length, string.Format("There is no wave setted at wave {0} for object {1}.", waveCount, name));
-
-            yield return _waves[waveIndex].WaveSequence(position);
+            
+            yield return _waves[waveIndex].WaveSequence(position, GameManager.Instance.GetWaveAttackTarget());
         }
     }
 }
