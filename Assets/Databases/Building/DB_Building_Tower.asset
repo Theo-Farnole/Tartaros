@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: DB_Building_Wall
+  m_Name: DB_Building_Tower
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -47,13 +47,13 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  _entityName: Wall
+  _entityName: Tower
   _hotkey: 109
   _populationUse: 0
   _tileSize: {x: 1, y: 1}
-  _portrait: {fileID: 21300000, guid: b3561439d7ce3ef4ea00592343b8c42c, type: 3}
-  _prefab: {fileID: 545007711727897807, guid: c42319024a50f144ba0a082d69f98a98, type: 3}
-  _hoverPopupData: {fileID: 11400000, guid: 8f184cd145b314a41a90dd760bde2c3d, type: 2}
+  _portrait: {fileID: 21300000, guid: aeb8eb04ee5722144bd09be71e8c8fed, type: 3}
+  _prefab: {fileID: 545007711727897807, guid: fa53652c0a36fce4d9ba000f1028598a, type: 3}
+  _hoverPopupData: {fileID: 11400000, guid: 077b65244f3c9e24491c3cd43d658a7a, type: 2}
   _isInvincible: 0
   _hp: 10
   _spawningCost:
@@ -61,14 +61,15 @@ MonoBehaviour:
     wood: 5
     stone: 0
   _creationDuration: 0
-  _viewRadius: 2
+  _viewRadius: 10
   _isConstructionChained: 1
-  _canAttack: 0
-  _isMelee: 1
-  _prefabProjectile: {fileID: 0}
+  _canAttack: 1
+  _isMelee: 0
+  _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
+    type: 3}
   _damage: 3
   _attackSpeed: 1
-  _attackRadius: 3
+  _attackRadius: 10
   _damagePerSecond: 3
   _canMove: 0
   _speed: 3

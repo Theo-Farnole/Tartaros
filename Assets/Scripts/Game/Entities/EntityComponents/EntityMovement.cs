@@ -30,6 +30,9 @@ public class EntityMovement : EntityComponent
     #region Public methods
     public void SetAvoidance(Avoidance avoidance)
     {
+        if (!Entity.Data.CanMove)
+            return;
+
         _navMeshAgent.avoidancePriority = avoidance.ToPriority();
     }
 
