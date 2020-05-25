@@ -56,7 +56,7 @@ MonoBehaviour:
     - Name: wood
       Entry: 3
       Data: 0
-    - Name: gold
+    - Name: stone
       Entry: 3
       Data: 0
     - Name: 
@@ -80,7 +80,7 @@ MonoBehaviour:
     - Name: wood
       Entry: 3
       Data: 0
-    - Name: gold
+    - Name: stone
       Entry: 3
       Data: 0
     - Name: 
@@ -104,7 +104,7 @@ MonoBehaviour:
     - Name: wood
       Entry: 3
       Data: 0
-    - Name: gold
+    - Name: stone
       Entry: 3
       Data: 0
     - Name: 
@@ -120,18 +120,20 @@ MonoBehaviour:
       Entry: 8
       Data: 
   _entityName: Stone Quarry
+  _entityType: 1
   _hotkey: 115
-  _populationUse: 0
-  _tileSize: {x: 3, y: 3}
   _portrait: {fileID: 21300000, guid: 611dc461b85e6b74a90d20260a2b768f, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 4674cbd969209d842b37a07f98b29a30, type: 3}
+  _populationUse: 0
+  _tileSize: {x: 3, y: 3}
   _hoverPopupData: {fileID: 11400000, guid: 81e14b848505cb74183ea58a776a0878, type: 2}
   _isInvincible: 0
   _hp: 10
   _spawningCost:
     food: 0
-    wood: 10
-    gold: 0
+    wood: 5
+    stone: 0
+  _creationDuration: 0
   _viewRadius: 1
   _isConstructionChained: 0
   _canAttack: 0
@@ -152,6 +154,6 @@ MonoBehaviour:
   _constantResourcesGeneration:
     food: 0
     wood: 0
-    gold: 10
+    stone: 10
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0

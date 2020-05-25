@@ -48,11 +48,12 @@ MonoBehaviour:
       Entry: 8
       Data: 
   _entityName: Tower
+  _entityType: 1
   _hotkey: 109
-  _populationUse: 0
-  _tileSize: {x: 1, y: 1}
   _portrait: {fileID: 21300000, guid: aeb8eb04ee5722144bd09be71e8c8fed, type: 3}
   _prefab: {fileID: 545007711727897807, guid: fa53652c0a36fce4d9ba000f1028598a, type: 3}
+  _populationUse: 0
+  _tileSize: {x: 1, y: 1}
   _hoverPopupData: {fileID: 11400000, guid: 077b65244f3c9e24491c3cd43d658a7a, type: 2}
   _isInvincible: 0
   _hp: 10

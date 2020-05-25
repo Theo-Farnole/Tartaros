@@ -48,11 +48,12 @@ MonoBehaviour:
       Entry: 8
       Data: 
   _entityName: Wall
+  _entityType: 1
   _hotkey: 109
-  _populationUse: 0
-  _tileSize: {x: 1, y: 1}
   _portrait: {fileID: 21300000, guid: b3561439d7ce3ef4ea00592343b8c42c, type: 3}
   _prefab: {fileID: 545007711727897807, guid: c42319024a50f144ba0a082d69f98a98, type: 3}
+  _populationUse: 0
+  _tileSize: {x: 1, y: 1}
   _hoverPopupData: {fileID: 11400000, guid: 8f184cd145b314a41a90dd760bde2c3d, type: 2}
   _isInvincible: 0
   _hp: 10

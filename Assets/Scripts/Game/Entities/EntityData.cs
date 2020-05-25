@@ -13,9 +13,16 @@ public enum GenerationType
     PerCell = 2
 }
 
+public enum EntityType
+{
+    Unit,
+    Building
+}
+
 [CreateAssetMenu(menuName = "Tartaros/Entity")]
 public class EntityData : SerializedScriptableObject
 {
+
     private const string attackSettingsHeaderName = "Can Attack";
     private const string movementSettingsHeaderName = "Can Move";
     private const string createUnitSettingsHeaderName = "Can Create Unit";
@@ -28,13 +35,10 @@ public class EntityData : SerializedScriptableObject
     [SerializeField] private string _entityName;
 
     [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
+    [SerializeField] private EntityType _entityType;
+
+    [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
     [SerializeField] private KeyCode _hotkey;
-
-    [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
-    [SerializeField] private int _populationUse;
-
-    [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
-    [SerializeField] private Vector2Int _tileSize = Vector2Int.one;
 
     [HorizontalGroup(portraitAndPrefabGroupName, 72)]
     [HideLabel, PreviewField(72, ObjectFieldAlignment.Left)]
@@ -45,6 +49,10 @@ public class EntityData : SerializedScriptableObject
     [HideLabel, PreviewField(72, ObjectFieldAlignment.Left)]
     [SerializeField] private GameObject _prefab;
 
+
+    [SerializeField] private int _populationUse;
+    [SerializeField] private Vector2Int _tileSize = Vector2Int.one;
+
     [SerializeField] private HoverPopupData _hoverPopupData;
 
 
@@ -54,6 +62,7 @@ public class EntityData : SerializedScriptableObject
     public HoverPopupData HoverPopupData { get => _hoverPopupData; }
     public int PopulationUse { get => _populationUse; }
     public Vector2Int TileSize { get => _tileSize; }
+    public EntityType EntityType { get => _entityType; }
     #endregion
 
     #region Health Settings
@@ -193,7 +202,7 @@ public class EntityData : SerializedScriptableObject
 
     [ToggleGroup(nameof(_increaseMaxPopulation), headerNamePopulation)]
     [SerializeField] private int _increaseMaxPopulationAmount;
-    
+
     public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }
     #endregion
     #endregion

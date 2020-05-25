@@ -48,18 +48,20 @@ MonoBehaviour:
       Entry: 8
       Data: 
   _entityName: Barracks
+  _entityType: 1
   _hotkey: 103
-  _populationUse: 0
-  _tileSize: {x: 1, y: 1}
   _portrait: {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 5223a26d9e803f04ab7c98100babab8f, type: 3}
+  _populationUse: 0
+  _tileSize: {x: 1, y: 1}
   _hoverPopupData: {fileID: 11400000, guid: 90c75895089756c4bbf509a0cc644f63, type: 2}
   _isInvincible: 0
   _hp: 10
   _spawningCost:
     food: 0
     wood: 5
-    gold: 0
+    stone: 0
+  _creationDuration: 0
   _viewRadius: 3
   _isConstructionChained: 0
   _canAttack: 0
@@ -82,6 +84,6 @@ MonoBehaviour:
   _constantResourcesGeneration:
     food: 0
     wood: 0
-    gold: 0
+    stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0

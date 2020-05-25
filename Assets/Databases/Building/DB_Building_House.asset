@@ -48,11 +48,12 @@ MonoBehaviour:
       Entry: 8
       Data: 
   _entityName: House
+  _entityType: 1
   _hotkey: 106
-  _populationUse: 0
-  _tileSize: {x: 2, y: 2}
   _portrait: {fileID: 21300000, guid: 04beb25e868cb264791c0ba773f4fff5, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 07c235988da8f0d449a461fff451a456, type: 3}
+  _populationUse: 0
+  _tileSize: {x: 2, y: 2}
   _hoverPopupData: {fileID: 11400000, guid: 51107c083f51f6e4981b25f9aac85409, type: 2}
   _isInvincible: 0
   _hp: 10
