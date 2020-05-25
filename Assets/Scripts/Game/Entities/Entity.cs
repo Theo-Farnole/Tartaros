@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public delegate void EntityDelegate(Entity ent);
+public delegate void EntityDelegate(Entity entity);
 
 /// <summary>
 /// Manage action tick & queueing. Initialize EntityComponent.

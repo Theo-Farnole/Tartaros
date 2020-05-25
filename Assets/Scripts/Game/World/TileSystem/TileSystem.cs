@@ -32,6 +32,29 @@ public class TileSystem : Singleton<TileSystem>
     {
         ResetAllTiles();
     }
+
+    void OnEnable()
+    {
+        Entity.OnDeath += Entity_OnDeath;
+    }
+
+    void OnDisable()
+    {
+        Entity.OnDeath -= Entity_OnDeath;
+    }
+    #endregion
+
+    #region Events Handlers
+    private void Entity_OnDeath(Entity entity)
+    {
+        if (entity.Data.EntityType == EntityType.Building)
+        {
+            Vector3 worldPosition = entity.transform.position;
+            Vector2Int coords = WorldToCoords(worldPosition);
+
+            SetTile(null, entity.Data.TileSize, coords, true);
+        }
+    }
     #endregion
 
     #region IsTile Methods
@@ -200,11 +223,11 @@ public class TileSystem : Singleton<TileSystem>
         }
     }
 
-    public void SetTile(GameObject gameObject, Vector2Int buildingSize)
-    {
-        Vector3 gameObjectPosition = gameObject.transform.position;
+    public void SetTile(GameObject gameObject, Vector2Int buildingSize, bool canBuildOnNonEmptyCell = false)
+        => SetTile(gameObject, buildingSize, WorldToCoords(gameObject.transform.position), canBuildOnNonEmptyCell);
 
-        Vector2Int coords = WorldToCoords(gameObjectPosition);
+    public void SetTile(GameObject gameObject, Vector2Int buildingSize, Vector2Int coords, bool canBuildOnNonEmptyCell = false)
+    {
         Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
 
         for (int x = 0; x < buildingSize.x; x++)
@@ -214,14 +237,14 @@ public class TileSystem : Singleton<TileSystem>
                 Vector2Int coordsOffset = new Vector2Int(x, y);
                 Vector2Int tileCoords = uncenteredCoords + coordsOffset;
 
-                bool setTileSuccesful = TrySetTile(gameObject, tileCoords, gameObjectPosition);
+                bool setTileSuccesful = TrySetTile(gameObject, tileCoords, canBuildOnNonEmptyCell);
 
                 Assert.IsTrue(setTileSuccesful, "At this code section, 'setTileSuccessful' should always be true.");
             }
         }
     }
 
-    private bool TrySetTile(GameObject gameObject, Vector2Int coords, Vector3 worldPosition)
+    private bool TrySetTile(GameObject gameObject, Vector2Int coords, bool canBuildOnNonEmptyCell = false)
     {
         if (_tiles.ContainsKey(coords) == false)
         {
@@ -229,7 +252,7 @@ public class TileSystem : Singleton<TileSystem>
             return false;
         }
 
-        if (_tiles[coords] != null)
+        if (!canBuildOnNonEmptyCell  && _tiles[coords] != null)
         {
             UIMessagesLogger.Instance.AddErrorMessage("You can't build on non-empty cell.");
             return false;

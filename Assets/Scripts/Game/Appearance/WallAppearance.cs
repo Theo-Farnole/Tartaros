@@ -59,8 +59,6 @@ public class WallAppearance : MonoBehaviour
 
     void ChangeAppearance()
     {
-        Assert.IsNotNull(TileSystem.Instance, "You must have a TileSystem to change appareance.");
-
         bool isWallJoint = Calculate_IsWallJoint(out WallOrientation wallOrientation);
 
         _jointModel.SetActive(isWallJoint);
@@ -75,6 +73,8 @@ public class WallAppearance : MonoBehaviour
 
     bool Calculate_IsWallJoint(out WallOrientation wallOrientation)
     {
+        Assert.IsNotNull(TileSystem.Instance, "You must have a TileSystem to change appareance.");
+
         Vector2Int myCoords = TileSystem.Instance.WorldToCoords(transform.position);
 
         Vector2Int northCoords = new Vector2Int(myCoords.x, myCoords.y + 1);
