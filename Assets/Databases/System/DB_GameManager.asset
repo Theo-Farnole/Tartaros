@@ -26,5 +26,5 @@ MonoBehaviour:
   - building_barracks
   - building_wall
   - building_tower
-  _wavesPassedToWin: 1
+  _wavesPassedToWin: 30
   _loseOnDestroyedEntityID: building_temple

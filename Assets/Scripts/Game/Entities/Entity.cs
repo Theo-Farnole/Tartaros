@@ -53,6 +53,7 @@ public class Entity : MonoBehaviour
     public Team Team { get => _team; set => _team = value; }
     public bool HasCurrentAction { get => (_currentAction != null); }
     public Action CurrentAction { get => _currentAction; }
+    public bool IsIdle { get => !HasCurrentAction; }
     #endregion
 
     #region Methods

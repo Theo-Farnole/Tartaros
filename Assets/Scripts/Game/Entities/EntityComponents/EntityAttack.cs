@@ -18,6 +18,16 @@ public class EntityAttack : EntityComponent
         CalculateNewAttackTimer();
     }
 
+    void OnEnable()
+    {
+        Entity.GetCharacterComponent<EntityDetection>().OnEnemyDetected += EntityAttack_OnEnemyDetected;
+    }
+
+    void OnDisable()
+    {
+        Entity.GetCharacterComponent<EntityDetection>().OnEnemyDetected -= EntityAttack_OnEnemyDetected;
+    }
+
     void Update()
     {
         // if Entity is idling, try to attack nearest enemy
@@ -28,10 +38,15 @@ public class EntityAttack : EntityComponent
     }
     #endregion
 
-    void CalculateNewAttackTimer()
+    #region Events Handlers
+    private void EntityAttack_OnEnemyDetected(Entity enemy)
     {
-        _attackTime = Time.time +  1 / Entity.Data.AttackPerSecond;
+        if (Entity.IsIdle)
+        {
+            TryStartActionAttackNearestEnemy();
+        }
     }
+    #endregion
 
     #region Public methods
     public void DoAttack(Entity target)
@@ -92,6 +107,13 @@ public class EntityAttack : EntityComponent
         }
 
         return false;
+    }
+    #endregion
+
+    #region Private methods
+    void CalculateNewAttackTimer()
+    {
+        _attackTime = Time.time + 1 / Entity.Data.AttackPerSecond;
     }
     #endregion
     #endregion

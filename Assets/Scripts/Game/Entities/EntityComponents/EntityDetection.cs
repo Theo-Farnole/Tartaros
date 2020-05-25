@@ -5,11 +5,15 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+public delegate void OnEnemyDetected(Entity enemy);
+
 public class EntityDetection : EntityComponent
 {
     #region Fields
     private const string debugLogHeader = "Entity Detection : ";
     public readonly static float DISTANCE_THRESHOLD = 0.3f;
+
+    public event OnEnemyDetected OnEnemyDetected;
 
     [Required]
     [SerializeField] private GenericTrigger _viewTrigger;
@@ -48,6 +52,8 @@ public class EntityDetection : EntityComponent
             if (entity.Team != Entity.Team)
             {
                 _enemiesInViewRadius.Add(entity);
+
+                OnEnemyDetected?.Invoke(entity);
             }
         }
     }
