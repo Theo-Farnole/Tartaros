@@ -73,6 +73,14 @@ public class Entity : MonoBehaviour
     {
         _currentAction?.Tick();
     }
+
+    private void OnGUI()
+    {
+        if (GetCharacterComponent<EntitySelectable>())
+        {
+
+        }
+    }
     #endregion
 
     #region Public methods

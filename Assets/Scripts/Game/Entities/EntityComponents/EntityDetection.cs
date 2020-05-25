@@ -74,7 +74,6 @@ public class EntityDetection : EntityComponent
     public bool IsNearFromEntity(Entity target)
     {
         return Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD + Mathf.Max(target.Data.TileSize.x, target.Data.TileSize.y);
-
     }
 
     public bool IsNearFromPosition(Vector3 position)

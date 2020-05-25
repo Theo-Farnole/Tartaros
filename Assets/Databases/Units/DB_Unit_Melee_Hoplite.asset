@@ -60,6 +60,7 @@ MonoBehaviour:
     food: 20
     wood: 5
     stone: 0
+  _creationDuration: 15
   _viewRadius: 4
   _isConstructionChained: 0
   _canAttack: 1

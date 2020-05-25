@@ -4,6 +4,7 @@ using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 /// <summary>
 /// Wrapper used to call action to selected groups from others scripts.
@@ -40,11 +41,19 @@ public static class SelectedGroupsActionsCaller
 
     public static void OrderSpawnUnits(string unitID)
     {
+        var data = MainRegister.Instance.GetEntityData(unitID);
+
+        Assert.IsNotNull(data, string.Format("EntityData of {0} is null.", data));
+
+        float creationDuration = data.CreationDuration;
+
         foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
-            for (int i = 0; i < group.unitsSelected.Count; i++)
+            foreach (Entity selectedEntity in group.unitsSelected)
             {
-                group.unitsSelected[i].GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(unitID);
+                var action = new ActionSpawnUnit(selectedEntity, creationDuration, unitID);
+
+                selectedEntity.SetAction(action, true);
             }
         }
     }

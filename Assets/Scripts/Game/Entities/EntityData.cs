@@ -69,9 +69,14 @@ public class EntityData : SerializedScriptableObject
     #endregion
 
     #region Spawning Cost Settings
-    [BoxGroup("Spawning Cost Settings")]
+    [BoxGroup("Spawning Settings")]
     [SerializeField] private ResourcesWrapper _spawningCost;
+
+    [BoxGroup("Spawning Settings")]
+    [SerializeField] private float _creationDuration;
+
     public ResourcesWrapper SpawningCost { get => _spawningCost; }
+    public float CreationDuration { get => _creationDuration; }
     #endregion
 
     #region Vision Settings

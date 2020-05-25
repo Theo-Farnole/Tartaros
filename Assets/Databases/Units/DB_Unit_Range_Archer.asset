@@ -59,7 +59,8 @@ MonoBehaviour:
   _spawningCost:
     food: 20
     wood: 5
-    gold: 0
+    stone: 0
+  _creationDuration: 10
   _viewRadius: 8
   _isConstructionChained: 0
   _canAttack: 1
@@ -81,6 +82,6 @@ MonoBehaviour:
   _constantResourcesGeneration:
     food: 0
     wood: 0
-    gold: 0
+    stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0

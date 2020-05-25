@@ -23,33 +23,21 @@ public class EntityUnitSpawner : EntityComponent
 
     public void SpawnUnit(string unitID)
     {
-        if (!Entity.Data.CanSpawnUnit) return;
-
-        if (Entity.Data.AvailableUnitsForCreation.Contains(unitID) == false)
-        {
-            Debug.LogWarningFormat(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", unitID, name);
-            return;
-        }
+        Assert.IsTrue(Entity.Data.CanSpawnUnit, "You must tick 'can spawn unit' on database " + Entity.EntityID + ".");
+        Assert.IsTrue(Entity.Data.AvailableUnitsForCreation.Contains(unitID), string.Format(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", unitID, name));
+        Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
 
         var unitData = MainRegister.Instance.GetEntityData(unitID);
 
-        Assert.IsNotNull(unitData,
-            string.Format(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitID));
+        Assert.IsNotNull(unitData, string.Format(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitID));
 
-        if (GameManager.Instance != null)
+        if (!GameManager.Instance.HasEnoughtPopulationToSpawn(unitData))
         {
-            if (!GameManager.Instance.HasEnoughtPopulationToSpawn(unitData))
-            {
-                UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", unitID));
-                return;
-            }
-        }
-        else
-        {
-            Debug.LogErrorFormat(debugLogHeader + " Missing GameManager. Can't prevent spawning if max population reached.");
+            UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", unitID));
+            return;
         }
 
-        if (GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost) == false)
+        if (!GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost))
         {
             UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitID + ".");
             return;

@@ -35,18 +35,16 @@ namespace Game.UI
         }
 
         void SetHoverPopupOnOverallActionOrders()
-        {
-            var overallActionEnumLength = Enum.GetValues(typeof(OverallAction)).Length;
-            Assert.AreEqual(_overallOrders.Length, overallActionEnumLength, string.Format("Overall action orders should have {0} buttons. However, it have only {1}.", overallActionEnumLength, _overallOrders.Length));
+        {            
+            Assert.AreEqual(_overallOrders.Length, Enum.GetValues(typeof(OverallAction)).Length, string.Format("Overall action orders should have {0} buttons. However, it have only {1}.", Enum.GetValues(typeof(OverallAction)).Length, _overallOrders.Length));
 
-            for (int i = 0; i < _overallOrders.Length && i < overallActionEnumLength; i++)
+            for (int i = 0; i < _overallOrders.Length; i++)
             {
                 OverallAction action = (OverallAction)i;
 
                 var overallActionData = MainRegister.Instance.GetOverallActionData(action);
 
-                Assert.IsNotNull(overallActionData,
-                    string.Format("Orders Wrapper: OverallActionData of {0} missing in MainRegister. Can't set hover popup.", action));
+                Assert.IsNotNull(overallActionData, string.Format("Orders Wrapper: OverallActionData of {0} missing in MainRegister. Can't set hover popup.", action));
 
                 _overallOrders[i].GetComponent<HoverDisplayPopup>().HoverPopupData = overallActionData.HoverPopupData;
             }
@@ -98,12 +96,12 @@ namespace Game.UI
             order.button.onClick.RemoveAllListeners();
             order.button.onClick.AddListener(() => SelectedGroupsActionsCaller.OrderSpawnUnits(unitID));
 
-
             var entityData = MainRegister.Instance.GetEntityData(unitID);
 
             Assert.IsNotNull(entityData,
                 string.Format("Orders Wrapper: Couldn't find EntityData of {0}. Can't display hotkey and portrait.", unitID));
 
+            // UPGRADE NOTE: respect Law of Demeter
             order.hotkey.text = entityData.Hotkey.ToString();
             order.backgroundButton.sprite = entityData.Portrait;
             order.HoverDisplayPopup.HoverPopupData = entityData.HoverPopupData;
