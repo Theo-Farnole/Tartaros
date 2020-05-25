@@ -8,5 +8,6 @@ namespace TF.Cheats
     {
         public static readonly string keyInfiniteResources = "Infinite Resources";
         public static readonly string keyDisableFog = "Disable Fog of War";
+        public static readonly string keySetCreationTimeToZero = "Set Creation Time to Zero";
     }
 }

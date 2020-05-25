@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Game.Cheats;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +15,14 @@ namespace Game.IA.Action
 
         public ActionSpawnUnit(Entity owner, float creationDuration, string entityIDToSpawn) : base(owner)
         {
-            this.creationDuration = creationDuration;
             this.entityIDToSpawn = entityIDToSpawn;
+
+            float finalCreationDuration = 
+                TartarosCheatsManager.IsCreationTimeToZeroActive() 
+                ? 0 
+                : creationDuration;
+
+            this.creationDuration = finalCreationDuration;
         }
 
         public override void OnStateEnter()

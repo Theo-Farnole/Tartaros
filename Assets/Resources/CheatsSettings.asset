@@ -17,3 +17,5 @@ MonoBehaviour:
     type: 0
   - id: Disable Fog of War
     type: 0
+  - id: Set Creation Time to Zero
+    type: 0

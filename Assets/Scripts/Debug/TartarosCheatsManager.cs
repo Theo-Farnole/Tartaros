@@ -83,6 +83,12 @@ namespace Game.Cheats
         }
         #endregion
 
+        public static bool IsCreationTimeToZeroActive()
+            => CheatsManager.GetBool(CheatsKey.keySetCreationTimeToZero);
+
+        public static void ToggleCreationTimeToZeroActive()
+            => CheatsManager.ToggleBool(CheatsKey.keySetCreationTimeToZero);
+
         #region Infinites Resources
         private static bool IsInfiniteResourcesActive() => CheatsManager.GetBool(CheatsKey.keyInfiniteResources);
 
@@ -128,7 +134,7 @@ namespace Game.Cheats
             ExecutePrivateMethodWithReflection<WaveManager>("StartWave");
             return;
         }
-        #endregion
+        #endregion        
 
         #region Disable Fog of War
         private static bool IsFogDisabled() => CheatsManager.GetBool(CheatsKey.keyDisableFog);
@@ -203,13 +209,14 @@ namespace Game.Cheats
             if (!_cheatsMenuOpen)
                 return;
 
-            int buttonCount = 4;
+            int buttonCount = 5;
 
             Draw_MenuBackground(buttonCount);
 
             Draw_InfiniteResources(0);
             Draw_StartWave(1);
             Draw_DisableFow(2);
+            Draw_ToggleCreationTimeToZero(3);
             Draw_CloseCheatsMenu(buttonCount - 1);
         }
 
@@ -235,6 +242,14 @@ namespace Game.Cheats
 
             if (GUI.Button(buttonRect, label))
                 onclickAction();
+        }
+
+        private void Draw_ToggleCreationTimeToZero(int buttonIndex)
+        {
+            string label = (IsCreationTimeToZeroActive() ? "Disable" : "Enable")
+                + " Creation Time Set to Zero";
+
+            DrawGenericButton(buttonIndex, label, ToggleCreationTimeToZeroActive);
         }
 
         private void Draw_CloseCheatsMenu(int buttonIndex)
