@@ -73,26 +73,13 @@ public class EntityDetection : EntityComponent
 
     public bool IsNearFromEntity(Entity target)
     {
-        if (Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD + Mathf.Max(target.Data.TileSize.x, target.Data.TileSize.y);
+
     }
 
     public bool IsNearFromPosition(Vector3 position)
     {
-        if (Vector3.Distance(transform.position, position) <= DISTANCE_THRESHOLD)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return Vector3.Distance(transform.position, position) <= DISTANCE_THRESHOLD;
     }
 
     /// <summary>
@@ -101,13 +88,9 @@ public class EntityDetection : EntityComponent
     /// <returns></returns>
     public Entity[] GetAllEnemiesInViewRadius()
     {
-        if (!enabled)
-        {
-            Debug.LogWarningFormat(debugLogHeader + " {0} is disabled. Can't get all enemies in view radius.");
-            return null;
-        }
+        Assert.IsTrue(enabled, "EntityDetection '" + name + "'should be enable to get all enmies in view radius.");
 
-        return _enemiesInViewRadius.ToArray();
+        return _enemiesInViewRadius.Where(x => x != null).ToArray();
     }
 
     /// <summary>
