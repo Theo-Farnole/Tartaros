@@ -649,6 +649,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_Entity_Unit_Alexios
       objectReference: {fileID: 0}
+    - target: {fileID: 7475237624608698167, guid: 2f518b8a25b2bc5438162ad3b222c4ba,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f518b8a25b2bc5438162ad3b222c4ba, type: 3}
 --- !u!1001 &393663708
@@ -872,6 +877,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Alexios (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475237624608698167, guid: 2f518b8a25b2bc5438162ad3b222c4ba,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f518b8a25b2bc5438162ad3b222c4ba, type: 3}
@@ -1193,6 +1203,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_Entity_Unit_Alexios (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7475237624608698167, guid: 2f518b8a25b2bc5438162ad3b222c4ba,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f518b8a25b2bc5438162ad3b222c4ba, type: 3}

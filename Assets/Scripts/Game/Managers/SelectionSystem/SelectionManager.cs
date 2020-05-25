@@ -6,6 +6,7 @@ using Game.UI;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
+using Sirenix.OdinInspector;
 
 namespace Game.Selection
 {
@@ -35,12 +36,16 @@ namespace Game.Selection
         #region Fields
         public static event OnSelectionUpdated OnSelectionUpdated;
 
+        [SerializeField] private bool _forceSelectionToHaveOneType = false;
+        [EnableIf(nameof(_forceSelectionToHaveOneType))]
+        [SerializeField] private EntityType _selectionPriority = EntityType.Unit;
         [SerializeField] private SelectionRectangle _selectionRectangle;
 
         private List<SelectionGroup> _selectedGroups = new List<SelectionGroup>();
         private int _highlightGroupIndex = -1;
 
         private bool _selectionEnable = true;
+        private EntityType _selectionType;
         #endregion
 
         #region Properties
@@ -134,38 +139,86 @@ namespace Game.Selection
                 OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
             }
         }
+
+        /// <summary>
+        /// Remove entities that haven't the same type
+        /// </summary>
+        private void TrimEntities(ref Entity[] selectedEntities)
+        {
+            bool selectedEntitiesHasUnit = selectedEntities
+                   .Where(x => x.Data.EntityType == _selectionPriority)
+                   .FirstOrDefault() != null;
+
+            // remove non EntityType.Unit
+            if (selectedEntitiesHasUnit)
+            {
+                selectedEntities = selectedEntities
+                    .Where(x => x.Data.EntityType == _selectionPriority)
+                    .ToArray();
+            }
+            else
+            {
+                // keep non EntityType.Unit
+            }
+        }
         #endregion
 
         #region Public methods
-        public void AddEntity(Entity selectableEntity)
+        public void AddEntities(Entity[] selectedEntities)
+        {            
+            if (_forceSelectionToHaveOneType)
+            {
+                TrimEntities(ref selectedEntities);
+            }
+
+            foreach (Entity entity in selectedEntities)
+            {
+                AddEntity(entity);
+            }
+        }
+
+        public void AddEntity(Entity selectedEntity)
         {
             if (!_selectionEnable)
                 return;
 
             // prevent covered entity by fog to be selected
-            if (selectableEntity.GetCharacterComponent<EntityFogCoverable>().IsCover)
+            if (selectedEntity.GetCharacterComponent<EntityFogCoverable>().IsCover)
                 return;
 
-            SelectionGroup groupOfSameEntity = _selectedGroups.FirstOrDefault(x => x.entityID == selectableEntity.EntityID);
+            // on start selection,
+            // set selectionType
+            if (_selectedGroups.Count == 0)
+            {
+                _selectionType = selectedEntity.Data.EntityType;
+            }
 
-            // create group if no groud of the same entity exist
+            if (_forceSelectionToHaveOneType && _selectionType != selectedEntity.Data.EntityType)
+            {
+                Debug.LogWarningFormat("Selection Manager : " + "Trying to add {0}, but current selection type is {1}.", selectedEntity.name, _selectionType);
+                return;
+            }
+
+            SelectionGroup groupOfSameEntity = _selectedGroups.FirstOrDefault(x => x.entityID == selectedEntity.EntityID);
+
+            // create group if no group of the same entity exist
             if (groupOfSameEntity == null)
             {
-                groupOfSameEntity = new SelectionGroup(selectableEntity.EntityID, selectableEntity.Team);
+                groupOfSameEntity = new SelectionGroup(selectedEntity.EntityID, selectedEntity.Team);
                 _selectedGroups.Add(groupOfSameEntity);
 
                 if (_highlightGroupIndex == -1) _highlightGroupIndex = 0;
             }
 
             // don't add entity if it already selected
-            if (groupOfSameEntity.unitsSelected.Contains(selectableEntity))
+            if (groupOfSameEntity.unitsSelected.Contains(selectedEntity))
             {
-                Debug.LogWarning("Selection Manager # " + selectableEntity + " can't be added because is already selected");
+                Debug.LogWarning("Selection Manager # " + selectedEntity + " can't be added because is already selected");
                 return;
             }
 
-            groupOfSameEntity.unitsSelected.Add(selectableEntity);
-            selectableEntity.GetCharacterComponent<EntitySelectable>().OnSelected();
+            groupOfSameEntity.unitsSelected.Add(selectedEntity);
+            selectedEntity.GetCharacterComponent<EntitySelectable>().OnSelected();
 
             OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
         }

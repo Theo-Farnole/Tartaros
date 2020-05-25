@@ -668,7 +668,7 @@ GameObject:
   - component: {fileID: 848056610}
   - component: {fileID: 848056613}
   m_Layer: 0
-  m_Name: === InputListener
+  m_Name: Inputs Listener
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -950,6 +950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d9e2c94483eb04d97014d3bc9048ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pixelsToStartSelection: 50
 --- !u!114 &1164024732901388078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -962,6 +963,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b0d6f8b623df6946959cbda8e850b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _forceSelectionToHaveOneType: 1
+  _selectionPriority: 0
   _selectionRectangle: {fileID: 651580136596304162}
 --- !u!114 &1570385028883734175
 MonoBehaviour:
@@ -1169,7 +1172,7 @@ GameObject:
   - component: {fileID: 1164024732901388078}
   - component: {fileID: 651580136596304162}
   m_Layer: 0
-  m_Name: === Selections
+  m_Name: Selections
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

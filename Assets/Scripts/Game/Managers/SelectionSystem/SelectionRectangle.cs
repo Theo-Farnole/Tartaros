@@ -1,6 +1,7 @@
 ﻿using Lortedo.Utilities;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,7 +14,8 @@ namespace Game.Selection
     public class SelectionRectangle : MonoBehaviour
     {
         #region Fields
-        public readonly static int pixelsToStartSelection = 50;
+        [SerializeField] private int _pixelsToStartSelection = 50;
+        
 
         private bool _isSelecting = false;
         private Vector3 _originPositionRect;
@@ -72,7 +74,7 @@ namespace Game.Selection
             if (_isSelecting)
                 return;
 
-            if (Vector3.Distance(Input.mousePosition, _originPositionRect) >= pixelsToStartSelection)
+            if (Vector3.Distance(Input.mousePosition, _originPositionRect) >= _pixelsToStartSelection)
             {
                 _isSelecting = true;
 
@@ -104,13 +106,13 @@ namespace Game.Selection
             var camera = Camera.main;
             var viewportBounds = GUIRectDrawer.GetViewportBounds(camera, _originPositionRect, Input.mousePosition);
 
-            for (int i = 0; i < unitsSelectable.Length; i++)
-            {
-                if (IsWithinSelectionBounds(camera, viewportBounds, unitsSelectable[i].gameObject))
-                {
-                    SelectionManager.Instance.AddEntity(unitsSelectable[i].GetComponent<Entity>());
-                }
-            }
+            Entity[] entitiesInSelectionRect = unitsSelectable
+                .Where(x => IsWithinSelectionBounds(camera, viewportBounds, x.gameObject)) // is in rectangle
+                .Select(x => x.GetComponent<Entity>()) 
+                .Where(x => x != null)
+                .ToArray();
+
+            SelectionManager.Instance.AddEntities(entitiesInSelectionRect);
         }
 
         bool IsWithinSelectionBounds(Camera camera, Bounds viewportBounds, GameObject gameObject)
