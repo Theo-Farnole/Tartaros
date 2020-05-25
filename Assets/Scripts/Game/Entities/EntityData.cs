@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Game.UI.HoverPopup;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum GenerationType
 {
@@ -124,7 +125,8 @@ public class EntityData : SerializedScriptableObject
     [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
     [PositiveValueOnly]
     [Tooltip("Time between each attack")]
-    [SerializeField] private float _attackSpeed = 1f;
+    [FormerlySerializedAs("_attackSpeed ")]
+    [SerializeField] private float _attackPerSecond = 1f;
 
     [Space]
     [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
@@ -141,7 +143,7 @@ public class EntityData : SerializedScriptableObject
     public GameObject PrefabProjectile { get => _prefabProjectile; }
     public int Damage { get => _damage; }
     public float AttackRadius { get => _attackRadius; }
-    public float AttackSpeed { get => _attackSpeed; }
+    public float AttackPerSecond { get => _attackPerSecond; }
     #endregion
 
     #region Movement
@@ -229,6 +231,6 @@ public class EntityData : SerializedScriptableObject
 
     void OnValidate()
     {
-        _damagePerSecond = _damage / _attackSpeed;
+        _damagePerSecond = _damage * _attackPerSecond;
     }
 }

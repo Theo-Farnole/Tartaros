@@ -8,15 +8,18 @@ using UnityEngine.Assertions;
 public class EntityAttack : EntityComponent
 {
     #region Fields
-    private float _attackTimer = 0;
+    private float _attackTime = 0;
     #endregion
 
     #region Methods
     #region Mono Callbacks
+    void Awake()
+    {
+        CalculateNewAttackTimer();
+    }
+
     void Update()
     {
-        _attackTimer += Time.deltaTime;
-
         // if Entity is idling, try to attack nearest enemy
         if (!Entity.HasCurrentAction)
         {
@@ -24,6 +27,11 @@ public class EntityAttack : EntityComponent
         }
     }
     #endregion
+
+    void CalculateNewAttackTimer()
+    {
+        _attackTime = Time.time +  1 / Entity.Data.AttackPerSecond;
+    }
 
     #region Public methods
     public void DoAttack(Entity target)
@@ -33,12 +41,12 @@ public class EntityAttack : EntityComponent
 
         Entity.GetCharacterComponent<EntityMovement>().SetAvoidance(Avoidance.Fight);
 
-        if (_attackTimer < Entity.Data.AttackSpeed)
+        if (Time.time < _attackTime)
             return;
 
         if (Entity.GetCharacterComponent<EntityDetection>().IsEntityInAttackRange(target))
         {
-            _attackTimer = 0;
+            CalculateNewAttackTimer();
 
             if (Entity.Data.IsMelee)
             {
@@ -46,30 +54,20 @@ public class EntityAttack : EntityComponent
             }
             else
             {
-                if (Entity.Data.PrefabProjectile != null)
-                {
-                    GameObject gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity, true);
+                // prefab project not null
+                Assert.IsNotNull(Entity.Data.PrefabProjectile, string.Format("Entity Attack : Projectile set in EntityData is null for {0} of type {1}", name, Entity.EntityID));
 
-                    if (gameObjectProjectile != null)
-                    {
-                        if (gameObjectProjectile.TryGetComponent(out Projectile projectile))
-                        {
-                            projectile.Throw(target, Entity);
-                        }
-                        else
-                        {
-                            Debug.LogErrorFormat("Prefab projectile of {0} is missing Projectile component. Please, add one.", name);
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogErrorFormat("Entity Attack : Projectile from object pooler is null. Aborting projectile throw");
-                    }
-                }
-                else
-                {
-                    Debug.LogErrorFormat("Entity Attack : Projectile set in EntityData is null for {0} of type {1}", name, Entity.EntityID);
-                }
+                GameObject gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity, true);
+
+                // projectile from pool not null
+                Assert.IsNotNull(gameObjectProjectile, string.Format("Entity Attack : Projectile '{0}' from object pooler is null.", Entity.Data.PrefabProjectile.name));
+
+                Projectile projectile = gameObjectProjectile.GetComponent<Projectile>();
+
+                // projectile from pool has Projectile component
+                Assert.IsNotNull(string.Format("Prefab projectile of {0} is missing Projectile component. Please, add one.", name));
+
+                projectile.Throw(target, Entity);
             }
         }
     }
