@@ -59,7 +59,7 @@ MonoBehaviour:
   _spawningCost:
     food: 0
     wood: 5
-    gold: 0
+    stone: 0
   _viewRadius: 12.93
   _isConstructionChained: 0
   _canAttack: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
   _canMove: 0
   _speed: 3
   _canCreateUnit: 0
-  _availableUnitsForCreation: 0000000001000000
+  _availableUnitsForCreation: []
   _canGenerateResources: 0
   _generationTick: 1
   _generationType: 0
@@ -80,6 +80,6 @@ MonoBehaviour:
   _constantResourcesGeneration:
     food: 0
     wood: 0
-    gold: 0
+    stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0

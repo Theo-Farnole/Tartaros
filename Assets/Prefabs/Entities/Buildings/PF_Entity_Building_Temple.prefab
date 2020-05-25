@@ -82,6 +82,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 232016372908055638, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 3318098695711775770, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5000353791765197101, guid: 1f10db5a47a86f24e981e10d671b9984,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -152,6 +162,21 @@ PrefabInstance:
       propertyPath: _meshes.Array.data[0]
       value: 
       objectReference: {fileID: 2053569098216732645}
+    - target: {fileID: 5963745078508625896, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 7735
+      objectReference: {fileID: 0}
+    - target: {fileID: 7415158848990508834, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.323
+      objectReference: {fileID: 0}
+    - target: {fileID: 7415158848990508834, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7444278397786493754, guid: 1f10db5a47a86f24e981e10d671b9984,
         type: 3}
       propertyPath: _type

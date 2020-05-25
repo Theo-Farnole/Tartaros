@@ -17,12 +17,7 @@ MonoBehaviour:
     - _waitTimeBeforeSequence: 0
       _waitTimeAfterSequence: 1
       _spawnUnits: 1
-      _entityID: unit_melee_hoplite
-      _unitCount: 50
+      _entityID: unit_range_archer
+      _unitCount: 30
       _timeAfterUnitSpawn: 0.05
-    - _waitTimeBeforeSequence: 0
-      _waitTimeAfterSequence: 1
-      _spawnUnits: 1
-      _entityID: unit_melee_hoplite
-      _unitCount: 1
-      _timeAfterUnitSpawn: 0.05
+  _entityIDToAttack: building_temple
