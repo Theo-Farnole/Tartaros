@@ -10,6 +10,10 @@ public class EntitySelectable : EntityComponent
     private bool _isSelected = false;
     #endregion
 
+    #region Properties
+    public bool IsSelected { get => _isSelected; set => _isSelected = value; }
+    #endregion
+
     #region Methods
     #region Mono Callbacks
     void OnEnable()

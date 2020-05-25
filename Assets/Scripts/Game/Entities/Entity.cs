@@ -3,6 +3,7 @@ using Lortedo.Utilities;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -73,14 +74,6 @@ public class Entity : MonoBehaviour
     {
         _currentAction?.Tick();
     }
-
-    private void OnGUI()
-    {
-        if (GetCharacterComponent<EntitySelectable>())
-        {
-
-        }
-    }
     #endregion
 
     #region Public methods
@@ -124,12 +117,10 @@ public class Entity : MonoBehaviour
         {
             if (HasCurrentAction)
             {
-                Debug.Log("Enqueu");
                 _queueAction.Enqueue(action);
             }
             else
             {
-                Debug.Log("SetCurrentAction");
                 SetCurrentAction(action);
             }
         }
@@ -148,6 +139,21 @@ public class Entity : MonoBehaviour
         _queueAction.Clear();
 
         SetCurrentAction(null);
+    }
+
+    public string ActionsToString()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        string labelCurrentAction = _currentAction != null ? _currentAction.ToString() : "NO CURRENT ACTION";
+        sb.AppendLine(labelCurrentAction);
+
+        foreach (var action in _queueAction)
+        {
+            sb.AppendLine(action.ToString());
+        }
+
+        return sb.ToString();
     }
     #endregion
 

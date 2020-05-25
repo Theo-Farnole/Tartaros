@@ -31,5 +31,10 @@ namespace Game.IA.Action
         {
             entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} moves to {1} aggressively.", _owner.name, _position);
+        }
     }
 }

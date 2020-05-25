@@ -43,5 +43,10 @@ namespace Game.IA.Action
 
             entity.GetCharacterComponent<EntityMovement>().MoveToPosition(position);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} patrols between {1} and {2}.", _owner.name, _startingPosition, _targetPosition);
+        }
     }
 }

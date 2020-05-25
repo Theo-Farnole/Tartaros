@@ -32,5 +32,10 @@ namespace Game.IA.Action
                 entity.StopCurrentAction();
             }
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} moves to {1}.", _owner.name, _position);
+        }
     }
 }

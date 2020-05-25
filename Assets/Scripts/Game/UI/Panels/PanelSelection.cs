@@ -34,7 +34,7 @@ namespace Game.UI
 
             _ordersWrapper.HideOrders();
 
-            SelectionManager.OnSelectionUpdated += UpdateSelection;
+            SelectionManager.OnSelectionUpdated += OnSelectionUpdated;
         }
 
         public override void OnValidate()
@@ -66,7 +66,7 @@ namespace Game.UI
             }
         }
 
-        public void UpdateSelection(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
+        public void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
         {
             UpdateSelectedGroups(selectedGroups);
             HighlightGroup(highlightGroupIndex);

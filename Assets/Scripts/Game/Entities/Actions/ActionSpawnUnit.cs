@@ -6,17 +6,22 @@ namespace Game.IA.Action
 {
     public class ActionSpawnUnit : Action
     {
-        public readonly float startTime;
-        public readonly float spawnTime;
+        public float startTime;
+        public float spawnTime;
+        public readonly float creationDuration;
 
         public readonly string entityIDToSpawn;
 
         public ActionSpawnUnit(Entity owner, float creationDuration, string entityIDToSpawn) : base(owner)
         {
+            this.creationDuration = creationDuration;
+            this.entityIDToSpawn = entityIDToSpawn;
+        }
+
+        public override void OnStateEnter()
+        {
             startTime = Time.time;
             spawnTime = Time.time + creationDuration;
-
-            this.entityIDToSpawn = entityIDToSpawn;
         }
 
         public override void Tick()
@@ -38,6 +43,30 @@ namespace Game.IA.Action
         public float GetCompletion()
         {
             return (Time.time - startTime) / (spawnTime - startTime);
+        }
+
+        public float GetRemainingTime()
+        {
+            return spawnTime - Time.time;
+        }
+
+        public string RemainingTimeToString()
+        {
+            float remainingTime = GetRemainingTime();
+
+            if (remainingTime >= 0)
+            {
+                return string.Format("{0:N0}", GetRemainingTime());
+            }
+            else
+            {
+                return creationDuration.ToString();
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} spawns {1} in {2}.", _owner.name, entityIDToSpawn, RemainingTimeToString());
         }
     }
 }

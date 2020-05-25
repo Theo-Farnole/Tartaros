@@ -44,6 +44,11 @@ namespace Game.IA.Action
             }
         }
 
+        public override string ToString()
+        {
+            return string.Format("{0} attacks {1}.", _owner.name, _target.name);
+        }
+
         private void OnEnemyDeath()
         {
             // try to auto attack nearest enemy
