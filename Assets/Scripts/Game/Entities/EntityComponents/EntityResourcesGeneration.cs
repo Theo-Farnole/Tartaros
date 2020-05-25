@@ -126,7 +126,7 @@ public class EntityResourcesGeneration : EntityComponent
         // otherwise, it's a bit useless
         if (Entity.Data.GenerationType == GenerationType.PerCell)
         {
-            // Draw wood X food X gold X above building
+            // Draw wood X food X stone X above building
             Vector2 guiPosition = Camera.main.WorldToScreenPoint(transform.position);
 
             // The WorldToScreenPoint functions return and integer starting from 0,0

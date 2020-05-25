@@ -73,7 +73,7 @@ namespace Game.ConstructionSystem
 
             GameObject nearMouseBuilding = _constructionBuildings.Last().Building;
 
-            // Draw wood X food X gold X above building
+            // Draw wood X food X stone X above building
             Vector2 guiPosition = Camera.main.WorldToScreenPoint(nearMouseBuilding.transform.position);
 
             // The WorldToScreenPoint functions return and integer starting from 0,0

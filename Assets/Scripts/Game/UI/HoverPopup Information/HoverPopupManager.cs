@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Game.UI.HoverPopup
@@ -20,7 +21,7 @@ namespace Game.UI.HoverPopup
         [SerializeField] private TextMeshProUGUI _titleText;
         [SerializeField] private TextMeshProUGUI _foodResourcesText;
         [SerializeField] private TextMeshProUGUI _woodResourcesText;
-        [SerializeField] private TextMeshProUGUI _goldResourcesText;
+        [FormerlySerializedAs("_goldResourcesText")] [SerializeField] private TextMeshProUGUI _stoneResourcesText;
         [SerializeField] private TextMeshProUGUI _creationTimeText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [Space]
@@ -109,7 +110,7 @@ namespace Game.UI.HoverPopup
 
                 _foodResourcesText.text = hoverPopupData.Resources.food.ToString();
                 _woodResourcesText.text = hoverPopupData.Resources.wood.ToString();
-                _goldResourcesText.text = hoverPopupData.Resources.gold.ToString();
+                _stoneResourcesText.text = hoverPopupData.Resources.stone.ToString();
             }
             else
             {

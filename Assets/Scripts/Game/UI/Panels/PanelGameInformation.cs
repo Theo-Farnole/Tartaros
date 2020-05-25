@@ -70,7 +70,7 @@ namespace Game.UI
 
             _resourcesLabel[(int)Resource.Food].text = "food " + currentResources.food;
             _resourcesLabel[(int)Resource.Wood].text = "wood " + currentResources.wood;
-            _resourcesLabel[(int)Resource.Gold].text = "gold " + currentResources.gold;
+            _resourcesLabel[(int)Resource.Stone].text = "stone " + currentResources.stone;
         }
 
         public void SetWaveText(int waveCount, float remainingTime)
