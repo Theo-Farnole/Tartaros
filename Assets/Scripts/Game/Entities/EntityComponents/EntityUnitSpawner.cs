@@ -79,7 +79,8 @@ public class EntityUnitSpawner : EntityComponent
 
     void UpdateAnchorPosition()
     {
-        _modelAnchorPoint.transform.position = _anchorPosition;
+        if (_modelAnchorPoint != null)
+            _modelAnchorPoint.transform.position = _anchorPosition;
     }
     #endregion
 
