@@ -17,10 +17,13 @@ MonoBehaviour:
     wood: 30
     gold: 10
   _startMaxPopulationCount: 10
-  _wavesPassedToWin: 1
   _IDInPanelConstruction:
-  - building_barracks
-  - building_house
-  - building_resources_food
   - building_temple
+  - building_resources_food
+  - building_resources_wood
+  - building_resources_stone
+  - building_house
+  - building_barracks
   - building_wall
+  _wavesPassedToWin: 1
+  _loseOnDestroyedEntityID: building_temple
