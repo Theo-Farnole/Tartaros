@@ -7,6 +7,7 @@ using UnityEngine.Assertions;
 
 public class EntityDetection : EntityComponent
 {
+    #region Fields
     private const string debugLogHeader = "Entity Detection : ";
     public readonly static float DISTANCE_THRESHOLD = 0.3f;
 
@@ -14,23 +15,15 @@ public class EntityDetection : EntityComponent
     [SerializeField] private GenericTrigger _viewTrigger;
 
     private List<Entity> _enemiesInViewRadius = new List<Entity>();
+    #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void OnEnable()
     {
-        if (_viewTrigger != null)
-        {
-            _viewTrigger.enabled = true;
-            _viewTrigger.OnTriggerEnterEvent += GenericTrigger_OnTriggerEnterEvent;
-            _viewTrigger.OnTriggerExitEvent += GenericTrigger_OnTriggerExitEvent;
-        }
-        else
-        {
-            Debug.LogErrorFormat(debugLogHeader + "Please assign a _genericTrigger to {0}", name);
-        }
-
         _enemiesInViewRadius.Clear();
+
+        EnableViewRadius();
     }
 
     void OnDisable()
@@ -45,27 +38,25 @@ public class EntityDetection : EntityComponent
     #endregion
 
     #region Events handlers
-    private void GenericTrigger_OnTriggerExitEvent(Collider other)
+    private void GenericTrigger_OnTriggerEnterEvent(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Entity entity))
         {
+            Assert.IsFalse(_enemiesInViewRadius.Contains(entity),
+                string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
+
             if (entity.Team != Entity.Team)
             {
-                Assert.IsFalse(_enemiesInViewRadius.Contains(entity), string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
                 _enemiesInViewRadius.Add(entity);
             }
         }
     }
 
-    private void GenericTrigger_OnTriggerEnterEvent(Collider other)
+    private void GenericTrigger_OnTriggerExitEvent(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Entity entity))
         {
-            // the enemy shoulddn't has the same team of the Entity
-            Assert.IsFalse(_enemiesInViewRadius.Contains(entity) && entity.Team == Entity.Team,
-                string.Format(debugLogHeader + "The entity {0} in {1} has the same team of {2}'s entity detection.", entity.name, nameof(_enemiesInViewRadius), name));
-
-            if (entity.Team != Entity.Team && _enemiesInViewRadius.Contains(entity))
+            if (entity.Team != Entity.Team)
             {
                 _enemiesInViewRadius.Remove(entity);
             }
@@ -141,6 +132,18 @@ public class EntityDetection : EntityComponent
     public bool IsEntityInViewRadius(Entity target)
     {
         return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.ViewRadius;
+    }
+    #endregion
+
+    #region Private Methods
+    private void EnableViewRadius()
+    {
+        Assert.IsNotNull(_viewTrigger, "Please assign a _genericTrigger to " + name);
+
+        _viewTrigger.enabled = true;
+        _viewTrigger.SetCollisionRadius(Entity.Data.ViewRadius);
+        _viewTrigger.OnTriggerEnterEvent += GenericTrigger_OnTriggerEnterEvent;
+        _viewTrigger.OnTriggerExitEvent += GenericTrigger_OnTriggerExitEvent;
     }
     #endregion
     #endregion
