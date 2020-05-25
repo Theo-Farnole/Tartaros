@@ -24,14 +24,20 @@ public class EntityUnitSpawner : EntityComponent
 
     void OnEnable()
     {
-        Entity.GetCharacterComponent<EntitySelectable>().OnSelected += EntityUnitSpawner_OnSelected;
-        Entity.GetCharacterComponent<EntitySelectable>().OnUnselected += EntityUnitSpawner_OnUnselected; ;
+        if (Entity.Data.CanSpawnUnit)
+        {
+            Entity.GetCharacterComponent<EntitySelectable>().OnSelected += EntityUnitSpawner_OnSelected;
+            Entity.GetCharacterComponent<EntitySelectable>().OnUnselected += EntityUnitSpawner_OnUnselected; ;
+        }
     }
 
     void OnDisable()
     {
-        Entity.GetCharacterComponent<EntitySelectable>().OnSelected += EntityUnitSpawner_OnSelected;
-        Entity.GetCharacterComponent<EntitySelectable>().OnUnselected += EntityUnitSpawner_OnUnselected; ;
+        if (Entity.Data.CanSpawnUnit)
+        {
+            Entity.GetCharacterComponent<EntitySelectable>().OnSelected -= EntityUnitSpawner_OnSelected;
+            Entity.GetCharacterComponent<EntitySelectable>().OnUnselected -= EntityUnitSpawner_OnUnselected; ;
+        }
     }
     #endregion
 
@@ -57,6 +63,7 @@ public class EntityUnitSpawner : EntityComponent
     void DisplayAnchorPoint()
     {
         Assert.IsNull(_modelAnchorPoint, "Model anchor is already displayed.");
+        Assert.IsTrue(Entity.Data.CanSpawnUnit, "Can't display anchor point of a unit that can't spawn unit.");
 
         _modelAnchorPoint = ObjectPooler.Instance.SpawnFromPool(ObjectPoolingTags.keyAnchorPoint, _anchorPosition, Quaternion.identity);
     }
@@ -64,6 +71,7 @@ public class EntityUnitSpawner : EntityComponent
     void HideAnchorPoint()
     {
         Assert.IsNotNull(_modelAnchorPoint, "Can't enqueue null _modelAnchorPoint. Call your coder please.");
+        Assert.IsTrue(Entity.Data.CanSpawnUnit, "Can't hide anchor point of a unit that can't spawn unit.");
 
         ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keyAnchorPoint, _modelAnchorPoint);
         _modelAnchorPoint = null;
