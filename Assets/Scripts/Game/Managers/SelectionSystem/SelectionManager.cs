@@ -218,7 +218,7 @@ namespace Game.Selection
             }
 
             groupOfSameEntity.unitsSelected.Add(selectedEntity);
-            selectedEntity.GetCharacterComponent<EntitySelectable>().OnSelected();
+            selectedEntity.GetCharacterComponent<EntitySelectable>().IsSelected = true;
 
             OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
         }
@@ -237,7 +237,7 @@ namespace Game.Selection
                 return;
             }
 
-            selectableEntity.GetCharacterComponent<EntitySelectable>().OnDeselect();
+            selectableEntity.GetCharacterComponent<EntitySelectable>().IsSelected = false;
             groupWithSameType.unitsSelected.Remove(selectableEntity);
 
             // delete group if empty
@@ -283,7 +283,7 @@ namespace Game.Selection
             {
                 for (int j = 0; j < item.unitsSelected.Count; j++)
                 {
-                    item.unitsSelected[j].GetCharacterComponent<EntitySelectable>().OnDeselect();
+                    item.unitsSelected[j].GetCharacterComponent<EntitySelectable>().IsSelected = false;
                 }
             }
 

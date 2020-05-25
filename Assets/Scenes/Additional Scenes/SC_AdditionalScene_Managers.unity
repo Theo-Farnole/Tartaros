@@ -220,6 +220,9 @@ MonoBehaviour:
   _prefabsPool:
   - tag: SelectionCircle
     prefab: {fileID: 75726643763961423, guid: 36da5f7c11d4d514a8172e00d9c31f52, type: 3}
+  - tag: AnchorPoint
+    prefab: {fileID: 2200128881622590375, guid: b0612ad403d77064c9d13ee545504e87,
+      type: 3}
 --- !u!4 &122832973
 Transform:
   m_ObjectHideFlags: 0

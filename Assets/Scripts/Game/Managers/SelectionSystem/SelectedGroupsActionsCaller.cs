@@ -86,11 +86,17 @@ public static class SelectedGroupsActionsCaller
 
         foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
         {
-            for (int j = 0; j < group.unitsSelected.Count; j++)
+            foreach (var entity in group.unitsSelected)
             {
-                var actionMove = new ActionMoveToPosition(group.unitsSelected[j], destination);
-
-                group.unitsSelected[j].SetAction(actionMove, addToActionQueue);
+                if (entity.Data.CanMove)
+                {
+                    var actionMove = new ActionMoveToPosition(entity, destination);
+                    entity.SetAction(actionMove, addToActionQueue);
+                }
+                else
+                {
+                    entity.GetCharacterComponent<EntityUnitSpawner>().SetAnchorPosition(destination);
+                }
             }
         }
     }

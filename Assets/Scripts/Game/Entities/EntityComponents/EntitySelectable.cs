@@ -3,15 +3,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void OnSelected(Entity entity);
+public delegate void OnUnselected(Entity entity);
+
 public class EntitySelectable : EntityComponent
 {
     #region Fields
+    public event OnSelected OnSelected;
+    public event OnUnselected OnUnselected;
+
     private GameObject _selectionCircle = null;
     private bool _isSelected = false;
     #endregion
 
     #region Properties
-    public bool IsSelected { get => _isSelected; set => _isSelected = value; }
+    public bool IsSelected
+    {
+        get => _isSelected;
+        set
+        {
+            bool oldIsSelected = _isSelected;
+
+            _isSelected = value;
+
+            if (oldIsSelected != _isSelected)
+            {
+                if (_isSelected)
+                {
+                    OnSelected?.Invoke(Entity);
+                    OnSelection();
+                }
+                else
+                {
+                    OnUnselected?.Invoke(Entity);
+                    OnUnselection();
+                }
+            }
+        }
+    }
     #endregion
 
     #region Methods
@@ -24,7 +53,7 @@ public class EntitySelectable : EntityComponent
 
     void OnDisable()
     {
-        Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover -= OnFogCover;        
+        Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover -= OnFogCover;
         Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover -= OnFogUncover;
     }
 
@@ -55,18 +84,14 @@ public class EntitySelectable : EntityComponent
     #endregion
 
     #region Public methods
-    public void OnSelected()
+    void OnSelection()
     {
-        _isSelected = true;
-
         DisplaySelectionCircle();
     }
 
-    public void OnDeselect()
+    void OnUnselection()
     {
-        _isSelected = false;
-
-        HideSelectionCircle();        
+        HideSelectionCircle();
     }
     #endregion
 

@@ -1,4 +1,5 @@
 ﻿using Game.IA.Action;
+using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,19 +8,72 @@ using UnityEngine.Assertions;
 
 public class EntityUnitSpawner : EntityComponent
 {
+    #region Fields
     private static readonly string debugLogHeader = "Entity Unit Spawn : ";
 
     private Vector3 _anchorPosition;
+    private GameObject _modelAnchorPoint;
+    #endregion
 
+    #region Methods
+    #region MonoBehaviour Callbacks
     void Start()
     {
         _anchorPosition = transform.position + transform.forward * 1f;
     }
 
+    void OnEnable()
+    {
+        Entity.GetCharacterComponent<EntitySelectable>().OnSelected += EntityUnitSpawner_OnSelected;
+        Entity.GetCharacterComponent<EntitySelectable>().OnUnselected += EntityUnitSpawner_OnUnselected; ;
+    }
+
+    void OnDisable()
+    {
+        Entity.GetCharacterComponent<EntitySelectable>().OnSelected += EntityUnitSpawner_OnSelected;
+        Entity.GetCharacterComponent<EntitySelectable>().OnUnselected += EntityUnitSpawner_OnUnselected; ;
+    }
+    #endregion
+
+    #region Events Handlers    
+    private void EntityUnitSpawner_OnSelected(Entity entity)
+    {
+        DisplayAnchorPoint();
+    }
+
+    private void EntityUnitSpawner_OnUnselected(Entity entity)
+    {
+        HideAnchorPoint();
+    }
+    #endregion
+
     public void SetAnchorPosition(Vector3 anchorPosition)
     {
         _anchorPosition = anchorPosition;
+        UpdateAnchorPosition();
     }
+
+    #region Anchor Point Model
+    void DisplayAnchorPoint()
+    {
+        Assert.IsNull(_modelAnchorPoint, "Model anchor is already displayed.");
+
+        _modelAnchorPoint = ObjectPooler.Instance.SpawnFromPool(ObjectPoolingTags.keyAnchorPoint, _anchorPosition, Quaternion.identity);
+    }
+
+    void HideAnchorPoint()
+    {
+        Assert.IsNotNull(_modelAnchorPoint, "Can't enqueue null _modelAnchorPoint. Call your coder please.");
+
+        ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keyAnchorPoint, _modelAnchorPoint);
+        _modelAnchorPoint = null;
+    }
+
+    void UpdateAnchorPosition()
+    {
+        _modelAnchorPoint.transform.position = _anchorPosition;
+    }
+    #endregion
 
     public void SpawnUnit(string unitID)
     {
@@ -62,4 +116,5 @@ public class EntityUnitSpawner : EntityComponent
             Debug.LogErrorFormat(debugLogHeader + "Can't make {0} go to anchor point, because it has not Entity component.", name);
         }
     }
+    #endregion
 }

@@ -5,4 +5,5 @@ using UnityEngine;
 public static class ObjectPoolingTags
 {
     public static readonly string keySelectionCircle = "SelectionCircle";
+    public static readonly string keyAnchorPoint = "AnchorPoint";
 }
