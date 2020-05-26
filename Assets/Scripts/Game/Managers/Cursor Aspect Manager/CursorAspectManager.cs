@@ -17,7 +17,8 @@ public class CursorAspectManager : MonoBehaviour
         OverAlly = 1, // over entity without selection
         OrderMove = 2,
         OrderAttack = 3,
-        OverEnemy = 4
+        OverEnemy = 4,
+        OverAlly_WithSelection = 5
     }
 
     #region Fields
@@ -25,7 +26,26 @@ public class CursorAspectManager : MonoBehaviour
     [SerializeField] private Texture2D[] _cursorTextures;
 
     private CursorState _cursorState = CursorState.Default;
+
+    // cache variable
     private Camera _mainCamera;
+    private int _layerMaskTerrain;
+    private int _layerMaskEntity;
+    #endregion
+
+    #region Properties
+    public CursorState CurrentCursorState { get => _cursorState;
+        private set
+        {
+            var oldValue = _cursorState;
+            _cursorState = value;
+
+            if (oldValue != _cursorState)
+            {
+                SetCursor();
+            }
+        }
+    }
     #endregion
 
     #region Methods
@@ -33,13 +53,14 @@ public class CursorAspectManager : MonoBehaviour
     void Start()
     {
         _mainCamera = Camera.main;
+
+        _layerMaskEntity = LayerMask.NameToLayer("Entity");
+        _layerMaskTerrain = LayerMask.NameToLayer("Terrain");
     }
 
     void Update()
     {
-        UpdateCursorState();
-
-        Cursor.SetCursor(_cursorTextures[(int)_cursorState], Vector2.zero, _cursorMode);
+        UpdateCursorState();        
     }
 
     void OnValidate()
@@ -52,48 +73,55 @@ public class CursorAspectManager : MonoBehaviour
     {        
         if (SecondClickListener.Instance.ListenToClick)
         {
-            _cursorState = SecondClickListener.Instance.CursorOverride;
+            CurrentCursorState = SecondClickListener.Instance.CursorOverride;
             return;
         }
 
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layerMaskEntity))
         {
-            Assert.IsNotNull(hit.transform.GetComponent<Entity>(), 
-                string.Format("Cursor Aspect Manager : {0} is on layer 'Entity' doesn't have a 'Entity' component. Maybe, you want to remove colliders on model.", hit.transform.name));
+            Entity clickedEntity = hit.transform.GetComponent<Entity>();
+
+            Assert.IsNotNull(clickedEntity, string.Format("Cursor Aspect Manager : {0} is on layer 'Entity' doesn't have a 'Entity' component. Maybe, you want to remove colliders on model.", hit.transform.name));
 
             // order cursor
             if (SelectionManager.Instance.HasSelection)
             {
-                if (hit.transform.GetComponent<Entity>().Team == Team.Player)                
-                    _cursorState = CursorState.OrderMove;
-                
-                else
-                    _cursorState = CursorState.OrderAttack;
+                if (clickedEntity.Team == Team.Player)                
+                    CurrentCursorState = CursorState.OverAlly_WithSelection;
+                else if (clickedEntity.Team != Team.Player)
+                    CurrentCursorState = CursorState.OrderAttack;         
             }
             // over cursor
             else
             {
-                if (hit.transform.GetComponent<Entity>().Team == Team.Player)
-                    _cursorState = CursorState.OverAlly;
+                if (clickedEntity.Team == Team.Player)
+                    CurrentCursorState = CursorState.OverAlly;
 
                 else
-                    _cursorState = CursorState.OverEnemy;
+                    CurrentCursorState = CursorState.OverEnemy;
             }
+
+            Debug.LogFormat("Over {0}", transform.name);
         }
-        else if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Terrain")))
+        else if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMaskTerrain))
         {
             if (SelectionManager.Instance.HasSelection)
-                _cursorState = CursorState.OrderMove;
+                CurrentCursorState = CursorState.OrderMove;
 
             else
-                _cursorState = CursorState.Default;
+                CurrentCursorState = CursorState.Default;
         }
         else
         {
-            _cursorState = CursorState.Default;
+            CurrentCursorState = CursorState.Default;
         }
+    }
+
+    private void SetCursor()
+    {
+        Cursor.SetCursor(_cursorTextures[(int)CurrentCursorState], Vector2.zero, _cursorMode);
     }
     #endregion
 }
