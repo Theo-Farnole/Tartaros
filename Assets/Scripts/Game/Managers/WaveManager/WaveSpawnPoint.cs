@@ -1,6 +1,8 @@
-﻿using Sirenix.OdinInspector;
+﻿using Lortedo.Utilities.Pattern;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -13,9 +15,18 @@ namespace Game.WaveSystem
     public class WaveSpawnPoint : MonoBehaviour
     {
         [Required]
-        [SerializeField] private WavesData _wavesData;
-
+        [SerializeField] private WavesData _wavesData;        
+        
         private Coroutine _currentCoroutine;
+
+        public WavesData WavesData { get => _wavesData; set => _wavesData = value; }
+
+        void Start()
+        {
+            // add WaveIndicator is no one found on 'gameObject'
+            if (gameObject.GetComponent<WaveIndicator>() == null)
+                gameObject.AddComponent<WaveIndicator>();
+        }
 
         void OnEnable()
         {
@@ -28,9 +39,13 @@ namespace Game.WaveSystem
         }
 
         void WaveManager_OnWaveStart(int waveCount)
+        {            
+            StartWave(waveCount);
+        }
+
+        private void StartWave(int waveCount)
         {
             Assert.IsNotNull(_wavesData, string.Format("Please assign a WavesData to {0}.", name));
-
             _currentCoroutine = StartCoroutine(_wavesData.WaveSequence(waveCount, transform.position));
         }
     }

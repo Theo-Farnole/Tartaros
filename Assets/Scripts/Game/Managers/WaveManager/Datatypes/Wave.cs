@@ -10,6 +10,7 @@ namespace Game.WaveSystem
         [SerializeField] private UnitSequence[] _unitSequences = new UnitSequence[0];
 
         public UnitSequence[] UnitSequences { get => _unitSequences; }
+        public bool UnitSequencesEmpty { get => _unitSequences.Length == 0; }
 
         public IEnumerator WaveSequence(Vector3 spawnPosition, Transform attackTarget)
         {

@@ -5,6 +5,7 @@ ShaderImporter:
   defaultTextures:
   - _VisibleFog: {fileID: 8400000, guid: 415db34ea95895944a90477051d7f3f7, type: 2}
   - _RevealedFog: {fileID: 8400000, guid: e93f1a3b0294efb4b9f655eeb7186220, type: 2}
+  - _MiniMapAdditive: {fileID: 8400000, guid: 415db34ea95895944a90477051d7f3f7, type: 2}
   nonModifiableTextures: []
   userData: 
   assetBundleName: 

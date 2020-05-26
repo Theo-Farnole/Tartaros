@@ -28,9 +28,13 @@ public class WaveManager : MonoBehaviour
     private bool _isInWaveSpawning = false;
     #endregion
 
+    #region Properties
+    public int WaveCount { get => _waveCount; }
+    #endregion
+
     #region Methods
     void Start()
-    {                    
+    {
         Assert.AreEqual(FindObjectsOfType<WaveManager>().Length, 1, "There is more or less than only 1 WaveManager on Scene.");
     }
 
@@ -77,7 +81,7 @@ public class WaveManager : MonoBehaviour
         if (_lastFrame_TimerInSeconds < (int)_timer)
         {
             OnWaveTimerUpdate?.Invoke(_waveCount, remainingTime);
-        }        
+        }
     }
     #endregion
 
@@ -96,7 +100,7 @@ public class WaveManager : MonoBehaviour
 
     void EndWave()
     {
-        _isInWaveSpawning = false;        
+        _isInWaveSpawning = false;
 
         // reset timer
         _timer = 0;
