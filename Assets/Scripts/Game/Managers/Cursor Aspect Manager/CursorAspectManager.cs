@@ -110,8 +110,6 @@ public class CursorAspectManager : MonoBehaviour
         else
         {
             CurrentCursorState = CursorState.Default;
-
-            Debug.Log("over nothing");
         }
     }
 
@@ -121,8 +119,6 @@ public class CursorAspectManager : MonoBehaviour
             CurrentCursorState = CursorState.OrderMove;
         else
             CurrentCursorState = CursorState.Default;
-
-        Debug.Log("Over terrain");
     }
 
     private void SetCursorState_OverEntity(Entity clickedEntity)
@@ -144,8 +140,6 @@ public class CursorAspectManager : MonoBehaviour
             else
                 CurrentCursorState = CursorState.OverEnemy;
         }
-
-        Debug.LogFormat("Over {0}", transform.name);
     }
 
     private void SetCursorSprite()
