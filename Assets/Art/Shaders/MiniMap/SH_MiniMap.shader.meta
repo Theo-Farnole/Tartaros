@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 1039a73aa8ae9d643b06411b259c446a
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _VisibleFog: {fileID: 8400000, guid: 415db34ea95895944a90477051d7f3f7, type: 2}
+  - _RevealedFog: {fileID: 8400000, guid: e93f1a3b0294efb4b9f655eeb7186220, type: 2}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

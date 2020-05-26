@@ -50,7 +50,15 @@ public class Entity : MonoBehaviour
         }
     }
     public string EntityID { get => _entityID; }
-    public Team Team { get => _team; set => _team = value; }
+    public Team Team
+    {
+        get => _team;
+        set
+        {
+            _team = value;
+            SetupTeamComponents();
+        }
+    }
     public bool HasCurrentAction { get => (_currentAction != null); }
     public Action CurrentAction { get => _currentAction; }
     public bool IsIdle { get => !HasCurrentAction; }
@@ -65,8 +73,7 @@ public class Entity : MonoBehaviour
 
     void Start()
     {
-        if (_team == Team.Player) Destroy(GetCharacterComponent<EntityFogCoverable>());
-        else Destroy(GetCharacterComponent<EntityFogVision>());
+        SetupTeamComponents();
 
         OnSpawn?.Invoke(this);
     }
@@ -185,6 +192,16 @@ public class Entity : MonoBehaviour
             }
         }
     }
+
+    private void SetupTeamComponents()
+    {
+        bool isAVisionGiver = (_team == Team.Player);
+
+        GetCharacterComponent<EntityFogVision>().enabled = isAVisionGiver;
+        GetCharacterComponent<EntityFogCoverable>().enabled = !isAVisionGiver;
+        GetCharacterComponent<EntityMinimap>().UpdatePointColor();
+    }
+
     #endregion
     #endregion
 }

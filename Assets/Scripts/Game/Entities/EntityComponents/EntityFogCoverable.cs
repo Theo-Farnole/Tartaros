@@ -8,11 +8,12 @@ public delegate void OnFog(IFogCoverable fogCoverable);
 
 public class EntityFogCoverable : EntityComponent, IFogCoverable
 {
+    private const string debugLogHeader = "Entity Fog Coverable : ";
+
     public event OnFog OnFogCover;
     public event OnFog OnFogUncover;
 
-    private const string debugLogHeader = "Entity Fog Coverable : ";
-    [SerializeField] private GameObject _rootModelRenderer;
+    [SerializeField] private GameObject[] _modelsToHide;
     private Collider _collider;
 
     private bool _isCover = false;
@@ -39,7 +40,7 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
     }
 
     void OnEnable()
-    {                
+    {
         if (FOWManager.Instance != null)
         {
             FOWManager.Instance.AddCoverable(this);
@@ -60,7 +61,9 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
 
     void UpdateVisibility()
     {
-        _rootModelRenderer.SetActive(!_isCover);
         _collider.enabled = !_isCover;
+
+        foreach (var mesh in _modelsToHide)        
+            mesh.SetActive(!_isCover);        
     }
 }
