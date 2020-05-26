@@ -36,10 +36,14 @@ namespace Game.Selection
         #region Fields
         public static event OnSelectionUpdated OnSelectionUpdated;
 
+        [Header("SETTINGS")]
         [SerializeField] private bool _forceSelectionToHaveOneType = false;
         [EnableIf(nameof(_forceSelectionToHaveOneType))]
         [SerializeField] private EntityType _selectionPriority = EntityType.Unit;
+        [Header("COMPONENTS LINKING")]
         [SerializeField] private SelectionRectangle _selectionRectangle;
+        [Header("INPUTS")]
+        [SerializeField] private KeyCode _keepSelectionKey = KeyCode.LeftShift;
 
         private List<SelectionGroup> _selectedGroups = new List<SelectionGroup>();
         private int _highlightGroupIndex = -1;
@@ -58,7 +62,7 @@ namespace Game.Selection
         #region MonoBehaviour Callback
         void Update()
         {
-            Assert.AreEqual(_selectionRectangle.enabled, _selectionEnable, 
+            Assert.AreEqual(_selectionRectangle.enabled, _selectionEnable,
                 "Selection rectangle should be deactivate if _selectionEnable = false.");
 
             HandleInput_SwitchHighlightGroup();
@@ -79,7 +83,7 @@ namespace Game.Selection
         void OnDisable()
         {
             GameManager.OnStartBuild -= GameManager_OnStartBuild;
-            GameManager.OnStopBuild -= GameManager_OnStopBuild;            
+            GameManager.OnStopBuild -= GameManager_OnStopBuild;
         }
         #endregion
 
@@ -114,7 +118,7 @@ namespace Game.Selection
                 if (EventSystem.current.IsPointerOverGameObject(-1))
                     return;
 
-                if (Input.GetKey(KeyCode.LeftShift) == false)
+                if (Input.GetKey(_keepSelectionKey) == false)
                 {
                     ClearSelection();
                 }
@@ -123,8 +127,10 @@ namespace Game.Selection
 
                 if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
                 {
-                    Entity hitEntity = hit.transform.GetComponent<Entity>();
-                    SwitchEntity(hitEntity);
+                    if (hit.transform.TryGetComponent(out Entity hitEntity))
+                    {
+                        SwitchEntity(hitEntity);
+                    }                
                 }
             }
         }
@@ -165,7 +171,7 @@ namespace Game.Selection
 
         #region Public methods
         public void AddEntities(Entity[] selectedEntities)
-        {            
+        {
             if (_forceSelectionToHaveOneType)
             {
                 TrimEntities(ref selectedEntities);
