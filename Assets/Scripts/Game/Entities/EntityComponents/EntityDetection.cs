@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using Lortedo.Utilities.Pattern;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ public class EntityDetection : EntityComponent
     [SerializeField] private GenericTrigger _viewTrigger;
 
     private List<Entity> _enemiesInViewRadius = new List<Entity>();
+
+    private bool _isFirstEnable = true;
     #endregion
 
     #region Methods
@@ -26,8 +29,15 @@ public class EntityDetection : EntityComponent
     void OnEnable()
     {
         _enemiesInViewRadius.Clear();
+        Entity.OnTeamSwap += Entity_OnTeamSwap;
 
         EnableViewRadius();
+
+        if (!_isFirstEnable)
+        {
+            ForceRefreshDetection();
+            _isFirstEnable = false;
+        }
     }
 
     void OnDisable()
@@ -38,6 +48,10 @@ public class EntityDetection : EntityComponent
             _viewTrigger.OnTriggerEnterEvent -= GenericTrigger_OnTriggerEnterEvent;
             _viewTrigger.OnTriggerExitEvent -= GenericTrigger_OnTriggerExitEvent;
         }
+
+        Entity.OnTeamSwap -= Entity_OnTeamSwap;
+
+        _enemiesInViewRadius.Clear(); 
     }
     #endregion
 
@@ -46,15 +60,7 @@ public class EntityDetection : EntityComponent
     {
         if (other.gameObject.TryGetComponent(out Entity entity))
         {
-            Assert.IsFalse(_enemiesInViewRadius.Contains(entity),
-                string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
-
-            if (entity.Team != Entity.Team)
-            {
-                _enemiesInViewRadius.Add(entity);
-
-                OnEnemyDetected?.Invoke(entity);
-            }
+            AddEntitiesInList(entity);
         }
     }
 
@@ -62,14 +68,18 @@ public class EntityDetection : EntityComponent
     {
         if (other.gameObject.TryGetComponent(out Entity entity))
         {
-            if (entity.Team != Entity.Team)
-            {
-                _enemiesInViewRadius.Remove(entity);
-            }
+            RemoveEntityInList(entity);
+        }
+    }
+
+    private void Entity_OnTeamSwap(Entity entity, Team oldTeam, Team newTeam)
+    {
+        if (entity == Entity)
+        {
+            ForceRefreshDetection();
         }
     }
     #endregion
-
 
     #region Public methods
     public bool IsEntityInAttackRange(Entity target)
@@ -132,6 +142,50 @@ public class EntityDetection : EntityComponent
         _viewTrigger.SetCollisionRadius(Entity.Data.ViewRadius);
         _viewTrigger.OnTriggerEnterEvent += GenericTrigger_OnTriggerEnterEvent;
         _viewTrigger.OnTriggerExitEvent += GenericTrigger_OnTriggerExitEvent;
+    }
+
+    private void ForceRefreshDetection()
+    {
+        _enemiesInViewRadius.Clear();
+
+        float viewRadius = Entity.Data.ViewRadius;
+
+        // cast an overlap sphere
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, viewRadius);
+
+        // and get every entity from it
+        Entity[] hitEntities = hitColliders
+            .Select(x => x.GetComponent<Entity>())
+            .Where(x => x != null)
+            .ToArray();            
+
+        // then, add each entity to list
+        foreach (var hitEntity in hitEntities)
+        {
+            AddEntitiesInList(hitEntity);
+        }
+    }
+
+    private void AddEntitiesInList(Entity entity)
+    {
+        Assert.IsFalse(_enemiesInViewRadius.Contains(entity), string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
+
+        if (entity.Team != Entity.Team)
+        {
+            _enemiesInViewRadius.Add(entity);
+
+            OnEnemyDetected?.Invoke(entity);
+        }
+    }
+
+    private void RemoveEntityInList(Entity entity)
+    {
+        if (entity.Team != Entity.Team)
+        {
+            Assert.IsTrue(_enemiesInViewRadius.Contains(entity), "To remove entity in list, it should be contained");
+
+            _enemiesInViewRadius.Remove(entity);
+        }
     }
     #endregion
     #endregion

@@ -109,7 +109,7 @@ public class EntityUnitSpawner : EntityComponent
         // remove resources
         GameManager.Instance.Resources -= unitData.SpawningCost;
 
-        var instantiatedObject = Instantiate(unitData.Prefab, transform.position, Quaternion.identity);
+        var instantiatedObject = ObjectPooler.Instance.SpawnFromPool(unitData.Prefab, transform.position, Quaternion.identity, true);
         MoveGameObjectToAnchor(instantiatedObject);
     }
 

@@ -21,7 +21,7 @@ namespace Game.IA.Action
         public override void Tick()
         {
             // if target has been killed
-            if (_target == null)
+            if (!_target.IsInstanciate)
             {
                 OnEnemyDeath();
                 return;

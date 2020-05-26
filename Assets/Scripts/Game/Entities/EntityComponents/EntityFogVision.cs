@@ -14,18 +14,18 @@ public class EntityFogVision : EntityComponent, IFogVision
     void Start()
     {
         _fogOfWarVision.transform.localScale = Vector3.one * Entity.Data.ViewRadius * 2;
-
-        FOWManager.Instance.AddViewer(this);
     }
 
     void OnEnable()
     {
         _fogOfWarVision.enabled = true;
+        FOWManager.Instance.AddViewer(this);
     }
 
     void OnDisable()
     {
         _fogOfWarVision.enabled = false;
+        FOWManager.Instance?.RemoveViewer(this);
     }
 
     void OnDestroy()
@@ -35,6 +35,5 @@ public class EntityFogVision : EntityComponent, IFogVision
             Destroy(_fogOfWarVision.gameObject);
         }
 
-        FOWManager.Instance?.RemoveViewer(this);
     }
 }

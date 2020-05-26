@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions;
 
 namespace Game.ConstructionSystem
 {
@@ -32,8 +33,11 @@ namespace Game.ConstructionSystem
 
         protected override void OnCurrentBuildingSet(string entityID, EntityData buildingData)
         {
-            var buildingPrefab = Object.Instantiate(buildingData.Prefab);            
-            _constructionBuilding = new ConstructionBuilding(buildingPrefab, entityID, buildingData);
+            var building = ObjectPooler.Instance.SpawnFromPool(buildingData.Prefab, Vector3.zero, Quaternion.identity, true);
+
+            Assert.IsNotNull(building, "Building out of ObjectPooler is null.");
+
+            _constructionBuilding = new ConstructionBuilding(building, entityID, buildingData);
 
             UpdateConstructionBuildingPosition();
         }

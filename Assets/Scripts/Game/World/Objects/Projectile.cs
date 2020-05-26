@@ -3,14 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IPooledObject
 {
     #region Fields
+    private readonly float _projectileLifetime = 10;
+
     private Entity _throwerUnit;
     private Entity _target;
     private Rigidbody _rigidbody;
 
     private bool _isLaunched = false;
+    private Coroutine _autoDestroyCoroutine = null;
+
+    public string ObjectTag { get; set; }
     #endregion
 
     #region Methods
@@ -18,6 +23,8 @@ public class Projectile : MonoBehaviour
     void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+
+        OnObjectSpawn();
     }
 
     void FixedUpdate()
@@ -42,10 +49,22 @@ public class Projectile : MonoBehaviour
         if (unit == _target)
         {
             unit.GetCharacterComponent<EntityHealth>().GetDamage(_throwerUnit.Data.Damage, _throwerUnit);
-            ObjectPooler.Instance.EnqueueGameObject(_throwerUnit.Data.PrefabProjectile, gameObject);
+            DestroyProjectile();
 
             _isLaunched = false;
         }
+    }
+
+    void OnDisable()
+    {
+        StopCoroutine(_autoDestroyCoroutine);
+    }
+
+    private void DestroyProjectile()
+    {
+        ObjectPooler.Instance.EnqueueGameObject(_throwerUnit.Data.PrefabProjectile, gameObject);
+
+        StopCoroutine(_autoDestroyCoroutine);
     }
     #endregion
 
@@ -76,6 +95,17 @@ public class Projectile : MonoBehaviour
         // calculate velocity
         float velocity = Mathf.Sqrt(distance * Physics.gravity.magnitude / Mathf.Sin(2 * a));
         return velocity * direction.normalized;
+    }
+
+    public void OnObjectSpawn()
+    {        
+        _autoDestroyCoroutine = this.ExecuteAfterTime(_projectileLifetime, () =>
+        {
+            if (gameObject.activeInHierarchy)
+            {
+                DestroyProjectile();
+            }
+        });
     }
     #endregion
 }

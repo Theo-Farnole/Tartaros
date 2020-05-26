@@ -77,7 +77,6 @@ namespace Game.WaveSystem
         {
             if (_waveIndicator == null)
                 InstanciateWaveIndicator();
-
             
             bool waveIndicatorDisplayed = !WaveSpawnPoint.WavesData.IsWaveEmpty(waveCount);
             _waveIndicator.SetActive(waveIndicatorDisplayed);

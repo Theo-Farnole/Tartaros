@@ -55,19 +55,13 @@ public class EntitySelectable : EntityComponent
     {
         Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover -= OnFogCover;
         Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover -= OnFogUncover;
-    }
 
-    void OnDestroy()
-    {
-        if (GameManager.ApplicationIsQuitting)
-            return;
-
-        if (_selectionCircle != null)
+        if (Game.Selection.SelectionManager.Instance != null)
         {
-            ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keySelectionCircle, _selectionCircle);
+            Game.Selection.SelectionManager.Instance.RemoveEntity(Entity);
         }
 
-        Game.Selection.SelectionManager.Instance.RemoveEntity(Entity);
+        IsSelected = false;
     }
     #endregion
 

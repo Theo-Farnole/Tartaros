@@ -1,4 +1,5 @@
 ﻿using Game.IA.Action;
+using Lortedo.Utilities.Pattern;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
@@ -71,11 +72,11 @@ namespace Game.WaveSystem
         {
             Assert.IsNotNull(prefab, debugLogHeader + " prefab of " + _entityID + " should be not null. Aborting unit sequence.");
 
-            var instanciatedPrefab = Object.Instantiate(prefab, position, Quaternion.identity);
+            var instanciatedPrefab = ObjectPooler.Instance.SpawnFromPool(prefab, position, Quaternion.identity, true);
             var instanciatedPrefabEntity = instanciatedPrefab.GetComponent<Entity>();
 
             Assert.IsNotNull(instanciatedPrefabEntity,
-                string.Format("Unit {0} misses a Entity component", prefab.name));
+                string.Format("Unit {0} misses the Entity component", prefab.name));
 
             instanciatedPrefabEntity.Team = Team.Enemy;
 

@@ -25,6 +25,11 @@ public class EntityMovement : EntityComponent
             SetupNavMeshAgent();
         }
     }
+
+    void OnDisable()
+    {
+        StopMoving();    
+    }
     #endregion
 
     #region Public methods

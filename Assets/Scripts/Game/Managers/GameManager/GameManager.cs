@@ -137,6 +137,7 @@ public class GameManager : Singleton<GameManager>
     {
         Entity.OnSpawn += Entity_OnSpawn;
         Entity.OnDeath += Entity_OnDeath;
+        Entity.OnTeamSwap += Entity_OnTeamSwap;
         WaveManager.OnWaveClear += WaveManager_OnWaveClear;
     }
 
@@ -144,6 +145,7 @@ public class GameManager : Singleton<GameManager>
     {
         Entity.OnSpawn -= Entity_OnSpawn;
         Entity.OnDeath -= Entity_OnDeath;
+        Entity.OnTeamSwap -= Entity_OnTeamSwap;
         WaveManager.OnWaveClear -= WaveManager_OnWaveClear;
     }
     #endregion
@@ -169,13 +171,28 @@ public class GameManager : Singleton<GameManager>
             // We could have used frameCount. But there is not 'Time.frameSinceLeveLoad'
             if (Time.timeSinceLevelLoad > 0.2f)
             {
-                Assert.AreEqual(_populationCount, GetCurrentPopulation(),
-                    "Game Manager : Current population isn't the same as calculated.");
-
-                Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(),
-                    "Game Manager : Max population isn't the same as calculated.");
+                Assert.AreEqual(_populationCount, GetCurrentPopulation(), "Game Manager : Current population isn't the same as calculated.");
+                Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(), "Game Manager : Max population isn't the same as calculated.");
             }
         }
+    }
+
+    private void Entity_OnTeamSwap(Entity entity, Team oldTeam, Team newTeam)
+    {
+        // leave player team
+        if (IsLeavingPlayerTeam(oldTeam, newTeam))
+        {
+            PopulationCount -= entity.Data.PopulationUse;
+            MaxPopulation -= entity.Data.IncreaseMaxPopulationAmount;
+        }
+        else if (IsJoiningPlayerTeam(oldTeam, newTeam))
+        {
+            PopulationCount += entity.Data.PopulationUse;
+            MaxPopulation += entity.Data.IncreaseMaxPopulationAmount;
+        }
+
+        Assert.AreEqual(_populationCount, GetCurrentPopulation(), "Game Manager : Current population isn't the same as calculated.");
+        Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(), "Game Manager : Max population isn't the same as calculated.");
     }
 
     private void Entity_OnDeath(Entity entity)
@@ -262,6 +279,16 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Getter / Calculate methods
+    private static bool IsLeavingPlayerTeam(Team oldTeam, Team currentTeam)
+    {
+        return currentTeam != Team.Player && oldTeam == Team.Player;
+    }
+
+    private static bool IsJoiningPlayerTeam(Team oldTeam, Team currentTeam)
+    {
+        return currentTeam == Team.Player && oldTeam != Team.Player;
+    }
+
     int GetCurrentPopulation()
     {
         var entities = FindObjectsOfType<Entity>();

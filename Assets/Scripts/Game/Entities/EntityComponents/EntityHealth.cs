@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using Lortedo.Utilities.Pattern;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntityHealth : EntityComponent
+public class EntityHealth : EntityComponent, IPooledObject
 {
     #region Fields
     [Header("Health Slider Behaviour")]
@@ -19,16 +20,14 @@ public class EntityHealth : EntityComponent
     public int MaxHp { get => _maxHp; }
     public int Hp { get => _hp; }
     public bool IsAlive { get => _hp > 0 ? true : false; }
+    string IPooledObject.ObjectTag { get; set; }
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void Start()
     {
-        _hp = Entity.Data.Hp;
-        _maxHp = Entity.Data.Hp;
-
-        SetHealthContent();
+        SetupHp();        
     }
 
     void OnEnable()
@@ -70,7 +69,7 @@ public class EntityHealth : EntityComponent
         _hp -= damage;
         _hp = Mathf.Clamp(_hp, 0, _maxHp);
 
-        SetHealthContent();
+        UpdateHealthSlider();
 
         if (!IsAlive)
         {
@@ -100,7 +99,7 @@ public class EntityHealth : EntityComponent
         _sliderCanvas.gameObject.SetActive(false);
     }
 
-    void SetHealthContent()
+    void UpdateHealthSlider()
     {
         if (_healthSlider == null)
             return;
@@ -110,6 +109,20 @@ public class EntityHealth : EntityComponent
         _healthSlider.value = _hp;
 
         DisplayHealth();
+    }
+
+
+    private void SetupHp()
+    {
+        _hp = Entity.Data.Hp;
+        _maxHp = Entity.Data.Hp;
+
+        UpdateHealthSlider();
+    }
+
+    void IPooledObject.OnObjectSpawn()
+    {
+        SetupHp();
     }
     #endregion
     #endregion

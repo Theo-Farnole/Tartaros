@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lortedo.Utilities.Pattern;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -261,7 +262,7 @@ namespace Game.ConstructionSystem
         #region List Modificators
         void AddConstructionBuilding()
         {
-            var gameObject = Object.Instantiate(EntityData.Prefab);
+            var gameObject = ObjectPooler.Instance.SpawnFromPool(EntityData.Prefab, Vector3.zero, Quaternion.identity, true);
 
             var constructionBuilding = new ConstructionBuilding(gameObject, EntityID, EntityData);
             _constructionBuildings.Add(constructionBuilding);

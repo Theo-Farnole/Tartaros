@@ -1,4 +1,5 @@
 ﻿using Lortedo.Utilities.Debugging;
+using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,8 @@ namespace Game.ConstructionSystem
         private readonly Vector2Int _buildingSize;
         private readonly bool _isChainedBuilding;
         private readonly string _entityID;
+
+        private readonly EntityData _entityData;
         #endregion
 
         #region Properties
@@ -33,6 +36,7 @@ namespace Game.ConstructionSystem
             _entityID = entityID;
             _isChainedBuilding = entityData.IsConstructionChained;
             _buildingSize = entityData.TileSize;
+            _entityData = entityData;
 
             EnableBuildingComponents(false);
         }
@@ -51,7 +55,7 @@ namespace Game.ConstructionSystem
 
         public void Destroy()
         {
-            Object.Destroy(_building);
+            ObjectPooler.Instance.EnqueueGameObject(_entityData.Prefab, _building);
         }
 
         /// <summary>
@@ -71,6 +75,8 @@ namespace Game.ConstructionSystem
 
         public void EnableBuildingComponents(bool enabled)
         {
+            Assert.IsNotNull(_building, "Building is null");
+
             var fowEntity = _building.GetComponent<EntityFogVision>();
             if (fowEntity) fowEntity.enabled = enabled;
 

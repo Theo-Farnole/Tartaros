@@ -1,27 +1,32 @@
 using Game.IA.Action;
 using Lortedo.Utilities;
+using Lortedo.Utilities.Pattern;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 public delegate void EntityDelegate(Entity entity);
+public delegate void OnTeamSwap(Entity entity, Team oldTeam, Team newTeam);
 
 /// <summary>
 /// Manage action tick & queueing. Initialize EntityComponent.
 /// </summary>
 [SelectionBase]
-public class Entity : MonoBehaviour
+public class Entity : MonoBehaviour, IPooledObject
 {
     #region Fields
     public static event EntityDelegate OnSpawn;
     public static event EntityDelegate OnDeath;
+    public static event OnTeamSwap OnTeamSwap;
 
     [Header("Team Configuration")]
     [SerializeField] private string _entityID;
     [SerializeField, ReadOnly] private Team _team;
+    
 
     private EntityData _data;
     private Action _currentAction;
@@ -55,13 +60,21 @@ public class Entity : MonoBehaviour
         get => _team;
         set
         {
+            if (value == _team)
+                return;
+
+            var oldTeam = _team;
             _team = value;
             SetupTeamComponents();
+
+            OnTeamSwap?.Invoke(this, oldTeam, _team);
         }
     }
     public bool HasCurrentAction { get => (_currentAction != null); }
     public Action CurrentAction { get => _currentAction; }
     public bool IsIdle { get => !HasCurrentAction; }
+    public bool IsInstanciate { get => this != null && gameObject.activeInHierarchy; }
+    public string ObjectTag { get; set; }
     #endregion
 
     #region Methods
@@ -73,9 +86,7 @@ public class Entity : MonoBehaviour
 
     void Start()
     {
-        SetupTeamComponents();
-
-        OnSpawn?.Invoke(this);
+        OnObjectSpawn();
     }
 
     void Update()
@@ -88,7 +99,9 @@ public class Entity : MonoBehaviour
     public void Death()
     {
         SetCurrentAction(null);
-        Destroy(gameObject);
+
+        Assert.IsNotNull(Data.Prefab, "Entity : Can't enqueue gameObject in ObjectPooler because Data.Prefab is null.");
+        ObjectPooler.Instance.EnqueueGameObject(Data.Prefab, gameObject, true);
 
         OnDeath?.Invoke(this);
     }
@@ -163,6 +176,12 @@ public class Entity : MonoBehaviour
 
         return sb.ToString();
     }
+
+    public void OnObjectSpawn()
+    {
+        SetupTeamComponents();
+        OnSpawn?.Invoke(this);
+    }
     #endregion
 
     #region Private methods
@@ -201,7 +220,6 @@ public class Entity : MonoBehaviour
         GetCharacterComponent<EntityFogCoverable>().enabled = !isAVisionGiver;
         GetCharacterComponent<EntityMinimap>().UpdatePointColor();
     }
-
     #endregion
     #endregion
 }
