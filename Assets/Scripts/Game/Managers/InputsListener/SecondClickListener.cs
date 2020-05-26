@@ -57,14 +57,15 @@ public class SecondClickListener : Singleton<SecondClickListener>
             }
             else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Entity"))
             {
-                Entity clickedEntity = hit.transform.GetComponent<Entity>();
-
                 // do we hit entity ?
-                if (clickedEntity)
+                if (hit.transform.TryGetComponent(out Entity clickedEntity))
                 {
                     SelectedGroupsActionsCaller.OrderAttackUnit(clickedEntity);
+                    Debug.LogFormat("clicked entity is {0}", clickedEntity.transform.name);
                 }
             }
+
+            Debug.LogFormat("On a hit {0}, sur un layer {1}.", name, LayerMask.LayerToName(hit.transform.gameObject.layer));
         };
     }
 
