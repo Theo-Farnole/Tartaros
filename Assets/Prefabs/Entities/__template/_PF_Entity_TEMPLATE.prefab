@@ -484,11 +484,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_WorldUI_HealthSlider
       objectReference: {fileID: 0}
-    - target: {fileID: 1966193962059354005, guid: 169b2236413f7074bb5f134afb3c4fba,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3926393937866313689, guid: 169b2236413f7074bb5f134afb3c4fba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -593,21 +588,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6026656865724327085, guid: 169b2236413f7074bb5f134afb3c4fba,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.323
-      objectReference: {fileID: 0}
-    - target: {fileID: 6026656865724327085, guid: 169b2236413f7074bb5f134afb3c4fba,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7459765691893877863, guid: 169b2236413f7074bb5f134afb3c4fba,
-        type: 3}
-      propertyPath: m_BlockingMask.m_Bits
-      value: 15927
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 169b2236413f7074bb5f134afb3c4fba, type: 3}
