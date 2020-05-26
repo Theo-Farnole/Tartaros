@@ -730,10 +730,12 @@ MonoBehaviour:
   _cursorMode: 0
   _cursorTextures:
   - {fileID: 2800000, guid: 2e71a8202d3b4a3448ec85ced5a40265, type: 3}
-  - {fileID: 2800000, guid: 44a99ee545fd8ba46a452b12c1f9378b, type: 3}
+  - {fileID: 2800000, guid: 8ea795c067613354898068091ffc7130, type: 3}
   - {fileID: 2800000, guid: 8859fce41c5d0a148ad0b7eebfca7fe9, type: 3}
   - {fileID: 2800000, guid: 2d18e23e3ce249b4489b8bcdd02d3f48, type: 3}
   - {fileID: 2800000, guid: 2a2b4775272c890448e1bd6239fdfc84, type: 3}
+  - {fileID: 2800000, guid: 8ea795c067613354898068091ffc7130, type: 3}
+  _cursorOffset: {x: 10, y: 5}
 --- !u!114 &848056613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -852,7 +854,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1746630484
 Transform:
   m_ObjectHideFlags: 0
@@ -874,7 +876,7 @@ Projector:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746630483}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_NearClipPlane: 0.3
   m_FarClipPlane: 100
@@ -969,6 +971,7 @@ MonoBehaviour:
   _forceSelectionToHaveOneType: 1
   _selectionPriority: 0
   _selectionRectangle: {fileID: 651580136596304162}
+  _keepSelectionKey: 304
 --- !u!114 &1570385028883734175
 MonoBehaviour:
   m_ObjectHideFlags: 0
