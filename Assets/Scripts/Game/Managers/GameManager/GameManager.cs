@@ -202,11 +202,8 @@ public class GameManager : Singleton<GameManager>
             PopulationCount -= entity.Data.PopulationUse;
             MaxPopulation -= entity.Data.IncreaseMaxPopulationAmount;
 
-            Assert.AreEqual(_populationCount, GetCurrentPopulation() - entity.Data.PopulationUse,
-                "Game Manager : Current population isn't the same as calculated.");
-
-            Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(),
-                    "Game Manager : Max population isn't the same as calculated.");
+            Assert.AreEqual(_populationCount, GetCurrentPopulation(), "Game Manager : Current population isn't the same as calculated.");
+            Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(), "Game Manager : Max population isn't the same as calculated.");
 
             if (entity.EntityID == _data.LoseOnDestroyedEntityID)
             {

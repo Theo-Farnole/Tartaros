@@ -12,6 +12,10 @@ public class GenericTrigger : MonoBehaviour
     public event OnTriggerEnter OnTriggerEnterEvent;
     public event OnTriggerExit OnTriggerExitEvent;
 
+    private List<Collider> _collidersInTrigger = new List<Collider>();
+
+    public List<Collider> CollidersInTrigger { get => _collidersInTrigger; }
+
 #if UNITY_EDITOR
     void Start() => CheckIfColliderIsATrigger();
     void OnValidate() => CheckIfColliderIsATrigger();
@@ -19,11 +23,16 @@ public class GenericTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        _collidersInTrigger.Add(other);
+
         OnTriggerEnterEvent?.Invoke(other);
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (_collidersInTrigger.Contains(other))
+            _collidersInTrigger.Remove(other);
+
         OnTriggerExitEvent?.Invoke(other);
     }
 
@@ -39,7 +48,7 @@ public class GenericTrigger : MonoBehaviour
         }
     }
 
-    bool IsColliderATrigger()
+    private bool IsColliderATrigger()
     {
         var collider = GetComponent<Collider>();
 
