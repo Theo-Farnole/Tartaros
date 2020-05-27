@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &155484136107374403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6258401077433811317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b7d87eef7c92814daaf3a877e475707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshOwner: {fileID: 5014425611434921251}
+  _materials:
+  - {fileID: 2100000, guid: 40dd8e422b24ff7479be2c2c1a62f249, type: 2}
+  - {fileID: 2100000, guid: 1c122cfd94843b341a2b385c1a043f8b, type: 2}
+  meshRenderer: {fileID: 7927033639409402702}
 --- !u!1001 &2705124693075577749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84,6 +101,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17f6498f739b0224e8b8470456c0c5ff, type: 3}
+--- !u!114 &5014425611434921251 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6925508277373191862, guid: 17f6498f739b0224e8b8470456c0c5ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 2705124693075577749}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9368386a8d78d4c9462411088855f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1876522094507493809 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4575717095058358820, guid: 17f6498f739b0224e8b8470456c0c5ff,
@@ -159,3 +188,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 029064aa6d83b824fb42643566e4c250, type: 3}
+--- !u!1 &6258401077433811317 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 029064aa6d83b824fb42643566e4c250,
+    type: 3}
+  m_PrefabInstance: {fileID: 2736961009315092604}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &7927033639409402702 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3748727093437670606, guid: 029064aa6d83b824fb42643566e4c250,
+    type: 3}
+  m_PrefabInstance: {fileID: 2736961009315092604}
+  m_PrefabAsset: {fileID: 0}
