@@ -10,35 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9044f053c5b310348b8328c17afabe0a, type: 3}
-  m_Name: DB_SpawnPoint_STRESS_SCENE
+  m_Name: DB_SpawnPoint_Test_StressScene_02
   m_EditorClassIdentifier: 
   _waves:
   - _unitSequences:
     - _waitTimeBeforeSequence: 0
       _waitTimeAfterSequence: 5
       _spawnUnits: 1
-      _entityID: unit_melee_hoplite
+      _entityID: unit_range_archer
       _unitCount: 300
       _timeAfterUnitSpawn: 0.1
   - _unitSequences:
     - _waitTimeBeforeSequence: 0
       _waitTimeAfterSequence: 5
       _spawnUnits: 1
-      _entityID: unit_melee_hoplite
-      _unitCount: 300
-      _timeAfterUnitSpawn: 0.05
-  - _unitSequences:
-    - _waitTimeBeforeSequence: 0
-      _waitTimeAfterSequence: 5
-      _spawnUnits: 1
-      _entityID: unit_melee_hoplite
-      _unitCount: 300
-      _timeAfterUnitSpawn: 0.05
-  - _unitSequences:
-    - _waitTimeBeforeSequence: 0
-      _waitTimeAfterSequence: 5
-      _spawnUnits: 1
-      _entityID: unit_melee_hoplite
+      _entityID: unit_range_archer
       _unitCount: 300
       _timeAfterUnitSpawn: 0.05
   _entityIDToAttack: building_temple

@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 1080218}
   - component: {fileID: 1080217}
   m_Layer: 0
-  m_Name: Wave Spawn #1
+  m_Name: Wave Spawn #2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,11 +159,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080216}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12, y: 0, z: 10.206013}
+  m_LocalPosition: {x: 24.4, y: 0, z: 10.206013}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1975397251}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &61694789
 PrefabInstance:
@@ -464,6 +464,50 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 131811412}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &140962152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 140962153}
+  - component: {fileID: 140962154}
+  m_Layer: 0
+  m_Name: Wave Spawn #1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &140962153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140962152}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12, y: 0, z: 10.206013}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1975397251}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &140962154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140962152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f81871638fb352f4ab603634f0c64169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wavesData: {fileID: 11400000, guid: f4355e5fff69ac241aab98c4abf86a99, type: 2}
 --- !u!1 &157282564
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,7 +771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &383070821
 Transform:
   m_ObjectHideFlags: 0
@@ -3570,6 +3614,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 417948540}
+  - {fileID: 140962153}
   - {fileID: 1080218}
   m_Father: {fileID: 0}
   m_RootOrder: 5
