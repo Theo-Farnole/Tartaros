@@ -8,8 +8,9 @@ public class Projectile : MonoBehaviour, IPooledObject
     #region Fields
     private readonly float _projectileLifetime = 10;
 
-    private Entity _throwerUnit;
-    private Entity _target;
+    private Entity _attacker;
+    private Entity _victim;
+    private Team _attackerTeam;
     private Rigidbody _rigidbody;
 
     private bool _isLaunched = false;
@@ -39,19 +40,16 @@ public class Projectile : MonoBehaviour, IPooledObject
     {
         if (!_isLaunched)
             return;
-
-        // is the target is dead ?
-        if (_target == null)
-            return;
-
-        Entity unit = other.GetComponent<Entity>();
-
-        if (unit == _target)
+        
+        if (other.TryGetComponent(out Entity entity))
         {
-            unit.GetCharacterComponent<EntityHealth>().GetDamage(_throwerUnit.Data.Damage, _throwerUnit);
-            DestroyProjectile();
+            if (entity.Team != _attackerTeam)
+            {
+                entity.GetCharacterComponent<EntityHealth>().GetDamage(_attacker.Data.Damage, _attacker);
+                DestroyProjectile();
 
-            _isLaunched = false;
+                _isLaunched = false;
+            }
         }
     }
 
@@ -59,23 +57,26 @@ public class Projectile : MonoBehaviour, IPooledObject
     {
         StopCoroutine(_autoDestroyCoroutine);
     }
+    #endregion
 
     private void DestroyProjectile()
     {
-        ObjectPooler.Instance.EnqueueGameObject(_throwerUnit.Data.PrefabProjectile, gameObject);
+        _isLaunched = true;
+
+        ObjectPooler.Instance.EnqueueGameObject(_attacker.Data.PrefabProjectile, gameObject);
 
         StopCoroutine(_autoDestroyCoroutine);
     }
-    #endregion
 
-    public void Throw(Entity target, Entity attacker)
+    public void Throw(Entity victim, Entity attacker)
     {
         _isLaunched = true;
-        _throwerUnit = attacker;
-        _target = target;
+        _attacker = attacker;
+        _victim = victim;
+        _attackerTeam = attacker.Team;
 
         _rigidbody.velocity = Vector3.zero;
-        Vector3 initialVector = CalcBallisticVelocityVector(transform.position, target.transform.position + Vector3.up, 45);
+        Vector3 initialVector = CalcBallisticVelocityVector(transform.position, victim.transform.position + Vector3.up, 45);
         _rigidbody.AddForce(initialVector, ForceMode.VelocityChange);
     }
 
@@ -98,7 +99,7 @@ public class Projectile : MonoBehaviour, IPooledObject
     }
 
     public void OnObjectSpawn()
-    {        
+    {
         _autoDestroyCoroutine = this.ExecuteAfterTime(_projectileLifetime, () =>
         {
             if (gameObject.activeInHierarchy)
