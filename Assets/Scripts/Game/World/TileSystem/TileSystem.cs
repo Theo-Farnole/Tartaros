@@ -267,10 +267,11 @@ public class TileSystem : Singleton<TileSystem>
     private void ResetAllTiles()
     {
         int midCellCount = GameManager.Instance.Grid.CellCount / 2;
+        int cellCount = GameManager.Instance.Grid.CellCount;
 
-        for (int x = -midCellCount; x <= midCellCount; x++)
+        for (int x = 0; x <= cellCount; x++)
         {
-            for (int y = -midCellCount; y <= midCellCount; y++)
+            for (int y = 0; y <= cellCount; y++)
             {
                 _tiles.Add(new Vector2Int(x, y), null);
             }
