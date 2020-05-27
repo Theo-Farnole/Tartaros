@@ -55,7 +55,7 @@ namespace Game.ConstructionSystem
 
         public void Destroy()
         {
-            ObjectPooler.Instance.EnqueueGameObject(_entityData.Prefab, _building);
+            _building.GetComponent<Entity>().Death();
         }
 
         /// <summary>

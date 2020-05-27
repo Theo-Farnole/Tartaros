@@ -52,7 +52,15 @@ public class TileSystem : Singleton<TileSystem>
             Vector3 worldPosition = entity.transform.position;
             Vector2Int coords = WorldToCoords(worldPosition);
 
-            SetTile(null, entity.Data.TileSize, coords, true);
+            // only set tile to null
+            // if tile is register at it position
+            //
+            // without this 'if', in construction mode
+            // pending construction building can't overwrite constructed building
+            if (GetTile(coords) == entity.gameObject)
+            {
+                SetTile(null, entity.Data.TileSize, coords, true);
+            }
         }
     }
     #endregion
@@ -131,7 +139,7 @@ public class TileSystem : Singleton<TileSystem>
     }
 
     private bool DoTileFillConditions(Vector3 worldPosition, Vector2Int tileCoords, TileFlag condition, bool logBuildError = false)
-        => DoTileFillConditions(worldPosition, tileCoords, condition, string.Empty, logBuildError); 
+        => DoTileFillConditions(worldPosition, tileCoords, condition, string.Empty, logBuildError);
 
     private bool DoTileFillConditions(Vector3 worldPosition, Vector2Int tileCoords, TileFlag condition, string entityID, bool logBuildError = false)
     {
@@ -252,7 +260,7 @@ public class TileSystem : Singleton<TileSystem>
             return false;
         }
 
-        if (!canBuildOnNonEmptyCell  && _tiles[coords] != null)
+        if (!canBuildOnNonEmptyCell && _tiles[coords] != null)
         {
             UIMessagesLogger.Instance.AddErrorMessage("You can't build on non-empty cell.");
             return false;
