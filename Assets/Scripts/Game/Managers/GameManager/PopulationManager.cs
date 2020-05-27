@@ -70,9 +70,6 @@ public class PopulationManager : MonoBehaviour
     #region Events Handlers
     private void Entity_OnSpawn(Entity entity)
     {
-        if (!entity.IsSpawned)
-            return;
-
         if (entity.Team == Team.Player)
         {
             PopulationCount += entity.Data.PopulationUse;
@@ -88,7 +85,7 @@ public class PopulationManager : MonoBehaviour
             // So, at the first entity's OnSpawn 1 != 2. 
             // To avoid that, we add delay
             //
-            // We could have used frameCount. But there is not 'Time.frameSinceLeveLoad'
+            // We could have used frameCount. But there is not 'Time.frameSinceLevelLoad'
             if (Time.timeSinceLevelLoad > 0.2f)
             {
                 Assert.AreEqual(_populationCount, GetCurrentPopulation(), "Game Manager : Current population isn't the same as calculated.");
@@ -99,7 +96,7 @@ public class PopulationManager : MonoBehaviour
 
     private void Entity_OnTeamSwap(Entity entity, Team oldTeam, Team newTeam)
     {
-        if (!entity.IsSpawned)
+        if (!entity.IsSpawned && !entity.IsInstanciate)
             return;
 
         // leave player team
@@ -120,9 +117,6 @@ public class PopulationManager : MonoBehaviour
 
     private void Entity_OnDeath(Entity entity)
     {
-        if (!entity.IsSpawned)
-            return;
-
         if (entity.Team == Team.Player)
         {
             PopulationCount -= entity.Data.PopulationUse;
@@ -159,7 +153,7 @@ public class PopulationManager : MonoBehaviour
 
         foreach (var entity in entities)
         {
-            if (entity.Team == Team.Player)
+            if (entity.Team == Team.Player && entity.IsSpawned)
             {
                 populationUsage += entity.Data.PopulationUse;
             }
@@ -172,8 +166,6 @@ public class PopulationManager : MonoBehaviour
     {
         var entities = FindObjectsOfType<Entity>();
         int maxPopulation = _startPopulation;
-
-        Debug.Log("maxPop = " + maxPopulation);
 
         foreach (var entity in entities)
         {
