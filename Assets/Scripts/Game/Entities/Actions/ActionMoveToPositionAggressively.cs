@@ -29,7 +29,12 @@ namespace Game.IA.Action
 
         public override void Tick()
         {
-            entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
+            bool hasFindEnemyToAttack = entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
+
+            if (hasFindEnemyToAttack)
+            {
+                _owner.SetAction(this, true);
+            }
         }
 
         public override string ToString()
