@@ -34,7 +34,7 @@ namespace Game.UI
         public override void SubscribeToEvents<T>(T uiManager)
         {
             GameManager.OnGameResourcesUpdate += UpdateResourcesLabel;
-            GameManager.OnPopulationCountChanged += SetPopulationCountLabel;
+            PopulationManager.OnPopulationCountChanged += SetPopulationCountLabel;
 
             WaveManager.OnWaveTimerUpdate += SetWaveText;
         }
@@ -42,7 +42,7 @@ namespace Game.UI
         public override void UnsubscribeToEvents<T>(T uiManager)
         {
             GameManager.OnGameResourcesUpdate -= UpdateResourcesLabel;
-            GameManager.OnPopulationCountChanged -= SetPopulationCountLabel;
+            PopulationManager.OnPopulationCountChanged -= SetPopulationCountLabel;
 
             WaveManager.OnWaveTimerUpdate -= SetWaveText;
         }

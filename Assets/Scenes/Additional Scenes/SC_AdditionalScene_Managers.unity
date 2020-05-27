@@ -1138,7 +1138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d9e2c94483eb04d97014d3bc9048ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pixelsToStartSelection: 50
+  _pixelsToStartSelection: 5
 --- !u!114 &1164024732901388078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1167,12 +1167,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba096bb5fc79874baf6bca2286788ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _grid: {fileID: 11400000, guid: cec9b11254a888f41b35a2d0a91e718d, type: 2}
+  _mapCells: {fileID: 11400000, guid: b94691d0a274cd844819b86a415c342c, type: 2}
+  _populationManager: {fileID: 5682737043787708820}
   _data: {fileID: 11400000, guid: 18e0ace1bc99010459f3962f36bf8e4f, type: 2}
   _collisionScalerData: {fileID: 11400000, guid: ec0a524eecc0b374ca058f8b5d860154,
     type: 2}
   _attackSlotsData: {fileID: 11400000, guid: 68f195092593ef145a60ecd840aff05e, type: 2}
-  _grid: {fileID: 11400000, guid: cec9b11254a888f41b35a2d0a91e718d, type: 2}
-  _mapCells: {fileID: 11400000, guid: b94691d0a274cd844819b86a415c342c, type: 2}
   _debugDrawSnapGrid: 0
   _debugDrawMapCells: 0
 --- !u!1 &2015743204205206266
@@ -1260,6 +1261,7 @@ GameObject:
   - component: {fileID: 1570385028883734175}
   - component: {fileID: 5682737043787708818}
   - component: {fileID: 5682737043787708819}
+  - component: {fileID: 5682737043787708820}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1290,6 +1292,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8f1d6bd4358eff04183f18c0d04356cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5682737043787708820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5682737043787708817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c26179950f3fe314194dd2f59045fab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!20 &6209019684245037498
