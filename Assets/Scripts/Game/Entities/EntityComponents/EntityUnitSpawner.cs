@@ -86,7 +86,12 @@ public class EntityUnitSpawner : EntityComponent
 
     public void SpawnUnit(string unitID)
     {
-        Assert.IsTrue(Entity.Data.CanSpawnUnit, "You must tick 'can spawn unit' on database " + Entity.EntityID + ".");
+        if (!Entity.Data.CanSpawnUnit)
+        {
+            Debug.LogWarning("You must tick 'can spawn unit' on database " + Entity.EntityID + ".");
+            return;
+        }
+
         Assert.IsTrue(Entity.Data.AvailableUnitsForCreation.Contains(unitID), string.Format(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", unitID, name));
         Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
 
@@ -110,20 +115,18 @@ public class EntityUnitSpawner : EntityComponent
         GameManager.Instance.Resources -= unitData.SpawningCost;
 
         var instantiatedObject = ObjectPooler.Instance.SpawnFromPool(unitData.Prefab, transform.position, Quaternion.identity, true);
-        MoveGameObjectToAnchor(instantiatedObject);
+        var instanciatedEntity = instantiatedObject.GetComponent<Entity>();
+
+        Assert.IsNotNull(instanciatedEntity, string.Format("Prefab {0} miss an Entity component.", unitData.Prefab.name));
+
+        instanciatedEntity.Team = Entity.Team;
+        MoveGameObjectToAnchor(instanciatedEntity);
     }
 
-    private void MoveGameObjectToAnchor(GameObject instantiatedObject)
+    private void MoveGameObjectToAnchor(Entity entity)
     {
-        if (instantiatedObject.TryGetComponent(out Entity entity))
-        {
-            Action moveToAnchorAction = new ActionMoveToPosition(entity, _anchorPosition);
-            entity.SetAction(moveToAnchorAction);
-        }
-        else
-        {
-            Debug.LogErrorFormat(debugLogHeader + "Can't make {0} go to anchor point, because it has not Entity component.", name);
-        }
+        Action moveToAnchorAction = new ActionMoveToPosition(entity, _anchorPosition);
+        entity.SetAction(moveToAnchorAction);
     }
     #endregion
 }
