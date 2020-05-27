@@ -153,6 +153,9 @@ public class GameManager : Singleton<GameManager>
     #region Events handlers
     private void Entity_OnSpawn(Entity entity)
     {
+        if (!entity.IsSpawned)
+            return;
+
         if (entity.Team == Team.Player)
         {
             PopulationCount += entity.Data.PopulationUse;
@@ -179,6 +182,9 @@ public class GameManager : Singleton<GameManager>
 
     private void Entity_OnTeamSwap(Entity entity, Team oldTeam, Team newTeam)
     {
+        if (!entity.IsSpawned)
+            return;
+
         // leave player team
         if (IsLeavingPlayerTeam(oldTeam, newTeam))
         {
@@ -197,6 +203,10 @@ public class GameManager : Singleton<GameManager>
 
     private void Entity_OnDeath(Entity entity)
     {
+        if (!entity.IsSpawned)
+            return;
+
+
         if (entity.Team == Team.Player)
         {
             PopulationCount -= entity.Data.PopulationUse;

@@ -26,7 +26,7 @@ public class Entity : MonoBehaviour, IPooledObject
     [Header("Team Configuration")]
     [SerializeField] private string _entityID;
     [SerializeField, ReadOnly] private Team _team;
-    
+
 
     private EntityData _data;
     private Action _currentAction;
@@ -37,6 +37,9 @@ public class Entity : MonoBehaviour, IPooledObject
     #endregion
 
     #region Properties
+    public bool IsSpawned { get; private set; }
+    public bool IsInstanciate { get => this != null && gameObject.activeInHierarchy; }
+
     public EntityData Data
     {
         get
@@ -73,7 +76,6 @@ public class Entity : MonoBehaviour, IPooledObject
     public bool HasCurrentAction { get => (_currentAction != null); }
     public Action CurrentAction { get => _currentAction; }
     public bool IsIdle { get => !HasCurrentAction; }
-    public bool IsInstanciate { get => this != null && gameObject.activeInHierarchy; }
     public string ObjectTag { get; set; }
     #endregion
 
@@ -92,6 +94,11 @@ public class Entity : MonoBehaviour, IPooledObject
     void Update()
     {
         _currentAction?.Tick();
+    }
+
+    void OnDisable()
+    {
+        IsSpawned = false;
     }
     #endregion
 
@@ -179,6 +186,8 @@ public class Entity : MonoBehaviour, IPooledObject
 
     public void OnObjectSpawn()
     {
+        IsSpawned = true;
+
         SetupTeamComponents();
         OnSpawn?.Invoke(this);
     }
