@@ -13,8 +13,6 @@ public abstract class EntityComponent : MonoBehaviour
         {
             if (_entity == null)
             {
-                Debug.Log("EntityComponent : Register component " + GetType());
-
                 _entity = GetComponent<Entity>();
                 _entity.RegisterComponent(this);
             }

@@ -128,8 +128,6 @@ public class Entity : MonoBehaviour, IPooledObject
 
         Assert.IsFalse(_components.ContainsKey(key), string.Format("Can't register component {0} because it already contains a key.", key));
 
-        Debug.Log("Entity : Register component " + key);
-
         _components.Add(key, component);
         component.Entity = this;
     }
