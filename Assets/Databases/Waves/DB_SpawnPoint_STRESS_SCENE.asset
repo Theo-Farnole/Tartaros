@@ -15,29 +15,30 @@ MonoBehaviour:
   _waves:
   - _unitSequences:
     - _waitTimeBeforeSequence: 0
-      _waitTimeAfterSequence: 1
+      _waitTimeAfterSequence: 5
       _spawnUnits: 1
       _entityID: unit_melee_hoplite
       _unitCount: 300
       _timeAfterUnitSpawn: 0.1
   - _unitSequences:
     - _waitTimeBeforeSequence: 0
-      _waitTimeAfterSequence: 1
+      _waitTimeAfterSequence: 5
       _spawnUnits: 1
-      _entityID: 
+      _entityID: unit_melee_hoplite
       _unitCount: 300
       _timeAfterUnitSpawn: 0.05
   - _unitSequences:
     - _waitTimeBeforeSequence: 0
-      _waitTimeAfterSequence: 1
+      _waitTimeAfterSequence: 5
       _spawnUnits: 1
-      _entityID: 
+      _entityID: unit_melee_hoplite
       _unitCount: 300
       _timeAfterUnitSpawn: 0.05
   - _unitSequences:
     - _waitTimeBeforeSequence: 0
-      _waitTimeAfterSequence: 1
+      _waitTimeAfterSequence: 5
       _spawnUnits: 1
-      _entityID: 
+      _entityID: unit_melee_hoplite
       _unitCount: 300
       _timeAfterUnitSpawn: 0.05
+  _entityIDToAttack: building_temple

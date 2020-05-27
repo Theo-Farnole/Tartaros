@@ -81,11 +81,6 @@ public class Entity : MonoBehaviour, IPooledObject
 
     #region Methods
     #region Mono Callbacks
-    void Awake()
-    {
-        InitializeComponents();
-    }
-
     void Start()
     {
         OnObjectSpawn();
@@ -118,7 +113,25 @@ public class Entity : MonoBehaviour, IPooledObject
     /// </summary>
     public T GetCharacterComponent<T>() where T : EntityComponent
     {
-        return (T)_components[typeof(T)];
+        System.Type key = typeof(T);
+
+        // if component 'T' doesn't exits, get it.
+        if (!_components.ContainsKey(key))
+            RegisterComponent((T)GetComponent(key));
+
+        return (T)_components[key];
+    }
+
+    public void RegisterComponent(EntityComponent component)
+    {
+        System.Type key = component.GetType();
+
+        Assert.IsFalse(_components.ContainsKey(key), string.Format("Can't register component {0} because it already contains a key.", key));
+
+        Debug.Log("Entity : Register component " + key);
+
+        _components.Add(key, component);
+        component.Entity = this;
     }
 
     public void StopCurrentAction()
@@ -199,26 +212,6 @@ public class Entity : MonoBehaviour, IPooledObject
         _currentAction?.OnStateExit();
         _currentAction = newAction;
         _currentAction?.OnStateEnter();
-    }
-
-    void InitializeComponents()
-    {
-        foreach (System.Type type in UtilsClass.GetSubclass<EntityComponent>())
-        {
-            EntityComponent charComponent = (EntityComponent)GetComponent(type);
-
-            if (charComponent != null)
-            {
-                _components.Add(type, charComponent);
-                charComponent.Entity = this;
-            }
-            else
-            {
-                // throw warning if MonoBehaviour doesn't have a required component,
-                // then skip it
-                Debug.LogWarning("CharacterManager miss " + type + "component.");
-            }
-        }
     }
 
     private void SetupTeamComponents()

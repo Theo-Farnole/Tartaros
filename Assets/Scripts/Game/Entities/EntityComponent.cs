@@ -1,14 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public abstract class EntityComponent : MonoBehaviour
 {
-    private Entity _entity;
+    private Entity _entity = null;
 
-    public Entity Entity
+    public virtual Entity Entity
     {
-        get => _entity;
+        get
+        {
+            if (_entity == null)
+            {
+                Debug.Log("EntityComponent : Register component " + GetType());
+
+                _entity = GetComponent<Entity>();
+                _entity.RegisterComponent(this);
+            }
+
+            Assert.IsNotNull(_entity, "Missing entity on entity " + name + ".");
+            return _entity;
+        }
+
         set
         {
             if (_entity != null)
@@ -16,10 +30,8 @@ public abstract class EntityComponent : MonoBehaviour
                 Debug.LogWarning("Entity is already set. You can't change it value!");
                 return;
             }
-            else
-            {
-                _entity = value;
-            }
+
+            _entity = value;
         }
     }
 }
