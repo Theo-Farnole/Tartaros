@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: DB_Building_Wall
+  m_Name: DB_Building_Gate
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -47,11 +47,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  _entityName: Wall
+  _entityName: Gate
   _entityType: 1
-  _hotkey: 109
-  _portrait: {fileID: 21300000, guid: b3561439d7ce3ef4ea00592343b8c42c, type: 3}
-  _prefab: {fileID: 545007711727897807, guid: c42319024a50f144ba0a082d69f98a98, type: 3}
+  _hotkey: 103
+  _portrait: {fileID: 21300000, guid: 223210f0a157f6c4d9cff1d660682a7b, type: 3}
+  _prefab: {fileID: 545007711727897807, guid: 7bc73da1b04cc36458eee7a8a1f17524, type: 3}
   _populationUse: 0
   _tileSize: {x: 1, y: 1}
   _hoverPopupData: {fileID: 11400000, guid: 8f184cd145b314a41a90dd760bde2c3d, type: 2}
@@ -85,6 +85,5 @@ MonoBehaviour:
     stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0
-  _canTurnIntoAnotherEntity: 1
-  _turnIntoAnotherEntityList:
-  - building_gate
+  _canTurnIntoAnotherEntity: 0
+  _turnIntoAnotherEntityList: []
