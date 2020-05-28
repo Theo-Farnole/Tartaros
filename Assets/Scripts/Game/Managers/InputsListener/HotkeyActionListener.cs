@@ -42,7 +42,9 @@ public class HotkeyActionListener : MonoBehaviour
     {
         if (selectedGroups.Length > 0 && selectedGroups[0] != null)
         {
-            SetHotkeyHandler(selectedGroups[0].entityID);
+            Assert.IsTrue(selectedGroups.IsIndexInsideBounds(highlightGroupIndex), "Should not happen: the passed group from SelectionManager should always have an index inside bounds.");
+
+            SetHotkeyHandler(selectedGroups[highlightGroupIndex].entityID);
         }
         else
         {
