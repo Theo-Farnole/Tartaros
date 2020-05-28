@@ -19,6 +19,8 @@ namespace Game.IA.Action
 
         public override void OnStateEnter()
         {
+            base.OnStateEnter();
+
             entity.GetCharacterComponent<EntityMovement>().MoveToPosition(_position);
         }
 
@@ -40,6 +42,11 @@ namespace Game.IA.Action
         public override string ToString()
         {
             return string.Format("{0} moves to {1} aggressively.", _owner.name, _position);
+        }
+
+        public override bool CanExecuteAction()
+        {
+            return _owner.Data.CanMove || _owner.Data.CanAttack;
         }
     }
 }

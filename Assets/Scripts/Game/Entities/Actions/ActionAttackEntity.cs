@@ -49,6 +49,12 @@ namespace Game.IA.Action
             return string.Format("{0} attacks {1}.", _owner.name, _target.name);
         }
 
+        public override bool CanExecuteAction()
+        {
+            Debug.LogWarningFormat("'{1}' can't execute action {0} because _target is null.", this.GetType(), _owner.name);
+            return _target != null;
+        }
+
         private void OnEnemyDeath()
         {
             // try to auto attack nearest enemy

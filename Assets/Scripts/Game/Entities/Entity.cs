@@ -90,11 +90,6 @@ public class Entity : MonoBehaviour, IPooledObject
     {
         _currentAction?.Tick();
     }
-
-    void OnDisable()
-    {
-        IsSpawned = false;
-    }
     #endregion
 
     #region Public methods
@@ -106,6 +101,8 @@ public class Entity : MonoBehaviour, IPooledObject
         ObjectPooler.Instance.EnqueueGameObject(Data.Prefab, gameObject, true);
 
         OnDeath?.Invoke(this);
+
+        IsSpawned = false;
     }
 
     /// <summary>
@@ -151,7 +148,13 @@ public class Entity : MonoBehaviour, IPooledObject
     /// <param name="action"></param>
     /// <param name="addToActionQueue"></param>
     public void SetAction(Action action, bool addToActionQueue = false)
-    {
+    {       
+        if (!action.CanExecuteAction())
+        {
+            if (!addToActionQueue) _queueAction.Clear();
+            return;
+        }
+
         if (addToActionQueue)
         {
             if (HasCurrentAction)
@@ -197,6 +200,9 @@ public class Entity : MonoBehaviour, IPooledObject
 
     public void OnObjectSpawn()
     {
+        if (IsSpawned)
+            return;
+
         IsSpawned = true;
 
         SetupTeamComponents();

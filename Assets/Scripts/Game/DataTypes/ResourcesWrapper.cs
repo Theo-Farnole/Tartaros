@@ -15,9 +15,14 @@ public enum Resource
 [System.Serializable]
 public struct ResourcesWrapper
 {
+    public readonly static ResourcesWrapper Zero = new ResourcesWrapper(0, 0, 0);
+
     [PositiveValueOnly] public int food;
+
     [PositiveValueOnly] public int wood;
-    [FormerlySerializedAs("gold")] [PositiveValueOnly] public int stone;
+
+    [FormerlySerializedAs("gold")]
+    [PositiveValueOnly] public int stone;
 
     public ResourcesWrapper(int food = 0, int wood = 0, int stone = 0)
     {

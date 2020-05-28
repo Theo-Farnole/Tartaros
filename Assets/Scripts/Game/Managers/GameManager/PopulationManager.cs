@@ -6,6 +6,8 @@ using UnityEngine.Assertions;
 public class PopulationManager : MonoBehaviour
 {
     #region Fields
+    private const string debugLogHeader = "Population Manager : ";
+
     public static event DoubleIntDelegate OnPopulationCountChanged;
 
     private int _populationCount = 0;
@@ -19,10 +21,14 @@ public class PopulationManager : MonoBehaviour
     {
         get => _populationCount;
 
-        private set
+        set
         {
             _populationCount = value;
             OnPopulationCountChanged?.Invoke(_populationCount, _maxPopulation);
+
+            Debug.Log("Update pop");
+
+            LookForErrorsInPopCounts();
         }
     }
 
@@ -30,10 +36,12 @@ public class PopulationManager : MonoBehaviour
     {
         get => _maxPopulation;
 
-        private set
+        set
         {
             _maxPopulation = value;
             OnPopulationCountChanged?.Invoke(_populationCount, _maxPopulation);
+
+            LookForErrorsInPopCounts();
         }
     }
 
@@ -45,7 +53,7 @@ public class PopulationManager : MonoBehaviour
             var difference = value - _startPopulation;
 
             _startPopulation = value;
-            MaxPopulation += difference;            
+            MaxPopulation += difference;
         }
     }
     #endregion
@@ -74,23 +82,6 @@ public class PopulationManager : MonoBehaviour
         {
             PopulationCount += entity.Data.PopulationUse;
             MaxPopulation += entity.Data.IncreaseMaxPopulationAmount;
-
-            // On start, if there is already created Entity in scene assert fails.
-            //
-            // ex: 
-            // There 3 entities in the scene.
-            // The first entity send OnSpawn. The population equals 1.
-            // Then the second. The population equals 2.
-            // However because there is 2 entities, GetCurrentPopulation returns directly 2.            
-            // So, at the first entity's OnSpawn 1 != 2. 
-            // To avoid that, we add delay
-            //
-            // We could have used frameCount. But there is not 'Time.frameSinceLevelLoad'
-            if (Time.timeSinceLevelLoad > 0.2f)
-            {
-                Assert.AreEqual(_populationCount, GetCurrentPopulation(), "Game Manager : Current population isn't the same as calculated.");
-                Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(), "Game Manager : Max population isn't the same as calculated.");
-            }
         }
     }
 
@@ -110,9 +101,6 @@ public class PopulationManager : MonoBehaviour
             PopulationCount += entity.Data.PopulationUse;
             MaxPopulation += entity.Data.IncreaseMaxPopulationAmount;
         }
-
-        Assert.AreEqual(_populationCount, GetCurrentPopulation(), "Game Manager : Current population isn't the same as calculated.");
-        Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(), "Game Manager : Max population isn't the same as calculated.");
     }
 
     private void Entity_OnDeath(Entity entity)
@@ -121,17 +109,49 @@ public class PopulationManager : MonoBehaviour
         {
             PopulationCount -= entity.Data.PopulationUse;
             MaxPopulation -= entity.Data.IncreaseMaxPopulationAmount;
-
-            Assert.AreEqual(_populationCount, GetCurrentPopulation(), "Game Manager : Current population isn't the same as calculated.");
-            Assert.AreEqual(_maxPopulation, GetCurrentMaxPopulation(), "Game Manager : Max population isn't the same as calculated.");
         }
     }
     #endregion
 
-    #region Public methods
+    #region Public methods    
+    public bool HasEnoughtPopulationToSpawn()
+    {
+        return _populationCount <= _maxPopulation;
+    }
+
     public bool HasEnoughtPopulationToSpawn(EntityData unitData)
     {
         return (_populationCount + unitData.PopulationUse <= _maxPopulation);
+    }
+    #endregion
+
+    #region Look for Errors Methods
+    private void LookForErrorsInPopCounts()
+    {
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        // On start, if there is already created Entity in scene assert fails.
+        //
+        // ex: 
+        // There 3 entities in the scene.
+        // The first entity send OnSpawn. The population equals 1.
+        // Then the second. The population equals 2.
+        // However because there is 2 entities, GetCurrentPopulation returns directly 2.            
+        // So, at the first entity's OnSpawn 1 != 2. 
+        // To avoid that, we add delay
+        //
+        // We could have used frameCount. But there is not 'Time.frameSinceLevelLoad'
+        if (Time.timeSinceLevelLoad < 0.2f)
+            return;
+
+        if (_populationCount > _maxPopulation)
+            Debug.LogErrorFormat(debugLogHeader + "Current population count is above max population.\nCurrent: {0} >= MaxPop: {1}", _populationCount, _maxPopulation);
+
+        if (GetCurrentPopulation() != _populationCount)
+            Debug.LogErrorFormat(debugLogHeader + "Current population isn't the same as calculated.\nCurrent: {0} != Calculated: {1}", _populationCount, GetCurrentPopulation());
+
+        if (GetCurrentMaxPopulation() != _maxPopulation)
+            Debug.LogErrorFormat(debugLogHeader + "Max population isn't the same as calculated.\nCurrent: {0} != Calculated: {1}", _maxPopulation, GetCurrentMaxPopulation());
+#endif
     }
     #endregion
 
@@ -157,6 +177,11 @@ public class PopulationManager : MonoBehaviour
             {
                 populationUsage += entity.Data.PopulationUse;
             }
+        }
+
+        foreach (var pendingEntity in GameManager.Instance.PendingCreation)
+        {
+            populationUsage += MainRegister.Instance.GetEntityData(pendingEntity).PopulationUse;         
         }
 
         return populationUsage;

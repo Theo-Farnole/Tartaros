@@ -24,6 +24,8 @@ namespace Game.IA.Action
 
         public override void OnStateEnter()
         {
+            base.OnStateEnter();
+
             MoveToPosition(true);
         }
 
@@ -47,6 +49,11 @@ namespace Game.IA.Action
         public override string ToString()
         {
             return string.Format("{0} patrols between {1} and {2}.", _owner.name, _startingPosition, _targetPosition);
+        }
+
+        public override bool CanExecuteAction()
+        {
+            return _owner.Data.CanMove;
         }
     }
 }

@@ -84,32 +84,49 @@ public class EntityUnitSpawner : EntityComponent
     }
     #endregion
 
-    public void SpawnUnit(string unitID)
+    public bool CanSpawnEntity(string entityID, bool logErrors)
     {
         if (!Entity.Data.CanSpawnUnit)
         {
             Debug.LogWarning("You must tick 'can spawn unit' on database " + Entity.EntityID + ".");
-            return;
+            return false;
         }
 
-        Assert.IsTrue(Entity.Data.AvailableUnitsForCreation.Contains(unitID), string.Format(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", unitID, name));
-        Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
-
-        var unitData = MainRegister.Instance.GetEntityData(unitID);
-
-        Assert.IsNotNull(unitData, string.Format(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitID));
-
-        if (!GameManager.Instance.HasEnoughtPopulationToSpawn(unitData))
+        if (!Entity.Data.AvailableUnitsForCreation.Contains(entityID))
         {
-            UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", unitID));
-            return;
+            Debug.LogFormat(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of { 1}.", entityID, name);
+            return false;
+        }
+
+        Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
+        Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
+
+        var unitData = MainRegister.Instance.GetEntityData(entityID);
+        Assert.IsNotNull(unitData, string.Format(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", entityID));
+
+        if (!GameManager.Instance.HasEnoughtPopulationToSpawn())
+        {
+            if (logErrors) UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", entityID));
+            return false;
         }
 
         if (!GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost))
         {
-            UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + unitID + ".");
-            return;
+            if (logErrors) UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + entityID + ".");
+            return false;
         }
+
+        return true;
+    }
+
+    public void SpawnUnit(string unitID)
+    {
+        Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
+        Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
+
+        var unitData = MainRegister.Instance.GetEntityData(unitID);
+
+        Assert.IsNotNull(unitData, string.Format(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", unitID));
 
         // remove resources
         GameManager.Instance.Resources -= unitData.SpawningCost;

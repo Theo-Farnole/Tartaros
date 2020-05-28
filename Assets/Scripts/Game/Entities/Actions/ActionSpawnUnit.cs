@@ -2,59 +2,134 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Game.IA.Action
 {
     public class ActionSpawnUnit : Action
     {
-        public float startTime;
-        public float spawnTime;
-        public readonly float creationDuration;
+        private readonly float _creationDuration;
+        private readonly string _entityIDToSpawn;
 
-        public readonly string entityIDToSpawn;
+        private float _startTime;
+        private float _spawnTime;
+
+        private bool _successfulSpawnUnit = false;
+        private bool _isInToPendingCreation = false;
+        private bool _doPendingCreationFailed = false;
 
         public ActionSpawnUnit(Entity owner, float creationDuration, string entityIDToSpawn) : base(owner)
         {
-            this.entityIDToSpawn = entityIDToSpawn;
+            this._entityIDToSpawn = entityIDToSpawn;
 
-            float finalCreationDuration = 
-                TartarosCheatsManager.IsCreationTimeToZeroActive() 
-                ? 0 
+            float finalCreationDuration =
+                TartarosCheatsManager.IsCreationTimeToZeroActive()
+                ? 1f
                 : creationDuration;
 
-            this.creationDuration = finalCreationDuration;
+            _creationDuration = finalCreationDuration;
+
+            if (CanExecuteAction())
+            {
+                _doPendingCreationFailed = false;
+                SetInPendingCreation();
+            }
+            else
+            {
+                _doPendingCreationFailed = true;
+                _isInToPendingCreation = false;
+            }
         }
 
+        ~ActionSpawnUnit()
+        {
+            Refund();
+        }
+
+        #region Methods
+        #region Public Override Methods
         public override void OnStateEnter()
         {
-            startTime = Time.time;
-            spawnTime = Time.time + creationDuration;
+            base.OnStateEnter();
+
+            _startTime = Time.time;
+            _spawnTime = Time.time + _creationDuration;
         }
 
         public override void Tick()
         {
-            if (Time.time >= spawnTime)
+            if (Time.time >= _spawnTime)
             {
                 SpawnUnit();
             }
         }
 
+        public override bool CanExecuteAction()
+        {
+            // if we have added to pending creation the current unit,
+            // the CanSpawnUnit() method can returns false.
+            return !_doPendingCreationFailed
+                && (
+                    _isInToPendingCreation
+                    || _successfulSpawnUnit
+                    || _owner.GetCharacterComponent<EntityUnitSpawner>().CanSpawnEntity(_entityIDToSpawn, true)
+                );
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} spawns {1} in {2}.", _owner.name, _entityIDToSpawn, RemainingTimeToString());
+        }
+        #endregion
+
+        #region Private Methods
+        private void Refund()
+        {
+            if (_isInToPendingCreation)
+            {
+                GameManager.Instance.RemovePendingCreationEntity(_entityIDToSpawn);
+                _isInToPendingCreation = false;
+
+                Debug.Log(GetType() + " : Successful refund");
+            }
+            else
+            {
+                Debug.LogWarningFormat("{0} : Can't refund because not in pending creation list.", GetType());
+            }
+        }
+
+        private void SetInPendingCreation()
+        {
+            if (_isInToPendingCreation)
+                return;
+
+            GameManager.Instance.AddPendingCreationEntity(_entityIDToSpawn);
+            _isInToPendingCreation = true;
+        }
+
         private void SpawnUnit()
         {
-            _owner.GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(entityIDToSpawn);
+            Assert.IsFalse(_doPendingCreationFailed);
+
+            Refund();
+            _owner.GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(_entityIDToSpawn);
+
+            _successfulSpawnUnit = true;
 
             // leave action
             _owner.StopCurrentAction();
         }
+        #endregion
 
+        #region Getter Methods
         public float GetCompletion()
         {
-            return (Time.time - startTime) / (spawnTime - startTime);
+            return (Time.time - _startTime) / (_spawnTime - _startTime);
         }
 
         public float GetRemainingTime()
         {
-            return spawnTime - Time.time;
+            return _spawnTime - Time.time;
         }
 
         public string RemainingTimeToString()
@@ -67,13 +142,10 @@ namespace Game.IA.Action
             }
             else
             {
-                return creationDuration.ToString();
+                return _creationDuration.ToString();
             }
         }
-
-        public override string ToString()
-        {
-            return string.Format("{0} spawns {1} in {2}.", _owner.name, entityIDToSpawn, RemainingTimeToString());
-        }
+        #endregion
+        #endregion
     }
 }

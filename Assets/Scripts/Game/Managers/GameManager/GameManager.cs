@@ -1,6 +1,7 @@
 using Game.ConstructionSystem;
 using Game.MapCellEditor;
 using Lortedo.Utilities.Pattern;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -14,6 +15,8 @@ public delegate void OnStopBuild(GameManager gameManager);
 public class GameManager : Singleton<GameManager>
 {
     #region Fields
+    private const string debugLogHeader = "Game Manager : ";
+
     public static event OnResourcesUpdate OnGameResourcesUpdate;
 
     public static event OnGameOver OnGameOver;
@@ -37,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     private ResourcesWrapper _resources = new ResourcesWrapper();
 
     private static bool _applicationIsQuitting = false;
+    private List<string> _pendingCreation = new List<string>();
     #endregion
 
     #region Properties
@@ -51,6 +55,9 @@ public class GameManager : Singleton<GameManager>
         {
             _resources = value;
             OnGameResourcesUpdate?.Invoke(_resources);
+
+            if (!_resources.HasEnoughResources(ResourcesWrapper.Zero))
+                Debug.LogWarning(debugLogHeader + "Resources are negative.");
         }
     }
     public AbstractConstructionState State
@@ -74,6 +81,7 @@ public class GameManager : Singleton<GameManager>
     public MapCells MapCells { get => _mapCells; }
 
     public GameManagerData ManagerData { get => _data; }
+    public List<string> PendingCreation { get => _pendingCreation; }
     #endregion
 
     #region Methods
@@ -150,8 +158,36 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Public methods
+    public bool HasEnoughtPopulationToSpawn()
+        => _populationManager.HasEnoughtPopulationToSpawn();
+
     public bool HasEnoughtPopulationToSpawn(EntityData unitData)
         => _populationManager.HasEnoughtPopulationToSpawn(unitData);
+
+    public void AddPendingCreationEntity(string entityID)
+    {
+        _pendingCreation.Add(entityID);
+
+        EntityData entityData = MainRegister.Instance.GetEntityData(entityID);
+
+        _populationManager.PopulationCount += entityData.PopulationUse;
+        Resources -= entityData.SpawningCost;
+    }
+
+    public void RemovePendingCreationEntity(string entityID)
+    {
+        int pendingCreationBeforeRemove = _pendingCreation.Count;
+
+        if (_pendingCreation.Remove(entityID))
+        {
+            EntityData entityData = MainRegister.Instance.GetEntityData(entityID);
+
+            _populationManager.PopulationCount -= entityData.PopulationUse;
+            Resources += entityData.SpawningCost;
+
+            Debug.LogFormat("Remove pending: before {0} / after {1}", pendingCreationBeforeRemove, _pendingCreation.Count);
+        }
+    }
 
     public void StartBuilding(string buildingID)
     {

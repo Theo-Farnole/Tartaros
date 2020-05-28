@@ -12,5 +12,16 @@ namespace Game.IA.Action
         }
 
         public Entity entity { get => _owner; }
+
+        public abstract bool CanExecuteAction();
+
+        public override void OnStateEnter()
+        {
+            if (!CanExecuteAction())
+            {
+                Debug.LogWarningFormat("{0} : Aborting action because CanExecuteAction returns false.", this.GetType());
+                _owner.StopCurrentAction();
+            }
+        }
     }
 }

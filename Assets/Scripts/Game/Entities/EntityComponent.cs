@@ -25,7 +25,7 @@ public abstract class EntityComponent : MonoBehaviour
         {
             if (_entity != null)
             {
-                Debug.LogWarning("Entity is already set. You can't change it value!");
+                //Debug.LogWarning("Entity is already set. You can't change it value!");
                 return;
             }
 
