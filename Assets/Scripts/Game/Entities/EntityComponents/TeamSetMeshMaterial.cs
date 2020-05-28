@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+// we don't set 'TeamSetMeshMaterial ' as EntityComponent.
+// If we do, we should put this component in the same object of Entity component.
+// But we want to set this script on every MeshRenderer we have in our object.
 public class TeamSetMeshMaterial : MonoBehaviour
 {
     [SerializeField] private Entity _meshOwner;
