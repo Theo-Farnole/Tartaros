@@ -17,8 +17,6 @@ namespace Game.UI
         [Header("Selected Groups", order = 1)]
         [SerializeField, Required] private GameObject _prefabSelectionPortrait;
         [SerializeField, Required] private Transform _parentSelectionPortraits;
-        [Header("Orders")]
-        [SerializeField] private OrdersWrapper _ordersWrapper;
 
         private UISelectionGroupPortrait[] _selectionPortraitUI = new UISelectionGroupPortrait[5];
         #endregion
@@ -32,14 +30,7 @@ namespace Game.UI
         {
             CreationSelectionPortraitUI();
 
-            _ordersWrapper.HideOrders();
-
             SelectionManager.OnSelectionUpdated += OnSelectionUpdated;
-        }
-
-        public override void OnValidate()
-        {
-            _ordersWrapper.OnValidate();
         }
         #endregion
 
@@ -70,11 +61,6 @@ namespace Game.UI
         {
             UpdateSelectedGroups(selectedGroups);
             HighlightGroup(highlightGroupIndex);
-
-            if (highlightGroupIndex >= 0 && highlightGroupIndex < selectedGroups.Length)
-            {
-                UpdateOrdersWrapper(selectedGroups[highlightGroupIndex].unitsSelected[0]);
-            }
         }
 
         /// <summary>
@@ -119,11 +105,6 @@ namespace Game.UI
 
                 _selectionPortraitUI[i].SetHighlight(isHighlight);
             }
-        }
-
-        void UpdateOrdersWrapper(Entity unit)
-        {
-            _ordersWrapper.UpdateOrders(unit);
         }
         #endregion
     }

@@ -26,8 +26,6 @@ public class PopulationManager : MonoBehaviour
             _populationCount = value;
             OnPopulationCountChanged?.Invoke(_populationCount, _maxPopulation);
 
-            Debug.Log("Update pop");
-
             LookForErrorsInPopCounts();
         }
     }

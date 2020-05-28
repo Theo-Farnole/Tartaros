@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Game.UI.HoverPopup;
 using UnityEngine;
 using UnityEngine.Serialization;
+using System;
 
 public enum GenerationType
 {
@@ -30,6 +31,7 @@ public class EntityData : SerializedScriptableObject
     private const string generateResourcesHeaderName = "Can Generate Resources";
     private const string portraitAndPrefabGroupName = "Portrait & Prefab";
     private const string headerNamePopulation = "Can Give 'Population'";
+    private const string headerTurnIntoAnotherEntity = "Can Turn into Another Building'";
 
     #region Misc
     [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
@@ -207,6 +209,17 @@ public class EntityData : SerializedScriptableObject
 
     public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }
     #endregion
+
+    #region Can Turn in Another Building
+    [ToggleGroup(nameof(_canTurnIntoAnotherEntity), headerTurnIntoAnotherEntity)]
+    [SerializeField] private bool _canTurnIntoAnotherEntity;
+
+    [ToggleGroup(nameof(_canTurnIntoAnotherEntity), headerTurnIntoAnotherEntity)]
+    [SerializeField] private string[] _turnIntoAnotherEntityList;
+
+    public bool CanTurnIntoAnotherBuilding { get => _canTurnIntoAnotherEntity; }
+    public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }
+    #endregion
     #endregion
 
     public bool CanDoOverallAction(OverallAction overallAction)
@@ -227,10 +240,53 @@ public class EntityData : SerializedScriptableObject
         }
 
         return false;
-    }
+    }    
 
     void OnValidate()
     {
         _damagePerSecond = _damage * _attackPerSecond;
+    }
+
+    public OrderContent[] GetAvailableOrders()
+    {
+        List<OrderContent> output = new List<OrderContent>();
+
+        if (_canCreateUnit)
+        {
+            foreach (var entityID in _availableUnitsForCreation)
+            {
+                var entityData = MainRegister.Instance.GetEntityData(entityID);
+
+                var order = new OrderContent(
+                    entityData.Hotkey,
+                    entityData.Portrait,
+                    entityData.HoverPopupData,
+                    () => SelectedGroupsActionsCaller.OrderSpawnUnits(entityID),
+                    1
+                );
+
+                output.Add(order);
+            }
+        }
+
+        foreach (OverallAction overallAction in Enum.GetValues(typeof(OverallAction)))
+        {
+            if (CanDoOverallAction(overallAction))
+            {
+                OverallActionData overallActionData = MainRegister.Instance.GetOverallActionData(overallAction);
+
+                var order = new OrderContent(
+                    overallActionData.Hotkey,
+                    overallActionData.Portrait,
+                    overallActionData.HoverPopupData,
+                    overallAction.ToOrder(),
+                    2
+                );
+
+                output.Add(order);
+            }
+        }
+
+        return output.ToArray();
     }
 }
