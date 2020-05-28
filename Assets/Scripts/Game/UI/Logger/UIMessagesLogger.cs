@@ -27,6 +27,7 @@ public class UIMessagesLogger : Singleton<UIMessagesLogger>
         errorText.text = text;
         errorText.color = _color;
         errorText.fontSize = 30;
+        errorText.enableWordWrapping = false;
 
         float timeBeforeFade = _lifetime - _fadeDuration;
 
