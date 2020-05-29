@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DB_Camera
   m_EditorClassIdentifier: 
   _useKeyboardInput: 1
-  _panSpeedKeyboard: 5
+  _panSpeedKeyboard: 30
   _keyPanForward: 122
   _keyPanBackward: 115
   _keyPanLeft: 113

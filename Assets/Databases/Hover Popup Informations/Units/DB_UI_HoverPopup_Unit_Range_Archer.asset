@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd9c0a64af2b68743b0b98edb6531dd6, type: 3}
   m_Name: DB_UI_HoverPopup_Unit_Range_Archer
   m_EditorClassIdentifier: 
+  _entityData: {fileID: 11400000, guid: f0fc01d18dfe7644f9e2418f0d534d15, type: 2}
   _title: Archer
   _description: 
   _displayHotkey: 1
   _hotkey: 97
-  _displayCreationTime: 0
-  _creationTime: 0
+  _displayCreationTime: 1
+  _creationTime: 10
   _displayResources: 1
   _resources:
     food: 20
     wood: 5
-    gold: 0
+    stone: 0

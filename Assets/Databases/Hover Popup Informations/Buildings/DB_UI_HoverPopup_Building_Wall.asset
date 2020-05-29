@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd9c0a64af2b68743b0b98edb6531dd6, type: 3}
   m_Name: DB_UI_HoverPopup_Building_Wall
   m_EditorClassIdentifier: 
+  _entityData: {fileID: 11400000, guid: 5dd26269360472c45845b32dc21ce345, type: 2}
   _title: Wall
   _description: 'T''entends ? Le son du wall ? Le son d''ACIER
 
 '
   _displayHotkey: 1
-  _hotkey: 109
-  _displayCreationTime: 0
+  _hotkey: 97
+  _displayCreationTime: 1
   _creationTime: 0
-  _displayResources: 0
+  _displayResources: 1
   _resources:
     food: 0
     wood: 5
-    gold: 0
+    stone: 0

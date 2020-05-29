@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd9c0a64af2b68743b0b98edb6531dd6, type: 3}
   m_Name: DB_UI_HoverPopup_Building_Resources_Wood
   m_EditorClassIdentifier: 
+  _entityData: {fileID: 11400000, guid: 93171ad1c8caffe4dad11c9dcd3043f5, type: 2}
   _title: Lumber Camp
   _description: "Te g\xE9n\xE8re du boa"
-  _displayHotkey: 0
-  _hotkey: 104
-  _displayCreationTime: 0
+  _displayHotkey: 1
+  _hotkey: 119
+  _displayCreationTime: 1
   _creationTime: 0
   _displayResources: 1
   _resources:
-    food: 5
-    wood: 0
-    gold: 0
+    food: 0
+    wood: 5
+    stone: 0

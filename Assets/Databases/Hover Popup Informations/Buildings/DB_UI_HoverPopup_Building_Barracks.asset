@@ -12,14 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd9c0a64af2b68743b0b98edb6531dd6, type: 3}
   m_Name: DB_UI_HoverPopup_Building_Barracks
   m_EditorClassIdentifier: 
+  _entityData: {fileID: 11400000, guid: 6a1997c83280ffd478dffdae9191d1a8, type: 2}
   _title: Barracks
   _description: 
   _displayHotkey: 1
-  _hotkey: 103
-  _displayCreationTime: 0
+  _hotkey: 98
+  _displayCreationTime: 1
   _creationTime: 0
   _displayResources: 1
   _resources:
     food: 0
     wood: 5
-    gold: 0
+    stone: 0

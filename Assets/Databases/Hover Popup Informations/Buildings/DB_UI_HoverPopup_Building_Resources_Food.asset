@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd9c0a64af2b68743b0b98edb6531dd6, type: 3}
   m_Name: DB_UI_HoverPopup_Building_Resources_Food
   m_EditorClassIdentifier: 
-  _title: Farm
+  _entityData: {fileID: 11400000, guid: 2885a22bbf77a124fa2c0c52e70bc16c, type: 2}
+  _title: Mill
   _description: 
   _displayHotkey: 1
   _hotkey: 102
-  _displayCreationTime: 0
+  _displayCreationTime: 1
   _creationTime: 0
   _displayResources: 1
   _resources:

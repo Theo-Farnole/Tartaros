@@ -66,6 +66,7 @@ public class EntityData : SerializedScriptableObject
     public int PopulationUse { get => _populationUse; }
     public Vector2Int TileSize { get => _tileSize; }
     public EntityType EntityType { get => _entityType; }
+    public string EntityName { get => _entityName; }
     #endregion
 
     #region Health Settings
