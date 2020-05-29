@@ -7,11 +7,12 @@ using UnityEngine.Assertions;
 public class CameraController : MonoBehaviour
 {
     [Required]
-    [SerializeField] private CameraControllerData _data;
+    [SerializeField] private CameraControllerData _data;    
 
     void Update()
     {
         ProcessMovement(Time.deltaTime);
+        ProcessZoomInput(Time.deltaTime);
     }
 
     private void ProcessMovement(float deltaTime)
@@ -32,5 +33,25 @@ public class CameraController : MonoBehaviour
         Vector3 deltaRight = _data.Speed * deltaTime * horizontal * right;
 
         transform.position += deltaForward + deltaRight;
+    }
+
+    private void ProcessZoomInput(float deltaTime)
+    {
+        Assert.IsNotNull(_data, "Please assign a CameraControllerData to camera " + name + ".");
+
+        var inputDelta = Input.mouseScrollDelta.y;
+
+        // if there is no user input,
+        // don't execute code below for performance reason
+        if (inputDelta == 0)
+            return;
+
+        // we need to reverse 'positionDeltaY'
+        // to make the camera goes up, when the mouse scroll goes up
+        var positionDeltaY = -(inputDelta * deltaTime * _data.ZoomSpeed);
+
+        positionDeltaY = _data.GetClampedZoomPositionDelta(positionDeltaY, transform.position.y);
+
+        transform.position += positionDeltaY * Vector3.up;
     }
 }

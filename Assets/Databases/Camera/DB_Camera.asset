@@ -13,3 +13,7 @@ MonoBehaviour:
   m_Name: DB_Camera
   m_EditorClassIdentifier: 
   _speed: 10
+  _zoomSpeed: 5
+  _zoomBounds:
+    minimum: 10
+    maximum: 20
