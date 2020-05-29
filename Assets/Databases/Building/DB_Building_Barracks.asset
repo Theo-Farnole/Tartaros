@@ -49,7 +49,7 @@ MonoBehaviour:
       Data: 
   _entityName: Barracks
   _entityType: 1
-  _hotkey: 103
+  _hotkey: 98
   _portrait: {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 5223a26d9e803f04ab7c98100babab8f, type: 3}
   _populationUse: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
   _damage: 3
-  _attackSpeed: 1
+  _attackPerSecond: 1
   _attackRadius: 3
   _damagePerSecond: 3
   _canMove: 0
@@ -87,3 +87,5 @@ MonoBehaviour:
     stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0
+  _canTurnIntoAnotherEntity: 0
+  _turnIntoAnotherEntityList: []

@@ -18,7 +18,6 @@ MonoBehaviour:
     stone: 10
   _startMaxPopulationCount: 10
   _IDInPanelConstruction:
-  - building_temple
   - building_resources_food
   - building_resources_wood
   - building_resources_stone
@@ -26,6 +25,5 @@ MonoBehaviour:
   - building_barracks
   - building_wall
   - building_tower
-  - building_gate
   _wavesPassedToWin: 30
   _loseOnDestroyedEntityID: building_temple

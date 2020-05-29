@@ -121,7 +121,7 @@ MonoBehaviour:
       Data: 
   _entityName: Lumber Camp
   _entityType: 1
-  _hotkey: 104
+  _hotkey: 119
   _portrait: {fileID: 21300000, guid: 611dc461b85e6b74a90d20260a2b768f, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 302af1b49b0739d4fbdc498d874c6adb, type: 3}
   _populationUse: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
   _damage: 3
-  _attackSpeed: 1
+  _attackPerSecond: 1
   _attackRadius: 3
   _damagePerSecond: 3
   _canMove: 0
@@ -157,3 +157,5 @@ MonoBehaviour:
     stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0
+  _canTurnIntoAnotherEntity: 0
+  _turnIntoAnotherEntityList: []

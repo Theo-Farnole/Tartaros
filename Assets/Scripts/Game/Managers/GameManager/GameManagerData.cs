@@ -22,4 +22,28 @@ public class GameManagerData : ScriptableObject
     public int WavesPassedToWin { get => _wavesPassedToWin; }
     public string[] IDsInPanelConstruction { get => _IDInPanelConstruction; }
     public string LoseOnDestroyedEntityID { get => _loseOnDestroyedEntityID; }
+
+    public OrderContent[] GetConstructionOrders()
+    {
+        OrderContent[] output = new OrderContent[_IDInPanelConstruction.Length];
+
+        for (int i = 0; i < _IDInPanelConstruction.Length; i++)
+        {
+            string entityID = _IDInPanelConstruction[i];
+
+            var entityData = MainRegister.Instance.GetEntityData(entityID);
+
+            var order = new OrderContent(
+                entityData.Hotkey,
+                entityData.Portrait,
+                entityData.HoverPopupData,
+                () => GameManager.Instance.StartBuilding(entityID),
+                1
+            );
+
+            output[i] = order;
+        }
+
+        return output;
+    }
 }

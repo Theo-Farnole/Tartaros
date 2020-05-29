@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [CustomEditor(typeof(HotkeyActionListener))]
 public class HotkeyActionListenerEditor : Editor
@@ -30,6 +31,8 @@ public class HotkeyActionListenerEditor : Editor
         FieldInfo field = type.GetField("_commands", commandsBindingFlags);
 
         var commands = field.GetValue(HotkeyActionListener) as Dictionary<KeyCode, Command>;
+
+        Assert.IsNotNull(commands);
 
         if (commands.Count == 0)
         {

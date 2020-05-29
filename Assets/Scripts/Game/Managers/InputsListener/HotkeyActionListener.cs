@@ -42,13 +42,11 @@ public class HotkeyActionListener : MonoBehaviour
     {
         if (selectedGroups.Length > 0 && selectedGroups[0] != null)
         {
-            Assert.IsTrue(selectedGroups.IsIndexInsideBounds(highlightGroupIndex), "Should not happen: the passed group from SelectionManager should always have an index inside bounds.");
-
-            SetHotkeyHandler(selectedGroups[highlightGroupIndex].entityID);
+            SetHotkeyFromEntityOrders(selectedGroups[highlightGroupIndex].entityID);
         }
         else
         {
-            ClearCommandsHandler();
+            SetHotkeyFromConstructionOrders();
         }
     }
     #endregion
@@ -66,16 +64,12 @@ public class HotkeyActionListener : MonoBehaviour
     }
     #endregion
 
-    public void ClearCommandsHandler()
+    void ClearCommandsHandler()
     {
         _commands.Clear();
     }
 
-    /// <summary>
-    /// Clear and re-set _commands dictionary.
-    /// </summary>
-    /// <param name="entityIDToListen">Type of entity which we listen to hotkey</param>
-    public void SetHotkeyHandler(string entityIDToListen)
+    void SetHotkeyFromEntityOrders(string entityIDToListen)
     {
         ClearCommandsHandler();
 
@@ -83,8 +77,19 @@ public class HotkeyActionListener : MonoBehaviour
 
         AddHotkeys(data);
     }
+    
+    void SetHotkeyFromConstructionOrders()
+    {
+        ClearCommandsHandler();
 
-    #region Add Hotkeys methods
+        var constructionOrders = GameManager.Instance.ManagerData.GetConstructionOrders();
+
+        foreach (var order in constructionOrders)
+        {
+            AddOrderHotkey(order);
+        }
+    }
+
     void AddHotkeys(EntityData data)
     {
         Assert.IsNotNull(data, string.Format("Hotkey Listener: cannot find entity data. Aborting input listening."));
@@ -99,19 +104,13 @@ public class HotkeyActionListener : MonoBehaviour
 
     void AddOrderHotkey(OrderContent orderContent)
     {
-        AddHotkey(orderContent.Hotkey, orderContent.OnClick);
-    }
-
-    void AddHotkey(KeyCode hotkey, Action action)
-    {
-        if (_commands.ContainsKey(hotkey))
+        if (_commands.ContainsKey(orderContent.Hotkey))
         {
-            Debug.LogErrorFormat("Hotkey {0} is already register. Aborting", hotkey);
+            Debug.LogWarningFormat("Hotkey {0} is already register. Aborting", orderContent.Hotkey);
             return;
         }
 
-        _commands.Add(hotkey, action);
-    }
-    #endregion
+        _commands.Add(orderContent.Hotkey, orderContent.OnClick);
+    }    
     #endregion
 }
