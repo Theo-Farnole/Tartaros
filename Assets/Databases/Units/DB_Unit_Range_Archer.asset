@@ -13,46 +13,21 @@ MonoBehaviour:
   m_Name: DB_Unit_Range_Archer
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
+    SerializedFormat: 0
+    SerializedBytes: 0101110000005f007200650073006f0075007200630065007300500065007200430065006c006c002f000000000185000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e00440069006300740069006f006e00610072007900600032005b005b00470061006d0065002e004d0061007000430065006c006c0045006400690074006f0072002e00430065006c006c0054007900700065002c00200041007300730065006d0062006c0079002d004300530068006100720070005d002c005b005200650073006f007500720063006500730057007200610070007000650072002c00200041007300730065006d0062006c0079002d004300530068006100720070005d005d002c0020006d00730063006f0072006c00690062000000000001010800000063006f006d00700061007200650072002f01000000016b000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e0045006e0075006d0045007100750061006c0069007400790043006f006d0070006100720065007200600031005b005b00470061006d0065002e004d0061007000430065006c006c0045006400690074006f0072002e00430065006c006c0054007900700065002c00200041007300730065006d0062006c0079002d004300530068006100720070005d005d002c0020006d00730063006f0072006c00690062000100000006000000000000000007050600000000000000000705
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: _resourcesPerCell
-      Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Game.MapCellEditor.CellType,
-        Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.MapCellEditor.CellType,
-        Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
   _entityName: Archer
+  _entityType: 0
   _hotkey: 97
-  _populationUse: 1
-  _tileSize: {x: 1, y: 1}
   _portrait: {fileID: 21300000, guid: eb5ab674716194b458a465e01cafb18d, type: 3}
   _prefab: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775, type: 3}
+  _populationUse: 1
+  _tileSize: {x: 1, y: 1}
   _hoverPopupData: {fileID: 11400000, guid: 4d613de1ed0e4694590c2a31afd07026, type: 2}
   _isInvincible: 0
   _hp: 2
@@ -68,9 +43,9 @@ MonoBehaviour:
   _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
     type: 3}
   _damage: 1
-  _attackSpeed: 2
+  _attackPerSecond: 1
   _attackRadius: 5
-  _damagePerSecond: 0.5
+  _damagePerSecond: 1
   _canMove: 1
   _speed: 3
   _canCreateUnit: 0
@@ -85,3 +60,5 @@ MonoBehaviour:
     stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0
+  _canTurnIntoAnotherEntity: 0
+  _turnIntoAnotherEntityList: []

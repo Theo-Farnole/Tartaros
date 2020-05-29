@@ -60,6 +60,14 @@ namespace Game.UI.HoverPopup
 
         void OnValidate()
         {
+            UpdateContent();
+        }
+
+        /// <summary>
+        /// Update content with _entityData field.
+        /// </summary>
+        public void UpdateContent()
+        {
             if (_entityData != null)
                 SetContent(_entityData);
         }
@@ -77,6 +85,19 @@ namespace Game.UI.HoverPopup
 
             _displayCreationTime = entityData.CreationDuration != 0;
             _creationTime = entityData.CreationDuration;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1301703148;
+            hashCode += hashCode * -1521134295 + _title.GetHashCode();
+            hashCode += hashCode * -1521134295 + _displayHotkey.GetHashCode();
+            hashCode += hashCode * -1521134295 + _hotkey.GetHashCode();
+            hashCode += hashCode * -1521134295 + _displayResources.GetHashCode();
+            hashCode += hashCode * -1521134295 + _resources.GetHashCode();
+            hashCode += hashCode * -1521134295 + _displayCreationTime.GetHashCode();
+            hashCode += hashCode * -1521134295 + _creationTime.GetHashCode();
+            return hashCode;
         }
     }
 }

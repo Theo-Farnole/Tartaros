@@ -219,7 +219,7 @@ public class EntityData : SerializedScriptableObject
     [SerializeField] private string[] _turnIntoAnotherEntityList;
 
     public bool CanTurnIntoAnotherBuilding { get => _canTurnIntoAnotherEntity; }
-    public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }
+    public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }    
     #endregion
     #endregion
 

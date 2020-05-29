@@ -166,9 +166,9 @@ public struct ResourcesWrapper
     public override int GetHashCode()
     {
         var hashCode = -1301703148;
-        hashCode = hashCode * -1521134295 + food.GetHashCode();
-        hashCode = hashCode * -1521134295 + wood.GetHashCode();
-        hashCode = hashCode * -1521134295 + stone.GetHashCode();
+        hashCode += hashCode * -1521134295 + food.GetHashCode();
+        hashCode += hashCode * -1521134295 + wood.GetHashCode();
+        hashCode += hashCode * -1521134295 + stone.GetHashCode();
         return hashCode;
     }
     #endregion
