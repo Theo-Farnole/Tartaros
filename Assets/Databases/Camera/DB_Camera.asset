@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b2b271d4205e7b48a294e0e04f38c8e, type: 3}
   m_Name: DB_Camera
   m_EditorClassIdentifier: 
-  _panSpeed: 10
-  _panBorderThickness: 10
+  _useKeyboardInput: 1
+  _panSpeedKeyboard: 5
   _keyPanForward: 122
   _keyPanBackward: 115
   _keyPanLeft: 113
@@ -22,6 +22,10 @@ MonoBehaviour:
   _keyPanBackwardAlternative: 274
   _keyPanLeftAlternative: 276
   _keyPanRightAlternative: 275
+  _useScreenEdgeInput: 1
+  _panSpeedScreenEdge: 20
+  _panBorderThickness: 10
+  _canZoom: 1
   _zoomSpeed: 99
   _zoomBounds:
     min: 10

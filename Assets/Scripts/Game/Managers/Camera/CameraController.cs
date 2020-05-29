@@ -109,7 +109,7 @@ public class CameraController : MonoBehaviour
 
         // we need to reverse 'positionDeltaY'
         // to make the camera goes up, when the mouse scroll goes up
-        deltaPosition.y = -(inputDelta * deltaTime * _data.ZoomSpeed);
+        deltaPosition.y += -(inputDelta * deltaTime * _data.ZoomSpeed);
     }
 
 
@@ -124,13 +124,14 @@ public class CameraController : MonoBehaviour
 
         Vector3 deltaForward = deltaPosition.z * forward;
         Vector3 deltaRight = deltaPosition.x * right;
+        Vector3 deltaUp = deltaPosition.y * Vector3.up;
 
-        Vector3 finalDelta = deltaForward + deltaRight;
+        Vector3 finalDelta = deltaForward + deltaRight + deltaUp;
 
         Vector3 finalPosition = transform.position + finalDelta;
 
         finalPosition.x = Mathf.Clamp(finalPosition.x, _mapLimitX.min, _mapLimitX.max);
-        finalPosition.y = Mathf.Clamp(finalPosition.x, _data.ZoomBounds.min, _data.ZoomBounds.max);
+        finalPosition.y = Mathf.Clamp(finalPosition.y, _data.ZoomBounds.min, _data.ZoomBounds.max);
         finalPosition.z = Mathf.Clamp(finalPosition.z, _mapLimitZ.min, _mapLimitZ.max);
 
         transform.position = finalPosition;
