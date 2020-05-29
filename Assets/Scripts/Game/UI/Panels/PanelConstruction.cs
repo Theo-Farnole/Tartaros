@@ -21,11 +21,7 @@ namespace Game.UI
         [SerializeField] private GameObject _prefabConstructionButton;
         [SerializeField] private Transform _parentConstructionButton;
 
-        private Button[] _buildingButtons = null;
-        #endregion
-
-        #region Properties
-        private string[] GameManager_IDsInPanelConstruction => GameManager.Instance.ManagerData.IDsInPanelConstruction;
+        private UI_OrderWrapper[] _orderButtons = null;
         #endregion
 
         #region Methods
@@ -34,97 +30,69 @@ namespace Game.UI
         {
             base.Initialize(uiManager);
 
-            if (_buildingButtons == null)
+            if (_orderButtons == null)
                 CreateConstructionButtons();
         }
 
         public override void SubscribeToEvents<T>(T uiManager)
         {
-            // make sure there is enought button
-            Assert.AreEqual(GameManager_IDsInPanelConstruction.Length, _buildingButtons.Length,
-                string.Format("<color=yellow>Panel construction</color> should have {0} building buttons, but there is {1}.", GameManager_IDsInPanelConstruction.Length, _buildingButtons.Length));
+            base.SubscribeToEvents(uiManager);
 
-            BrowseIDsInPanelConstruction(
-                (string id, int index) =>
-                {
-                    UI_ConstructionButton constructionButton = _buildingButtons[index].GetComponent<UI_ConstructionButton>();
-                    Assert.IsNotNull(constructionButton, "Missing a UI_ConstructionButton component.");
-                    constructionButton.SubcribeToEvents(id);
-                }
-            );
+            foreach (var orderButton in _orderButtons)
+            {
+                orderButton.EnableButtonInteraction();
+            }
         }
 
         public override void UnsubscribeToEvents<T>(T uiManager)
         {
-            if (GameManager.Instance != null)
+            base.UnsubscribeToEvents(uiManager);
+
+            foreach (var orderButton in _orderButtons)
             {
-                BrowseIDsInPanelConstruction(
-                    (string id, int index) =>
-                    {
-                        if (_buildingButtons != null && _buildingButtons[index] != null)
-                        {
-                            if (_buildingButtons[index].TryGetComponent(out UI_ConstructionButton constructionButton))
-                            {
-                                constructionButton.UnsubcribeToEvents(id);
-                            }
-                        }
-                    }
-                );
+                orderButton.DisableButtonInteraction();
             }
         }
         #endregion
 
-        #region Public methods
-        public void CreateConstructionButtons()
+        #region Private methods
+        private void CreateConstructionButtons()
         {
-            if (_buildingButtons != null)
+            if (_orderButtons != null)
             {
                 Debug.LogWarningFormat("Panel Construction : Recreate building buttons.");
             }
 
             // destroy older buttons
-            _parentConstructionButton.transform.DestroyImmediateChildren();
-
-            // get building enum length
-            _buildingButtons = new Button[GameManager_IDsInPanelConstruction.Length];
+            _parentConstructionButton.transform.DestroyChildren();
 
             // create a button for each entries in game manager 'buildings in panel construction'
-            BrowseIDsInPanelConstruction(CreateConstructionButton);
+            var constructionOrders = GameManager.Instance.ManagerData.GetConstructionOrders();
 
-            // make sure that we have created enought buttons
-            Assert.AreEqual(GameManager_IDsInPanelConstruction.Length, _buildingButtons.Length,
-                string.Format("<color=yellow>Panel construction</color> should have {0} building buttons, but there is {1}.", GameManager_IDsInPanelConstruction.Length, _buildingButtons.Length));
+            _orderButtons = new UI_OrderWrapper[constructionOrders.Length];
+
+            for (int i = 0; i < constructionOrders.Length; i++)
+            {
+                OrderContent order = constructionOrders[i];
+                CreateConstructionButton(order, i);
+            }
 
             Canvas.ForceUpdateCanvases();
         }
-        #endregion
 
-        #region Private methods
-        private void BrowseIDsInPanelConstruction(Action<string, int> action)
+        private void CreateConstructionButton(OrderContent orderContent, int index)
         {
-            Assert.IsNotNull(GameManager.Instance, debugLogHeader + "Missing GameManager. Can't browse IDs.");
-
-            var array = GameManager.Instance.ManagerData.IDsInPanelConstruction;
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                string entityID = array[i];
-
-                action?.Invoke(entityID, i);
-            }
-        }
-
-        private void CreateConstructionButton(string entityID, int index)
-        {
-            Button buildingButton = GameObject.Instantiate(_prefabConstructionButton).GetComponent<Button>();
-            buildingButton.transform.SetParent(_parentConstructionButton, false);
+            // instanciate button
+            var instanciatedButton = UnityEngine.Object.Instantiate(_prefabConstructionButton);
+            instanciatedButton.transform.SetParent(_parentConstructionButton, false);
 
             // set building type on construction button
-            UI_ConstructionButton constructionButton = buildingButton.GetComponent<UI_ConstructionButton>();
-            Assert.IsNotNull(constructionButton, "Prefab construction prefab misses a UI_ConstructionButton component.");
-            constructionButton.SetBuildingType(entityID);
+            UI_OrderWrapper orderWrapper = instanciatedButton.GetComponent<UI_OrderWrapper>();
+            orderWrapper.SetContent(orderContent);
 
-            _buildingButtons[index] = buildingButton;
+            Assert.IsNotNull(orderWrapper, "Prefab construction prefab misses a UI_ConstructionButton component.");
+
+            _orderButtons[index] = orderWrapper;
         }
         #endregion
         #endregion

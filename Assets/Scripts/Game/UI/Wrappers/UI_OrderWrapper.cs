@@ -46,5 +46,15 @@ namespace Game.UI
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(() => orderContent.OnClick());
         }
+
+        public void EnableButtonInteraction()
+        {
+            _button.interactable = true;
+        }
+
+        public void DisableButtonInteraction()
+        {
+            _button.interactable = false;
+        }
     }
 }

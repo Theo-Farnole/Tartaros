@@ -6306,7 +6306,7 @@ MonoBehaviour:
     _parentSelectionPortraits: {fileID: 1190016296}
   _panelConstruction:
     _canvas: {fileID: 351236411}
-    _prefabConstructionButton: {fileID: 1826093270694937108, guid: 1fb622ff9e092974d87faec333afe53e,
+    _prefabConstructionButton: {fileID: 4365979022446068711, guid: dc2e56d90a18a284290fad11b265ed73,
       type: 3}
     _parentConstructionButton: {fileID: 1300319502}
   _panelGameOver:
