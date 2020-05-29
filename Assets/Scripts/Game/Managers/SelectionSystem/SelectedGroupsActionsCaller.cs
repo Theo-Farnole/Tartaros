@@ -130,4 +130,18 @@ public static class SelectedGroupsActionsCaller
             }
         }
     }
+
+    public static void OrderTurnIntoEntities(string entityID)
+    {
+        bool addToActionQueue = Input.GetKey(additiveKeycode);
+
+        foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
+        {
+            for (int j = 0; j < group.unitsSelected.Count; j++)
+            {
+                var action = new ActionTurnIntoEntity(group.unitsSelected[j], entityID);
+                group.unitsSelected[j].SetAction(action, addToActionQueue);
+            }
+        }
+    }
 }

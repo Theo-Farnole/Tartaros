@@ -88,14 +88,12 @@ public class EntityUnitSpawner : EntityComponent
     {
         if (!Entity.Data.CanSpawnUnit)
         {
-            Debug.LogWarning("You must tick 'can spawn unit' on database " + Entity.EntityID + ".");
-            return false;
+            Debug.LogWarningFormat("You must tick 'can spawn unit' on database " + Entity.EntityID + ".");
         }
 
         if (!Entity.Data.AvailableUnitsForCreation.Contains(entityID))
         {
-            Debug.LogFormat(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of { 1}.", entityID, name);
-            return false;
+            Debug.LogWarningFormat(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", entityID, name);
         }
 
         Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
@@ -119,7 +117,7 @@ public class EntityUnitSpawner : EntityComponent
         return true;
     }
 
-    public void SpawnUnit(string unitID)
+    public Entity SpawnUnit(string unitID)
     {
         Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
         Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
@@ -138,6 +136,8 @@ public class EntityUnitSpawner : EntityComponent
 
         instanciatedEntity.Team = Entity.Team;
         MoveGameObjectToAnchor(instanciatedEntity);
+
+        return instanciatedEntity;
     }
 
     private void MoveGameObjectToAnchor(Entity entity)

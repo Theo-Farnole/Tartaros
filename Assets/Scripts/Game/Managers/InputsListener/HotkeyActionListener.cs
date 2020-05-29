@@ -17,7 +17,7 @@ public class HotkeyActionListener : MonoBehaviour
         Attack = 2
     }
 
-    Dictionary<KeyCode, Command> _commands = new Dictionary<KeyCode, Command>();
+    Dictionary<KeyCode, Action> _commands = new Dictionary<KeyCode, Action>();
 
     #region Methods
     #region MonoBehaviour Callbacks
@@ -60,7 +60,7 @@ public class HotkeyActionListener : MonoBehaviour
         {
             if (Input.GetKeyDown(kvp.Key))
             {
-                kvp.Value.Execute();
+                kvp.Value?.Invoke();
             }
         }
     }
@@ -71,27 +71,6 @@ public class HotkeyActionListener : MonoBehaviour
         _commands.Clear();
     }
 
-    void AddHotkey(KeyCode hotkey, Command command)
-    {
-        if (_commands.ContainsKey(hotkey))
-        {
-            Debug.LogErrorFormat("Hotkey {0} is already register. Aborting", hotkey);
-            return;
-        }
-
-        _commands.Add(hotkey, command);
-    }
-
-    void AddHotkeyFromOverallAction(OverallAction overallAction, Command command)
-    {
-        OverallActionData overallActionData = MainRegister.Instance.GetOverallActionData(overallAction);
-
-        Assert.IsNotNull(overallActionData, "Hotkey Listener: Cannot find hotkey of attack. Aborting listening of hotkey attack.");
-
-        var hotkey = overallActionData.Hotkey;
-        AddHotkey(hotkey, command);
-    }
-
     /// <summary>
     /// Clear and re-set _commands dictionary.
     /// </summary>
@@ -100,10 +79,7 @@ public class HotkeyActionListener : MonoBehaviour
     {
         ClearCommandsHandler();
 
-        var data = MainRegister.Instance.GetEntityData(entityIDToListen);
-
-        Assert.IsNotNull(data,
-            string.Format("Hotkey Listener: cannot find entity data for {0}. Aborting input listening.", entityIDToListen));
+        var data = MainRegister.Instance.GetEntityData(entityIDToListen);        
 
         AddHotkeys(data);
     }
@@ -111,52 +87,30 @@ public class HotkeyActionListener : MonoBehaviour
     #region Add Hotkeys methods
     void AddHotkeys(EntityData data)
     {
-        if (data.CanMove)
-            AddMoveHotkeys();
+        Assert.IsNotNull(data, string.Format("Hotkey Listener: cannot find entity data. Aborting input listening."));
 
-        if (data.CanAttack)
-            AddAttackHotkey();
+        var orders = data.GetAvailableOrders();
 
-        if (data.CanMove || data.CanAttack)
-            AddStopActionHotkey();
-
-        if (data.CanSpawnUnit)
-            AddSpawnUnitHotkeys(data.AvailableUnitsForCreation);
-    }
-
-    private void AddSpawnUnitHotkeys(string[] unitsIDs)
-    {
-        foreach (string unitID in unitsIDs)
+        foreach (var order in orders)
         {
-            var unitData = MainRegister.Instance.GetEntityData(unitID);
-
-            if (unitData != null)
-            {
-                KeyCode hotkey = unitData.Hotkey;
-                AddHotkey(hotkey, new CreateUnitCommand(unitID));
-            }
-            else
-            {
-                Debug.LogErrorFormat("Hotkey Listener: Couldn't not find EntityData of unit {0}.", unitID);
-                continue;
-            }
+            AddOrderHotkey(order);
         }
     }
 
-    private void AddStopActionHotkey()
+    void AddOrderHotkey(OrderContent orderContent)
     {
-        AddHotkeyFromOverallAction(OverallAction.Stop, new StopCommand());
+        AddHotkey(orderContent.Hotkey, orderContent.OnClick);
     }
 
-    void AddAttackHotkey()
+    void AddHotkey(KeyCode hotkey, Action action)
     {
-        AddHotkeyFromOverallAction(OverallAction.Attack, new ListenSecondClickToAttackCommand());
-    }
+        if (_commands.ContainsKey(hotkey))
+        {
+            Debug.LogErrorFormat("Hotkey {0} is already register. Aborting", hotkey);
+            return;
+        }
 
-    void AddMoveHotkeys()
-    {
-        AddHotkeyFromOverallAction(OverallAction.Move, new ListenSecondClickToMoveCommand());
-        AddHotkeyFromOverallAction(OverallAction.Patrol, new ListenSecondClickToPatrolCommand());
+        _commands.Add(hotkey, action);
     }
     #endregion
     #endregion

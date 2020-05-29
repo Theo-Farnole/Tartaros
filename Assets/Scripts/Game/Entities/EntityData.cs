@@ -240,7 +240,7 @@ public class EntityData : SerializedScriptableObject
         }
 
         return false;
-    }    
+    }
 
     void OnValidate()
     {
@@ -262,6 +262,24 @@ public class EntityData : SerializedScriptableObject
                     entityData.Portrait,
                     entityData.HoverPopupData,
                     () => SelectedGroupsActionsCaller.OrderSpawnUnits(entityID),
+                    1
+                );
+
+                output.Add(order);
+            }
+        }
+
+        if (_canTurnIntoAnotherEntity)
+        {
+            foreach (var entityID in _turnIntoAnotherEntityList)
+            {
+                var entityData = MainRegister.Instance.GetEntityData(entityID);
+
+                var order = new OrderContent(
+                    entityData.Hotkey,
+                    entityData.Portrait,
+                    entityData.HoverPopupData,
+                    () => SelectedGroupsActionsCaller.OrderTurnIntoEntities(entityID),
                     1
                 );
 

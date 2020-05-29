@@ -54,7 +54,7 @@ MonoBehaviour:
   _prefab: {fileID: 545007711727897807, guid: 7bc73da1b04cc36458eee7a8a1f17524, type: 3}
   _populationUse: 0
   _tileSize: {x: 1, y: 1}
-  _hoverPopupData: {fileID: 11400000, guid: 8f184cd145b314a41a90dd760bde2c3d, type: 2}
+  _hoverPopupData: {fileID: 11400000, guid: a75a5f2c3a0b85848b112df7fdeee9e4, type: 2}
   _isInvincible: 0
   _hp: 10
   _spawningCost:

@@ -14,7 +14,7 @@ namespace Game.IA.Action
         private float _startTime;
         private float _spawnTime;
 
-        private bool _successfulSpawnUnit = false;
+        private bool _successfulSpawnUnit = false; // allow returning true of CanExecuteAction()
         private bool _isInToPendingCreation = false;
         private bool _doPendingCreationFailed = false;
 
@@ -111,6 +111,7 @@ namespace Game.IA.Action
         {
             Assert.IsFalse(_doPendingCreationFailed);
 
+            // Refund called, because on spawn, GameManager'll remove spawn
             Refund();
             _owner.GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(_entityIDToSpawn);
 

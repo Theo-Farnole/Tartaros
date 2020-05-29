@@ -151,6 +151,7 @@ public class Entity : MonoBehaviour, IPooledObject
     {       
         if (!action.CanExecuteAction())
         {
+            Debug.LogFormat("Entity : Can't do {0}", action.ToString());
             if (!addToActionQueue) _queueAction.Clear();
             return;
         }
