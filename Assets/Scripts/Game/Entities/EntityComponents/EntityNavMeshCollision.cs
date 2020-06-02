@@ -43,6 +43,9 @@ public class EntityNavMeshCollision : EntityComponent
             return;
         }
 
+        if (!Entity.Data.CanToggleNavMeshObstacle)
+            return;
+
         _navMeshObstacle.enabled = true;
         UpdateMesh();
     }
@@ -55,12 +58,18 @@ public class EntityNavMeshCollision : EntityComponent
             return;
         }
 
+        if (!Entity.Data.CanToggleNavMeshObstacle)
+            return;
+
         _navMeshObstacle.enabled = false;
         UpdateMesh();
     }
 
     public void ToggleNavMeshObstacle()
     {
+        if (!Entity.Data.CanToggleNavMeshObstacle)
+            return;
+
         if (_navMeshObstacle.enabled) DisableNavMeshObstacle();
         else EnableNavMeshObstacle();
     }
@@ -69,6 +78,9 @@ public class EntityNavMeshCollision : EntityComponent
     #region Private Methods
     private void UpdateMesh()
     {
+        if (!Entity.Data.CanToggleNavMeshObstacle)
+            return;
+
         if (!_navMeshObstacle)
             return;
 
@@ -101,7 +113,8 @@ public class EntityNavMeshCollision : EntityComponent
     {
         if (TryGetComponent(out NavMeshObstacle navMeshObstacle))
         {
-            navMeshObstacle.size = size;
+            Vector3 carveOffset = new Vector3(0.9f, 0, 0.9f);
+            navMeshObstacle.size = size - carveOffset;
             navMeshObstacle.center = size.y / 2 * Vector3.up;
         }
     }

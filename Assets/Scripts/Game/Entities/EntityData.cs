@@ -220,7 +220,7 @@ public class EntityData : SerializedScriptableObject
     [SerializeField] private string[] _turnIntoAnotherEntityList;
 
     public bool CanTurnIntoAnotherBuilding { get => _canTurnIntoAnotherEntity; }
-    public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }    
+    public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }
     #endregion
 
     #region Can Toggle Nav Mesh
@@ -229,6 +229,8 @@ public class EntityData : SerializedScriptableObject
 
     [ToggleGroup(nameof(_canToggleNavMeshObstacle), headerToggleNavmesh)]
     [SerializeField] private OrderContent _orderToggleNavMeshObstacle;
+
+    public bool CanToggleNavMeshObstacle { get => _canToggleNavMeshObstacle; }
     #endregion
     #endregion
 
