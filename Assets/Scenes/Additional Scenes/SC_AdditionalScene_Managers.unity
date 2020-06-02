@@ -825,6 +825,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e2751a2805e9140a9b090d5c8ff74e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _prefabMoveToOrderFeedback: {fileID: 5919795766228051481, guid: fe53d7a109963da44b3bd1b978d1501c,
+    type: 3}
+  _orderMoveToInstanciatedOffset: {x: 0, y: 1, z: 0}
 --- !u!114 &848056611
 MonoBehaviour:
   m_ObjectHideFlags: 0
