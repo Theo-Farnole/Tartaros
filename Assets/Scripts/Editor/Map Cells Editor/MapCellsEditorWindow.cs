@@ -32,6 +32,12 @@ namespace Game.MapCellEditor.Editor
             window.Show();
         }
 
+        void Update()
+        {
+            // force repaint each frame
+            // without this line, the brush position is laggy
+            SceneView.RepaintAll();
+        }
 
         void OnEnable()
         {
@@ -62,7 +68,7 @@ namespace Game.MapCellEditor.Editor
             OnGUI_DrawCellsButtons();
             OnGUI_DrawBrushSettings();
 
-            GUILayout.EndScrollView();            
+            GUILayout.EndScrollView();
         }
 
         private void ProcessShorcutsEvents()
@@ -70,7 +76,7 @@ namespace Game.MapCellEditor.Editor
             if (_shortcutCellBrushType == null)
                 _shortcutCellBrushType = new Shortcut_CellBrushType(this);
 
-            _shortcutCellBrushType.ProcessEvent(Event.current);           
+            _shortcutCellBrushType.ProcessEvent(Event.current);
         }
         #endregion
 
@@ -88,12 +94,15 @@ namespace Game.MapCellEditor.Editor
         }
 
         public MapCells GetFirstMapCells()
-        {
-            string[] mapCellsGUID = AssetDatabase.FindAssets("t:" + typeof(MapCells));
+        {            
+            // t:MapCells doesn't works (tested in project folder window)
+            // should we call every scriptableobject that has 'MapCells' inside its name.
+            string filter = "t:ScriptableObject MapCell";
+            string[] mapCellsGUID = AssetDatabase.FindAssets(filter);
 
             if (mapCellsGUID.Length == 0)
             {
-                Debug.LogErrorFormat("Map Cells : No MapCells found in project.");
+                Debug.LogErrorFormat("Map Cells : No MapCells found in project. To be founded, the MapCell you want to edit must have 'MapCell' in its name.");
                 return null;
             }
 
