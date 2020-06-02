@@ -68,7 +68,7 @@ public class EntityResourcesGeneration : EntityComponent
 #if UNITY_EDITOR
     void OnDrawGizmos()
     {
-        if (Entity != null && Entity.Data != null && Entity.Data.CanCreateResources)
+        if (Entity != null && Entity.EntityID != string.Empty && Entity.Data != null && Entity.Data.CanCreateResources)
             UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.RadiusToReachCells);
     }
 #endif
