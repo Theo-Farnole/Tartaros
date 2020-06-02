@@ -69,6 +69,12 @@ public class EntityNavMeshCollision : EntityComponent
     #region Private Methods
     private void UpdateMesh()
     {
+        if (!_navMeshObstacle)
+            return;
+
+        if (!_updateMeshOnObstacleUpdate)
+            return;
+
         _meshNavMeshEnabled.SetActive(_navMeshObstacle.enabled);
         _meshNavMeshDisabled.SetActive(!_navMeshObstacle.enabled);   
     }
