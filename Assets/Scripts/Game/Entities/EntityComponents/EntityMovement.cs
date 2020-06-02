@@ -83,21 +83,6 @@ public class EntityMovement : EntityComponent
                 return true;
             }
         }
-        else
-        {
-            return false;
-        }
-
-        // warning, line below is performance heavy
-        float pathRemainingDistance = _navMeshAgent.GetPathRemainingDistance();
-
-        if (pathRemainingDistance != -1 && pathRemainingDistance <= _navMeshAgent.stoppingDistance)
-        {
-            if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
-            {
-                return true;
-            }
-        }
 
         return false;
     }
