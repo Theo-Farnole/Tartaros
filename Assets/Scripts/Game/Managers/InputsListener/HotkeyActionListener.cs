@@ -21,6 +21,11 @@ public class HotkeyActionListener : MonoBehaviour
 
     #region Methods
     #region MonoBehaviour Callbacks
+    void Start()
+    {
+        SetHotkeyFromConstructionOrders();
+    }
+
     void Update()
     {
         ManageHotkeyInputs();
@@ -59,6 +64,10 @@ public class HotkeyActionListener : MonoBehaviour
             if (Input.GetKeyDown(kvp.Key))
             {
                 kvp.Value?.Invoke();
+
+                // if a key change the selection, and so the hotkeys, System throws an exception.
+                // To avoid that, we return after one hotkey has been pressed.
+                return;
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Lortedo.Utilities.Pattern;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -30,9 +31,9 @@ public class HotkeyActionListenerEditor : Editor
         System.Type type = typeof(HotkeyActionListener);
         FieldInfo field = type.GetField("_commands", commandsBindingFlags);
 
-        var commands = field.GetValue(HotkeyActionListener) as Dictionary<KeyCode, Command>;
+        var commands = field.GetValue(HotkeyActionListener) as Dictionary<KeyCode, Action>;
 
-        Assert.IsNotNull(commands);
+        Assert.IsNotNull(commands, "Can't find field _commands in HotkeyActionListner");
 
         if (commands.Count == 0)
         {
