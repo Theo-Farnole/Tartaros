@@ -7,7 +7,7 @@ public class EntityMovement : EntityComponent
 {
     #region Fields
     private const string debugLogHeader = "Entity Movement : ";
-
+    private const float reachDestinationThreshold = 0.3f;
     private NavMeshAgent _navMeshAgent;
     #endregion
 
@@ -28,7 +28,7 @@ public class EntityMovement : EntityComponent
 
     void OnDisable()
     {
-        StopMoving();    
+        StopMoving();
     }
     #endregion
 
@@ -68,9 +68,6 @@ public class EntityMovement : EntityComponent
 
         SetAvoidance(Avoidance.Idle);
 
-        _navMeshAgent.SetDestination(transform.position);
-        _navMeshAgent.ResetPath();
-
         _navMeshAgent.isStopped = true;
     }
 
@@ -79,14 +76,26 @@ public class EntityMovement : EntityComponent
     {
         if (!Entity.Data.CanMove) return true;
 
-        if (!_navMeshAgent.pathPending)
+        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
         {
-            if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
+            if (!_navMeshAgent.hasPath || Mathf.Abs(_navMeshAgent.velocity.sqrMagnitude) < float.Epsilon)
             {
-                if (_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
-                {
-                    return true;
-                }
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        // warning, line below is performance heavy
+        float pathRemainingDistance = _navMeshAgent.GetPathRemainingDistance();
+
+        if (pathRemainingDistance != -1 && pathRemainingDistance <= _navMeshAgent.stoppingDistance)
+        {
+            if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
+            {
+                return true;
             }
         }
 

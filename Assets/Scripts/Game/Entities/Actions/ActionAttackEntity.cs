@@ -10,6 +10,7 @@ namespace Game.IA.Action
 
         public ActionAttackEntity(Entity owner, Entity target) : base(owner)
         {
+            Debug.LogWarningFormat("'{1}' can't execute action {0} because _target is null.", this.GetType(), _owner.name);
             _target = target;
         }
 
@@ -50,8 +51,7 @@ namespace Game.IA.Action
         }
 
         public override bool CanExecuteAction()
-        {
-            Debug.LogWarningFormat("'{1}' can't execute action {0} because _target is null.", this.GetType(), _owner.name);
+        {            
             return _target != null;
         }
 
