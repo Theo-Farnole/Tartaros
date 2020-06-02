@@ -4,17 +4,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class OrderContent
 {
-    private KeyCode _hotkey;
-    private Sprite _portrait;
-    private HoverPopupData _hoverPopupData;
+    [SerializeField] private KeyCode _hotkey;
+    [SerializeField] private Sprite _portrait;
+    [SerializeField] private HoverPopupData _hoverPopupData;
 
     private Action _onClick;
 
-    private int _linePosition;
+    [SerializeField] private int _linePosition;
 
-    public Action OnClick { get => _onClick; }
+    public Action OnClick { get => _onClick; set => _onClick = value; }
     public HoverPopupData HoverPopupData { get => _hoverPopupData; }
     public Sprite Portrait { get => _portrait; }
     public KeyCode Hotkey { get => _hotkey; }

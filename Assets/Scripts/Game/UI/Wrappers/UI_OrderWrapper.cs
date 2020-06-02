@@ -37,8 +37,6 @@ namespace Game.UI
             Assert.IsNotNull(_backgroundButton, "Please assign _backgroundButton in " + name);
             Assert.IsNotNull(_hoverDisplayPopup, "Please assign _hoverDisplayPopup in " + name);
 
-            Assert.IsNotNull(orderContent.OnClick, "Order content on click is null in " + name);
-
             _hotkey.text = orderContent.Hotkey.ToString();
             _backgroundButton.sprite = orderContent.Portrait;
             HoverDisplayPopup.HoverPopupData = orderContent.HoverPopupData;

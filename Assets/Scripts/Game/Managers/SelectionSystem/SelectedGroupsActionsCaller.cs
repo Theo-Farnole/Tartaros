@@ -39,6 +39,20 @@ public static class SelectedGroupsActionsCaller
         }
     }
 
+    public static void OrderToggleNavMeshObstacle()
+    {
+        bool addToActionQueue = Input.GetKey(additiveKeycode);
+
+        foreach (SelectionManager.SelectionGroup group in SelectionManager.Instance.SpartanGroups)
+        {
+            foreach (Entity selectedEntity in group.unitsSelected)
+            {
+                var action = new ActionToggleNavMeshObstacle(selectedEntity);
+                selectedEntity.SetAction(action, addToActionQueue);
+            }
+        }
+    }
+
     public static void OrderSpawnUnits(string unitID)
     {
         var data = MainRegister.Instance.GetEntityData(unitID);

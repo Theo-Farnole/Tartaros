@@ -32,6 +32,7 @@ public class EntityData : SerializedScriptableObject
     private const string portraitAndPrefabGroupName = "Portrait & Prefab";
     private const string headerNamePopulation = "Can Give 'Population'";
     private const string headerTurnIntoAnotherEntity = "Can Turn into Another Building'";
+    private const string headerToggleNavmesh = "Can Toggle Nav Mesh Obstacle";
 
     #region Misc
     [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
@@ -221,6 +222,14 @@ public class EntityData : SerializedScriptableObject
     public bool CanTurnIntoAnotherBuilding { get => _canTurnIntoAnotherEntity; }
     public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }    
     #endregion
+
+    #region Can Toggle Nav Mesh
+    [ToggleGroup(nameof(_canToggleNavMeshObstacle), headerToggleNavmesh)]
+    [SerializeField] private bool _canToggleNavMeshObstacle;
+
+    [ToggleGroup(nameof(_canToggleNavMeshObstacle), headerToggleNavmesh)]
+    [SerializeField] private OrderContent _orderToggleNavMeshObstacle;
+    #endregion
     #endregion
 
     public bool CanDoOverallAction(OverallAction overallAction)
@@ -286,6 +295,14 @@ public class EntityData : SerializedScriptableObject
 
                 output.Add(order);
             }
+        }
+
+        if (_canToggleNavMeshObstacle)
+        {
+            if (_orderToggleNavMeshObstacle.OnClick == null)
+                _orderToggleNavMeshObstacle.OnClick = () => SelectedGroupsActionsCaller.OrderToggleNavMeshObstacle();
+
+            output.Add(_orderToggleNavMeshObstacle);
         }
 
         foreach (OverallAction overallAction in Enum.GetValues(typeof(OverallAction)))

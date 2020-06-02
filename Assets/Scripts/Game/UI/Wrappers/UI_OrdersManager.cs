@@ -143,7 +143,7 @@ namespace Game.UI
             // linePosition starts at 1
             // we remove one, to make linePosition starts at 0
             linePosition--;
-            Assert.IsTrue(_orders.IsIndexInsideBounds(linePosition));
+            Assert.IsTrue(_orders.IsIndexInsideBounds(linePosition), string.Format("Line position {0} isn't inside bounds. Line position should be between {1} and {2}.", linePosition, 0, _orders.Length));
 
             return _orders[linePosition];
         }

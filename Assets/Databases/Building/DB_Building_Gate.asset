@@ -87,3 +87,9 @@ MonoBehaviour:
   _increaseMaxPopulationAmount: 0
   _canTurnIntoAnotherEntity: 0
   _turnIntoAnotherEntityList: []
+  _canToggleNavMeshObstacle: 1
+  _orderToggleNavMeshObstacle:
+    _hotkey: 111
+    _portrait: {fileID: 21300000, guid: 6de8e2542b2bff04b8a83b27799c19fe, type: 3}
+    _hoverPopupData: {fileID: 0}
+    _linePosition: 1

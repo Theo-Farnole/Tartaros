@@ -23,5 +23,10 @@ namespace Game.IA.Action
                 _owner.StopCurrentAction();
             }
         }
+
+        protected void LeaveAction()
+        {
+            _owner.StopCurrentAction();
+        }
     }
 }

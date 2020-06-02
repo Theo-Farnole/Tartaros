@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 5282470303608120372}
   - component: {fileID: -2170566050904274528}
   - component: {fileID: 4525459865806292518}
+  - component: {fileID: 5038305241564417077}
   m_Layer: 10
   m_Name: _PF_Entity_TEMPLATE
   m_TagString: Untagged
@@ -391,6 +392,21 @@ MonoBehaviour:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0.17174911, g: 0, b: 1, a: 1}
   - {r: 0.7821289, g: 0.9811321, b: 0.79929924, a: 0}
+--- !u!114 &5038305241564417077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927950564186908724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc02f6e8ec0e1c54ab9b875cc47dad18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _updateMeshOnObstacleUpdate: 1
+  _meshNavMeshEnabled: {fileID: 0}
+  _meshNavMeshDisabled: {fileID: 0}
 --- !u!1 &9025644110156182020
 GameObject:
   m_ObjectHideFlags: 0
