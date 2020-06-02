@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.Assertions;
 
 namespace Game.MapCellEditor.Editor
 {
@@ -37,13 +38,15 @@ namespace Game.MapCellEditor.Editor
             SceneView.duringSceneGui += OnSceneGUI;
 
             CreateBrush();
+            GameManager.Instance.DebugDrawMapCells = true;
         }
 
         void OnDisable()
         {
-            SceneView.duringSceneGui -= OnSceneGUI;            
+            SceneView.duringSceneGui -= OnSceneGUI;
 
             _currentCellBrush?.DisableBrush();
+            GameManager.Instance.DebugDrawMapCells = false;
         }
 
         void OnSceneGUI(SceneView sceneView)

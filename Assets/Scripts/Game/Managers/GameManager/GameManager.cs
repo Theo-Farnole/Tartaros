@@ -82,6 +82,7 @@ public class GameManager : Singleton<GameManager>
 
     public GameManagerData ManagerData { get => _data; }
     public List<string> PendingCreation { get => _pendingCreation; }
+    public bool DebugDrawMapCells { get => _debugDrawMapCells; set => _debugDrawMapCells = value; }  // used in MapCellsEditorWindow
     #endregion
 
     #region Methods
