@@ -1,4 +1,4 @@
-﻿using Lortedo.Utilities.Pattern;
+using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
+using Lortedo.Utilities;
+using System.Text;
 
 namespace Game.Selection
 {
@@ -62,8 +64,7 @@ namespace Game.Selection
         #region MonoBehaviour Callback
         void Update()
         {
-            Assert.AreEqual(_selectionRectangle.enabled, _selectionEnable,
-                "Selection rectangle should be deactivate if _selectionEnable = false.");
+            Assert.AreEqual(_selectionRectangle.enabled, _selectionEnable, "Selection rectangle should be deactivate if _selectionEnable = false.");
 
             HandleInput_SwitchHighlightGroup();
             HandleInput_ClickOnEntity();
@@ -130,7 +131,7 @@ namespace Game.Selection
                     if (hit.transform.TryGetComponent(out Entity hitEntity))
                     {
                         SwitchEntity(hitEntity);
-                    }                
+                    }
                 }
             }
         }
@@ -297,6 +298,31 @@ namespace Game.Selection
             _highlightGroupIndex = -1;
 
             OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
+        }
+
+        public Vector3[] GetSelectedEntitiesPositions()
+        {
+            int pointsCount = _selectedGroups.Sum(x => x.unitsSelected.Count);
+
+            // get position in each entity of each group.
+            Vector3[] points = new Vector3[pointsCount];
+
+            int index = 0;
+            foreach (SelectionGroup group in SelectedGroups)
+            {
+                foreach (Entity entity in group.unitsSelected)
+                {
+                    points[index] = entity.transform.position;
+                    index++;
+                }
+            }
+
+            return points;
+        }
+
+        public Vector3 GetSelectedEntitesCentroid()
+        {
+            return Math.GetCentroid(GetSelectedEntitiesPositions());
         }
         #endregion
         #endregion

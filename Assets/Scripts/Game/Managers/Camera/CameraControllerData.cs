@@ -10,6 +10,7 @@ public class CameraControllerData : ScriptableObject
     public const string keyboardInputHeader = "Use Keyboard Input";
     public const string screenEdgeInputHeader = "Screen Edge Input";
     public const string canZoomHeader = "Can Zoom";
+    public const string canCenterOnSelection = "Can Center on Selection";
 
     #region Use Keyboard Input
     [ToggleGroup(nameof(_useKeyboardInput), keyboardInputHeader)]
@@ -60,6 +61,14 @@ public class CameraControllerData : ScriptableObject
     [SerializeField] private Bounds2D _zoomBounds = new Bounds2D(5, 10);
     #endregion
 
+    #region Center to Selected Units
+    [ToggleGroup(nameof(_canCenterOnSelection), canCenterOnSelection)]
+    [SerializeField] private bool _canCenterOnSelection = true;
+
+    [ToggleGroup(nameof(_canCenterOnSelection), canCenterOnSelection)]
+    [SerializeField] private KeyCode _centerKeyCode = KeyCode.Space;
+    #endregion
+
 
 
 
@@ -79,4 +88,6 @@ public class CameraControllerData : ScriptableObject
     public bool UseScreenEdgeInput { get => _useScreenEdgeInput; }
     public float PanSpeedScreenEdge { get => _panSpeedScreenEdge; }
     public bool CanZoom { get => _canZoom; }
+    public bool CanCenterOnSelection { get => _canCenterOnSelection; }
+    public KeyCode CenterKeyCode { get => _centerKeyCode; }
 }

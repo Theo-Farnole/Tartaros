@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.DataTypes;
+﻿using Game.Selection;
+using Lortedo.Utilities.DataTypes;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +19,11 @@ public class CameraController : MonoBehaviour
     void Update()
     {
         ManageMovement();
+
+        if (_data.CanCenterOnSelection && Input.GetKeyDown(_data.CenterKeyCode))
+        {
+            CenterOnSelection();
+        }
     }
 
     void OnDrawGizmosSelected()
@@ -41,6 +47,33 @@ public class CameraController : MonoBehaviour
         Bounds bounds = new Bounds(size, center);
 
         Gizmos.DrawWireCube(center, size);
+    }
+
+    private void CenterOnSelection()
+    {
+        // Centroid
+
+        // abort center on selection if not selection
+        if (SelectionManager.Instance.SelectedGroups.Count == 0)
+            return;
+
+        Vector3 centroid = SelectionManager.Instance.GetSelectedEntitesCentroid();
+
+        // Calculating offset
+        Ray ray = new Ray(transform.position, transform.forward);
+
+        bool successfulRaycast = Physics.Raycast(ray, out RaycastHit hit);
+
+        if (!successfulRaycast)
+        {
+            Debug.LogErrorFormat("Camera Controller : Raycast unsucessful on center selection. Abort.");
+            return;
+        }
+
+        Vector3 offset = transform.position - hit.point;
+
+        // set new position
+        transform.position = centroid + offset;
     }
 
     private void ManageMovement()
