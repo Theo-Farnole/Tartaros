@@ -66,6 +66,14 @@ public class EntitySelectable : EntityComponent
 
         IsSelected = false;
     }
+
+    private void OnApplicationQuit()
+    {
+        // Those 2 lines avoid throwing the next error:
+        // Cannot set the parent of the GameObject while activating or deactivating the parent GameObject.
+        Destroy(_selectionCircle);
+        _selectionCircle = null;
+    }
     #endregion
 
     #region Events handlers
@@ -116,13 +124,12 @@ public class EntitySelectable : EntityComponent
         {
             Debug.LogErrorFormat("Entity Selectable : No selection circle pool in found. Please check your ObjectPooler.");
         }
-    }
+    }    
 
     private void HideSelectionCircle()
     {
         if (_selectionCircle == null)
         {
-            //Debug.LogWarning("Entity Selectable : Cannot hide selection, it's already hide. It's okay.");
             return;
         }
 
