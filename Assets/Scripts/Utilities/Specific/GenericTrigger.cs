@@ -42,6 +42,10 @@ public class GenericTrigger : MonoBehaviour
         {
             sphereCollider.radius = radius;
         }
+        else if (TryGetComponent(out CapsuleCollider capsuleCollider))
+        {
+            capsuleCollider.radius = radius;
+        }
         else
         {
             Debug.LogErrorFormat("Can't set collision because generic trigger doesn't have a sphere collider.");
