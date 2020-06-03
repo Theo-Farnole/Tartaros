@@ -52,7 +52,11 @@ namespace Game.UI
 
         public void DisableButtonInteraction()
         {
-            _button.interactable = false;
+            // if button has been destroyed
+            if (_button != null)
+            {
+                _button.interactable = false;
+            }
         }
     }
 }

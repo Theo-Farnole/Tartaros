@@ -23,10 +23,9 @@ public static class AvoidanceExtension
 
             case Avoidance.Idle:
                 return 5;
+            default:
+                Debug.LogErrorFormat("{0} isn't set in AvoidanceExtension.");
+                return 99;
         }
-
-        Debug.LogErrorFormat("{0} isn't set in AvoidanceExtension.");
-
-        return 99;
     }
 }

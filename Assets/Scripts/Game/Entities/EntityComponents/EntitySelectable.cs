@@ -126,7 +126,15 @@ public class EntitySelectable : EntityComponent
             return;
         }
 
-        ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keySelectionCircle, _selectionCircle);
+        if (ObjectPooler.Instance != null)
+        {
+            ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keySelectionCircle, _selectionCircle);
+        }
+        else
+        {
+            Destroy(_selectionCircle);
+        }
+
         _selectionCircle = null;
     }
     #endregion

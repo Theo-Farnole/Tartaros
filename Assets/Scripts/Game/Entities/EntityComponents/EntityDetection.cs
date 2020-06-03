@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public delegate void OnEnemyDetected(Entity enemy);
+public delegate void OnEntityDetected(Entity enemy);
 
 /// <summary>
 /// This script manage the detection of nearby entities.
@@ -17,52 +17,129 @@ public class EntityDetection : EntityComponent, IPooledObject
     private const string debugLogHeader = "Entity Detection : ";
     public readonly static float DISTANCE_THRESHOLD = 0.3f;
 
-    public event OnEnemyDetected OnEnemyDetected;
-    public event OnEnemyDetected OnEnemyLeaveDetection;
+    public event OnEntityDetected OnEnemyDetected;
+    public event OnEntityDetected OnEnemyLeaveDetection;
+    public event OnEntityDetected OnAllyDetected;
+    public event OnEntityDetected OnAllyLeaveDetection;
 
     [Required]
     [SerializeField] private GenericTrigger _viewTrigger;
 
+    [Required]
+    [SerializeField] private GenericTrigger _closeTrigger;
+
     private List<Entity> _enemiesInViewRadius = new List<Entity>();
+    private List<Entity> _alliesInViewRadius = new List<Entity>();
+
+    private List<Entity> _alliesInCloseRadius = new List<Entity>();
+    private List<Entity> _enemiesInCloseRadius = new List<Entity>();
 
     string IPooledObject.ObjectTag { get; set; }
+    #endregion
+
+    #region Properties
+    public List<Entity> AlliesInCloseRadius { get => _alliesInCloseRadius; }
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks
     void OnEnable()
     {
-        Entity.OnTeamSwap += Entity_OnTeamSwap;
-        Entity.OnDeath += Entity_OnDeath;
-        Entity.OnSpawn += Entity_OnSpawn;
-
         EnableViewRadius();
-    }
+        EnableCloseRadius();
 
+        SubscribeToEntityEvents();
+    }
     void OnDisable()
     {
         DisableViewRadius();
+        DisableCloseRadius();
 
+        UnsubcribeToEntityEvents();
+    }
+    #endregion
+
+    #region Events Subscriptions
+    private void EnableViewRadius()
+    {
+        Assert.IsNotNull(_viewTrigger, "Please assign a _genericTrigger to " + name);
+
+        _viewTrigger.enabled = true;
+        _viewTrigger.SetCollisionRadius(Entity.Data.ViewRadius);
+        _viewTrigger.OnTriggerEnterEvent += ViewTrigger_OnTriggerEnterEvent;
+        _viewTrigger.OnTriggerExitEvent += ViewTrigger_OnTriggerExitEvent;
+    }
+
+    private void DisableViewRadius()
+    {
+        if (_viewTrigger != null)
+        {
+            _viewTrigger.enabled = false;
+            _viewTrigger.OnTriggerEnterEvent -= ViewTrigger_OnTriggerEnterEvent;
+            _viewTrigger.OnTriggerExitEvent -= ViewTrigger_OnTriggerExitEvent;
+        }
+    }
+
+    private void EnableCloseRadius()
+    {
+        _closeTrigger.enabled = true;
+        _closeTrigger.SetCollisionRadius(Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y));
+        _closeTrigger.OnTriggerEnterEvent += CloseTrigger_OnTriggerEnterEvent;
+        _closeTrigger.OnTriggerExitEvent += CloseTrigger_OnTriggerExitEvent;
+    }
+
+    private void DisableCloseRadius()
+    {
+        _closeTrigger.enabled = false;
+
+    }
+
+    private void UnsubcribeToEntityEvents()
+    {
         Entity.OnTeamSwap -= Entity_OnTeamSwap;
         Entity.OnDeath -= Entity_OnDeath;
         Entity.OnSpawn -= Entity_OnSpawn;
     }
+
+    private void SubscribeToEntityEvents()
+    {
+        Entity.OnTeamSwap += Entity_OnTeamSwap;
+        Entity.OnDeath += Entity_OnDeath;
+        Entity.OnSpawn += Entity_OnSpawn;
+    }
+
     #endregion
 
     #region Events handlers
-    private void GenericTrigger_OnTriggerEnterEvent(Collider other)
+    private void ViewTrigger_OnTriggerEnterEvent(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Entity entity))
         {
-            AddEntityInList(entity);
+            AddEntityInViewRadiusList(entity);
         }
     }
 
-    private void GenericTrigger_OnTriggerExitEvent(Collider other)
+    private void ViewTrigger_OnTriggerExitEvent(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Entity entity))
         {
-            RemoveEntityInList(entity);
+            RemoveEntityInViewRadiusList(entity);
+        }
+    }
+
+    private void CloseTrigger_OnTriggerExitEvent(Collider other)
+    {
+        if (other.gameObject.TryGetComponent(out Entity entity))
+        {
+            RemoveEntityInCloseRadiusList(entity);
+        }
+    }
+
+    private void CloseTrigger_OnTriggerEnterEvent(Collider other)
+    {
+        if (other.gameObject.TryGetComponent(out Entity entity))
+        {
+            AddEntityInCloseRadiusList(entity);
         }
     }
 
@@ -83,9 +160,9 @@ public class EntityDetection : EntityComponent, IPooledObject
     {
         if (_enemiesInViewRadius.Contains(entity))
         {
-            RemoveEntityInList(entity);
+            RemoveEntityInViewRadiusList(entity);
         }
-        
+
         if (entity == Entity)
         {
             _enemiesInViewRadius.Clear();
@@ -154,26 +231,6 @@ public class EntityDetection : EntityComponent, IPooledObject
     #endregion
 
     #region Private Methods
-    private void EnableViewRadius()
-    {
-        Assert.IsNotNull(_viewTrigger, "Please assign a _genericTrigger to " + name);
-
-        _viewTrigger.enabled = true;
-        _viewTrigger.SetCollisionRadius(Entity.Data.ViewRadius);
-        _viewTrigger.OnTriggerEnterEvent += GenericTrigger_OnTriggerEnterEvent;
-        _viewTrigger.OnTriggerExitEvent += GenericTrigger_OnTriggerExitEvent;
-    }
-
-    private void DisableViewRadius()
-    {
-        if (_viewTrigger != null)
-        {
-            _viewTrigger.enabled = false;
-            _viewTrigger.OnTriggerEnterEvent -= GenericTrigger_OnTriggerEnterEvent;
-            _viewTrigger.OnTriggerExitEvent -= GenericTrigger_OnTriggerExitEvent;
-        }
-    }
-
     private void ForceRefreshDetection()
     {
         _enemiesInViewRadius.Clear();
@@ -193,29 +250,67 @@ public class EntityDetection : EntityComponent, IPooledObject
         // then, add each entity to list
         foreach (var hitEntity in hitEntities)
         {
-            AddEntityInList(hitEntity);
+            AddEntityInViewRadiusList(hitEntity);
         }
     }
 
-    private void AddEntityInList(Entity entity)
+    private void AddEntityInCloseRadiusList(Entity entity)
     {
+        Assert.IsFalse(_enemiesInCloseRadius.Contains(entity) || _alliesInCloseRadius.Contains(entity), string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
+
         if (entity.Team != Entity.Team)
         {
-            Assert.IsFalse(_enemiesInViewRadius.Contains(entity), string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
+            _enemiesInCloseRadius.Add(entity);
+        }
+        else
+        {
+            _alliesInCloseRadius.Add(entity);
+        }
+    }
 
+    private void RemoveEntityInCloseRadiusList(Entity entity)
+    {
+        Assert.IsTrue(_enemiesInCloseRadius.Contains(entity) || _alliesInCloseRadius.Contains(entity), "To remove entity in list, it should be contained");
+
+        if (entity.Team != Entity.Team)
+        {
+            _enemiesInCloseRadius.Remove(entity);
+        }
+        else
+        {
+            _alliesInCloseRadius.Remove(entity);
+        }
+    }
+
+    private void AddEntityInViewRadiusList(Entity entity)
+    {
+        Assert.IsFalse(_enemiesInViewRadius.Contains(entity) || _alliesInViewRadius.Contains(entity), string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
+
+        if (entity.Team != Entity.Team)
+        {
             _enemiesInViewRadius.Add(entity);
             OnEnemyDetected?.Invoke(entity);
         }
+        else
+        {
+            _alliesInViewRadius.Add(entity);
+            OnAllyDetected?.Invoke(entity);            
+        }
     }
 
-    private void RemoveEntityInList(Entity entity)
+    private void RemoveEntityInViewRadiusList(Entity entity)
     {
+        Assert.IsTrue(_enemiesInViewRadius.Contains(entity) || _alliesInViewRadius.Contains(entity), "To remove entity in list, it should be contained");
+
         if (entity.Team != Entity.Team)
         {
-            Assert.IsTrue(_enemiesInViewRadius.Contains(entity), "To remove entity in list, it should be contained");
-
             _enemiesInViewRadius.Remove(entity);
             OnEnemyLeaveDetection?.Invoke(entity);
+        }
+        else
+        {
+            _alliesInViewRadius.Remove(entity);
+            OnAllyLeaveDetection?.Invoke(entity);
         }
     }
 

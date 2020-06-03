@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Game.IA.Action;
+using Lortedo.Utilities;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,8 +12,15 @@ public class EntityMovement : EntityComponent
 {
     #region Fields
     private const string debugLogHeader = "Entity Movement : ";
-    private const float reachDestinationThreshold = 0.3f;
+    private const float reachDestinationThreshold = 0.5f;
+    private const float radiusThreshold = 0.1f;
+
+    [SerializeField] private float _shiftDistance = 2f;
+    private Vector3 _destination;
+
+    // cache variable
     private NavMeshAgent _navMeshAgent;
+    private CapsuleCollider _collider;
     #endregion
 
     #region Methods
@@ -19,6 +28,7 @@ public class EntityMovement : EntityComponent
     void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _collider = GetComponent<CapsuleCollider>();
     }
 
     void Start()
@@ -29,9 +39,45 @@ public class EntityMovement : EntityComponent
         }
     }
 
+    void Update()
+    {
+        var allies = Entity.GetCharacterComponent<EntityDetection>().AlliesInCloseRadius;
+
+        foreach (Entity hitAlly in allies)
+        {
+            if (Entity.IsIdle && !hitAlly.IsIdle)
+            {
+                // Make the entity shift to let the hitEntity walks throught the crowd
+                Shift(hitAlly);
+            }
+        }
+    }
+
     void OnDisable()
     {
         StopMoving();
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!Application.isPlaying)
+            return;
+
+        if (_navMeshAgent == null)
+            return;
+
+        // default _destination == Vector3.zero
+        if (_destination == Vector3.zero)
+            return;
+
+        if (!Entity.GetCharacterComponent<EntitySelectable>().IsSelected)
+            return;
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(transform.position, _destination);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(_destination, _navMeshAgent.stoppingDistance);
     }
     #endregion
 
@@ -49,15 +95,15 @@ public class EntityMovement : EntityComponent
         if (!Entity.Data.CanMove)
             return;
 
-        SetAvoidance(Avoidance.Move);
-
-        _navMeshAgent.isStopped = false;
-        _navMeshAgent.SetDestination(target.transform.position);
+        MoveToPosition(target.transform.position);
     }
 
     public void MoveToPosition(Vector3 position)
     {
-        if (!Entity.Data.CanMove) return;
+        if (!Entity.Data.CanMove)
+            return;
+
+        _destination = position;
 
         SetAvoidance(Avoidance.Move);
 
@@ -67,7 +113,8 @@ public class EntityMovement : EntityComponent
 
     public void StopMoving()
     {
-        if (!Entity.Data.CanMove) return;
+        if (!Entity.Data.CanMove)
+            return;
 
         SetAvoidance(Avoidance.Idle);
 
@@ -77,17 +124,13 @@ public class EntityMovement : EntityComponent
 
     public bool HasReachedDestination()
     {
-        if (!Entity.Data.CanMove) return true;
+        if (!Entity.Data.CanMove)
+            return true;
 
-        if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
-        {
-            if (!_navMeshAgent.hasPath || Mathf.Abs(_navMeshAgent.velocity.sqrMagnitude) < float.Epsilon)
-            {
-                return true;
-            }
-        }
+        if (_navMeshAgent.isStopped)
+            return true;
 
-        return false;
+        return Vector3.Distance(transform.position, _destination) <= _navMeshAgent.stoppingDistance + 0.1f;
     }
     #endregion
 
@@ -102,7 +145,16 @@ public class EntityMovement : EntityComponent
         }
 
         float diameter = Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y);
-        _navMeshAgent.radius = diameter / 2;
+        _navMeshAgent.radius = diameter / 2 - radiusThreshold;
+    }
+
+    private void Shift(Entity hitEntity)
+    {
+        Vector3 fleeHitEntityDirection = Quaternion.Euler(0, -90, 0) * -Math.Direction(Entity.transform.position, hitEntity.transform.position);
+
+        var action = new ActionMoveToPosition(Entity, transform.position + fleeHitEntityDirection * _shiftDistance);
+
+        Entity.SetAction(action, false);
     }
     #endregion
     #endregion
