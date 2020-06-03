@@ -117,6 +117,7 @@ public class CameraController : MonoBehaviour
     {
         Vector3 forward = transform.forward;
         Vector3 right = transform.right;
+        Vector3 up = forward;
 
         // project 'forward' and 'right' on plane
         forward.y = 0;
@@ -124,7 +125,12 @@ public class CameraController : MonoBehaviour
 
         Vector3 deltaForward = deltaPosition.z * forward;
         Vector3 deltaRight = deltaPosition.x * right;
-        Vector3 deltaUp = deltaPosition.y * Vector3.up;
+        Vector3 deltaUp = deltaPosition.y * up;
+
+        // Without this line,
+        // if zoom reach bounds, the camera continue to moves on Z/X axis without zooming.        
+        if (transform.position.y + deltaUp.y > _data.ZoomBounds.max || transform.position.y + deltaUp.y < _data.ZoomBounds.min)
+            deltaUp = Vector3.zero;
 
         Vector3 finalDelta = deltaForward + deltaRight + deltaUp;
 
