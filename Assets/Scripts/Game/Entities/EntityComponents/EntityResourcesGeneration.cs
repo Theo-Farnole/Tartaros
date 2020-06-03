@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// This script create resources each tick setted in EntityData.
+/// </summary>
 public class EntityResourcesGeneration : EntityComponent
 {
     #region Fields

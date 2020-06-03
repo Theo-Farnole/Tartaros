@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manage health of Entity.
+/// </summary>
 public class EntityHealth : EntityComponent, IPooledObject
 {
     #region Fields

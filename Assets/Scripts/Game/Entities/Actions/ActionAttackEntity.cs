@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Game.IA.Action
 {
+    /// <summary>
+    /// This script make the Entity go closer to '_target'.
+    /// Than, the Entity stop moving and attacks '_target'.
+    /// </summary>
     public class ActionAttackEntity : Action
     {
         Entity _target;

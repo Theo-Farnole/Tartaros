@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Game.MapCellEditor
 {
+    /// <summary>
+    /// This data describe the natural world content.
+    /// </summary>
     [CreateAssetMenu(menuName = "Tartaros/World/Map Cell")]
     public class MapCells : SerializedScriptableObject
     {

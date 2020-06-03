@@ -44,7 +44,6 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Properties
-    public SnapGridDatabase Grid { get => _grid; }
     public ResourcesWrapper Resources
     {
         get
@@ -60,6 +59,7 @@ public class GameManager : Singleton<GameManager>
                 Debug.LogWarning(debugLogHeader + "Resources are negative.");
         }
     }
+
     public AbstractConstructionState State
     {
         get
@@ -75,6 +75,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public SnapGridDatabase Grid { get => _grid; }
     public static bool ApplicationIsQuitting { get => _applicationIsQuitting; }
     public CollisionScalerData CollisionScalerData { get => _collisionScalerData; }
     public AttackSlotsData AttackSlotsData { get => _attackSlotsData; }

@@ -6,6 +6,9 @@ using UnityEngine;
 public delegate void OnSelected(Entity entity);
 public delegate void OnUnselected(Entity entity);
 
+/// <summary>
+/// Manage display of selection circle.
+/// </summary>
 public class EntitySelectable : EntityComponent
 {
     #region Fields

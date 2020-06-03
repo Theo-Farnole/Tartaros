@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+/// <summary>
+/// This script manage the attack (smart classname isn't it ?).
+/// </summary>
 public class EntityAttack : EntityComponent
 {
     #region Fields

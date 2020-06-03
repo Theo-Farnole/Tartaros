@@ -8,6 +8,9 @@ using UnityEngine.Assertions;
 
 public delegate void OnEnemyDetected(Entity enemy);
 
+/// <summary>
+/// This script manage the detection of nearby entities.
+/// </summary>
 public class EntityDetection : EntityComponent, IPooledObject
 {
     #region Fields
@@ -82,7 +85,7 @@ public class EntityDetection : EntityComponent, IPooledObject
         {
             RemoveEntityInList(entity);
         }
-
+        
         if (entity == Entity)
         {
             _enemiesInViewRadius.Clear();

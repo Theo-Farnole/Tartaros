@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
 
-// Note: we could split this script into 2 scripts
+// REFACTOR NOTE: for the sake of Single-responsiblity principle
+// We could split this script into 2 scripts
 // - one for UpdateCollisionSize() method
 // - one for Enable/Disable Nav Mesh Obstacle
 [RequireComponent(typeof(Entity))]
@@ -118,6 +119,5 @@ public class EntityNavMeshCollision : EntityComponent
             navMeshObstacle.center = size.y / 2 * Vector3.up;
         }
     }
-
     #endregion
 }

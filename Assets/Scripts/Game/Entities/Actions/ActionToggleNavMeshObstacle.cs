@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 namespace Game.IA.Action
 {
+    /// <summary>
+    /// This script toggle NavMeshObstacle. It's used for gates buildings.
+    /// </summary>
     public class ActionToggleNavMeshObstacle : Action
     {
         private NavMeshObstacle _navMeshObstacle;

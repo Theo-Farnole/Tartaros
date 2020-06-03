@@ -22,12 +22,11 @@ namespace Game.IA.Action
         {
             this._entityIDToSpawn = entityIDToSpawn;
 
-            float finalCreationDuration =
-                TartarosCheatsManager.IsCreationTimeToZeroActive()
-                ? 1f
-                : creationDuration;
+            // overwrite 'creationDuration' is cheat is enabled
+            if (TartarosCheatsManager.IsCreationTimeToZeroActive())
+                creationDuration = 1f;
 
-            _creationDuration = finalCreationDuration;
+            _creationDuration = creationDuration;
 
             if (CanExecuteAction())
             {
@@ -66,8 +65,6 @@ namespace Game.IA.Action
 
         public override bool CanExecuteAction()
         {
-            // if we have added to pending creation the current unit,
-            // the CanSpawnUnit() method can returns false.
             return !_doPendingCreationFailed
                 && (
                     _isInToPendingCreation
@@ -85,17 +82,11 @@ namespace Game.IA.Action
         #region Private Methods
         private void Refund()
         {
-            if (_isInToPendingCreation)
-            {
-                GameManager.Instance.RemovePendingCreationEntity(_entityIDToSpawn);
-                _isInToPendingCreation = false;
-
-                Debug.Log(GetType() + " : Successful refund");
-            }
-            else
-            {
+            if (!_isInToPendingCreation)
                 Debug.LogWarningFormat("{0} : Can't refund because not in pending creation list.", GetType());
-            }
+
+            GameManager.Instance.RemovePendingCreationEntity(_entityIDToSpawn);
+            _isInToPendingCreation = false;
         }
 
         private void SetInPendingCreation()
@@ -111,14 +102,14 @@ namespace Game.IA.Action
         {
             Assert.IsFalse(_doPendingCreationFailed);
 
-            // Refund called, because on spawn, GameManager'll remove spawn
+            // We need to called 'Refund'
+            // Otherwise, the resources for unit creation are taken twice.
             Refund();
             _owner.GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(_entityIDToSpawn);
 
             _successfulSpawnUnit = true;
 
-            // leave action
-            _owner.StopCurrentAction();
+            LeaveAction();
         }
         #endregion
 

@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.IA.Action
 {
+    /// <summary>
+    /// The Entity walks between '_targetPosition' & '_startingPosition'.
+    /// </summary>
     public class ActionPatrol : Action
     {
         private Vector3 _targetPosition;

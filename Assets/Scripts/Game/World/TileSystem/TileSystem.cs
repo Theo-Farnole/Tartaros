@@ -16,6 +16,9 @@ public enum TileFlag
     Visible = 2
 }
 
+/// <summary>
+/// This script used in building to know if a tile is free or not.
+/// </summary>
 public class TileSystem : Singleton<TileSystem>
 {
     #region Fields

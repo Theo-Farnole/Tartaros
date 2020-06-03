@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public delegate void OnFog(IFogCoverable fogCoverable);
 
@@ -24,6 +25,10 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
 
         set
         {
+            // avoid calculation if _isCover value doesn't changes
+            if (value == _isCover)
+                return;
+
             if (value && !_isCover) OnFogCover?.Invoke(this);
             else if (!value && _isCover) OnFogUncover?.Invoke(this);
 
@@ -41,14 +46,9 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
 
     void OnEnable()
     {
-        if (FOWManager.Instance != null)
-        {
-            FOWManager.Instance.AddCoverable(this);
-        }
-        else
-        {
-            Debug.LogErrorFormat(debugLogHeader + "FOWManager is missing. Can't add {0} as a coverable", name);
-        }
+        Assert.IsNotNull(FOWManager.Instance, string.Format(debugLogHeader + "FOWManager is missing. Can't add {0} as a coverable", name));
+
+        FOWManager.Instance.AddCoverable(this);
     }
 
     void OnDisable()
@@ -63,7 +63,7 @@ public class EntityFogCoverable : EntityComponent, IFogCoverable
     {
         _collider.enabled = !_isCover;
 
-        foreach (var mesh in _modelsToHide)        
-            mesh.SetActive(!_isCover);        
+        foreach (var mesh in _modelsToHide)
+            mesh.SetActive(!_isCover);
     }
 }

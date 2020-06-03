@@ -8,6 +8,7 @@ public class EntityMinimap : EntityComponent
     [SerializeField] private SpriteRenderer _minimapSprite;
     [SerializeField] private Color[] _teamColor;
 
+    // Called from Entity.SetupTeamComponents()
     public void UpdatePointColor()
     {
         var material = GetMaterial(Entity.Team);

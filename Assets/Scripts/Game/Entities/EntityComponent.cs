@@ -7,6 +7,8 @@ public abstract class EntityComponent : MonoBehaviour
 {
     private Entity _entity = null;
 
+    // REFACTOR NOTE:
+    // Do 'virtual' keyword is useful ?
     public virtual Entity Entity
     {
         get
@@ -14,20 +16,19 @@ public abstract class EntityComponent : MonoBehaviour
             if (_entity == null)
             {
                 _entity = GetComponent<Entity>();
+
+                Assert.IsNotNull(_entity, "Missing component 'Entity' on entity " + name + ".");
+
                 _entity.RegisterComponent(this);
             }
 
-            Assert.IsNotNull(_entity, "Missing entity on entity " + name + ".");
             return _entity;
         }
 
         set
         {
             if (_entity != null)
-            {
-                //Debug.LogWarning("Entity is already set. You can't change it value!");
                 return;
-            }
 
             _entity = value;
         }

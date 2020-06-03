@@ -6,11 +6,12 @@ using UnityEngine;
 namespace Game.IA.Action
 {
     /// <summary>
-    /// Walk to the _position until an enemy is seen
+    /// Walk to the _position until an enemy is seen. If enemy's seen, attack it.
+    /// After the enemy's death, go back walking to '_position'.
     /// </summary>
     public class ActionMoveToPositionAggressively : Action
     {
-        private Vector3 _position;
+        private readonly Vector3 _position;
 
         public ActionMoveToPositionAggressively(Entity owner, Vector3 position) : base(owner)
         {

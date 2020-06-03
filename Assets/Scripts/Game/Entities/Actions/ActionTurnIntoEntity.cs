@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.IA.Action
 {
+    /// <summary>
+    /// Replace the entity by another entity.
+    /// </summary>
     public class ActionTurnIntoEntity : Action
     {
         public readonly string _entityIDToTurnInto;
@@ -53,12 +56,14 @@ namespace Game.IA.Action
         {
             _successfulSpawnUnit = true;
 
+            // spawn new entity
             var entity = _owner.GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(_entityIDToTurnInto);
 
             entity.StopEveryActions(); // stop move to anchor action
             entity.transform.position = _owner.transform.position;
             entity.transform.rotation = _owner.transform.rotation;
 
+            // then kill the current entity
             _owner.Death();
             _owner.StopEveryActions();
         }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// This script manage the moving of entity.
+/// </summary>
 public class EntityMovement : EntityComponent
 {
     #region Fields

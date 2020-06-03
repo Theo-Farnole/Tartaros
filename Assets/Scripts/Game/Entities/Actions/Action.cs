@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace Game.IA.Action
 {
+    /// <summary>
+    /// An action is owned by an Entity. 
+    /// It's tick each Update() call.
+    /// </summary>
     public abstract class Action : OwnedState<Entity>
     {
         public Action(Entity owner) : base(owner)

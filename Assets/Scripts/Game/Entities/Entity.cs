@@ -27,7 +27,6 @@ public class Entity : MonoBehaviour, IPooledObject
     [SerializeField] private string _entityID;
     [SerializeField, ReadOnly] private Team _team;
 
-
     private EntityData _data;
     private Action _currentAction;
     private Queue<Action> _queueAction = new Queue<Action>();
@@ -39,6 +38,11 @@ public class Entity : MonoBehaviour, IPooledObject
     #region Properties
     public bool IsSpawned { get; private set; }
     public bool IsInstanciate { get => this != null && gameObject.activeInHierarchy; }
+    public string EntityID { get => _entityID; }
+    public bool HasCurrentAction { get => (_currentAction != null); }
+    public Action CurrentAction { get => _currentAction; }
+    public bool IsIdle { get => !HasCurrentAction; }
+    public string ObjectTag { get; set; }
 
     public EntityData Data
     {
@@ -46,18 +50,15 @@ public class Entity : MonoBehaviour, IPooledObject
         {
             if (_data == null)
             {
-                Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing the scene.There'll be a lot of errors!");
-
+                Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing the scene. There'll be a lot of errors!");
                 _data = MainRegister.Instance.GetEntityData(_entityID);
-
-                Assert.IsNotNull(_data,
-                    string.Format("Entity : EntityData not founded or is null for entity {1} of type {0} :/", _entityID, name));
+                Assert.IsNotNull(_data, string.Format("Entity : EntityData not founded or is null for entity {1} of type {0} :/", _entityID, name));
             }
 
             return _data;
         }
     }
-    public string EntityID { get => _entityID; }
+
     public Team Team
     {
         get => _team;
@@ -66,17 +67,19 @@ public class Entity : MonoBehaviour, IPooledObject
             if (value == _team)
                 return;
 
+            // register old team
             var oldTeam = _team;
+
+            // update '_team' field
             _team = value;
+
+            // update components (eg. disable EntityFogVision and enable EntityFogCoverable)
             SetupTeamComponents();
 
+            // trigger events
             OnTeamSwap?.Invoke(this, oldTeam, _team);
         }
     }
-    public bool HasCurrentAction { get => (_currentAction != null); }
-    public Action CurrentAction { get => _currentAction; }
-    public bool IsIdle { get => !HasCurrentAction; }
-    public string ObjectTag { get; set; }
     #endregion
 
     #region Methods
@@ -95,7 +98,7 @@ public class Entity : MonoBehaviour, IPooledObject
     #region Public methods
     public void Death()
     {
-        SetCurrentAction(null);
+        StopEveryActions();
 
         Assert.IsNotNull(Data.Prefab, "Entity : Can't enqueue gameObject in ObjectPooler because Data.Prefab is null.");
         ObjectPooler.Instance.EnqueueGameObject(Data.Prefab, gameObject, true);
@@ -112,7 +115,7 @@ public class Entity : MonoBehaviour, IPooledObject
     {
         System.Type key = typeof(T);
 
-        // if component 'T' doesn't exits, get it.
+        // if component doesn't exits, get it.
         if (!_components.ContainsKey(key))
             RegisterComponent((T)GetComponent(key));
 
@@ -148,7 +151,7 @@ public class Entity : MonoBehaviour, IPooledObject
     /// <param name="action"></param>
     /// <param name="addToActionQueue"></param>
     public void SetAction(Action action, bool addToActionQueue = false)
-    {       
+    {
         if (!action.CanExecuteAction())
         {
             Debug.LogFormat("Entity : Can't do {0}", action.ToString());

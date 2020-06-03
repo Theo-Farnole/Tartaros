@@ -21,6 +21,11 @@ public enum EntityType
     Building
 }
 
+// Warning!
+// The code below is a bit messy.
+// 
+// Good luck explorers!
+
 [CreateAssetMenu(menuName = "Tartaros/Entity")]
 public class EntityData : SerializedScriptableObject
 {
