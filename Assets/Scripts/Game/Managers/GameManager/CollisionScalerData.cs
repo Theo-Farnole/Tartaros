@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Obsolete("Previously used to change entities' collision at runtime. This feature has been killed.")]
 [CreateAssetMenu(menuName = "Tartaros/System/Collision Scaler")]
 public class CollisionScalerData : ScriptableObject
 {
