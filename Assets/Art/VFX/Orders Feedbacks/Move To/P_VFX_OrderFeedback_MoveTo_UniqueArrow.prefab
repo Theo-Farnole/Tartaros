@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1020527036841666795}
   - component: {fileID: 1020527036841666794}
   m_Layer: 0
-  m_Name: P_VFX_CursorClick_UniqueArrow
+  m_Name: P_VFX_OrderFeedback_MoveTo_UniqueArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1020527036841666792}
   serializedVersion: 6
-  lengthInSec: 0.5
+  lengthInSec: 0.6
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -115,7 +115,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.6
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -284,7 +284,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.18
       minScalar: 1
       maxCurve:
         serializedVersion: 2

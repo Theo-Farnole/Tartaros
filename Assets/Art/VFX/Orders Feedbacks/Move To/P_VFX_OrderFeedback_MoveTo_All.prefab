@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5919795766228051482}
   - component: {fileID: 5919795766228051483}
   m_Layer: 0
-  m_Name: P_VFX_CursorClick_All
+  m_Name: P_VFX_OrderFeedback_MoveTo_All
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4886,7 +4886,12 @@ PrefabInstance:
     - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.2
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a658a4a11164d4ab7e00d5b29355ca, type: 3}
@@ -4962,21 +4967,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1020527036841666793, guid: c1a658a4a11164d4ab7e00d5b29355ca,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1020527036841666793, guid: c1a658a4a11164d4ab7e00d5b29355ca,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
-        type: 3}
-      propertyPath: InitialModule.startSize.scalar
-      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a658a4a11164d4ab7e00d5b29355ca, type: 3}
@@ -5056,7 +5046,12 @@ PrefabInstance:
     - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.2
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a658a4a11164d4ab7e00d5b29355ca, type: 3}
@@ -5133,20 +5128,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1020527036841666793, guid: c1a658a4a11164d4ab7e00d5b29355ca,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1020527036841666793, guid: c1a658a4a11164d4ab7e00d5b29355ca,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
         type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 0.2
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: looping
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a658a4a11164d4ab7e00d5b29355ca, type: 3}
