@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.Inspector;
+﻿using Game.WaveSystem;
+using Lortedo.Utilities.Inspector;
 using Lortedo.Utilities.Managers;
 using System;
 using TMPro;

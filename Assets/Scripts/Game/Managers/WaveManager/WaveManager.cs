@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -7,6 +7,8 @@ public delegate void OnWaveTimerUpdate(int waveCount, float remainingTime);
 public delegate void OnWaveStart(int waveCount);
 public delegate void OnWaveClear(int waveCountCleared);
 
+namespace Game.WaveSystem
+{
 /// <summary>
 /// Spawn enemies waves frequently.
 /// </summary>
@@ -115,4 +117,5 @@ public class WaveManager : MonoBehaviour
         return _data.TimerBetweenWavesInSeconds - _timer;
     }
     #endregion
+    }
 }
