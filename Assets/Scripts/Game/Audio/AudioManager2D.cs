@@ -27,6 +27,13 @@ namespace Game.Audio
     public enum Sound2D
     {
         WaveStart = 1,
-        WaveEnd = 2
+        WaveEnd = 2,
+        NotEnoughResources = 3,
+        UnitCreated = 4, // we don't play sound in function of unit created
+        OrderGiven = 5, // we don't play sound in function of order given
+        SuccessfulBuilding = 6,
+        OnSelection = 7,
+        OnButtonClick = 8,
+        OnSetAnchorPosition = 9
     }
 }
