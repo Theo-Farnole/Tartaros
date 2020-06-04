@@ -142,7 +142,7 @@ public class PopulationManager : MonoBehaviour
             return;
 
         if (_populationCount > _maxPopulation)
-            Debug.LogErrorFormat(debugLogHeader + "Current population count is above max population.\nCurrent: {0} >= MaxPop: {1}", _populationCount, _maxPopulation);
+            Debug.LogWarningFormat(debugLogHeader + "Current population count is above max population.\nCurrent: {0} >= MaxPop: {1}", _populationCount, _maxPopulation);
 
         if (GetCurrentPopulation() != _populationCount)
             Debug.LogErrorFormat(debugLogHeader + "Current population isn't the same as calculated.\nCurrent: {0} != Calculated: {1}", _populationCount, GetCurrentPopulation());
