@@ -66,14 +66,6 @@ public class EntitySelectable : EntityComponent
 
         IsSelected = false;
     }
-
-    private void OnApplicationQuit()
-    {
-        // Those 2 lines avoid throwing the next error:
-        // Cannot set the parent of the GameObject while activating or deactivating the parent GameObject.
-        Destroy(_selectionCircle);
-        _selectionCircle = null;
-    }
     #endregion
 
     #region Events handlers
@@ -114,26 +106,25 @@ public class EntitySelectable : EntityComponent
 
         _selectionCircle = ObjectPooler.Instance.SpawnFromPool(ObjectPoolingTags.keySelectionCircle, pos, rot);
 
-        if (_selectionCircle)
-        {
-            _selectionCircle.transform.parent = transform;
-            _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(Entity.Team);
-            _selectionCircle.GetComponent<Projector>().orthographicSize = Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y);
-        }
-        else
+        if (_selectionCircle == null)
         {
             Debug.LogErrorFormat("Entity Selectable : No selection circle pool in found. Please check your ObjectPooler.");
+            return;
         }
-    }    
+
+        _selectionCircle.transform.parent = transform;
+        _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(Entity.Team);
+        _selectionCircle.GetComponent<Projector>().orthographicSize = Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y);
+    }
 
     private void HideSelectionCircle()
     {
         if (_selectionCircle == null)
-        {
             return;
-        }
 
-        if (ObjectPooler.Instance != null)
+        // If we enqueue selection circle on Entity's death, we get this error :
+        // "Cannot set the parent of the GameObject while activating or deactivating the parent GameObject."
+        if (ObjectPooler.Instance != null && Entity.IsSpawned)
         {
             ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keySelectionCircle, _selectionCircle);
         }

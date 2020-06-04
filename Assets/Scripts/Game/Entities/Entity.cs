@@ -98,14 +98,14 @@ public class Entity : MonoBehaviour, IPooledObject
     #region Public methods
     public void Death()
     {
+        IsSpawned = false;
+
         StopEveryActions();
 
         Assert.IsNotNull(Data.Prefab, "Entity : Can't enqueue gameObject in ObjectPooler because Data.Prefab is null.");
         ObjectPooler.Instance.EnqueueGameObject(Data.Prefab, gameObject, true);
 
         OnDeath?.Invoke(this);
-
-        IsSpawned = false;
     }
 
     /// <summary>
