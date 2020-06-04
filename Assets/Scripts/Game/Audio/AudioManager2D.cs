@@ -18,10 +18,28 @@ namespace Game.Audio
         [SerializeField] private Dictionary<Sound2D, SoundGroup> _sounds = new Dictionary<Sound2D, SoundGroup>();
 
         public void PlayOneShotRandomClip(Sound2D sound2D)
-            => _sounds[sound2D].PlayOneShotRandomClip();
+        {
+            if (_sounds.TryGetValue(sound2D, out SoundGroup soundGroup))
+            {
+                soundGroup.PlayOneShotRandomClip();
+            }
+            else
+            {
+                Debug.LogWarningFormat("Audio Manager 2D : {0} is missing in _sounds field.", sound2D);
+            }
+        }
 
         public void PlayRandomClip(Sound2D sound2D)
-            => _sounds[sound2D].PlayRandomClip();
+        {
+            if (_sounds.TryGetValue(sound2D, out SoundGroup soundGroup))
+            {
+                soundGroup.PlayRandomClip();
+            }
+            else
+            {
+                Debug.LogWarningFormat("Audio Manager 2D : {0} is missing in _sounds field.", sound2D);
+            }
+        }
     }
 
     public enum Sound2D
