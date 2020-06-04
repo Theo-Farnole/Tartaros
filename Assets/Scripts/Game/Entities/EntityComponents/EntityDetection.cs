@@ -265,7 +265,7 @@ public class EntityDetection : EntityComponent, IPooledObject
 
     private void AddEntityInCloseRadiusList(Entity entity)
     {
-        Assert.IsFalse(_enemiesInCloseRadius.Contains(entity) || _alliesInCloseRadius.Contains(entity), string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
+        if (_enemiesInCloseRadius.Contains(entity) || _alliesInCloseRadius.Contains(entity)) Debug.LogErrorFormat(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius));
 
         if (entity.Team != Entity.Team)
         {
@@ -279,7 +279,7 @@ public class EntityDetection : EntityComponent, IPooledObject
 
     private void RemoveEntityInCloseRadiusList(Entity entity)
     {
-        Assert.IsTrue(_enemiesInCloseRadius.Contains(entity) || _alliesInCloseRadius.Contains(entity), "To remove entity in list, it should be contained");
+        if (!_enemiesInCloseRadius.Contains(entity) && !_alliesInCloseRadius.Contains(entity)) Debug.LogErrorFormat(debugLogHeader + "To remove entity in list, it should be contained");
 
         if (entity.Team != Entity.Team)
         {
@@ -293,7 +293,7 @@ public class EntityDetection : EntityComponent, IPooledObject
 
     private void AddEntityInViewRadiusList(Entity entity)
     {
-        Assert.IsFalse(_enemiesInViewRadius.Contains(entity) || _alliesInViewRadius.Contains(entity), string.Format(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius)));
+        if (_enemiesInViewRadius.Contains(entity) || _alliesInViewRadius.Contains(entity)) Debug.LogErrorFormat(debugLogHeader + "entity {0} is already in {1} list.", name, nameof(_enemiesInViewRadius));
 
         if (entity.Team != Entity.Team)
         {
@@ -303,13 +303,13 @@ public class EntityDetection : EntityComponent, IPooledObject
         else
         {
             _alliesInViewRadius.Add(entity);
-            OnAllyDetected?.Invoke(entity);            
+            OnAllyDetected?.Invoke(entity);
         }
     }
 
     private void RemoveEntityInViewRadiusList(Entity entity)
     {
-        Assert.IsTrue(_enemiesInViewRadius.Contains(entity) || _alliesInViewRadius.Contains(entity), "To remove entity in list, it should be contained");
+        if (!_enemiesInViewRadius.Contains(entity) && !_alliesInViewRadius.Contains(entity)) Debug.LogErrorFormat(debugLogHeader + "To remove entity in list, it should be contained");
 
         if (entity.Team != Entity.Team)
         {
