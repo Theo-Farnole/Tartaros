@@ -56,6 +56,10 @@ namespace Game.ConstructionSystem
             {
                 DestroyAndRefundBuilding();
             }
+            else
+            {
+                _owner.Invoke_OnBuildSuccessful();
+            }
 
             _owner.Invoke_OnStopBuild();
         }

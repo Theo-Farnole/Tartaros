@@ -11,6 +11,7 @@ public delegate void OnGameOver(GameManager gameManager);
 public delegate void OnVictory(GameManager gameManager);
 public delegate void OnStartBuild(GameManager gameManager);
 public delegate void OnStopBuild(GameManager gameManager);
+public delegate void OnBuildSuccessful(GameManager gameManager);
 
 public class GameManager : Singleton<GameManager>
 {
@@ -23,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     public static event OnVictory OnVictory;
     public static event OnStartBuild OnStartBuild;
     public static event OnStopBuild OnStopBuild;
+    public static event OnBuildSuccessful OnBuildSuccessful;
 
     [Header("COMPONENTS")]
     [SerializeField] private SnapGridDatabase _grid;
@@ -221,6 +223,7 @@ public class GameManager : Singleton<GameManager>
 
     public void Invoke_OnStartBuild() => OnStartBuild?.Invoke(this);
     public void Invoke_OnStopBuild() => OnStopBuild?.Invoke(this);
+    public void Invoke_OnBuildSuccessful() => OnBuildSuccessful?.Invoke(this);
     #endregion
 
     #region Private methods
