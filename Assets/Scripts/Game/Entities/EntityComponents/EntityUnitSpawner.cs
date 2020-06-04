@@ -6,9 +6,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+public delegate void OnUnitCreated(Entity creator, Entity spawned);
+
 public class EntityUnitSpawner : EntityComponent
 {
     #region Fields
+    public static event OnUnitCreated OnUnitCreated;
+
     private static readonly string debugLogHeader = "Entity Unit Spawn : ";
 
     private Vector3 _anchorPosition;
@@ -136,6 +140,8 @@ public class EntityUnitSpawner : EntityComponent
 
         instanciatedEntity.Team = Entity.Team;
         MoveGameObjectToAnchor(instanciatedEntity);
+
+        OnUnitCreated?.Invoke(Entity, instanciatedEntity);
 
         return instanciatedEntity;
     }
