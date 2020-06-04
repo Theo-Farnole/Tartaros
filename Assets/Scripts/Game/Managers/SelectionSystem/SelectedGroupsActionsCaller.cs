@@ -152,8 +152,8 @@ public static class SelectedGroupsActionsCaller
             }
         }
 
-        if (hasEntityMove) OnOrder_MoveToPosition(destination);
-        if (hasEntitySetAnchorPosition) OnOrder_SetAnchorPosition(destination);
+        if (hasEntityMove) OnOrder_MoveToPosition?.Invoke(destination);
+        if (hasEntitySetAnchorPosition) OnOrder_SetAnchorPosition?.Invoke(destination);
 
         OnOrderGiven?.Invoke();
     }
