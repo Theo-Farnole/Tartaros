@@ -153,15 +153,15 @@ public class EntityDetection : EntityComponent, IPooledObject
 
     private void Entity_OnSpawn(Entity entity)
     {
-        Assert.IsFalse(_enemiesInViewRadius.Contains(entity), string.Format("{0} spawns but already in _enemiesInViewRadius of {1}. That cause lead to problems", entity.name, name));
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+        if (_enemiesInViewRadius.Contains(entity) || _enemiesInCloseRadius.Contains(entity) || _alliesInViewRadius.Contains(entity) || _alliesInCloseRadius.Contains(entity))
+            Debug.LogErrorFormat("Entity {0} has spawn, but entity {1} already has it in its view radius. It's might lead to problems", entity.name, name);
+#endif
     }
 
     private void Entity_OnDeath(Entity entity)
     {
-        if (_enemiesInViewRadius.Contains(entity))
-        {
-            RemoveEntityInViewRadiusList(entity);
-        }
+        RemoveEntityInEveryList(entity);
 
         if (entity == Entity)
         {
@@ -252,6 +252,15 @@ public class EntityDetection : EntityComponent, IPooledObject
         {
             AddEntityInViewRadiusList(hitEntity);
         }
+    }
+
+    private void RemoveEntityInEveryList(Entity entity)
+    {
+        if (_enemiesInCloseRadius.Contains(entity)) _enemiesInCloseRadius.Remove(entity);
+        if (_enemiesInViewRadius.Contains(entity)) _enemiesInViewRadius.Remove(entity);
+
+        if (_alliesInCloseRadius.Contains(entity)) _alliesInCloseRadius.Remove(entity);
+        if (_alliesInViewRadius.Contains(entity)) _alliesInViewRadius.Remove(entity);
     }
 
     private void AddEntityInCloseRadiusList(Entity entity)
