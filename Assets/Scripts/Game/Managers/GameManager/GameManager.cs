@@ -12,6 +12,7 @@ public delegate void OnVictory(GameManager gameManager);
 public delegate void OnStartBuild(GameManager gameManager);
 public delegate void OnStopBuild(GameManager gameManager);
 public delegate void OnBuildSuccessful(GameManager gameManager);
+public delegate void HasNotEnoughtResources(GameManager gameManager, ResourcesWrapper cost);
 
 public class GameManager : Singleton<GameManager>
 {
@@ -25,6 +26,7 @@ public class GameManager : Singleton<GameManager>
     public static event OnStartBuild OnStartBuild;
     public static event OnStopBuild OnStopBuild;
     public static event OnBuildSuccessful OnBuildSuccessful;
+    public static event HasNotEnoughtResources HasNotEnoughtResources;
 
     [Header("COMPONENTS")]
     [SerializeField] private SnapGridDatabase _grid;
@@ -211,13 +213,13 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-
                 State = new ConstructionState(this, buildingID);
             }
         }
         else
         {
             UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enough resources to build " + buildingID);
+            HasNotEnoughtResources?.Invoke(this, buildingCost);
         }
     }
 
