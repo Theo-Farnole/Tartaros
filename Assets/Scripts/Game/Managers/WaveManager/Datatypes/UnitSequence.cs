@@ -9,10 +9,14 @@ using UnityEngine.Assertions;
 
 namespace Game.WaveSystem
 {
+    public delegate void EntitySpawnFromWave(Entity spawn);
+
     [System.Serializable]
     public class UnitSequence
     {
         #region Fields
+        public static event EntitySpawnFromWave EntitySpawnFromWave;
+
         private const string headerInspector_SpawnUnit = "Spawn Units";
         private const string headerInspector_AfterSequenceTime = "Before Sequence Wait Time";
         private const string headerInspector_BeforeSequenceTime = "After Sequence Wait Time";
@@ -37,7 +41,6 @@ namespace Game.WaveSystem
         [SerializeField] private float _timeAfterUnitSpawn = 0.05f;
         #endregion
         #endregion
-
 
         public IEnumerator StartSequence(Vector3 spawnPosition, Transform attackTarget)
         {
@@ -75,8 +78,7 @@ namespace Game.WaveSystem
             var instanciatedPrefab = ObjectPooler.Instance.SpawnFromPool(prefab, position, Quaternion.identity, true);
             var instanciatedPrefabEntity = instanciatedPrefab.GetComponent<Entity>();
 
-            Assert.IsNotNull(instanciatedPrefabEntity,
-                string.Format("Unit {0} misses the Entity component", prefab.name));
+            Assert.IsNotNull(instanciatedPrefabEntity, string.Format("Unit {0} misses the Entity component", prefab.name));
 
             instanciatedPrefabEntity.Team = Team.Enemy;
 
@@ -90,6 +92,8 @@ namespace Game.WaveSystem
             {
                 Debug.LogErrorFormat(debugLogHeader + "No temple found. Can't make Unit move aggressively to it");
             }
+
+            EntitySpawnFromWave?.Invoke(instanciatedPrefabEntity);
         }
     }
 }
