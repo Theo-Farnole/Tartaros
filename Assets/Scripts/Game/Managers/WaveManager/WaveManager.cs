@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -9,113 +9,143 @@ public delegate void OnWaveClear(int waveCountCleared);
 
 namespace Game.WaveSystem
 {
-/// <summary>
-/// Spawn enemies waves frequently.
-/// </summary>
-public class WaveManager : MonoBehaviour
-{
-    #region Fields
-    private const string debugLogHeader = "WaveManager : ";
-
-    public static event OnWaveTimerUpdate OnWaveTimerUpdate;
-    public static event OnWaveStart OnWaveStart;
-    public static event OnWaveClear OnWaveClear;
-
-    [SerializeField] private WaveManagerData _data;
-
-    private int _waveCount = 0;
-    private float _timer = 0;
-    private int _lastFrame_TimerInSeconds;
-
-    private bool _isInWaveSpawning = false;
-    #endregion
-
-    #region Properties
-    public int WaveCount { get => _waveCount; }
-    #endregion
-
-    #region Methods
-    void Start()
+    /// <summary>
+    /// Spawn enemies waves frequently.
+    /// </summary>
+    public class WaveManager : MonoBehaviour
     {
-        Assert.AreEqual(FindObjectsOfType<WaveManager>().Length, 1, "There is more or less than only 1 WaveManager on Scene.");
-    }
+        #region Fields
+        private const string debugLogHeader = "WaveManager : ";
 
-    void Update()
-    {
-        IncreaseTimer(Time.deltaTime);
+        public static event OnWaveTimerUpdate OnWaveTimerUpdate;
+        public static event OnWaveStart OnWaveStart;
+        public static event OnWaveClear OnWaveClear;
 
-        float remainingTime = CalculateRemainingTime();
+        [SerializeField] private WaveManagerData _data;
 
-        TryTrigger_OnWaveTimerUpdate(remainingTime);
-        TryTrigger_Wave(remainingTime);
+        private int _waveCount = 0;
+        private bool _isInUnclearWave = false;
 
-        SetLastFrame_TimerInSeconds();
-    }
+        private float _nextWaveTimer = 0;
+        private int _lastFrame_TimerInSeconds;
 
-    private void IncreaseTimer(float deltaTime)
-    {
-        _timer += deltaTime;
-    }
+        private List<Entity> _entitiesFromWave = new List<Entity>();
+        #endregion
 
-    private void SetLastFrame_TimerInSeconds()
-    {
-        _lastFrame_TimerInSeconds = (int)_timer;
-    }
+        #region Properties
+        public int WaveCount { get => _waveCount; }
+        #endregion
 
-    #region Trigger events
-    private void TryTrigger_Wave(float remainingTime)
-    {
-        if (_isInWaveSpawning)
-            return;
-
-        if (remainingTime <= 0)
+        #region Methods
+        #region MonoBehaviour Callbacks
+        void Update()
         {
-            StartWave();
+            _nextWaveTimer += Time.deltaTime;
+
+            if (!_isInUnclearWave)
+            {
+                ManageNotInWaveBehaviour();
+            }
+
+            _lastFrame_TimerInSeconds = (int)_nextWaveTimer;
         }
-    }
 
-    private void TryTrigger_OnWaveTimerUpdate(float remainingTime)
-    {
-        if (_isInWaveSpawning)
-            return;
-
-        // trigger each seconds
-        if (_lastFrame_TimerInSeconds < (int)_timer)
+        private void ManageNotInWaveBehaviour()
         {
-            OnWaveTimerUpdate?.Invoke(_waveCount, remainingTime);
+            if (_nextWaveTimer >= _data.SecondsBetweenWave)
+            {
+                StartWave();
+            }
+
+            // trigger each seconds
+            if (_lastFrame_TimerInSeconds < (int)_nextWaveTimer)
+            {
+                OnWaveTimerUpdate?.Invoke(_waveCount, CalculateRemainingTime());
+            }
         }
-    }
-    #endregion
 
-    void StartWave()
-    {
-        _isInWaveSpawning = true;
-        _waveCount++;
+        void OnEnable()
+        {
+            UnitSequence.EntitySpawnFromWave += UnitSequence_WaveEntitySpawn;
+            Entity.OnDeath += Entity_OnDeath;
+        }
 
-        OnWaveStart?.Invoke(_waveCount);
+        void OnDisable()
+        {
+            UnitSequence.EntitySpawnFromWave -= UnitSequence_WaveEntitySpawn;
+            Entity.OnDeath -= Entity_OnDeath;
+        }
+        #endregion
 
-        Debug.LogFormat(debugLogHeader + "Wave {0} starts.", _waveCount);
+        #region Events Handlers
+        private void UnitSequence_WaveEntitySpawn(Entity spawnedEntity)
+        {
+            Assert.IsFalse(_entitiesFromWave.Contains(spawnedEntity));
 
-        if (_data.TimeBeforeStartNewWave > 0) this.ExecuteAfterTime(_data.TimeBeforeStartNewWave, EndWave);
-        else EndWave();
-    }
+            _entitiesFromWave.Add(spawnedEntity);
+        }
 
-    void EndWave()
-    {
-        _isInWaveSpawning = false;
+        private void Entity_OnDeath(Entity entity)
+        {
+            // avoid useless calculations
+            if (!_isInUnclearWave)
+                return;
 
-        // reset timer
-        _timer = 0;
+            if (_entitiesFromWave.Contains(entity))
+            {
+                _entitiesFromWave.Remove(entity);
 
-        // TODO:
-        // we should check if all waves has been spawned
-        OnWaveClear?.Invoke(_waveCount);
-    }
+                if (DoAllEntitesFromWaveAreDead())
+                {
+                    EndWave();
+                }
+                else
+                {
+                    Debug.LogFormat("Wave Manager : Remaining {0} entities to kill.", _entitiesFromWave.Count);
+                }
+            }
+        }
+        #endregion
 
-    private float CalculateRemainingTime()
-    {
-        return _data.TimerBetweenWavesInSeconds - _timer;
-    }
-    #endregion
+        #region Private Methods
+        private void StartWave()
+        {
+            if (_entitiesFromWave.Count == 0) Debug.LogError("Field '_entitiesFromWave' should be clear before calling 'StartWave()'.");
+
+            _entitiesFromWave.Clear();
+
+            _isInUnclearWave = true;
+            _waveCount++;
+
+            Debug.LogFormat(debugLogHeader + "Wave {0} starts.", _waveCount);
+
+            OnWaveStart?.Invoke(_waveCount);
+        }
+
+        private void EndWave()
+        {
+            if (_entitiesFromWave.Count != 0) Debug.LogError("Field '_entitiesFromWave' should be clear while calling 'EndWave()'. It's mean that every entities spawned by wave has been killed.");
+
+            _entitiesFromWave.Clear();
+            _isInUnclearWave = false;
+
+            _nextWaveTimer = 0;
+
+            Debug.LogFormat(debugLogHeader + "Wave {0} ended.", _waveCount);
+
+            OnWaveClear?.Invoke(_waveCount);
+        }
+
+        private float CalculateRemainingTime()
+        {
+            return _data.SecondsBetweenWave - _nextWaveTimer;
+        }
+
+        private bool DoAllEntitesFromWaveAreDead()
+        {
+            return _entitiesFromWave.Count == 0;
+        }
+        #endregion
+        #endregion
     }
 }
