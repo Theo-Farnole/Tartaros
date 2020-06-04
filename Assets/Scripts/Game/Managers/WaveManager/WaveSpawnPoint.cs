@@ -21,13 +21,6 @@ namespace Game.WaveSystem
 
         public WavesData WavesData { get => _wavesData; set => _wavesData = value; }
 
-        void Start()
-        {
-            // add WaveIndicator is no one found on 'gameObject'
-            if (gameObject.GetComponent<WaveIndicator>() == null)
-                gameObject.AddComponent<WaveIndicator>();
-        }
-
         void OnEnable()
         {
             WaveManager.OnWaveStart += WaveManager_OnWaveStart;
