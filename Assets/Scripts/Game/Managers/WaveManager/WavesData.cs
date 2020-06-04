@@ -32,6 +32,8 @@ namespace Game.WaveSystem
             yield return _waves[waveIndex].WaveSequence(position, GetWaveAttackTarget());
         }
 
+        public int GetWavesCount()
+            => _waves.Length;
 
         public Transform GetWaveAttackTarget()
         {

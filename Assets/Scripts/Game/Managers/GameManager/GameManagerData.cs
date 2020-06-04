@@ -11,15 +11,11 @@ public class GameManagerData : ScriptableObject
     [Header("CONSTRUCTION")]
     [SerializeField] private string[] _IDInPanelConstruction = new string[0];
 
-    [Header("VICTORY CONDITION")]
-    [SerializeField] private int _wavesPassedToWin = 1;
-
     [Header("LOSE CONDITION")]
     [SerializeField] private string _loseOnDestroyedEntityID = "building_temple";
 
     public ResourcesWrapper StartingResources { get => _startingResources; }
     public int StartMaxPopulationCount { get => _startMaxPopulationCount; }
-    public int WavesPassedToWin { get => _wavesPassedToWin; }
     public string[] IDsInPanelConstruction { get => _IDInPanelConstruction; }
     public string LoseOnDestroyedEntityID { get => _loseOnDestroyedEntityID; }
 

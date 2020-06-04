@@ -44,6 +44,8 @@ public class GameManager : Singleton<GameManager>
     private AbstractConstructionState _state = null;
     private ResourcesWrapper _resources = new ResourcesWrapper();
 
+    private int _finalWave;
+
     private static bool _applicationIsQuitting = false;
     private List<string> _pendingCreation = new List<string>();
     #endregion
@@ -99,6 +101,12 @@ public class GameManager : Singleton<GameManager>
 
         Assert.IsNotNull(_populationManager, "Missing population manager in GameManager.");
         _populationManager.StartPopulation = _data.StartMaxPopulationCount;
+    }
+
+    void Start()
+    {
+        _finalWave = CalculateFinalWaveIndex();
+        Debug.Log("Final wave = " + _finalWave);
     }
 
     void Update()
@@ -157,7 +165,7 @@ public class GameManager : Singleton<GameManager>
 
     private void WaveManager_OnWaveClear(int waveCountCleared)
     {
-        if (waveCountCleared == _data.WavesPassedToWin)
+        if (waveCountCleared == _finalWave)
         {
             Victory();
         }
@@ -242,6 +250,19 @@ public class GameManager : Singleton<GameManager>
     {
         _state = null;
         OnVictory?.Invoke(this);
+    }
+
+    int CalculateFinalWaveIndex()
+    {
+        var spawnPoints = FindObjectsOfType<WaveSpawnPoint>();
+
+        if (spawnPoints.Length == 0)
+        {
+            Debug.LogWarningFormat("Game Manager : There is 0 WaveSpawnPoint in scene. Can't get final wave.");
+            return -1;
+        }
+
+        return spawnPoints.OrderByDescending(x => x.WavesData.GetWavesCount()).First().WavesData.GetWavesCount();
     }
     #endregion
     #endregion
