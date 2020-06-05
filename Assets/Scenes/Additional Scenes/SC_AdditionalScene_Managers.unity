@@ -846,6 +846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1171460221}
   - component: {fileID: 1171460222}
+  - component: {fileID: 1171460223}
   m_Layer: 0
   m_Name: CheatsManager
   m_TagString: Untagged
@@ -879,6 +880,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 346aa0e00c4850c46b93e259ab34d634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _openCheatsMenuKey: 99
+  _additionalKey: 304
+--- !u!114 &1171460223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171460220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2c3a8a8df350c4fa9b2872682ba71c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _toggleFPSDisplay: 102
+  _additionalKey: 304
 --- !u!1 &1227101177
 GameObject:
   m_ObjectHideFlags: 0
