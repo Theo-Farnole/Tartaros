@@ -12,16 +12,22 @@ namespace Game.UI
 {   
     public class PanelMiniMap : MonoBehaviour
     {
-        #region Fields
+        #region Fields        
+        [SerializeField] private GameObject _prefabSpriteWaveIndicator;
         [SerializeField] private Camera _miniMapCamera; // used to get minimap size
         [SerializeField] private RectTransform _minimapRoot; // used to get minimap UI width
-        [SerializeField] private GameObject _prefabSpriteWaveIndicator;
 
         private MinimapWaveIndicator[] _wavesIndicators = null;
         #endregion
 
         #region Methods
         #region MonoBehaviour Callbacks
+        void Awake()
+        {
+            var minimapPositionConverter = this.GetOrAddComponent<MinimapPositionConverter>();
+            minimapPositionConverter.Initialize(_miniMapCamera, _minimapRoot);
+        }
+        
         void Start()
         {
             // We set 'CreateWaveIndicators' in Start, and not Awake:
@@ -82,43 +88,6 @@ namespace Game.UI
 
             return instanciatedWaveIndicator;
         }
-
-        #region Calculation
-        /// <summary>
-        /// Returns a Vector3 as a percent. If in bounds, returns between 0.0f and 1.0f.
-        /// </summary>
-        public Vector3 WorldPositionToMinimapRelative(Vector3 position)
-        {
-            Bounds cameraBounds = new Bounds(_miniMapCamera.transform.position, _miniMapCamera.orthographicSize * 2 * Vector3.one);
-
-            Vector3 min = cameraBounds.min;
-            Vector3 max = cameraBounds.max;
-
-            Vector3 relativePosition = (position - min);
-            Vector3 relativeSize = (max - min);
-
-            // operator Vector3 / Vector3 doesn't exist            
-            return new Vector3(relativePosition.x / relativeSize.x, relativePosition.z / relativeSize.z);
-        }
-
-        public Vector3 RelativePositionToAbsolutePositionMinimap(Vector3 relative)
-        {
-            Vector3 output = new Vector3(relative.x * _minimapRoot.rect.width, relative.y * _minimapRoot.rect.height);
-
-            return output;
-        }
-
-        public Vector3 WorldPositionToMinimap(Vector3 position)
-            => RelativePositionToAbsolutePositionMinimap(WorldPositionToMinimap(position));
-
-
-        public Vector3 MinimapToWorldPosition(Vector3 position)
-        {
-            // TODO
-            // used to move camera or unit on minimap click
-            throw new System.NotImplementedException();
-        }
-        #endregion
         #endregion
         #endregion
     }

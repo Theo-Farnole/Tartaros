@@ -7,9 +7,13 @@ namespace Game.UI
 {
     public struct MinimapWaveIndicator
     {
-        private WaveSpawnPoint _waveSpawnPoint;
-        private RectTransform _waveIndicatorUI;
-        private PanelMiniMap _panelMiniMap;
+        #region Fields
+        private readonly WaveSpawnPoint _waveSpawnPoint;
+        private readonly RectTransform _waveIndicatorUI;
+        private readonly PanelMiniMap _panelMiniMap;
+                
+        private readonly MinimapPositionConverter _minimapPositionConverter;
+        #endregion
 
         public MinimapWaveIndicator(WaveSpawnPoint waveSpawnPoint, RectTransform waveIndicator, PanelMiniMap panelMiniMap)
         {
@@ -21,10 +25,17 @@ namespace Game.UI
             _waveIndicatorUI.anchorMax = Vector2.zero;
             _waveIndicatorUI.anchorMin = Vector2.zero;
 
+            _minimapPositionConverter = Object.FindObjectOfType<MinimapPositionConverter>();
+
+            if (_minimapPositionConverter == null)
+                Debug.LogErrorFormat("Minimap Wave Indiciator : Missing MinimapPositionConvert.");
+
             WaveManager waveManager = Object.FindObjectOfType<WaveManager>();
             ManageDisplay(waveManager.WaveCount);
         }
 
+        #region Methods
+        #region Public Methods
         public void UpdatePositionAndRotation()
         {
             UpdatePosition();
@@ -40,13 +51,17 @@ namespace Game.UI
         {
             WaveManager.OnWaveStart -= WaveManager_OnWaveStart;
         }
+        #endregion
 
+        #region Events Handlers
         private void WaveManager_OnWaveStart(int waveCount)
         {
             ManageDisplay(waveCount);
             UpdatePositionAndRotation();
         }
+        #endregion
 
+        #region Private methods
         private void ManageDisplay(int waveCount)
         {
             bool displayWaveIndicator = !_waveSpawnPoint.WavesData.IsWaveEmpty(waveCount);
@@ -59,14 +74,14 @@ namespace Game.UI
         private void UpdatePosition()
         {
             Vector3 waveSpawnPointLocation = _waveSpawnPoint.transform.position;
-            Vector3 relative = _panelMiniMap.WorldPositionToMinimapRelative(waveSpawnPointLocation);
+            Vector3 relative = _minimapPositionConverter.WorldPositionToMinimapRelative(waveSpawnPointLocation);
 
 #if UNITY_DEVELOPMENT || UNITY_EDITOR
             if (relative.x < 0 || relative.y < 0 || relative.x > 1 || relative.y > 1)
                 Debug.LogErrorFormat("Panel Mini Map : relative position {0} is out of minimap.", relative);
 #endif
 
-            Vector3 minimapPosition = _panelMiniMap.RelativePositionToAbsolutePositionMinimap(relative);
+            Vector3 minimapPosition = _minimapPositionConverter.RelativePositionToAbsolutePositionMinimap(relative);
 
             _waveIndicatorUI.anchoredPosition = minimapPosition;
         }
@@ -94,5 +109,7 @@ namespace Game.UI
 
             _waveIndicatorUI.eulerAngles = eulerAngles;
         }
+        #endregion
+        #endregion
     }
 }
