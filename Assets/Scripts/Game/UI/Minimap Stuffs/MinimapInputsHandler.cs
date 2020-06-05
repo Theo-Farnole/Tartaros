@@ -34,6 +34,7 @@ namespace Game.UI
             if (_isMovingCamera)
             {
                 Vector3 worldPosition = _minimapPositionConverter.ScreenToWorldPoint(Input.mousePosition);
+                worldPosition.y = _mainCamera.transform.position.y; // keep Y component of _mainCamera
                 _mainCamera.position = worldPosition + _cameraOffsetOnCameraDrag;
             }
         }
