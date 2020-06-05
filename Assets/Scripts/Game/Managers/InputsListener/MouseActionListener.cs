@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// If mouse right click pressed, order attack or movement to Spartan selected groups.
@@ -26,6 +27,10 @@ public class MouseActionListener : MonoBehaviour
     void ManageOrdersExecuter()
     {
         if (SecondClickListener.Instance.ListenToClick)
+            return;
+
+        // over UI
+        if (EventSystem.current.IsPointerOverGameObject())
             return;
 
         if (Input.GetMouseButtonDown(1))
