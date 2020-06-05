@@ -13,23 +13,29 @@ namespace Game.Selection
     /// </summary>
     public class SelectionRectangle : MonoBehaviour
     {
+        public enum State
+        {
+            None,
+            TryStartSelection,
+            InSelection
+        }
+
         #region Fields
         [SerializeField] private int _pixelsToStartSelection = 50;
-        
 
-        private bool _isSelecting = false;
+        private State _state;
         private Vector3 _originPositionRect;
         #endregion
 
         #region Properties
-        public bool IsSelecting { get => _isSelecting; }
+        public bool IsSelecting { get => _state == State.InSelection; }
         #endregion
 
         #region Methods
         #region MonoBehaviour callbacks
         void LateUpdate()
         {
-            ManageSelectionInput();
+            CurrentStateBehaviour();
         }
 
         void OnGUI()
@@ -39,57 +45,57 @@ namespace Game.Selection
         #endregion
 
         #region Managers
-        /// <summary>
-        /// Need to be set in LateUpdate. Else, SelectionManager while override selection on MouseButtonUp.
-        /// </summary>
-        void ManageSelectionInput()
+        void CurrentStateBehaviour()
         {
-            // if pointer over UI, don't start selection
-            if (EventSystem.current.IsPointerOverGameObject(-1) == false)
+            switch (_state)
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    _originPositionRect = Input.mousePosition;
-                }
+                case State.None:
+                    // mouse down and not on UI
+                    if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                    {
+                        _originPositionRect = Input.mousePosition;
+                        _state = State.TryStartSelection;
+                    }
+                    break;
 
-                if (Input.GetMouseButton(0))
-                {
-                    CheckForSelectionRectStart();
-                }
-            }
+                case State.TryStartSelection:
+                    // mouse pressed and not on UI
+                    if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+                    {
+                        // we wait the player to drag, before start selection
+                        if (Vector3.Distance(Input.mousePosition, _originPositionRect) >= _pixelsToStartSelection)
+                        {
+                            if (Input.GetKey(KeyCode.LeftShift) == false)
+                            {
+                                SelectionManager.Instance.ClearSelection();
+                            }
 
-            if (Input.GetMouseButtonUp(0) && _isSelecting)
-            {
-                AddEntitiesInSelectionRect();
-                _isSelecting = false;
+                            _state = State.InSelection;
+                        }
+                    }
+
+                    break;
+
+                case State.InSelection:
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        AddEntitiesInSelectionRect();
+                        _state = State.None;
+                    }
+                    break;
+
+                default:
+                    throw new System.NotImplementedException();
             }
         }
 
-        /// <summary>
-        /// If is mouse button down, check if the player is dragging
-        /// </summary>
-        void CheckForSelectionRectStart()
-        {
-            // if it selecting, don't check to start again
-            if (_isSelecting)
-                return;
 
-            if (Vector3.Distance(Input.mousePosition, _originPositionRect) >= _pixelsToStartSelection)
-            {
-                _isSelecting = true;
-
-                if (Input.GetKey(KeyCode.LeftShift) == false)
-                {
-                    SelectionManager.Instance.ClearSelection();
-                }
-            }
-        }
         #endregion
 
         #region SelectionRect drawer
         void DrawSelectionRect()
         {
-            if (_isSelecting)
+            if (_state == State.InSelection)
             {
                 // Create a rect from both mouse positions
                 Rect rect = GUIRectDrawer.GetScreenRect(_originPositionRect, Input.mousePosition);
@@ -108,7 +114,7 @@ namespace Game.Selection
 
             Entity[] entitiesInSelectionRect = unitsSelectable
                 .Where(x => IsWithinSelectionBounds(camera, viewportBounds, x.gameObject)) // is in rectangle
-                .Select(x => x.GetComponent<Entity>()) 
+                .Select(x => x.GetComponent<Entity>())
                 .Where(x => x != null)
                 .ToArray();
 
@@ -117,9 +123,6 @@ namespace Game.Selection
 
         bool IsWithinSelectionBounds(Camera camera, Bounds viewportBounds, GameObject gameObject)
         {
-            if (!_isSelecting)
-                return false;
-
             return viewportBounds.Contains(camera.WorldToViewportPoint(gameObject.transform.position));
         }
         #endregion
