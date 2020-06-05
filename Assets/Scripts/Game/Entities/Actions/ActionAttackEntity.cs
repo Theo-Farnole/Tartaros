@@ -28,7 +28,7 @@ namespace Game.IA.Action
             // if target has been killed
             if (!_target.IsInstanciate)
             {
-                OnEnemyDeath();
+                TargetDeath();
                 return;
             }
 
@@ -59,7 +59,7 @@ namespace Game.IA.Action
             return _target != null;
         }
 
-        private void OnEnemyDeath()
+        private void TargetDeath()
         {
             // try to auto attack nearest enemy
             bool attacksANewEnemy = entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
