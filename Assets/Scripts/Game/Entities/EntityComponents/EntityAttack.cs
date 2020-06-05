@@ -1,4 +1,4 @@
-﻿using Game.IA.Action;
+using Game.IA.Action;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,12 +23,12 @@ public class EntityAttack : EntityComponent
 
     void OnEnable()
     {
-        Entity.GetCharacterComponent<EntityDetection>().OnEnemyEnterAttackRange += EntityAttack_OnEnemyEnterAttackRange;
+        Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += EntityAttack_OnEnemyEnterAttackRange;
     }
 
     void OnDisable()
     {
-        Entity.GetCharacterComponent<EntityDetection>().OnEnemyEnterAttackRange += EntityAttack_OnEnemyEnterAttackRange;
+        Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += EntityAttack_OnEnemyEnterAttackRange;
     }
     #endregion
 
@@ -92,11 +92,11 @@ public class EntityAttack : EntityComponent
         if (!Entity.Data.CanAttack)
             return false;
 
-        var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestEnemyInViewRadius();
+        var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestOpponentInViewRadius();
 
         // enemy found
         if (nearestEnemy != null)
-        {
+        {            
             var action = new ActionAttackEntity(Entity, nearestEnemy);
             Entity.SetAction(action);
 

@@ -6,42 +6,73 @@ using UnityEngine;
 /// <summary>
 /// This script has been created for performance. It only call FindObjectOfType each frame.
 /// </summary>
-public class EntitiesManager
+public static class EntitiesManager
 {
+    #region Fields
+    private static bool initialized = false;
 
-    private static int _lastFrameCount = -1;
+    private static KdTree<Entity> _playerTeamEntities = new KdTree<Entity>(true);
+    private static KdTree<Entity> _enemyTeamEntities = new KdTree<Entity>(true);
+    #endregion
 
-    private static Entity[] _playerTeamEntities;
-    private static Entity[] _enemyTeamEntities;
-
-    private static void RecalculateEntities()
+    #region Events Handlers
+    private static void Entity_OnTeamSwap(Entity entity, Team oldTeam, Team newTeam)
     {
-        // PERFORMANCE NOTE: 
-        // Replace 'FindObjectsOfType' by handling Entity.OnSpawn / OnDeath / OnSwap events
-        Entity[] entities = Object.FindObjectsOfType<Entity>();
-
-        // trier par team
-        _playerTeamEntities = entities.Where(x => x.Team == Team.Player).ToArray();
-        _enemyTeamEntities = entities.Where(x => x.Team == Team.Enemy).ToArray();
-
-        _lastFrameCount = Time.frameCount;
+        GetKDTree(oldTeam).RemoveAll(x => x == entity);
+        GetKDTree(newTeam).Add(entity);
     }
 
-    public static Entity[] GetPlayerTeamEntities()
+    private static void Entity_OnDeath(Entity entity)
     {
-        // PERFORMANCE NOTE : Calculation only each 2 or 3 frames
-        if (_lastFrameCount != Time.frameCount)
-            RecalculateEntities();
-
-        return _playerTeamEntities;
+        GetKDTree(entity.Team).RemoveAll(x => x == entity);
     }
 
-    public static Entity[] GetEnemyTeamEntities()
+    private static void Entity_OnSpawn(Entity entity)
     {
-        // PERFORMANCE NOTE : Calculation only each 2 or 3 frames
-        if (_lastFrameCount != Time.frameCount)
-            RecalculateEntities();
-
-        return _enemyTeamEntities;
+        GetKDTree(entity.Team).Add(entity);
     }
+    #endregion
+
+    #region Private methods
+    private static KdTree<Entity> GetKDTree(Team team)
+    {
+        switch (team)
+        {
+            case Team.Player:
+                return _playerTeamEntities;                
+
+            case Team.Enemy:
+                return _enemyTeamEntities;
+
+            // unsupported cases
+            case Team.Nature:
+            default:
+                throw new System.NotImplementedException();
+        }
+    }    
+    #endregion
+
+    #region Public Methods
+    public static void Initialize()
+    {
+        if (initialized)
+            return;
+
+        Entity.OnSpawn += Entity_OnSpawn;
+        Entity.OnDeath += Entity_OnDeath;
+        Entity.OnTeamSwap += Entity_OnTeamSwap;
+
+        initialized = true;
+    }
+
+    public static Entity GetClosestOpponentEntity(Vector3 position, Team entityTeam)
+    {        
+        return GetKDTree(entityTeam.GetOpponent()).FindClosest(position);
+    }
+
+    public static Entity GetClosestAllyEntity(Vector3 position, Team entityTeam)
+    {
+        return GetKDTree(entityTeam).FindClosest(position);
+    }
+    #endregion
 }
