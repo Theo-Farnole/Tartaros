@@ -105,6 +105,9 @@ public class EntityNavMeshCollision : EntityComponent
     {
         if (TryGetComponent(out BoxCollider boxCollider))
         {
+            // keep the Y commponent of size
+            size.y = boxCollider.size.y;
+
             boxCollider.size = size;
             boxCollider.center = size.y / 2 * Vector3.up;
         }
