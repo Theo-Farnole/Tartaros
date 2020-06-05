@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
     [Required]
     [SerializeField] private CameraControllerData _data;
 
+    [SerializeField] private bool _enableMapLimit = true;
     [SerializeField] private Bounds2D _mapLimitX = new Bounds2D(-100, 100);
     [SerializeField] private Bounds2D _mapLimitZ = new Bounds2D(-100, 100);
 
@@ -136,7 +137,7 @@ public class CameraController : MonoBehaviour
     private void ProcessInput_Zoom(float deltaTime, ref Vector3 deltaPosition)
     {
         if (!_data.CanZoom)
-            return;        
+            return;
 
         var inputDelta = Input.mouseScrollDelta.y;
 
@@ -160,24 +161,33 @@ public class CameraController : MonoBehaviour
         Vector3 deltaRight = deltaPosition.x * right;
         Vector3 deltaUp = deltaPosition.y * up;
 
-        // Without this line,
-        // if zoom reach bounds, the camera continue to moves on Z/X axis without zooming.        
-        if (transform.position.y + deltaUp.y > _data.ZoomBounds.max || transform.position.y + deltaUp.y < _data.ZoomBounds.min)
-            deltaUp = Vector3.zero;
+        if (_enableMapLimit)
+        {
+            // Without this line,
+            // if zoom reach bounds, the camera continue to moves on Z/X axis without zooming.        
+            if (transform.position.y + deltaUp.y > _data.ZoomBounds.max || transform.position.y + deltaUp.y < _data.ZoomBounds.min)
+                deltaUp = Vector3.zero;
+        }
 
         Vector3 finalDelta = deltaForward + deltaRight + deltaUp;
 
         Vector3 finalPosition = transform.position + finalDelta;
 
-        finalPosition.x = Mathf.Clamp(finalPosition.x, _mapLimitX.min, _mapLimitX.max);
-        finalPosition.y = Mathf.Clamp(finalPosition.y, _data.ZoomBounds.min, _data.ZoomBounds.max);
-        finalPosition.z = Mathf.Clamp(finalPosition.z, _mapLimitZ.min, _mapLimitZ.max);
+        if (_enableMapLimit)
+        {
+            finalPosition.x = Mathf.Clamp(finalPosition.x, _mapLimitX.min, _mapLimitX.max);
+            finalPosition.y = Mathf.Clamp(finalPosition.y, _data.ZoomBounds.min, _data.ZoomBounds.max);
+            finalPosition.z = Mathf.Clamp(finalPosition.z, _mapLimitZ.min, _mapLimitZ.max);
+        }
 
         transform.position = finalPosition;
 
-        // if value is inside of bounds, Mathf Clamp doesn't change the 'value' argument's value.
-        // However, if it changed it, it's mean that the camera is out of the map.
-        Assert.AreEqual(transform.position.x, Mathf.Clamp(transform.position.x, _mapLimitX.min, _mapLimitX.max), "Camera out of map limits");
-        Assert.AreEqual(transform.position.z, Mathf.Clamp(transform.position.z, _mapLimitZ.min, _mapLimitZ.max), "Camera out of map limits");
+        if (_enableMapLimit)
+        {
+            // if value is inside of bounds, Mathf Clamp doesn't change the 'value' argument's value.
+            // However, if it changed it, it's mean that the camera is out of the map.
+            Assert.AreEqual(transform.position.x, Mathf.Clamp(transform.position.x, _mapLimitX.min, _mapLimitX.max), "Camera out of map limits");
+            Assert.AreEqual(transform.position.z, Mathf.Clamp(transform.position.z, _mapLimitZ.min, _mapLimitZ.max), "Camera out of map limits");
+        }
     }
 }
