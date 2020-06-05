@@ -54,7 +54,7 @@ namespace Game.UI
             Vector2 max = _minimapRoot.rect.max;
 
             // between .0f & 1.0f
-            Vector2 relativePosition = (minimapPosition - min) / 100; 
+            Vector2 relativePosition = (minimapPosition - min) / _minimapRoot.rect.width; 
 
             // between -1.0f & 1.0f
             relativePosition = new Vector2(relativePosition.x - 0.5f, relativePosition.y - 0.5f) * 2;
