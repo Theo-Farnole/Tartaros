@@ -23,11 +23,11 @@ namespace Game.Cheats
         private static readonly int gui_backgroundHeightOffset = 60;
         private static readonly string gui_labelMenu = "Cheat Menu";
 
-        private static readonly KeyCode _openCheatsMenuKey = KeyCode.C;
-        private static readonly KeyCode _additionalKey = KeyCode.LeftShift;
-
-
         private static readonly string debugLogHeader = "Tartaros Cheats : ";
+
+
+        [SerializeField] private KeyCode _openCheatsMenuKey = KeyCode.C;
+        [SerializeField] private KeyCode _additionalKey = KeyCode.LeftShift;
 
         private ResourcesWrapper _gameManagerResourcesBeforeInfiniteResources = new ResourcesWrapper(-1, -1, -1);
 
