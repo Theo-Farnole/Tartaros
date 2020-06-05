@@ -46,6 +46,7 @@ namespace Game.ConstructionSystem
             // however, OnStateExit 'ManageBuildingsPosition' will create new 'ConstructionBuilding'
             // that'll never be deleted
             ManageBuildingsPosition();
+
             base.Tick();
         }
 

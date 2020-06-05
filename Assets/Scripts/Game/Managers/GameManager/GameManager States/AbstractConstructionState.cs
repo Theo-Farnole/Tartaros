@@ -91,7 +91,7 @@ namespace Game.ConstructionSystem
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                StopConstructionAndRefund();
+                StopConstruction();
             }
 
             if (!_firstFrame && Input.GetMouseButtonDown(0))
@@ -124,14 +124,14 @@ namespace Game.ConstructionSystem
             }
         }
 
-        public void LeaveState()
+        protected void LeaveState()
         {
             _owner.State = null;
         }
 
-        private void StopConstructionAndRefund()
+        private void StopConstruction()
         {
-            DestroyAndRefundBuilding();
+            _sucessfulBuild = false;
             _owner.State = null;
         }
 
@@ -140,8 +140,7 @@ namespace Game.ConstructionSystem
             // try to get prefab for instantiation
             var buildingData = MainRegister.Instance.GetEntityData(buildingID);
 
-            Assert.IsNotNull(buildingData,
-                string.Format("Building State : can't SetCurrentBuilding because cannot get building data from MainRegister of {0}.", buildingID));
+            Assert.IsNotNull(buildingData, string.Format("Building State : can't SetCurrentBuilding because cannot get building data from MainRegister of {0}.", buildingID));
 
             _entityData = buildingData;
             _entityID = buildingID;
