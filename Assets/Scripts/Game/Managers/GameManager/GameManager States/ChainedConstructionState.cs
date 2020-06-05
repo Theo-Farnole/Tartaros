@@ -7,6 +7,10 @@ using UnityEngine.Assertions;
 
 namespace Game.ConstructionSystem
 {
+    /// <summary>
+    /// This state is managed by GameManager. 
+    /// It manage building that can be contrustec more than once per construct like walls.
+    /// </summary>
     public class ChainedConstructionState : AbstractConstructionState
     {
         #region Fields
@@ -90,6 +94,16 @@ namespace Game.ConstructionSystem
         protected override void ConstructBuilding()
         {            
             ResourcesWrapper constructionCost = CalculateWholeConstructionCost();
+
+            if (!_owner.HasEnoughtResources(constructionCost))
+            {
+                SucessfulBuild = false;
+                DestroyAllConstructionBuildings();
+
+                _owner.State = null;
+                return;
+            }                
+
             bool constructionSuccessful = TryConstructBuildings();
 
             if (constructionSuccessful)
@@ -104,21 +118,6 @@ namespace Game.ConstructionSystem
             }
 
             _owner.State = null;
-        }
-
-        private bool TryConstructBuildings()
-        {            
-            _constructionAchievedBuilding = new List<ConstructionBuilding>();
-
-            foreach (var cBuilding in _constructionBuildings)
-            {
-                bool constructionSuccessful = TryConstructBuilding(cBuilding);
-
-                if (!constructionSuccessful)
-                    return false;
-            }
-
-            return true;
         }
 
         protected override void DestroyAllConstructionBuildings()
@@ -143,6 +142,21 @@ namespace Game.ConstructionSystem
                     cBuilding.Destroy();
                 }
             }
+        }
+
+        private bool TryConstructBuildings()
+        {
+            _constructionAchievedBuilding = new List<ConstructionBuilding>();
+
+            foreach (var cBuilding in _constructionBuildings)
+            {
+                bool constructionSuccessful = TryConstructBuilding(cBuilding);
+
+                if (!constructionSuccessful)
+                    return false;
+            }
+
+            return true;
         }
 
         private bool TryConstructBuilding(ConstructionBuilding cBuilding)

@@ -173,6 +173,9 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Public methods
+    public bool HasEnoughtResources(ResourcesWrapper resources)
+        => _resources.HasEnoughResources(resources);
+
     public bool HasEnoughtPopulationToSpawn()
         => _populationManager.HasEnoughtPopulationToSpawn();
 
