@@ -152,10 +152,16 @@ MonoBehaviour:
   _generationType: 1
   _radiusToReachCells: 10.47
   _constantResourcesGeneration:
-    food: 10
-    wood: 0
+    food: 0
+    wood: 10
     stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0
   _canTurnIntoAnotherEntity: 0
   _turnIntoAnotherEntityList: []
+  _canToggleNavMeshObstacle: 0
+  _orderToggleNavMeshObstacle:
+    _hotkey: 0
+    _portrait: {fileID: 0}
+    _hoverPopupData: {fileID: 0}
+    _linePosition: 0
