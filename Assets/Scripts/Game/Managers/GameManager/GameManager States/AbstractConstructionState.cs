@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 
 namespace Game.ConstructionSystem
 {
@@ -82,6 +83,7 @@ namespace Game.ConstructionSystem
         protected virtual void OnMouseDown() { }
         protected virtual void OnMouseUp() { }
         protected abstract void DestroyAllConstructionBuildings();
+        protected abstract ResourcesWrapper GetConstructionCost();
         #endregion
 
         #region Private methods
@@ -94,13 +96,37 @@ namespace Game.ConstructionSystem
 
             if (!_firstFrame && Input.GetMouseButtonDown(0))
             {
-                OnMouseDown();
+
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    // clicked on UI
+                    _sucessfulBuild = false;
+                    LeaveState();
+                }
+                else
+                {
+                    OnMouseDown();
+                }
             }
 
             if (!_firstFrame && Input.GetMouseButtonUp(0))
             {
-                OnMouseUp();
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    // clicked on UI
+                    _sucessfulBuild = false;
+                    LeaveState();
+                }
+                else
+                {
+                    OnMouseUp();
+                }
             }
+        }
+
+        public void LeaveState()
+        {
+            _owner.State = null;
         }
 
         private void StopConstructionAndRefund()
@@ -127,7 +153,7 @@ namespace Game.ConstructionSystem
         private void DestroyAndRefundBuilding()
         {
             DestroyAllConstructionBuildings();
-            _owner.Resources += CurrentBuildingCost;
+            _owner.Resources += GetConstructionCost();
         }
         #endregion
         #endregion

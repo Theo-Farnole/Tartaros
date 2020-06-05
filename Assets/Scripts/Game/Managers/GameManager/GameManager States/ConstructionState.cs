@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 
 namespace Game.ConstructionSystem
 {
@@ -50,20 +51,22 @@ namespace Game.ConstructionSystem
             const TileFlag tileFlagCondition = TileFlag.Free | TileFlag.Visible;
             bool successfulSetTile = TileSystem.Instance.TrySetTile(building, EntityData.TileSize, tileFlagCondition);
 
-            if (!successfulSetTile)
-                return;
+            if (successfulSetTile)
+            {
+                _constructionBuilding.SetConstructionAsFinish(Team.Player);
+            }
 
-            _constructionBuilding.SetConstructionAsFinish(Team.Player);
-
-            // then leave
-            SucessfulBuild = true;
-            _owner.State = null;
+            SucessfulBuild = successfulSetTile;
+            LeaveState();
         }
 
         protected override void DestroyAllConstructionBuildings()
         {
             _constructionBuilding.Destroy();
         }
+
+        protected override ResourcesWrapper GetConstructionCost()
+            => EntityData.SpawningCost;
         #endregion
 
         #region Private methods

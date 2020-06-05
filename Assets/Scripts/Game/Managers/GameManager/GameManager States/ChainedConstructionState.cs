@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 
 namespace Game.ConstructionSystem
 {
@@ -33,7 +34,10 @@ namespace Game.ConstructionSystem
         {
             base.OnStateExit();
 
-            DestroyUnachievedBuilding();
+            if (SucessfulBuild)
+            {
+                DestroyUnachievedBuilding();
+            }
         }
 
         public override void Tick()
@@ -45,6 +49,12 @@ namespace Game.ConstructionSystem
             base.Tick();
         }
 
+        protected override ResourcesWrapper GetConstructionCost()
+        {
+            int constructableBuildings = CalculateConstructableBuildingCount();
+            return EntityData.SpawningCost * constructableBuildings;
+        }
+
         protected override void OnMouseDown()
         {
             if (_anchorSet)
@@ -53,6 +63,11 @@ namespace Game.ConstructionSystem
             if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, terrainLayerMask))
             {
                 SetAnchor(newPosition);
+            }
+            else
+            {
+                SucessfulBuild = false;
+                LeaveState();
             }
         }
 
@@ -88,36 +103,29 @@ namespace Game.ConstructionSystem
             guiPosition.y = Screen.height - guiPosition.y;
 
             Rect labelRect = new Rect(guiPosition.x, guiPosition.y, 300, 50);
-            GUI.Label(labelRect, CalculateWholeConstructionCost().ToString());
+            GUI.Label(labelRect, GetConstructionCost().ToString());
         }
 
         protected override void ConstructBuilding()
-        {            
-            ResourcesWrapper constructionCost = CalculateWholeConstructionCost();
+        {
+            ResourcesWrapper constructionCost = GetConstructionCost();
 
             if (!_owner.HasEnoughtResources(constructionCost))
             {
                 SucessfulBuild = false;
-                DestroyAllConstructionBuildings();
-
-                _owner.State = null;
+                LeaveState();
                 return;
-            }                
+            }
 
             bool constructionSuccessful = TryConstructBuildings();
 
             if (constructionSuccessful)
-            {                
-                SucessfulBuild = true;
+            {
                 _owner.Resources -= constructionCost;
             }
-            else
-            {
-                SucessfulBuild = false;
-                DestroyAllConstructionBuildings();
-            }
 
-            _owner.State = null;
+            SucessfulBuild = constructionSuccessful;
+            LeaveState();
         }
 
         protected override void DestroyAllConstructionBuildings()
@@ -306,15 +314,9 @@ namespace Game.ConstructionSystem
             Vector2Int coords = TileSystem.Instance.WorldToCoords(cBuilding.Building.transform.position);
 
             GameObject tile = TileSystem.Instance.GetTile(coords);
-            
-            return (tile == null) || 
-                (TileSystem.Instance.IsTileFree(coords) && !TileSystem.Instance.DoTileContainsEntityOfID(coords, EntityID));
-        }
 
-        ResourcesWrapper CalculateWholeConstructionCost()
-        {
-            int constructableBuildings = CalculateConstructableBuildingCount();
-            return EntityData.SpawningCost * constructableBuildings;
+            return (tile == null) ||
+                (TileSystem.Instance.IsTileFree(coords) && !TileSystem.Instance.DoTileContainsEntityOfID(coords, EntityID));
         }
 
         int CalculateConstructableBuildingCount()
