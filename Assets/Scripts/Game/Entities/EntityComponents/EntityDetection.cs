@@ -39,6 +39,9 @@ public class EntityDetection : EntityComponent, IPooledObject
 
     #region Properties
     public List<Entity> AlliesInCloseRadius { get => _alliesInCloseRadius; }
+    public List<Entity> AlliesInViewRadius { get => _alliesInViewRadius; }
+    public List<Entity> EnemiesInViewRadius { get => _enemiesInViewRadius; }
+    public List<Entity> EnemiesInCloseRadius { get => _enemiesInCloseRadius; }
     #endregion
 
     #region Methods
@@ -193,10 +196,6 @@ public class EntityDetection : EntityComponent, IPooledObject
         return Vector3.Distance(transform.position, position) <= DISTANCE_THRESHOLD;
     }
 
-    /// <summary>
-    /// Use a OverlapSphere, then process the OverlapSphere output with 2 Linq queries.
-    /// </summary>
-    /// <returns></returns>
     public Entity[] GetAllEnemiesInViewRadius()
     {
         Assert.IsTrue(enabled, "EntityDetection '" + name + "'should be enable to get all enmies in view radius.");
@@ -205,23 +204,20 @@ public class EntityDetection : EntityComponent, IPooledObject
         return _enemiesInViewRadius.Where(x => x != null).ToArray();
     }
 
-    /// <summary>
-    /// Use a OverlapSphere, then process the OverlapSphere output with 2 Linq queries. Then make a distance on every enemies.
-    /// </summary>
     public Entity GetNearestEnemyInViewRadius()
     {
+        if (_enemiesInViewRadius.Count == 0)
+            return null;
+
         Entity[] nearEnemies = GetAllEnemiesInViewRadius();
 
-        if (nearEnemies.Length > 0)
-        {
-            Entity nearestEnemy = transform.GetClosestComponent(nearEnemies).Object;
-
-            return nearestEnemy;
-        }
-        else
-        {
+        // 'GetAllEnemiesInViewRadius()' method remove 'null' entries in '_enemiesInViewRadius' list
+        // So the below condition can be true, even if the '_enemiesInViewRadius.Count == 0' was false
+        if (nearEnemies.Length == 0)
             return null;
-        }
+
+        Entity nearestEnemy = transform.GetClosestComponent(nearEnemies).Object;
+        return nearestEnemy;
     }
 
     public bool IsEntityInViewRadius(Entity target)

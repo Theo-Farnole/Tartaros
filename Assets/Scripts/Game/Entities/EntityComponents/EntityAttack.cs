@@ -33,8 +33,7 @@ public class EntityAttack : EntityComponent
 
     void Update()
     {
-        // if Entity is idling, try to attack nearest enemy
-        if (!Entity.HasCurrentAction)
+        if (Entity.IsIdle)
         {
             TryStartActionAttackNearestEnemy();
         }
@@ -99,8 +98,12 @@ public class EntityAttack : EntityComponent
         if (!Entity.Data.CanAttack)
             return false;
 
+        if (Entity.GetCharacterComponent<EntityDetection>().EnemiesInViewRadius.Count == 0)
+            return false;
+
         var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestEnemyInViewRadius();
 
+        // enemy found
         if (nearestEnemy != null)
         {
             var action = new ActionAttackEntity(Entity, nearestEnemy);
