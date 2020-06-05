@@ -28,29 +28,10 @@ public class EntityDetection : EntityComponent
     #region MonoBehaviour Callbacks   
     void Update()
     {
-        // performance note: calculate each 2/3 frames
-        // performance note: instead of finding all object of type,  make it in an Entities managers
-
-        // find all object of type
-        Entity[] entities = FindObjectsOfType<Entity>();
-
-        // trier par team
-        Entity[] playerTeamEntity = entities.Where(x => x.Team == Team.Player).ToArray();
-        Entity[] enemyTeamEntity = entities.Where(x => x.Team == Team.Enemy).ToArray();
-
-        // get who's the closest
-        _nearestPlayerTeamEntity = playerTeamEntity.Length == 0 ? null : transform.GetClosestComponent(playerTeamEntity).Object;
-        _nearestEnemyTeamEntity = enemyTeamEntity.Length == 0 ? null : transform.GetClosestComponent(enemyTeamEntity).Object;
-
-        if (_nearestPlayerTeamEntity != null && IsEntityInShiftRange(_nearestPlayerTeamEntity))
-        {
-            OnAllyEnterShiftRange?.Invoke(_nearestPlayerTeamEntity);
-        }
-
-        if (_nearestEnemyTeamEntity != null && IsEntityInAttackRange(_nearestEnemyTeamEntity))
-        {
-            OnEnemyEnterAttackRange?.Invoke(_nearestEnemyTeamEntity);
-        }
+        // PERFORMANCE NOTE: calculate each 2/3 frames
+        
+        CalculateNearestPlayerTeamEntity();
+        CalculateNearestEnemyTeamEntity();
     }
     #endregion
 
@@ -98,6 +79,34 @@ public class EntityDetection : EntityComponent
     public bool IsEntityInViewRadius(Entity target)
     {
         return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.ViewRadius;
+    }
+    #endregion
+
+    #region Private Methods
+    private void CalculateNearestEnemyTeamEntity()
+    {
+        Entity[] enemyTeamEntities = EntitiesManager.GetEnemyTeamEntities();
+
+        // PERFORMANCE NOTE: instead of 'GetClosestComponent' use a kd tree
+        _nearestEnemyTeamEntity = enemyTeamEntities.Length == 0 ? null : transform.GetClosestComponent(enemyTeamEntities).Object;
+
+        if (_nearestEnemyTeamEntity != null && IsEntityInAttackRange(_nearestEnemyTeamEntity))
+        {
+            OnEnemyEnterAttackRange?.Invoke(_nearestEnemyTeamEntity);
+        }
+    }
+
+    private void CalculateNearestPlayerTeamEntity()
+    {
+        Entity[] playerTeamEntities = EntitiesManager.GetPlayerTeamEntities();
+
+        // PERFORMANCE NOTE: instead of 'GetClosestComponent' use a kd tree
+        _nearestPlayerTeamEntity = playerTeamEntities.Length == 0 ? null : transform.GetClosestComponent(playerTeamEntities).Object;
+
+        if (_nearestPlayerTeamEntity != null && IsEntityInShiftRange(_nearestPlayerTeamEntity))
+        {
+            OnAllyEnterShiftRange?.Invoke(_nearestPlayerTeamEntity);
+        }
     }
     #endregion
     #endregion

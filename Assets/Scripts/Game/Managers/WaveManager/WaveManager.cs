@@ -99,10 +99,6 @@ namespace Game.WaveSystem
                 {
                     EndWave();
                 }
-                else
-                {
-                    Debug.LogFormat("Wave Manager : Remaining {0} entities to kill.", _entitiesFromWave.Count);
-                }
             }
         }
         #endregion
