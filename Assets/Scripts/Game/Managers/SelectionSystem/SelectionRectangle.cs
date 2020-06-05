@@ -59,9 +59,14 @@ namespace Game.Selection
                     break;
 
                 case State.TryStartSelection:
-                    // mouse pressed and not on UI
-                    if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+                    if (Input.GetMouseButton(0))
                     {
+                        if (EventSystem.current.IsPointerOverGameObject())
+                        {
+                            _state = State.None;
+                            break;
+                        }
+
                         // we wait the player to drag, before start selection
                         if (Vector3.Distance(Input.mousePosition, _originPositionRect) >= _pixelsToStartSelection)
                         {
@@ -72,6 +77,11 @@ namespace Game.Selection
 
                             _state = State.InSelection;
                         }
+                    }
+
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        _state = State.None;
                     }
 
                     break;
