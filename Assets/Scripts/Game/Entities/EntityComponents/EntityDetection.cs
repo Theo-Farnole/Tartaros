@@ -17,24 +17,37 @@ public class EntityDetection : EntityComponent
     private const string debugLogHeader = "Entity Detection : ";
     public readonly static float DISTANCE_THRESHOLD = 0.3f;
 
+    public readonly static int frameIntervalToCheckNearestEntities = 5;
+
     public event OnEntityDetected OnAllyEnterShiftRange;
     public event OnEntityDetected OnOpponentEnterAttackRange;
 
     private Entity _nearestOpponentTeamEntity = null;
     private Entity _nearestAllyTeamEntity = null;
+
+    public int _frameOffset = -1;
     #endregion
 
     #region Methods
     #region MonoBehaviour Callbacks   
+    void Awake()
+    {
+        _frameOffset = Random.Range(0, frameIntervalToCheckNearestEntities);
+    }
+
     void Start()
     {
         EntitiesManager.Initialize();
     }
 
     void Update()
-    {        
-        CalculateNearestAllyTeamEntity();
-        CalculateNearestOpponentTeamEntity();
+    {
+        // avoid calculation every frame
+        if (Time.frameCount - _frameOffset % frameIntervalToCheckNearestEntities == 0)
+        {
+            CalculateNearestAllyTeamEntity();
+            CalculateNearestOpponentTeamEntity();
+        }
     }
     #endregion
 
