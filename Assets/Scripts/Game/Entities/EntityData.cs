@@ -164,7 +164,15 @@ public class EntityData : SerializedScriptableObject
     [PositiveValueOnly]
     [SerializeField] private float _speed = 3;
 
+    [ToggleGroup(nameof(_canMove), movementSettingsHeaderName)]
+    [SerializeField] private float _shiftLength = 3;
+
+    [ToggleGroup(nameof(_canMove), movementSettingsHeaderName)]
+    [SerializeField] private float _startShiftCollision = 3;
+
     public float Speed { get => _speed; }
+    public float ShiftLength { get => _shiftLength; }
+    public float StartShiftRange { get => _startShiftCollision; }
     #endregion
 
     #region Units Creation

@@ -15,7 +15,6 @@ public class EntityMovement : EntityComponent
     private const float reachDestinationThreshold = 0.5f;
     private const float radiusThreshold = 0.1f;
 
-    [SerializeField] private float _shiftDistance = 2f;
     private Vector3 _destination;
 
     // cache variable
@@ -39,22 +38,15 @@ public class EntityMovement : EntityComponent
         }
     }
 
-    void Update()
+    void OnEnable()
     {
-        var allies = Entity.GetCharacterComponent<EntityDetection>().AlliesInCloseRadius;
-
-        foreach (Entity hitAlly in allies)
-        {
-            if (Entity.IsIdle && !hitAlly.IsIdle)
-            {
-                // Make the entity shift to let the hitEntity walks throught the crowd
-                Shift(hitAlly);
-            }
-        }
+        Entity.GetCharacterComponent<EntityDetection>().OnAllyEnterShiftRange += EntityMovement_OnAllyEnterShiftRange;
     }
 
     void OnDisable()
     {
+        Entity.GetCharacterComponent<EntityDetection>().OnAllyEnterShiftRange -= EntityMovement_OnAllyEnterShiftRange;
+
         StopMoving();
     }
 
@@ -78,6 +70,17 @@ public class EntityMovement : EntityComponent
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(_destination, _navMeshAgent.stoppingDistance);
+    }
+    #endregion
+
+    #region Events Handlers
+    private void EntityMovement_OnAllyEnterShiftRange(Entity ally)
+    {
+        // Make the entity shift to let the hitEntity walks throught the crowd
+        if (Entity.IsIdle && !ally.IsIdle)
+        {
+            Shift(ally);
+        }
     }
     #endregion
 
@@ -152,7 +155,7 @@ public class EntityMovement : EntityComponent
     {
         Vector3 fleeHitEntityDirection = Quaternion.Euler(0, -90, 0) * -Math.Direction(Entity.transform.position, hitEntity.transform.position);
 
-        var action = new ActionMoveToPosition(Entity, transform.position + fleeHitEntityDirection * _shiftDistance);
+        var action = new ActionMoveToPosition(Entity, transform.position + fleeHitEntityDirection * Entity.Data.ShiftLength);
 
         Entity.SetAction(action, false);
     }

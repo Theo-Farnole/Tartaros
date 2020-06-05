@@ -23,29 +23,23 @@ public class EntityAttack : EntityComponent
 
     void OnEnable()
     {
-        Entity.GetCharacterComponent<EntityDetection>().OnEnemyDetected += EntityAttack_OnEnemyDetected;
+        Entity.GetCharacterComponent<EntityDetection>().OnEnemyEnterAttackRange += EntityAttack_OnEnemyEnterAttackRange;
     }
 
     void OnDisable()
     {
-        Entity.GetCharacterComponent<EntityDetection>().OnEnemyDetected -= EntityAttack_OnEnemyDetected;
-    }
-
-    void Update()
-    {
-        if (Entity.IsIdle)
-        {
-            TryStartActionAttackNearestEnemy();
-        }
+        Entity.GetCharacterComponent<EntityDetection>().OnEnemyEnterAttackRange += EntityAttack_OnEnemyEnterAttackRange;
     }
     #endregion
 
     #region Events Handlers
-    private void EntityAttack_OnEnemyDetected(Entity enemy)
+    private void EntityAttack_OnEnemyEnterAttackRange(Entity enemy)
     {
         if (Entity.IsIdle)
         {
-            TryStartActionAttackNearestEnemy();
+            // auto attack the enemy
+            var action = new ActionAttackEntity(Entity, enemy);
+            Entity.SetAction(action);
         }
     }
     #endregion
@@ -96,9 +90,6 @@ public class EntityAttack : EntityComponent
     public bool TryStartActionAttackNearestEnemy()
     {
         if (!Entity.Data.CanAttack)
-            return false;
-
-        if (Entity.GetCharacterComponent<EntityDetection>().EnemiesInViewRadius.Count == 0)
             return false;
 
         var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestEnemyInViewRadius();
