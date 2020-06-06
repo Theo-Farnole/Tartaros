@@ -340,7 +340,7 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _entitiesRegisters
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[EntityData,
+      Data: 0|System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[Game.Entities.EntityData,
         Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
@@ -492,12 +492,12 @@ MonoBehaviour:
       Data: 
     - Name: _overallActionsRegister
       Entry: 7
-      Data: 2|System.Collections.Generic.Dictionary`2[[OverallAction, Assembly-CSharp],[OverallActionData,
-        Assembly-CSharp]], mscorlib
+      Data: 2|System.Collections.Generic.Dictionary`2[[Game.Entities.OverallAction,
+        Assembly-CSharp],[OverallActionData, Assembly-CSharp]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[OverallAction, Assembly-CSharp]],
-        mscorlib
+      Data: 3|System.Collections.Generic.EnumEqualityComparer`1[[Game.Entities.OverallAction,
+        Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -992,7 +992,7 @@ Projector:
   m_Material: {fileID: 2100000, guid: 807e05b5f95f0ed4a9267e58c77de9a9, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1
 --- !u!114 &1746630486
 MonoBehaviour:
   m_ObjectHideFlags: 0
