@@ -44,7 +44,6 @@ namespace Game.Entities
                     return _enemyTeamEntities;
 
                 // unsupported cases
-                case Team.Nature:
                 default:
                     throw new System.NotImplementedException();
             }

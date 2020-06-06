@@ -5,8 +5,7 @@ namespace Game.Entities
     public enum Team
     {
         Player,
-        Enemy,
-        [Obsolete] Nature
+        Enemy
     }
 
     public static class TeamExtension
@@ -21,7 +20,6 @@ namespace Game.Entities
                 case Team.Enemy:
                     return Team.Player;
 
-                case Team.Nature:
                 default:
                     throw new NotImplementedException();
             }
