@@ -5,100 +5,103 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SecondClickListener : Singleton<SecondClickListener>
+namespace Game.Inputs
 {
-    private bool _listenToClick = false;
-    private System.Action<RaycastHit> _actionOnClick = null;
-    private CursorAspectManager.CursorState _cursorOverride;
-
-    public bool ListenToClick { get => _listenToClick; }
-    public CursorAspectManager.CursorState CursorOverride { get => _cursorOverride; }
-
-    private int _raycastLayer;
-
-    void Awake()
+    public class SecondClickListener : Singleton<SecondClickListener>
     {
-        _raycastLayer = LayerMask.GetMask("Entity", "Terrain");
-    }
+        private bool _listenToClick = false;
+        private System.Action<RaycastHit> _actionOnClick = null;
+        private CursorAspectManager.CursorState _cursorOverride;
 
-    void Start()
-    {
-        SelectionManager.OnSelectionUpdated += (SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex) => StopListening();
-    }
+        public bool ListenToClick { get => _listenToClick; }
+        public CursorAspectManager.CursorState CursorOverride { get => _cursorOverride; }
 
-    void LateUpdate()
-    {
-        if (_listenToClick && Input.GetMouseButtonDown(1))
+        private int _raycastLayer;
+
+        void Awake()
         {
-            // over UI
-            if (EventSystem.current.IsPointerOverGameObject())
-            {
-                StopListening();
-                return;
-            }
-
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out RaycastHit hit, _raycastLayer))
-            {
-                _actionOnClick(hit);
-                StopListening();
-            }
-            else
-            {
-                StopListening();
-            }
+            _raycastLayer = LayerMask.GetMask("Entity", "Terrain");
         }
-    }
 
-    public void ListenToAttack()
-    {
-        _listenToClick = true;
-        _cursorOverride = CursorAspectManager.CursorState.OrderAttack;
-
-        _actionOnClick = (RaycastHit hit) =>
+        void Start()
         {
-            // do we hit terrain ?
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+            SelectionManager.OnSelectionUpdated += (SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex) => StopListening();
+        }
+
+        void LateUpdate()
+        {
+            if (_listenToClick && Input.GetMouseButtonDown(1))
             {
-                SelectedGroupsActionsCaller.OrderMoveAggressively(hit.point);
-            }
-            else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Entity"))
-            {
-                // do we hit entity ?
-                if (hit.transform.TryGetComponent(out Entity clickedEntity))
+                // over UI
+                if (EventSystem.current.IsPointerOverGameObject())
                 {
-                    SelectedGroupsActionsCaller.OrderAttackUnit(clickedEntity);
+                    StopListening();
+                    return;
+                }
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit, _raycastLayer))
+                {
+                    _actionOnClick(hit);
+                    StopListening();
+                }
+                else
+                {
+                    StopListening();
                 }
             }
-        };
-    }
+        }
 
-    public void ListenToMove()
-    {
-        _listenToClick = true;
-        _cursorOverride = CursorAspectManager.CursorState.OrderMove;
-
-        _actionOnClick = (RaycastHit hit) =>
+        public void ListenToAttack()
         {
-            SelectedGroupsActionsCaller.OrderMoveToPosition(hit.point);
-        };
-    }
+            _listenToClick = true;
+            _cursorOverride = CursorAspectManager.CursorState.OrderAttack;
 
-    public void ListenToPatrol()
-    {
-        _listenToClick = true;
-        _cursorOverride = CursorAspectManager.CursorState.OverAlly;
+            _actionOnClick = (RaycastHit hit) =>
+            {
+            // do we hit terrain ?
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+                {
+                    SelectedGroupsActionsCaller.OrderMoveAggressively(hit.point);
+                }
+                else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Entity"))
+                {
+                // do we hit entity ?
+                if (hit.transform.TryGetComponent(out Entity clickedEntity))
+                    {
+                        SelectedGroupsActionsCaller.OrderAttackUnit(clickedEntity);
+                    }
+                }
+            };
+        }
 
-        _actionOnClick = (RaycastHit hit) =>
+        public void ListenToMove()
         {
-            SelectedGroupsActionsCaller.OrderPatrol(hit.point);
-        };
-    }
+            _listenToClick = true;
+            _cursorOverride = CursorAspectManager.CursorState.OrderMove;
 
-    public void StopListening()
-    {
-        _listenToClick = false;
-        _actionOnClick = null;
+            _actionOnClick = (RaycastHit hit) =>
+            {
+                SelectedGroupsActionsCaller.OrderMoveToPosition(hit.point);
+            };
+        }
+
+        public void ListenToPatrol()
+        {
+            _listenToClick = true;
+            _cursorOverride = CursorAspectManager.CursorState.OverAlly;
+
+            _actionOnClick = (RaycastHit hit) =>
+            {
+                SelectedGroupsActionsCaller.OrderPatrol(hit.point);
+            };
+        }
+
+        public void StopListening()
+        {
+            _listenToClick = false;
+            _actionOnClick = null;
+        }
     }
 }
