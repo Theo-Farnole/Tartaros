@@ -114,11 +114,15 @@ namespace Game.Entities
         {
             System.Type key = typeof(T);
 
-            // if component doesn't exits, get it.
-            if (!_components.ContainsKey(key))
+            if (_components.TryGetValue(key, out EntityComponent entityComponent))
+            {
+                return (T)entityComponent;
+            }
+            else
+            {
                 RegisterComponent((T)GetComponent(key));
-
-            return (T)_components[key];
+                return (T)_components[key];
+            }
         }
 
         public void RegisterComponent(EntityComponent component)
