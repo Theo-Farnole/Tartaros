@@ -6,6 +6,7 @@ using Game.UI.HoverPopup;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Game.Selection;
+using Game.Entities;
 
 namespace Game.UI
 {

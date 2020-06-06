@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Game.IA.Action
+namespace Game.Entities.Actions
 {
     /// <summary>
     /// This script toggle NavMeshObstacle. It's used for gates buildings.

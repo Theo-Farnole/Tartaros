@@ -1,4 +1,5 @@
-﻿using Game.Selection;
+﻿using Game.Entities;
+using Game.Selection;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;

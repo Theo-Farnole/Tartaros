@@ -4,66 +4,68 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public delegate void OnFog(IFogCoverable fogCoverable);
-
-
-public class EntityFogCoverable : EntityComponent, IFogCoverable
+namespace Game.Entities
 {
-    private const string debugLogHeader = "Entity Fog Coverable : ";
+    public delegate void OnFog(IFogCoverable fogCoverable);
 
-    public event OnFog OnFogCover;
-    public event OnFog OnFogUncover;
-
-    [SerializeField] private GameObject[] _modelsToHide;
-    private Collider _collider;
-
-    private bool _isCover = false;
-
-    public bool IsCover
+    public class EntityFogCoverable : EntityComponent, IFogCoverable
     {
-        get => _isCover;
+        private const string debugLogHeader = "Entity Fog Coverable : ";
 
-        set
+        public event OnFog OnFogCover;
+        public event OnFog OnFogUncover;
+
+        [SerializeField] private GameObject[] _modelsToHide;
+        private Collider _collider;
+
+        private bool _isCover = false;
+
+        public bool IsCover
         {
-            // avoid calculation if _isCover value doesn't changes
-            if (value == _isCover)
-                return;
+            get => _isCover;
 
-            if (value && !_isCover) OnFogCover?.Invoke(this);
-            else if (!value && _isCover) OnFogUncover?.Invoke(this);
+            set
+            {
+                // avoid calculation if _isCover value doesn't changes
+                if (value == _isCover)
+                    return;
 
-            _isCover = value;
-            UpdateVisibility();
+                if (value && !_isCover) OnFogCover?.Invoke(this);
+                else if (!value && _isCover) OnFogUncover?.Invoke(this);
+
+                _isCover = value;
+                UpdateVisibility();
+            }
         }
-    }
 
-    public Transform Transform { get => transform; }
+        public Transform Transform { get => transform; }
 
-    private void Awake()
-    {
-        _collider = GetComponent<Collider>();
-    }
-
-    void OnEnable()
-    {
-        Assert.IsNotNull(FOWManager.Instance, string.Format(debugLogHeader + "FOWManager is missing. Can't add {0} as a coverable", name));
-
-        FOWManager.Instance.AddCoverable(this);
-    }
-
-    void OnDisable()
-    {
-        if (FOWManager.Instance != null)
+        private void Awake()
         {
-            FOWManager.Instance.RemoveCoverable(this);
+            _collider = GetComponent<Collider>();
         }
-    }
 
-    void UpdateVisibility()
-    {
-        _collider.enabled = !_isCover;
+        void OnEnable()
+        {
+            Assert.IsNotNull(FOWManager.Instance, string.Format(debugLogHeader + "FOWManager is missing. Can't add {0} as a coverable", name));
 
-        foreach (var mesh in _modelsToHide)
-            mesh.SetActive(!_isCover);
+            FOWManager.Instance.AddCoverable(this);
+        }
+
+        void OnDisable()
+        {
+            if (FOWManager.Instance != null)
+            {
+                FOWManager.Instance.RemoveCoverable(this);
+            }
+        }
+
+        void UpdateVisibility()
+        {
+            _collider.enabled = !_isCover;
+
+            foreach (var mesh in _modelsToHide)
+                mesh.SetActive(!_isCover);
+        }
     }
 }

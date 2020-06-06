@@ -3,34 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public abstract class EntityComponent : MonoBehaviour
+namespace Game.Entities
 {
-    private Entity _entity = null;
-
-    // REFACTOR NOTE:
-    // Do 'virtual' keyword is useful ?
-    public virtual Entity Entity
+    public abstract class EntityComponent : MonoBehaviour
     {
-        get
+        private Entity _entity = null;
+
+        // REFACTOR NOTE:
+        // Do 'virtual' keyword is useful ?
+        public virtual Entity Entity
         {
-            if (_entity == null)
+            get
             {
-                _entity = GetComponent<Entity>();
+                if (_entity == null)
+                {
+                    _entity = GetComponent<Entity>();
 
-                Assert.IsNotNull(_entity, "Missing component 'Entity' on entity " + name + ".");
+                    Assert.IsNotNull(_entity, "Missing component 'Entity' on entity " + name + ".");
 
-                _entity.RegisterComponent(this);
+                    _entity.RegisterComponent(this);
+                }
+
+                return _entity;
             }
 
-            return _entity;
+            set
+            {
+                if (_entity != null)
+                    return;
+
+                _entity = value;
+            }
         }
 
-        set
-        {
-            if (_entity != null)
-                return;
-
-            _entity = value;
-        }
+        public T GetCharacterComponent<T>() where T : EntityComponent
+            => Entity.GetCharacterComponent<T>();
     }
 }

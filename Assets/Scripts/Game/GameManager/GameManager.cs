@@ -1,4 +1,5 @@
 using Game.ConstructionSystem;
+using Game.Entities;
 using Game.MapCellEditor;
 using Game.WaveSystem;
 using Lortedo.Utilities.Pattern;

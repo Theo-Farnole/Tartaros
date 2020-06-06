@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.IA.Action
+namespace Game.Entities.Actions
 {
     /// <summary>
     /// This script make the Entity go closer to '_target'.

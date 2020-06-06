@@ -5,122 +5,125 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Assertions;
 
-// REFACTOR NOTE: for the sake of Single-responsiblity principle
-// We could split this script into 2 scripts
-// - one for UpdateCollisionSize() method
-// - one for Enable/Disable Nav Mesh Obstacle
-[RequireComponent(typeof(Entity))]
-public class EntityNavMeshCollision : EntityComponent
+namespace Game.Entities
 {
-    private const string header = "Update Mesh on Obstacle Update";
-
-    [ToggleGroup(nameof(_updateMeshOnObstacleUpdate), header)]
-    [SerializeField] private bool _updateMeshOnObstacleUpdate = true;
-
-    [ToggleGroup(nameof(_updateMeshOnObstacleUpdate), header)]
-    [SerializeField] private GameObject _meshNavMeshEnabled;
-
-    [ToggleGroup(nameof(_updateMeshOnObstacleUpdate), header)]
-    [SerializeField] private GameObject _meshNavMeshDisabled;
-
-    private NavMeshObstacle _navMeshObstacle;
-
-    #region MonoCallbacks
-    void Start()
+    // REFACTOR NOTE: for the sake of Single-responsiblity principle
+    // We could split this script into 2 scripts
+    // - one for UpdateCollisionSize() method
+    // - one for Enable/Disable Nav Mesh Obstacle
+    [RequireComponent(typeof(Entity))]
+    public class EntityNavMeshCollision : EntityComponent
     {
-        _navMeshObstacle = GetComponent<NavMeshObstacle>();
+        private const string header = "Update Mesh on Obstacle Update";
 
-        UpdateCollisionSize();
-        UpdateMesh();
-    }
-    #endregion
+        [ToggleGroup(nameof(_updateMeshOnObstacleUpdate), header)]
+        [SerializeField] private bool _updateMeshOnObstacleUpdate = true;
 
-    #region Public Methods
-    public void EnableNavMeshObstacle()
-    {
-        if (!_navMeshObstacle)
+        [ToggleGroup(nameof(_updateMeshOnObstacleUpdate), header)]
+        [SerializeField] private GameObject _meshNavMeshEnabled;
+
+        [ToggleGroup(nameof(_updateMeshOnObstacleUpdate), header)]
+        [SerializeField] private GameObject _meshNavMeshDisabled;
+
+        private NavMeshObstacle _navMeshObstacle;
+
+        #region MonoCallbacks
+        void Start()
         {
-            Debug.LogWarningFormat("{0} miss NavMeshObstacle component. Can't ToggleNavMeshObstacle", name);
-            return;
+            _navMeshObstacle = GetComponent<NavMeshObstacle>();
+
+            UpdateCollisionSize();
+            UpdateMesh();
+        }
+        #endregion
+
+        #region Public Methods
+        public void EnableNavMeshObstacle()
+        {
+            if (!_navMeshObstacle)
+            {
+                Debug.LogWarningFormat("{0} miss NavMeshObstacle component. Can't ToggleNavMeshObstacle", name);
+                return;
+            }
+
+            if (!Entity.Data.CanToggleNavMeshObstacle)
+                return;
+
+            _navMeshObstacle.enabled = true;
+            UpdateMesh();
         }
 
-        if (!Entity.Data.CanToggleNavMeshObstacle)
-            return;
-
-        _navMeshObstacle.enabled = true;
-        UpdateMesh();
-    }
-
-    public void DisableNavMeshObstacle()
-    {
-        if (!_navMeshObstacle)
+        public void DisableNavMeshObstacle()
         {
-            Debug.LogWarningFormat("{0} miss NavMeshObstacle component. Can't ToggleNavMeshObstacle", name);
-            return;
+            if (!_navMeshObstacle)
+            {
+                Debug.LogWarningFormat("{0} miss NavMeshObstacle component. Can't ToggleNavMeshObstacle", name);
+                return;
+            }
+
+            if (!Entity.Data.CanToggleNavMeshObstacle)
+                return;
+
+            _navMeshObstacle.enabled = false;
+            UpdateMesh();
         }
 
-        if (!Entity.Data.CanToggleNavMeshObstacle)
-            return;
-
-        _navMeshObstacle.enabled = false;
-        UpdateMesh();
-    }
-
-    public void ToggleNavMeshObstacle()
-    {
-        if (!Entity.Data.CanToggleNavMeshObstacle)
-            return;
-
-        if (_navMeshObstacle.enabled) DisableNavMeshObstacle();
-        else EnableNavMeshObstacle();
-    }
-    #endregion
-
-    #region Private Methods
-    private void UpdateMesh()
-    {
-        if (!Entity.Data.CanToggleNavMeshObstacle)
-            return;
-
-        if (!_navMeshObstacle)
-            return;
-
-        if (!_updateMeshOnObstacleUpdate)
-            return;
-
-        _meshNavMeshEnabled.SetActive(_navMeshObstacle.enabled);
-        _meshNavMeshDisabled.SetActive(!_navMeshObstacle.enabled);   
-    }
-
-    private void UpdateCollisionSize()
-    {
-        Vector2Int tileSize = Entity.Data.TileSize;
-        Vector3 size = new Vector3(tileSize.x, 2, tileSize.y);
-
-        UpdateBoxCollisionSize(size);
-        UpdateNavMeshObstacleSize(size);
-    }
-
-    void UpdateBoxCollisionSize(Vector3 size)
-    {
-        if (TryGetComponent(out BoxCollider boxCollider))
+        public void ToggleNavMeshObstacle()
         {
-            // keep the Y commponent of size
-            size.y = boxCollider.size.y;
+            if (!Entity.Data.CanToggleNavMeshObstacle)
+                return;
 
-            boxCollider.size = size;
-            boxCollider.center = size.y / 2 * Vector3.up;
+            if (_navMeshObstacle.enabled) DisableNavMeshObstacle();
+            else EnableNavMeshObstacle();
         }
-    }
+        #endregion
 
-    void UpdateNavMeshObstacleSize(Vector3 size)
-    {
-        if (TryGetComponent(out NavMeshObstacle navMeshObstacle))
+        #region Private Methods
+        private void UpdateMesh()
         {
-            Vector3 carveOffset = new Vector3(0.9f, 0, 0.9f);
-            navMeshObstacle.size = size - carveOffset;
-            navMeshObstacle.center = size.y / 2 * Vector3.up;
+            if (!Entity.Data.CanToggleNavMeshObstacle)
+                return;
+
+            if (!_navMeshObstacle)
+                return;
+
+            if (!_updateMeshOnObstacleUpdate)
+                return;
+
+            _meshNavMeshEnabled.SetActive(_navMeshObstacle.enabled);
+            _meshNavMeshDisabled.SetActive(!_navMeshObstacle.enabled);
         }
+
+        private void UpdateCollisionSize()
+        {
+            Vector2Int tileSize = Entity.Data.TileSize;
+            Vector3 size = new Vector3(tileSize.x, 2, tileSize.y);
+
+            UpdateBoxCollisionSize(size);
+            UpdateNavMeshObstacleSize(size);
+        }
+
+        void UpdateBoxCollisionSize(Vector3 size)
+        {
+            if (TryGetComponent(out BoxCollider boxCollider))
+            {
+                // keep the Y commponent of size
+                size.y = boxCollider.size.y;
+
+                boxCollider.size = size;
+                boxCollider.center = size.y / 2 * Vector3.up;
+            }
+        }
+
+        void UpdateNavMeshObstacleSize(Vector3 size)
+        {
+            if (TryGetComponent(out NavMeshObstacle navMeshObstacle))
+            {
+                Vector3 carveOffset = new Vector3(0.9f, 0, 0.9f);
+                navMeshObstacle.size = size - carveOffset;
+                navMeshObstacle.center = size.y / 2 * Vector3.up;
+            }
+        }
+        #endregion
     }
-    #endregion
 }

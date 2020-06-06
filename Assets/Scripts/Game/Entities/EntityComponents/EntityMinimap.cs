@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class EntityMinimap : EntityComponent
+namespace Game.Entities
 {
-    [SerializeField] private SpriteRenderer _minimapSprite;
-    [SerializeField] private Color[] _teamColor;
-
-    // Called from Entity.SetupTeamComponents()
-    public void UpdatePointColor()
+    public class EntityMinimap : EntityComponent
     {
-        var material = GetMaterial(Entity.Team);
+        [SerializeField] private SpriteRenderer _minimapSprite;
+        [SerializeField] private Color[] _teamColor;
 
-        _minimapSprite.color = material;
-    }
+        // Called from Entity.SetupTeamComponents()
+        public void UpdatePointColor()
+        {
+            var material = GetMaterial(Entity.Team);
 
-    Color GetMaterial(Team team)
-    {
-        int index = (int)team;
+            _minimapSprite.color = material;
+        }
 
-        Assert.IsTrue(_teamColor.IsIndexInsideBounds(index));
+        Color GetMaterial(Team team)
+        {
+            int index = (int)team;
 
-        return _teamColor[index];
+            Assert.IsTrue(_teamColor.IsIndexInsideBounds(index));
+
+            return _teamColor[index];
+        }
     }
 }

@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using Sirenix.OdinInspector;
 using Lortedo.Utilities;
 using System.Text;
+using Game.Entities;
 
 namespace Game.Selection
 {

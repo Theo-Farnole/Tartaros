@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.IA.Action
+namespace Game.Entities.Actions
 {
     /// <summary>
     /// An action is owned by an Entity. 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.IA.Action
+namespace Game.Entities.Actions
 {
     /// <summary>
     /// The Entity walks between '_targetPosition' & '_startingPosition'.

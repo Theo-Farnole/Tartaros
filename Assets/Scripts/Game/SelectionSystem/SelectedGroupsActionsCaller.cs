@@ -1,14 +1,16 @@
 ﻿using Game.Selection;
-using Game.IA.Action;
+using Game.Entities.Actions;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Game.Entities;
+using System;
 
 public delegate void OnOrder_Given();
 public delegate void OnOrder_SpawnUnits(string unitID);
-public delegate void OnOrder_AttackUnit(Entity targe);
+public delegate void OnOrder_AttackUnit(Entity target);
 public delegate void OnOrder_MoveToPosition(Vector3 destination);
 public delegate void OnOrder_SetAnchorPosition(Vector3 destination);
 public delegate void OnOrder_Patrol(Vector3 targetPosition);
@@ -29,6 +31,7 @@ public static class SelectedGroupsActionsCaller
     public static event OnOrder_MoveToPosition OnOrder_MoveToPosition;
     public static event OnOrder_Patrol OnOrder_Patrol;
     public static event OnOrder_MoveAggressively OnOrder_MoveAggressively;
+
     public static event OnOrder_TurnIntoEntities OnOrder_TurnIntoEntities;
 
     public static KeyCode additiveKeycode = KeyCode.LeftShift;

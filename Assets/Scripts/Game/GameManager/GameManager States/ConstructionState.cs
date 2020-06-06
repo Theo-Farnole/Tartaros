@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.Debugging;
+﻿using Game.Entities;
+using Lortedo.Utilities.Debugging;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;

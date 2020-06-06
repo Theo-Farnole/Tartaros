@@ -1,4 +1,5 @@
-﻿using Lortedo.Utilities.Debugging;
+﻿using Game.Entities;
+using Lortedo.Utilities.Debugging;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -53,10 +54,7 @@ namespace Game.ConstructionSystem
             }
         }
 
-        public void Destroy()
-        {
-            _building.GetComponent<Entity>().Death();
-        }
+        public void Destroy() => _building.GetComponent<Entity>().Death();
 
         /// <summary>
         /// Set building mesh to 'NotInBuildState'

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Game.IA.Action
+namespace Game.Entities.Actions
 {
     public class ActionSpawnUnit : Action
     {

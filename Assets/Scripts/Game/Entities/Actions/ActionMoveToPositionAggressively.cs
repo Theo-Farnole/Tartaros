@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Game.IA.Action
+namespace Game.Entities.Actions
 {
     /// <summary>
     /// Walk to the _position until an enemy is seen. If enemy's seen, attack it.

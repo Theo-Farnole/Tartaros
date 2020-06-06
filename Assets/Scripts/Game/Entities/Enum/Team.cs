@@ -1,28 +1,30 @@
 using System;
-using System.Linq;
 
-public enum Team
+namespace Game.Entities
 {
-    Player,
-    Enemy, 
-    [Obsolete] Nature
-}
-
-public static class TeamExtension
-{
-    public static Team GetOpponent(this Team t)
+    public enum Team
     {
-        switch (t)
+        Player,
+        Enemy,
+        [Obsolete] Nature
+    }
+
+    public static class TeamExtension
+    {
+        public static Team GetOpponent(this Team t)
         {
-            case Team.Player:
-                return Team.Enemy;
+            switch (t)
+            {
+                case Team.Player:
+                    return Team.Enemy;
 
-            case Team.Enemy:
-                return Team.Player;
+                case Team.Enemy:
+                    return Team.Player;
 
-            case Team.Nature:
-            default:
-                throw new NotImplementedException();
+                case Team.Nature:
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

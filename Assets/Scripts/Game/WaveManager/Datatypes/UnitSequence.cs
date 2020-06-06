@@ -1,4 +1,5 @@
-﻿using Game.IA.Action;
+﻿using Game.Entities;
+using Game.Entities.Actions;
 using Lortedo.Utilities.Pattern;
 using Sirenix.OdinInspector;
 using System.Collections;

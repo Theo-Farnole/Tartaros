@@ -1,32 +1,36 @@
-﻿using System.Collections;
+﻿using Game.Entities;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(Entity))]
-public class EntityCustomEditor : Editor
+namespace Game.Entities.Editor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(Entity))]
+    public class EntityCustomEditor : UnityEditor.Editor
     {
-        base.OnInspectorGUI();
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
 
-        DrawUnitAction();
-    }
+            DrawUnitAction();
+        }
 
-    private void DrawUnitAction()
-    {
-        // get action
-        Entity unit = (Entity)target;
-        string action = unit.CurrentAction != null ? unit.CurrentAction.ToString() : "NONE"; // display action or "NONE"
+        private void DrawUnitAction()
+        {
+            // get action
+            Entity unit = (Entity)target;
+            string action = unit.CurrentAction != null ? unit.CurrentAction.ToString() : "NONE"; // display action or "NONE"
 
-        GUILayout.Space(EditorGUIUtility.singleLineHeight);
+            GUILayout.Space(EditorGUIUtility.singleLineHeight);
 
-        // display it
-        EditorGUILayout.BeginHorizontal();
+            // display it
+            EditorGUILayout.BeginHorizontal();
 
-        GUILayout.Label("Current action is ");
-        GUILayout.Label(action);
+            GUILayout.Label("Current action is ");
+            GUILayout.Label(action);
 
-        EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndHorizontal();
+        }
     }
 }

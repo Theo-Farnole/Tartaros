@@ -1,4 +1,5 @@
-﻿using Game.FogOfWar;
+﻿using Game.Entities;
+using Game.FogOfWar;
 using Lortedo.Utilities.Pattern;
 using System;
 using System.Collections;
