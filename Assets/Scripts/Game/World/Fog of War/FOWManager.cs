@@ -175,7 +175,7 @@ namespace Game.FogOfWar
             // draw VISIBLE circle from viewers
             for (int i = 0; i < _viewers.Count; i++)
             {
-                Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].Transform.position);
+                Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].Position);
                 int viewRadius = Mathf.RoundToInt(_viewers[i].ViewRadius / _snapGrid.CellSize);
 
                 _visiblityMap.DrawCircleInside(viewersCoords.x, viewersCoords.y, viewRadius, FogState.Visible);
@@ -189,7 +189,7 @@ namespace Game.FogOfWar
 
             for (int i = 0; i < _coverables.Count; i++)
             {
-                Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].Transform.position);
+                Vector2Int coords = _snapGrid.GetNearestCoords(_coverables[i].Position);
 
                 bool isCover = true;
 

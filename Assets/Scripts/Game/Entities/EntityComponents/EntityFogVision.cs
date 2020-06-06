@@ -11,7 +11,7 @@ namespace Game.Entities
         [SerializeField] private SpriteRenderer _fogOfWarVision = null;
 
         public float ViewRadius => Entity.Data.ViewRadius;
-        public Transform Transform => transform;
+        public Vector3 Position => transform.position;
 
         void Start()
         {

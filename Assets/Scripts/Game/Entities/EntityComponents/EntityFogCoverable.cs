@@ -38,7 +38,7 @@ namespace Game.Entities
             }
         }
 
-        public Transform Transform { get => transform; }
+        public Vector3 Position { get => transform.position; }
 
         private void Awake()
         {

@@ -7,6 +7,6 @@ namespace Game.FogOfWar
     public interface IFogVision
     {
         float ViewRadius { get; }
-        Transform Transform { get; }
+        Vector3 Position { get; }
     }
 }

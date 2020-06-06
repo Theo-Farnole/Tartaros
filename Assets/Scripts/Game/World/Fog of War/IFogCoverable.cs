@@ -7,6 +7,6 @@ namespace Game.FogOfWar
     public interface IFogCoverable
     {
         bool IsCover { get; set; }
-        Transform Transform { get; }
+        Vector3 Position { get; }
     }
 }
