@@ -14,13 +14,13 @@ namespace Game.FogOfWar
         private const string debugLogHeader = "FOWManager : ";
 
         [SerializeField] private SnapGridDatabase _snapGrid;
-        [SerializeField, HideInInspector] private FogState[,] _visiblityMap; // allow hot reloading in Editor
         [Header("COMPONENTS")]
         [SerializeField] private Projector _projectorFogOfWar;
 
         [Header("DEBUGS")]
         [SerializeField] private bool _debugDrawSnapGrid = false;
 
+        private FogMap _fogMap;
         private List<IFogVision> _viewers = new List<IFogVision>();
         private List<IFogCoverable> _coverables = new List<IFogCoverable>();
 
@@ -36,21 +36,8 @@ namespace Game.FogOfWar
         void Awake()
         {
             Assert.IsNotNull(_snapGrid, "Fog of War : Please assign a snapgrid in inspector.");
-
-            _visiblityMap = new FogState[_snapGrid.CellCount, _snapGrid.CellCount];
-
-            // initialize circle with NOT_VISIBLE
-            int lenghtOne = _visiblityMap.GetLength(0);
-
-            for (int i = 0; i < lenghtOne; i++)
-            {
-                int lengthTwo = _visiblityMap.GetLength(1);
-
-                for (int j = 0; j < lengthTwo; j++)
-                {
-                    _visiblityMap[i, j] = FogState.NotVisible;
-                }
-            }
+            
+            _fogMap = new FogMap(_snapGrid.CellCount);
         }
 
         void Update()
@@ -135,19 +122,18 @@ namespace Game.FogOfWar
 
         private bool TryGetTile(Vector2Int coords, out FogState fogState)
         {
-            if (coords.x < 0 || coords.x >= _visiblityMap.GetLength(0)
-                || coords.y < 0 || coords.y >= _visiblityMap.GetLength(1))
+            if (coords.x < 0 || coords.x >= _fogMap.Size || coords.y < 0 || coords.y >= _fogMap.Size)
             {
                 Debug.LogErrorFormat(debugLogHeader + "Coords passed in args aren't in visibility map");
                 fogState = FogState.Visible;
                 return false;
-            }            
+            }
 
-            fogState = _visiblityMap[coords.x, coords.y];
+            fogState = _fogMap.GetValue(coords.x, coords.y);
 
             // overwrite output
             if (_isDisabled) fogState = FogState.Visible;
-            
+
             return true;
         }
         #endregion
@@ -158,28 +144,8 @@ namespace Game.FogOfWar
             if (_isDisabled)
                 return;
 
-            // set all VISIBLE coords to REAVEALED
-            int lengthOne = _visiblityMap.GetLength(0);
-            for (int x = 0; x < lengthOne; x++)
-            {
-                int lengthTwo = _visiblityMap.GetLength(1);
-                for (int y = 0; y < lengthTwo; y++)
-                {
-                    if (_visiblityMap[x, y] == FogState.Visible)
-                    {
-                        _visiblityMap[x, y] = FogState.Revealed;
-                    }
-                }
-            }
-
-            // draw VISIBLE circle from viewers
-            for (int i = 0; i < _viewers.Count; i++)
-            {
-                Vector2Int viewersCoords = _snapGrid.GetNearestCoords(_viewers[i].Position);
-                int viewRadius = Mathf.RoundToInt(_viewers[i].ViewRadius / _snapGrid.CellSize);
-
-                _visiblityMap.DrawCircleInside(viewersCoords.x, viewersCoords.y, viewRadius, FogState.Visible);
-            }
+            _fogMap.SetVisibleAsRevealed();
+            _fogMap.DrawViewersVision(_viewers, _snapGrid);
         }
 
         void UpdateCoverablesVisibility()
@@ -193,10 +159,10 @@ namespace Game.FogOfWar
 
                 bool isCover = true;
 
-                if (coords.x >= 0 && coords.x < _visiblityMap.GetLength(0) &&
-                    coords.y >= 0 && coords.y < _visiblityMap.GetLength(1))
+                if (coords.x >= 0 && coords.x < _fogMap.Size &&
+                    coords.y >= 0 && coords.y < _fogMap.Size)
                 {
-                    if (_visiblityMap[coords.x, coords.y] == FogState.Visible)
+                    if (_fogMap.GetValue(coords.x, coords.y) == FogState.Visible)
                     {
                         isCover = false;
                     }
@@ -227,25 +193,6 @@ namespace Game.FogOfWar
         {
             _isDisabled = false;
             _projectorFogOfWar.enabled = true;
-        }
-
-        void DebugLogVisiblityMap()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            for (int y = _visiblityMap.GetLength(1) - 1; y >= 0; y--)
-            {
-                for (int x = 0; x < _visiblityMap.GetLength(0); x++)
-                {
-                    if (_visiblityMap[x, y] == FogState.NotVisible) sb.Append(".");
-                    else if (_visiblityMap[x, y] == FogState.Revealed) sb.Append("_");
-                    else if (_visiblityMap[x, y] == FogState.Visible) sb.Append("X");
-                }
-
-                sb.AppendLine();
-            }
-
-            Debug.Log(sb.ToString());
         }
         #endregion
     }
