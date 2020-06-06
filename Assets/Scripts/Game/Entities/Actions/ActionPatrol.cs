@@ -9,8 +9,10 @@ namespace Game.Entities.Actions
     /// </summary>
     public class ActionPatrol : Action
     {
-        private Vector3 _targetPosition;
-        private Vector3 _startingPosition;
+        private readonly Vector3 _targetPosition;
+        private readonly Vector3 _startingPosition;
+
+        private readonly EntityMovement _entityMovement;
 
         private bool _goToTarget = true;
 
@@ -18,11 +20,13 @@ namespace Game.Entities.Actions
         {
             _startingPosition = owner.transform.position;
             _targetPosition = targetPosition;
+
+            _entityMovement = entity.GetCharacterComponent<EntityMovement>();
         }
 
         public override void OnStateExit()
         {
-            entity.GetCharacterComponent<EntityMovement>().StopMoving();
+            _entityMovement.StopMoving();
         }
 
         public override void OnStateEnter()
@@ -34,7 +38,7 @@ namespace Game.Entities.Actions
 
         public override void Tick()
         {
-            if (entity.GetCharacterComponent<EntityMovement>().HasReachedDestination())
+            if (_entityMovement.HasReachedDestination())
             {
                 // switch destination
                 _goToTarget = !_goToTarget;
@@ -46,7 +50,7 @@ namespace Game.Entities.Actions
         {
             Vector3 position = goToTarget ? _targetPosition : _startingPosition;
 
-            entity.GetCharacterComponent<EntityMovement>().MoveToPosition(position);
+            _entityMovement.MoveToPosition(position);
         }
 
         public override string ToString()

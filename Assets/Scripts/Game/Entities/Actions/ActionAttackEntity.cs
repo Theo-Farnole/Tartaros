@@ -10,12 +10,19 @@ namespace Game.Entities.Actions
     /// </summary>
     public class ActionAttackEntity : Action
     {
-        Entity _target;
+        private readonly Entity _target;
+
+        private readonly EntityMovement _entityMovement;
+        private readonly EntityDetection _entityDetection;
+        private readonly EntityAttack _entityAttack;
 
         public ActionAttackEntity(Entity owner, Entity target) : base(owner)
         {
-            Debug.LogWarningFormat("'{1}' can't execute action {0} because _target is null.", this.GetType(), _owner.name);
             _target = target;
+
+            _entityMovement = entity.GetCharacterComponent<EntityMovement>();
+            _entityDetection = entity.GetCharacterComponent<EntityDetection>();
+            _entityAttack = entity.GetCharacterComponent<EntityAttack>();
         }
 
         public override void OnStateExit()
@@ -32,20 +39,16 @@ namespace Game.Entities.Actions
                 return;
             }
 
-            EntityMovement entityMovement = entity.GetCharacterComponent<EntityMovement>();
-            EntityDetection entityDetection = entity.GetCharacterComponent<EntityDetection>();
-
             // Can entity attack target?
-            if (entityDetection.IsEntityInAttackRange(_target))
+            if (_entityDetection.IsEntityInAttackRange(_target))
             {
-                entityMovement.StopMoving();
+                _entityMovement.StopMoving();
 
-                EntityAttack entityAttack = entity.GetCharacterComponent<EntityAttack>();
-                entityAttack.DoAttack(_target);
+                _entityAttack.DoAttack(_target);
             }
             else // Otherwise, entity go closer.
             {
-                entityMovement.MoveToEntity(_target);
+                _entityMovement.MoveToEntity(_target);
             }
         }
 
@@ -55,7 +58,7 @@ namespace Game.Entities.Actions
         }
 
         public override bool CanExecuteAction()
-        {            
+        {
             return _target != null;
         }
 

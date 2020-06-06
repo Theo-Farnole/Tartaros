@@ -7,30 +7,33 @@ namespace Game.Entities.Actions
 {
     public class ActionMoveToPosition : Action
     {
-        private Vector3 _position;
+        private readonly Vector3 _position;
+        private readonly EntityMovement _entityMovement;
 
         public ActionMoveToPosition(Entity owner, Vector3 position) : base(owner)
         {
             _position = position;
+            _entityMovement = entity.GetCharacterComponent<EntityMovement>();
         }
 
         public override void OnStateExit()
         {
-            entity.GetCharacterComponent<EntityMovement>().StopMoving();
+            _entityMovement.StopMoving();
         }
 
         public override void OnStateEnter()
         {
             base.OnStateEnter();
 
-            entity.GetCharacterComponent<EntityMovement>().MoveToPosition(_position); 
+            _entityMovement.MoveToPosition(_position);
         }
 
         public override void Tick()
         {
-            if (entity.GetCharacterComponent<EntityMovement>().HasReachedDestination())
+
+            if (_entityMovement.HasReachedDestination())
             {
-                entity.GetCharacterComponent<EntityMovement>().StopMoving();
+                _entityMovement.StopMoving();
                 entity.StopCurrentAction();
             }
         }

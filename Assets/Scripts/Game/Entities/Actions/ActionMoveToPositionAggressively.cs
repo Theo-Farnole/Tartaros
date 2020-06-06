@@ -12,10 +12,12 @@ namespace Game.Entities.Actions
     public class ActionMoveToPositionAggressively : Action
     {
         private readonly Vector3 _position;
+        private readonly EntityAttack _entityAttack;
 
         public ActionMoveToPositionAggressively(Entity owner, Vector3 position) : base(owner)
         {
             _position = position;
+            _entityAttack = entity.GetCharacterComponent<EntityAttack>();
         }
 
         public override void OnStateEnter()
@@ -32,7 +34,7 @@ namespace Game.Entities.Actions
 
         public override void Tick()
         {
-            bool hasFindEnemyToAttack = entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
+            bool hasFindEnemyToAttack = _entityAttack.TryStartActionAttackNearestEnemy();
 
             if (hasFindEnemyToAttack)
             {
