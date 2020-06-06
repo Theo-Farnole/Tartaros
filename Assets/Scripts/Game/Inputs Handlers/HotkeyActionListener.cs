@@ -1,5 +1,4 @@
-﻿using CommandPattern;
-using Game.Selection;
+﻿using Game.Selection;
 using Lortedo.Utilities.Pattern;
 using System;
 using System.Collections;

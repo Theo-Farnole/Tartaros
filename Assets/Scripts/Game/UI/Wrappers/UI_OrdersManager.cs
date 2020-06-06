@@ -1,5 +1,4 @@
-﻿using CommandPattern;
-using Lortedo.Utilities.Inspector;
+﻿using Lortedo.Utilities.Inspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
