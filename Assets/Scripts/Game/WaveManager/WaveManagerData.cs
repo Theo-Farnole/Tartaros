@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Tartaros/System/Wave Manager")]
-public class WaveManagerData : ScriptableObject
+namespace Game.WaveSystem
 {
-    [SerializeField, Range(1, 90), Tooltip("In Minutes")] private float _minutesBetweenWaves = 30;
+    [CreateAssetMenu(menuName = "Tartaros/System/Wave Manager")]
+    public class WaveManagerData : ScriptableObject
+    {
+        [SerializeField, Range(1, 90), Tooltip("In Minutes")] private float _minutesBetweenWaves = 30;
 
-    public float SecondsBetweenWave { get => _minutesBetweenWaves * 60; }
+        public float SecondsBetweenWave { get => _minutesBetweenWaves * 60; }
+    }
 }
