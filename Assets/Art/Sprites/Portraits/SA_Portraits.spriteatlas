@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SA_Portraits
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: b3561439d7ce3ef4ea00592343b8c42c, type: 3}
+    - {fileID: 2800000, guid: aeb8eb04ee5722144bd09be71e8c8fed, type: 3}
+    - {fileID: 2800000, guid: 04beb25e868cb264791c0ba773f4fff5, type: 3}
+    - {fileID: 2800000, guid: 223210f0a157f6c4d9cff1d660682a7b, type: 3}
+    - {fileID: 2800000, guid: 611dc461b85e6b74a90d20260a2b768f, type: 3}
+    - {fileID: 2800000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
+    - {fileID: 2800000, guid: 40b691837896dc44aa7fbee17cdf02f7, type: 3}
+    - {fileID: 2800000, guid: 6de8e2542b2bff04b8a83b27799c19fe, type: 3}
+    - {fileID: 2800000, guid: 46350d279cd6628489086b4326df7338, type: 3}
+    - {fileID: 2800000, guid: b45b41d3b5d1c684e826270c50307c4d, type: 3}
+    - {fileID: 2800000, guid: 990f18308e5fad542a564f88b7076bb1, type: 3}
+    - {fileID: 2800000, guid: 62890810e2858b84da1ce60f5a074504, type: 3}
+    - {fileID: 2800000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
+    - {fileID: 2800000, guid: 9cdff1d878a982245a2658b6df36892b, type: 3}
+    - {fileID: 2800000, guid: eb5ab674716194b458a465e01cafb18d, type: 3}
+    totalSpriteSurfaceArea: 3932160
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 62890810e2858b84da1ce60f5a074504, type: 3}
+  - {fileID: 21300000, guid: 990f18308e5fad542a564f88b7076bb1, type: 3}
+  - {fileID: 21300000, guid: 223210f0a157f6c4d9cff1d660682a7b, type: 3}
+  - {fileID: 21300000, guid: 611dc461b85e6b74a90d20260a2b768f, type: 3}
+  - {fileID: 21300000, guid: 40b691837896dc44aa7fbee17cdf02f7, type: 3}
+  - {fileID: 21300000, guid: b45b41d3b5d1c684e826270c50307c4d, type: 3}
+  - {fileID: 21300000, guid: aeb8eb04ee5722144bd09be71e8c8fed, type: 3}
+  - {fileID: 21300000, guid: 6de8e2542b2bff04b8a83b27799c19fe, type: 3}
+  - {fileID: 21300000, guid: eb5ab674716194b458a465e01cafb18d, type: 3}
+  - {fileID: 21300000, guid: 46350d279cd6628489086b4326df7338, type: 3}
+  - {fileID: 21300000, guid: 9cdff1d878a982245a2658b6df36892b, type: 3}
+  - {fileID: 21300000, guid: b3561439d7ce3ef4ea00592343b8c42c, type: 3}
+  - {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
+  - {fileID: 21300000, guid: 04beb25e868cb264791c0ba773f4fff5, type: 3}
+  - {fileID: 21300000, guid: 0b13b8be38556f844b502bc57e47f279, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - S_Portrait_Action_Stop
+  - S_Portrait_Action_Patrol
+  - S_Portrait_Building_Gate
+  - S_Portrait_Building_Farm
+  - S_Portrait_Orders_CloseGate
+  - S_Portrait_Action_Move
+  - S_Portrait_Building_Tower
+  - S_Portrait_Orders_OpenGate
+  - S_Portrait_Unit_Range_Archer
+  - S_Portrait_Action_Attack
+  - S_Portrait_Unit_Melee_Hoplite
+  - S_Portrait_Building_Wall
+  - S_Portrait_Building_Barracks
+  - S_Portrait_Building_House
+  - S_Portrait_Unit_Default
+  m_Tag: SA_Portraits
+  m_IsVariant: 0
