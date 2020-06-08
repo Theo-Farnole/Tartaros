@@ -25,13 +25,15 @@ namespace Game.Entities.Actions
             base.OnStateEnter();
 
             entity.GetCharacterComponent<EntityMovement>().MoveToPosition(_position);
-            entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += ActionMoveToPositionAggressively_OnOpponentEnterAttackRange;
+            entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += OnOpponentEnterAttackRange;
         }
 
         public override void OnStateExit()
         {
+            base.OnStateExit();
+
             entity.GetCharacterComponent<EntityMovement>().StopMoving();
-            entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange -= ActionMoveToPositionAggressively_OnOpponentEnterAttackRange;
+            entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange -= OnOpponentEnterAttackRange;
         }
 
         public override void Tick()
@@ -39,11 +41,13 @@ namespace Game.Entities.Actions
             // Empty function but it's normal
         }
 
-        private void ActionMoveToPositionAggressively_OnOpponentEnterAttackRange(Entity entity)
+        private void OnOpponentEnterAttackRange(Entity entity)
         {
             var action = new ActionAttackEntity(_owner, entity);
-
             _owner.SetAction(action);
+
+            // after the entity killed,
+            // continue to move to position
             _owner.SetAction(this, true);
         }
 
@@ -54,7 +58,7 @@ namespace Game.Entities.Actions
 
         public override bool CanExecuteAction()
         {
-            return _owner.Data.CanMove || _owner.Data.CanAttack;
+            return _owner.Data.CanMove && _owner.Data.CanAttack;
         }
     }
 }

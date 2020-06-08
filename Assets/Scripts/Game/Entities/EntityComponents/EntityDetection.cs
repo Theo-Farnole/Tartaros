@@ -42,13 +42,11 @@ namespace Game.Entities
         void Update()
         {
             // avoid calculation every frame
-            if (Time.frameCount - _frameOffset % frameIntervalToCheckNearestEntities == 0)
+            if ((Time.frameCount - _frameOffset) % frameIntervalToCheckNearestEntities == 0)
             {
                 CalculateNearestAllyTeamEntity();
                 CalculateNearestOpponentTeamEntity();
             }
-
-            Debug_DrawAttackRange();
         }
 
         void OnEnable()
@@ -133,6 +131,12 @@ namespace Game.Entities
             return _nearestAllyTeamEntity;
         }
 
+        public bool IsEntityInViewRadius(Entity target)
+        {
+            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.ViewRadius;
+        }
+
+        #region Obsolete
         [Obsolete("Use GetNearestOpponent with 'IsInViewRadius' please.")]
         public Entity GetNearestOpponentInViewRadius()
         {
@@ -146,11 +150,7 @@ namespace Game.Entities
         {
             return _nearestAllyTeamEntity;
         }
-
-        public bool IsEntityInViewRadius(Entity target)
-        {
-            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.ViewRadius;
-        }
+        #endregion
         #endregion
 
         #region Private Methods
@@ -174,13 +174,11 @@ namespace Game.Entities
             }
         }
 
+        [Obsolete("Main behaviour in this method has been commented.")]
         private void Debug_DrawAttackRange()
         {
 #if UNITY_EDITOR
             if (!Application.isPlaying)
-                return;
-
-            if (!GetCharacterComponent<EntitySelectable>().IsSelected)
                 return;
 
             if (Entity.EntityID == string.Empty)
@@ -189,7 +187,7 @@ namespace Game.Entities
             Assert.IsNotNull(Entity);
             Assert.IsNotNull(Entity.Data);
 
-            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius + Entity.Data.GetBiggerTileSize());
+            //UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius + Entity.Data.GetBiggerTileSize());
 #endif
         }
         #endregion
