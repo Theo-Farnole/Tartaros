@@ -8,6 +8,7 @@ using Game.UI.HoverPopup;
 using UnityEngine;
 using UnityEngine.Serialization;
 using System;
+using Game.Selection;
 
 namespace Game.Entities
 {
