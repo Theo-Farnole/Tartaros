@@ -19,7 +19,7 @@ namespace Game.ConstructionSystem
         private new const string debugLogHeader = "Chained Construction State : ";
 
         private List<PreviewBuilding> _constructionBuildings = new List<PreviewBuilding>();
-        private List<PreviewBuilding> _constructionAchievedBuilding;
+        private List<PreviewBuilding> _constructionAchievedBuilding = new List<PreviewBuilding>();
 
         private int _constructableBuildingCount = 0;
 
@@ -30,6 +30,10 @@ namespace Game.ConstructionSystem
 
         public ChainedConstructionState(GameManager owner, string buildingID) : base(owner, buildingID)
         {
+            if (EntityData.TileSize.x > 1 || EntityData.TileSize.y > 1)
+            {
+                throw new System.NotSupportedException(buildingID + " has a tilesize > 1 and construction chained.");
+            }
         }
 
         #region Methods
@@ -39,7 +43,7 @@ namespace Game.ConstructionSystem
             base.OnStateExit();
 
             if (SucessfulBuild)
-            {                
+            {
                 DestroyUnachievedBuilding();
             }
         }
@@ -129,14 +133,14 @@ namespace Game.ConstructionSystem
                 return;
             }
 
-            bool constructionSuccessful = TryConstructBuildings();
+            bool canConstruct = CanConstructAllBuildings();
 
-            if (constructionSuccessful)
+            if (canConstruct)
             {
-                _owner.Resources -= constructionCost;
+                ConstructAllBuildings();
             }
 
-            SucessfulBuild = constructionSuccessful;
+            SucessfulBuild = canConstruct;
             LeaveState();
         }
 
@@ -164,22 +168,36 @@ namespace Game.ConstructionSystem
             }
         }
 
-        private bool TryConstructBuildings()
+        private bool CanConstructAllBuildings()
         {
-            _constructionAchievedBuilding = new List<PreviewBuilding>();
+            TileSystem tileSystem = TileSystem.Instance;
 
             foreach (var cBuilding in _constructionBuildings)
             {
-                bool constructionSuccessful = TryConstructBuilding(cBuilding);
+                Vector3 buildingPosition = cBuilding.Building.transform.position;
 
-                if (!constructionSuccessful)
-                    return false;
+                // if the tile is the same type of 'EntityID'
+                if (tileSystem.GetTile(buildingPosition) != null && tileSystem.DoTileContainsEntityOfID(buildingPosition, EntityID))
+                    break;
+
+                if (tileSystem.DoTilesFillConditions(buildingPosition, EntityData.TileSize, TileFlag.Free | TileFlag.Visible))
+                    break;
+
+                return false;
             }
 
             return true;
         }
 
-        private bool TryConstructBuilding(PreviewBuilding cBuilding)
+        private void ConstructAllBuildings()
+        {
+            foreach (var cBuilding in _constructionBuildings)
+            {
+                ConstructBuilding(cBuilding);
+            }
+        }
+
+        private void ConstructBuilding(PreviewBuilding cBuilding)
         {
             GameObject building = cBuilding.Building;
             Vector3 buildingPosition = building.transform.position;
@@ -191,24 +209,16 @@ namespace Game.ConstructionSystem
             {
                 // destroy, but don't interupt construction
                 cBuilding.Destroy();
-                return true;
+                return;
             }
-            else
+
+            const TileFlag condition = TileFlag.Free | TileFlag.Visible;
+            bool tileSetSuccessfully = tileSystem.TrySetTile(building, EntityData.TileSize, condition, EntityID);
+
+            if (tileSetSuccessfully)
             {
-                const TileFlag condition = TileFlag.Free | TileFlag.Visible;
-                bool tileSetSuccessfully = tileSystem.TrySetTile(building, EntityData.TileSize, condition, EntityID);
-
-                if (tileSetSuccessfully)
-                {
-                    cBuilding.SetConstructionAsFinish(Team.Player);
-                    _constructionAchievedBuilding.Add(cBuilding);
-
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                cBuilding.SetConstructionAsFinish(Team.Player);
+                _constructionAchievedBuilding.Add(cBuilding);
             }
         }
         #endregion
