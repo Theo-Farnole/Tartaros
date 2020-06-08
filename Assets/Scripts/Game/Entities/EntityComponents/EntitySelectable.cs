@@ -27,22 +27,22 @@ namespace Game.Entities
             get => _isSelected;
             set
             {
+                if (value == _isSelected)
+                    return;
+
                 bool oldIsSelected = _isSelected;
 
                 _isSelected = value;
 
-                if (oldIsSelected != _isSelected)
+                if (_isSelected)
                 {
-                    if (_isSelected)
-                    {
-                        OnSelected?.Invoke(Entity);
-                        OnSelection();
-                    }
-                    else
-                    {
-                        OnUnselected?.Invoke(Entity);
-                        OnUnselection();
-                    }
+                    OnSelected?.Invoke(Entity);
+                    OnSelection();
+                }
+                else
+                {
+                    OnUnselected?.Invoke(Entity);
+                    OnUnselection();
                 }
             }
         }
@@ -53,17 +53,15 @@ namespace Game.Entities
         void OnEnable()
         {
             Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover += OnFogCover;
-            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover += OnFogUncover;
         }
 
         void OnDisable()
         {
             Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover -= OnFogCover;
-            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover -= OnFogUncover;
 
-            if (Game.Selection.SelectionManager.Instance != null)
+            if (Selection.SelectionManager.Instance != null)
             {
-                Game.Selection.SelectionManager.Instance.RemoveEntity(Entity);
+                Selection.SelectionManager.Instance.RemoveEntity(Entity);
             }
 
             IsSelected = false;
@@ -73,12 +71,8 @@ namespace Game.Entities
         #region Events handlers
         void OnFogCover(Game.FogOfWar.IFogCoverable fogCoverable)
         {
-            HideSelectionCircle();
-        }
-
-        void OnFogUncover(Game.FogOfWar.IFogCoverable fogCoverable)
-        {
-            DisplaySelectionCircle();
+            Selection.SelectionManager.Instance.RemoveEntity(Entity);
+            IsSelected = false;
         }
         #endregion
 
