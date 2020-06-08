@@ -108,7 +108,7 @@ namespace Game.Entities
             var unitData = MainRegister.Instance.GetEntityData(entityID);
             Assert.IsNotNull(unitData, string.Format(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", entityID));
 
-            if (!GameManager.Instance.HasEnoughtPopulationToSpawn())
+            if (unitData.PopulationUse > 0 && !GameManager.Instance.HasEnoughtPopulationToSpawn())
             {
                 if (logErrors) UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", entityID));
                 return false;
