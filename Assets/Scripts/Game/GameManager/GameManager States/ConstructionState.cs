@@ -13,7 +13,7 @@ namespace Game.ConstructionSystem
     public class ConstructionState : AbstractConstructionState
     {
         #region Fields
-        ConstructionBuilding _constructionBuilding;
+        PreviewBuilding _constructionBuilding;
         #endregion
 
         public ConstructionState(GameManager owner, string entityID) : base(owner, entityID)
@@ -40,7 +40,7 @@ namespace Game.ConstructionSystem
 
             Assert.IsNotNull(building, "Building out of ObjectPooler is null.");
 
-            _constructionBuilding = new ConstructionBuilding(building, entityID, buildingData);
+            _constructionBuilding = new PreviewBuilding(building, entityID, buildingData);
 
             UpdateConstructionBuildingPosition();
         }

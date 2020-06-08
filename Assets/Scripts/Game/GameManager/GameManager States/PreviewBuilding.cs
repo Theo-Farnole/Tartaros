@@ -14,7 +14,7 @@ namespace Game.ConstructionSystem
     /// It manages deactivation of components. 
     /// It manages building shader properties.
     /// </summary>
-    public class ConstructionBuilding
+    public class PreviewBuilding
     {
         #region Fields
         public readonly static string debugLogHeader = "Construction Building : ";
@@ -31,7 +31,7 @@ namespace Game.ConstructionSystem
         public GameObject Building { get => _building; }
         #endregion
 
-        public ConstructionBuilding(GameObject gameObject, string entityID, EntityData entityData)
+        public PreviewBuilding(GameObject gameObject, string entityID, EntityData entityData)
         {
             _building = gameObject;
             _entityID = entityID;

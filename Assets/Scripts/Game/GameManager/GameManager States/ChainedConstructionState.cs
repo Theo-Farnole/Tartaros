@@ -18,8 +18,8 @@ namespace Game.ConstructionSystem
         #region Fields
         private new const string debugLogHeader = "Chained Construction State : ";
 
-        private List<ConstructionBuilding> _constructionBuildings = new List<ConstructionBuilding>();
-        private List<ConstructionBuilding> _constructionAchievedBuilding;
+        private List<PreviewBuilding> _constructionBuildings = new List<PreviewBuilding>();
+        private List<PreviewBuilding> _constructionAchievedBuilding;
 
         private int _constructableBuildingCount = 0;
 
@@ -166,7 +166,7 @@ namespace Game.ConstructionSystem
 
         private bool TryConstructBuildings()
         {
-            _constructionAchievedBuilding = new List<ConstructionBuilding>();
+            _constructionAchievedBuilding = new List<PreviewBuilding>();
 
             foreach (var cBuilding in _constructionBuildings)
             {
@@ -179,7 +179,7 @@ namespace Game.ConstructionSystem
             return true;
         }
 
-        private bool TryConstructBuilding(ConstructionBuilding cBuilding)
+        private bool TryConstructBuilding(PreviewBuilding cBuilding)
         {
             GameObject building = cBuilding.Building;
             Vector3 buildingPosition = building.transform.position;
@@ -299,7 +299,7 @@ namespace Game.ConstructionSystem
             var building = ObjectPooler.Instance.SpawnFromPool(EntityData.Prefab, Vector3.zero, Quaternion.identity, true);
             building.GetComponent<Entity>().Team = Team.Player;
 
-            var constructionBuilding = new ConstructionBuilding(building, EntityID, EntityData);
+            var constructionBuilding = new PreviewBuilding(building, EntityID, EntityData);
             _constructionBuildings.Add(constructionBuilding);
         }
 
@@ -317,12 +317,12 @@ namespace Game.ConstructionSystem
         #endregion
 
         #region Getter & Calculation methods
-        private bool IsConstructionBuildingAchieved(ConstructionBuilding cBuilding)
+        private bool IsConstructionBuildingAchieved(PreviewBuilding cBuilding)
         {
             return (_constructionAchievedBuilding != null && _constructionAchievedBuilding.Contains(cBuilding));
         }
 
-        private bool DoBuildingConstructionHasACost(ConstructionBuilding cBuilding)
+        private bool DoBuildingConstructionHasACost(PreviewBuilding cBuilding)
         {
             Vector2Int coords = TileSystem.Instance.WorldToCoords(cBuilding.Building.transform.position);
 
