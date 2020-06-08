@@ -56,11 +56,41 @@ namespace Game.Entities
             if (initialized)
                 return;
 
+            SubscribeToEvents();
+            RecalculateKDTrees();
+
+            initialized = true;
+        }
+
+        private static void SubscribeToEvents()
+        {
             Entity.OnSpawn += Entity_OnSpawn;
             Entity.OnDeath += Entity_OnDeath;
             Entity.OnTeamSwap += Entity_OnTeamSwap;
+        }
 
-            initialized = true;
+        private static void RecalculateKDTrees()
+        {
+            _playerTeamEntities = new KdTree<Entity>();
+            _enemyTeamEntities = new KdTree<Entity>();
+
+            var entities = Object.FindObjectsOfType<Entity>();
+
+            foreach (var entity in entities)
+            {
+                switch (entity.Team)
+                {
+                    case Team.Player:
+                        _playerTeamEntities.Add(entity);
+                        break;
+                    case Team.Enemy:
+                        _enemyTeamEntities.Add(entity);
+                        break;
+                    // unsupported cases
+                    default:
+                        throw new System.NotImplementedException();
+                }
+            }
         }
 
         public static Entity GetClosestOpponentEntity(Vector3 position, Team entityTeam)
