@@ -104,6 +104,9 @@ namespace Game.Entities
         [BoxGroup("Vision Settings")]
         [SerializeField, Range(1, 15)] private float _viewRadius = 3;
         public float ViewRadius { get => _viewRadius; }
+
+        [BoxGroup("Vision Settings")]
+        [SerializeField] private bool _canDetectEntities = false;
         #endregion
 
         [BoxGroup("Construction")]
@@ -246,6 +249,7 @@ namespace Game.Entities
         [SerializeField] private OrderContent _orderToggleNavMeshObstacle;
 
         public bool CanToggleNavMeshObstacle { get => _canToggleNavMeshObstacle; }
+        public bool CanDetectEntities { get => _canDetectEntities; set => _canDetectEntities = value; }
         #endregion
         #endregion
 

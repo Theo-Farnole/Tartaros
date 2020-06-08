@@ -39,6 +39,14 @@ namespace Game.Entities
             EntitiesManager.Initialize();
         }
 
+        void Start()
+        {
+            if (!Entity.Data.CanDetectEntities)
+            {
+                enabled = false;
+            }
+        }
+
         void Update()
         {
             // avoid calculation every frame
@@ -117,6 +125,8 @@ namespace Game.Entities
 
         public Entity GetNearestOpponent()
         {
+            TF.Assertations.Assert.IsTrue(Entity.Data.CanDetectEntities, "To get nearest opponent, you must tick 'Can detect entities' on ID '{0}'.", Entity.EntityID);
+
             if (_nearestOpponentTeamEntity != null && !_nearestOpponentTeamEntity.IsInstanciate)
                 _nearestOpponentTeamEntity = null;
 
@@ -125,6 +135,8 @@ namespace Game.Entities
 
         public Entity GetNearestAlly()
         {
+            TF.Assertations.Assert.IsTrue(Entity.Data.CanDetectEntities, "To get nearest opponent, you must tick 'Can detect entities' on ID '{0}'.", Entity.EntityID);
+
             if (_nearestAllyTeamEntity != null && !_nearestAllyTeamEntity.IsInstanciate)
                 _nearestAllyTeamEntity = null;
 

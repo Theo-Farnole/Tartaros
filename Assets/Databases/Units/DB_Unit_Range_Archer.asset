@@ -13,14 +13,40 @@ MonoBehaviour:
   m_Name: DB_Unit_Range_Archer
   m_EditorClassIdentifier: 
   serializationData:
-    SerializedFormat: 0
-    SerializedBytes: 0101110000005f007200650073006f0075007200630065007300500065007200430065006c006c002f000000000185000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e00440069006300740069006f006e00610072007900600032005b005b00470061006d0065002e004d0061007000430065006c006c0045006400690074006f0072002e00430065006c006c0054007900700065002c00200041007300730065006d0062006c0079002d004300530068006100720070005d002c005b005200650073006f007500720063006500730057007200610070007000650072002c00200041007300730065006d0062006c0079002d004300530068006100720070005d005d002c0020006d00730063006f0072006c00690062000000000001010800000063006f006d00700061007200650072002f01000000016b000000530079007300740065006d002e0043006f006c006c0065006300740069006f006e0073002e00470065006e0065007200690063002e0045006e0075006d0045007100750061006c0069007400790043006f006d0070006100720065007200600031005b005b00470061006d0065002e004d0061007000430065006c006c0045006400690074006f0072002e00430065006c006c0054007900700065002c00200041007300730065006d0062006c0079002d004300530068006100720070005d005d002c0020006d00730063006f0072006c00690062000100000006000000000000000007050600000000000000000705
+    SerializedFormat: 2
+    SerializedBytes: 
     ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: _resourcesPerCell
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[Game.MapCellEditor.CellType,
+        Assembly-CSharp],[ResourcesWrapper, Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.MapCellEditor.CellType,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   _entityName: Archer
   _entityType: 0
   _hotkey: 97
@@ -37,6 +63,7 @@ MonoBehaviour:
     stone: 0
   _creationDuration: 10
   _viewRadius: 8
+  _canDetectEntities: 1
   _isConstructionChained: 0
   _canAttack: 1
   _isMelee: 0
@@ -48,6 +75,8 @@ MonoBehaviour:
   _damagePerSecond: 1
   _canMove: 1
   _speed: 3
+  _shiftLength: 3
+  _startShiftCollision: 3
   _canCreateUnit: 0
   _availableUnitsForCreation: []
   _canGenerateResources: 0
@@ -62,3 +91,9 @@ MonoBehaviour:
   _increaseMaxPopulationAmount: 0
   _canTurnIntoAnotherEntity: 0
   _turnIntoAnotherEntityList: []
+  _canToggleNavMeshObstacle: 0
+  _orderToggleNavMeshObstacle:
+    _hotkey: 0
+    _portrait: {fileID: 0}
+    _hoverPopupData: {fileID: 0}
+    _linePosition: 0
