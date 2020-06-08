@@ -36,7 +36,7 @@ namespace Game.Entities
         void Awake()
         {
             _frameOffset = UnityEngine.Random.Range(0, frameIntervalToCheckNearestEntities);
-            EntitiesManager.Initialize();
+            EntitiesNeightboorManager.Initialize();
         }
 
         void Start()
@@ -168,7 +168,7 @@ namespace Game.Entities
         #region Private Methods
         private void CalculateNearestOpponentTeamEntity()
         {
-            _nearestOpponentTeamEntity = EntitiesManager.GetClosestOpponentEntity(transform.position, Entity.Team);
+            _nearestOpponentTeamEntity = EntitiesNeightboorManager.GetClosestOpponentEntity(transform.position, Entity.Team);
 
             if (_nearestOpponentTeamEntity != null && IsEntityInAttackRange(_nearestOpponentTeamEntity))
             {
@@ -178,7 +178,7 @@ namespace Game.Entities
 
         private void CalculateNearestAllyTeamEntity()
         {
-            _nearestAllyTeamEntity = EntitiesManager.GetClosestAllyEntity(transform.position, Entity.Team);
+            _nearestAllyTeamEntity = EntitiesNeightboorManager.GetClosestAllyEntity(transform.position, Entity.Team);
 
             if (_nearestAllyTeamEntity != null && IsEntityInShiftRange(_nearestAllyTeamEntity))
             {

@@ -5,7 +5,7 @@ namespace Game.Entities
     /// <summary>
     /// This script has been created for performance. Store KDTree to find nearest entities.
     /// </summary>
-    public static class EntitiesManager
+    public static class EntitiesNeightboorManager
     {
         #region Fields
         private static bool initialized = false;
