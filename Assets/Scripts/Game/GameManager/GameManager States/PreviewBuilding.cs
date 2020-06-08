@@ -54,6 +54,8 @@ namespace Game.ConstructionSystem
             _entityData = entityData;
 
             EnableBuildingComponents(false);
+
+            EntitiesNeightboorManager.ManualRemove(_building.GetComponent<Entity>());
         }
 
         #region Methods
@@ -127,6 +129,8 @@ namespace Game.ConstructionSystem
             }
 
             Assert.IsNotNull(entity);
+
+            EntitiesNeightboorManager.ManualAdd(_building.GetComponent<Entity>());
 
             DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
         }

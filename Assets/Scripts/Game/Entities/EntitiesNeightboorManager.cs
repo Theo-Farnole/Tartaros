@@ -71,8 +71,8 @@ namespace Game.Entities
 
         private static void RecalculateKDTrees()
         {
-            _playerTeamEntities = new KdTree<Entity>();
-            _enemyTeamEntities = new KdTree<Entity>();
+            _playerTeamEntities = new KdTree<Entity>(true);
+            _enemyTeamEntities = new KdTree<Entity>(true);
 
             var entities = Object.FindObjectsOfType<Entity>();
 
@@ -83,14 +83,26 @@ namespace Game.Entities
                     case Team.Player:
                         _playerTeamEntities.Add(entity);
                         break;
+
                     case Team.Enemy:
                         _enemyTeamEntities.Add(entity);
                         break;
+
                     // unsupported cases
                     default:
-                        throw new System.NotImplementedException();
+                        throw new System.NotSupportedException();
                 }
             }
+        }
+
+        public static void ManualRemove(Entity ent)
+        {
+            GetKDTree(ent.Team).RemoveAll(x => x == ent);
+        }
+
+        public static void ManualAdd(Entity ent)
+        {
+            GetKDTree(ent.Team).Add(ent);
         }
 
         public static Entity GetClosestOpponentEntity(Vector3 position, Team entityTeam)
