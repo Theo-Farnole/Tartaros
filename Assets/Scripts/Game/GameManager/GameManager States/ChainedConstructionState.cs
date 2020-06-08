@@ -53,7 +53,7 @@ namespace Game.ConstructionSystem
             // don't move the 'ManageBuildingsPosition' below 'base.Tick'
             // however, OnStateExit 'ManageBuildingsPosition' will create new 'ConstructionBuilding'
             // that'll never be deleted
-            ManageBuildingsPosition();
+            UpdatePreviewsPosition();
 
             base.Tick();
         }
@@ -230,33 +230,31 @@ namespace Game.ConstructionSystem
         }
 
         #region Set Building Position Methods
-        private void ManageBuildingsPosition()
+        private void UpdatePreviewsPosition()
         {
-            if (GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, terrainLayerMask))
+            if (!GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, terrainLayerMask))
             {
-                if (_anchorSet)
-                {
-                    var path = TileSystem.Instance.GetPath(_anchorPosition, newPosition);
+                Debug.LogWarningFormat("Construction State : " + "Can't find nearest position from mouse. We can't update the building position.");
+                return;
+            }
 
-                    bool isPathEmpty = path.Length > 0;
-                    if (isPathEmpty)
-                    {
-                        SetBuildingsPosition(path);
-                    }
-                    else
-                    {
-                        SetBuildingsPosition(newPosition);
-                    }
+            // update the preview before anchoring
+            if (!_anchorSet)
+            {
+                SetBuildingsPosition(newPosition);
+                return;
+            }
 
-                }
-                else
-                {
-                    SetBuildingsPosition(newPosition);
-                }
+            var path = TileSystem.Instance.GetPath(_anchorPosition, newPosition);
+
+            bool isPathEmpty = path.Length > 0;
+            if (isPathEmpty)
+            {
+                SetBuildingsPosition(path);
             }
             else
             {
-                Debug.LogWarningFormat("Construction State : " + "Can't find nearest position from mouse. We can't update the building position.");
+                SetBuildingsPosition(newPosition);
             }
         }
 
