@@ -18,7 +18,7 @@ namespace Game.ConstructionSystem
         #region Fields
         private new const string debugLogHeader = "Chained Construction State : ";
 
-        private List<PreviewBuilding> _constructionBuildings = new List<PreviewBuilding>();
+        private List<PreviewBuilding> _previewBuildings = new List<PreviewBuilding>();
         private List<PreviewBuilding> _constructionAchievedBuilding = new List<PreviewBuilding>();
 
         private int _constructableBuildingCount = 0;
@@ -104,10 +104,10 @@ namespace Game.ConstructionSystem
             }
 
             // don't if no construction building
-            if (_constructionBuildings.Count == 0)
+            if (_previewBuildings.Count == 0)
                 return;
 
-            GameObject nearMouseBuilding = _constructionBuildings.Last().Building;
+            GameObject nearMouseBuilding = _previewBuildings.Last().Building;
 
             // Draw wood X food X stone X above building
             Vector2 guiPosition = Camera.main.WorldToScreenPoint(nearMouseBuilding.transform.position);
@@ -146,12 +146,12 @@ namespace Game.ConstructionSystem
 
         protected override void DestroyAllConstructionBuildings()
         {
-            foreach (var cBuilding in _constructionBuildings)
+            foreach (var cBuilding in _previewBuildings)
             {
                 cBuilding.Destroy();
             }
 
-            _constructionBuildings.Clear();
+            _previewBuildings.Clear();
         }
         #endregion
 
@@ -159,7 +159,7 @@ namespace Game.ConstructionSystem
         #region Construction / Destroy Methods
         private void DestroyUnachievedBuilding()
         {
-            foreach (var cBuilding in _constructionBuildings)
+            foreach (var cBuilding in _previewBuildings)
             {
                 if (!IsConstructionBuildingAchieved(cBuilding))
                 {
@@ -172,16 +172,16 @@ namespace Game.ConstructionSystem
         {
             TileSystem tileSystem = TileSystem.Instance;
 
-            foreach (var cBuilding in _constructionBuildings)
+            foreach (var cBuilding in _previewBuildings)
             {
                 Vector3 buildingPosition = cBuilding.Building.transform.position;
 
                 // if the tile is the same type of 'EntityID'
                 if (tileSystem.GetTile(buildingPosition) != null && tileSystem.DoTileContainsEntityOfID(buildingPosition, EntityID))
-                    break;
+                    continue;
 
                 if (tileSystem.DoTilesFillConditions(buildingPosition, EntityData.TileSize, TileFlag.Free | TileFlag.Visible))
-                    break;
+                    continue;
 
                 return false;
             }
@@ -191,7 +191,7 @@ namespace Game.ConstructionSystem
 
         private void ConstructAllBuildings()
         {
-            foreach (var cBuilding in _constructionBuildings)
+            foreach (var cBuilding in _previewBuildings)
             {
                 ConstructBuilding(cBuilding);
             }
@@ -245,10 +245,9 @@ namespace Game.ConstructionSystem
                 return;
             }
 
-            var path = TileSystem.Instance.GetPath(_anchorPosition, newPosition);
+            Vector2Int[] path = TileSystem.Instance.GetPath(_anchorPosition, newPosition);
 
-            bool isPathEmpty = path.Length > 0;
-            if (isPathEmpty)
+            if (path.Length > 0)
             {
                 SetBuildingsPosition(path);
             }
@@ -256,6 +255,8 @@ namespace Game.ConstructionSystem
             {
                 SetBuildingsPosition(newPosition);
             }
+
+            ManageBuildingColorOverwrite();
         }
 
         private void SetBuildingsPosition(Vector3 position)
@@ -263,10 +264,30 @@ namespace Game.ConstructionSystem
             ResizeConstructionBuildings(1);
 
             // TODO: 'add missing construction' shuld be in resize construction building
-            if (_constructionBuildings.Count == 0)
+            if (_previewBuildings.Count == 0)
                 AddConstructionBuilding();
 
-            _constructionBuildings[0].SetPosition(position);
+            _previewBuildings[0].SetPosition(position);            
+        }
+
+        private void ManageBuildingColorOverwrite()
+        {
+            if (!CanConstructAllBuildings())
+            {
+                foreach (var cbuilding in _previewBuildings)
+                {
+                    cbuilding.ForceColor(BuildingMesh.State.CannotBuild);
+                }
+            }
+            else
+            {
+
+                foreach (var cbuilding in _previewBuildings)
+                {
+                    cbuilding.StopForceColor();
+                }
+
+            }
         }
 
         private void SetBuildingsPosition(Vector2Int[] coords)
@@ -292,11 +313,11 @@ namespace Game.ConstructionSystem
             {
                 // TODO: 'add missing construction' shuld be in resize construction building
                 // add missing construction
-                if (!_constructionBuildings.IsIndexInsideBounds(i))
+                if (!_previewBuildings.IsIndexInsideBounds(i))
                     AddConstructionBuilding();
 
                 // update construction position
-                _constructionBuildings[i].SetPosition(positions[i]);
+                _previewBuildings[i].SetPosition(positions[i]);
             }
         }
         #endregion
@@ -308,17 +329,17 @@ namespace Game.ConstructionSystem
             building.GetComponent<Entity>().Team = Team.Player;
 
             var constructionBuilding = new PreviewBuilding(building, EntityID, EntityData);
-            _constructionBuildings.Add(constructionBuilding);
+            _previewBuildings.Add(constructionBuilding);
         }
 
         void ResizeConstructionBuildings(int count)
         {
-            for (int i = _constructionBuildings.Count - 1; i >= 0; i--)
+            for (int i = _previewBuildings.Count - 1; i >= 0; i--)
             {
                 if (i >= count)
                 {
-                    _constructionBuildings[i].Destroy();
-                    _constructionBuildings.RemoveAt(i);
+                    _previewBuildings[i].Destroy();
+                    _previewBuildings.RemoveAt(i);
                 }
             }
         }
@@ -342,7 +363,7 @@ namespace Game.ConstructionSystem
 
         int CalculateConstructableBuildingCount()
         {
-            return _constructionBuildings.Where(x => DoBuildingConstructionHasACost(x) == true).Count();
+            return _previewBuildings.Where(x => DoBuildingConstructionHasACost(x) == true).Count();
         }
         #endregion
         #endregion

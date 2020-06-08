@@ -25,10 +25,24 @@ namespace Game.ConstructionSystem
         private readonly string _entityID;
 
         private readonly EntityData _entityData;
+
+        private bool _forcePreviewColor = false;
+        private BuildingMesh _buildingMesh;
         #endregion
 
         #region Properties
         public GameObject Building { get => _building; }
+
+        public BuildingMesh BuildingMesh
+        {
+            get
+            {
+                if (_buildingMesh == null)
+                    _buildingMesh = _building.GetComponent<BuildingMesh>();
+
+                return _buildingMesh;
+            }
+        }
         #endregion
 
         public PreviewBuilding(GameObject gameObject, string entityID, EntityData entityData)
@@ -116,21 +130,28 @@ namespace Game.ConstructionSystem
 
             DynamicsObjects.Instance.SetToParent(_building.transform, "Building");
         }
+
+        public void ForceColor(BuildingMesh.State state)
+        {
+            _forcePreviewColor = true;
+            BuildingMesh.SetState(state);
+        }
+
+        public void StopForceColor()
+        {
+            _forcePreviewColor = false;
+            UpdateBuildingMeshColor();
+        }
         #endregion
 
         #region Private Methods
         private void UpdateBuildingMeshColor()
         {
-            BuildingMesh.State state = CanBeConstruct() ? BuildingMesh.State.CanBuild : BuildingMesh.State.CannotBuild;
+            if (_forcePreviewColor)
+                return;
 
-            if (_building.TryGetComponent(out BuildingMesh buildingMesh))
-            {
-                buildingMesh.SetState(state);
-            }
-            else
-            {
-                Debug.LogErrorFormat(debugLogHeader + "The current building {0} is missing a BuildingMesh component.", _building.name);
-            }
+            BuildingMesh.State state = CanBeConstruct() ? BuildingMesh.State.CanBuild : BuildingMesh.State.CannotBuild;
+            BuildingMesh.SetState(state);
         }
 
         private bool CanBeConstruct()
