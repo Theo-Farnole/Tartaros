@@ -6,12 +6,16 @@ using UnityEngine.UI;
 
 namespace Game.Entities
 {
+    public delegate void OnDamageReceived(Entity entity, Entity attacker, int currentHp, int damageAmount);
+
     /// <summary>
     /// Manage health of Entity.
     /// </summary>
     public class EntityHealth : EntityComponent, IPooledObject
     {
         #region Fields
+        public event OnDamageReceived OnDamageReceived;
+
         [Header("Health Slider Behaviour")]
         [SerializeField] private Canvas _sliderCanvas;
         [SerializeField] private Slider _healthSlider;
@@ -76,9 +80,11 @@ namespace Game.Entities
 
             UpdateHealthSlider();
 
+            OnDamageReceived(Entity, attacker, _hp, damage);
+
             if (!IsAlive)
             {
-                Entity.Death();
+                Entity.Death();                
             }
         }
         #endregion

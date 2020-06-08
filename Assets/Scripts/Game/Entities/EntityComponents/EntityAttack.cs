@@ -25,22 +25,34 @@ namespace Game.Entities
 
         void OnEnable()
         {
-            Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += EntityAttack_OnEnemyEnterAttackRange;
+            Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += OnEnemyEnterAttackRange;
+            Entity.GetCharacterComponent<EntityHealth>().OnDamageReceived += OnDamageReceived; 
         }
 
         void OnDisable()
         {
-            Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += EntityAttack_OnEnemyEnterAttackRange;
+            Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += OnEnemyEnterAttackRange;
+            Entity.GetCharacterComponent<EntityHealth>().OnDamageReceived -= OnDamageReceived; 
         }
         #endregion
 
         #region Events Handlers
-        private void EntityAttack_OnEnemyEnterAttackRange(Entity enemy)
+        private void OnEnemyEnterAttackRange(Entity enemy)
         {
             if (Entity.IsIdle)
             {
                 // auto attack the enemy
                 var action = new ActionAttackEntity(Entity, enemy);
+                Entity.SetAction(action);
+            }
+        }
+
+        private void OnDamageReceived(Entity entity, Entity attacker, int currentHp, int damageAmount)
+        {
+            if (Entity.IsIdle)
+            {
+                // auto attack the enemy
+                var action = new ActionAttackEntity(Entity, attacker);
                 Entity.SetAction(action);
             }
         }
@@ -102,7 +114,7 @@ namespace Game.Entities
 
             if (nearestEnemy.Team == Entity.Team) Debug.LogWarningFormat("Entity Attack : Entity {0} tries to auto attack an ally.", name);
             
-            if (Entity.GetCharacterComponent<EntityDetection>().IsEntityInAttackRange(nearestEnemy))
+            if (Entity.GetCharacterComponent<EntityDetection>().IsEntityInViewRadius(nearestEnemy))
             {
                 var action = new ActionAttackEntity(Entity, nearestEnemy);
                 Entity.SetAction(action);
