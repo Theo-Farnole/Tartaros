@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Change cursor aspect in fonction of mosue over game object.
@@ -56,9 +57,6 @@ public class CursorAspectManager : MonoBehaviour
     void Start()
     {
         _mainCamera = Camera.main;
-
-        _layerMaskEntity = LayerMask.GetMask("Entity");
-        _layerMaskTerrain = LayerMask.GetMask("Terrain");
     }
 
     void Update()
@@ -95,17 +93,17 @@ public class CursorAspectManager : MonoBehaviour
             return;
         }
 
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layerMaskEntity))
+        // is over UI
+        if (EventSystem.current.IsPointerOverGameObject())
         {
-            Entity clickedEntity = hit.transform.GetComponent<Entity>();
-
-            Assert.IsNotNull(clickedEntity, string.Format("Cursor Aspect Manager : {0} is on layer 'Entity' doesn't have a 'Entity' component. Maybe, you want to remove colliders on model.", hit.transform.name));
-
-            SetCursorState_OverEntity(clickedEntity);
+            SetCursorSprite(CursorState.Default);
         }
-        else if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layerMaskTerrain))
+
+        if (MouseInput.IsMouseOver(out RaycastHit hit, MouseLayer.Entity))
+        {
+            SetCursorState_OverEntity(hit.transform.GetComponent<Entity>());
+        }
+        else if (MouseInput.IsMouseOver(out hit, MouseLayer.Terrain))
         {
             SetCursorState_OverTerrain();
         }
@@ -147,6 +145,11 @@ public class CursorAspectManager : MonoBehaviour
     private void SetCursorSprite()
     {
         Cursor.SetCursor(_cursorTextures[(int)CurrentCursorState], _cursorOffset, _cursorMode);
+    }
+
+    private void SetCursorSprite(CursorState cursorState)
+    {
+        Cursor.SetCursor(_cursorTextures[(int)cursorState], _cursorOffset, _cursorMode);
     }
 
     private void SetCursorSpriteToDefault()
