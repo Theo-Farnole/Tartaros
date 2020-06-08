@@ -286,9 +286,10 @@ namespace Game.ConstructionSystem
         #region List Modificators
         void AddConstructionBuilding()
         {
-            var gameObject = ObjectPooler.Instance.SpawnFromPool(EntityData.Prefab, Vector3.zero, Quaternion.identity, true);
+            var building = ObjectPooler.Instance.SpawnFromPool(EntityData.Prefab, Vector3.zero, Quaternion.identity, true);
+            building.GetComponent<Entity>().Team = Team.Player;
 
-            var constructionBuilding = new ConstructionBuilding(gameObject, EntityID, EntityData);
+            var constructionBuilding = new ConstructionBuilding(building, EntityID, EntityData);
             _constructionBuildings.Add(constructionBuilding);
         }
 

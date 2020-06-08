@@ -36,6 +36,7 @@ namespace Game.ConstructionSystem
         protected override void OnCurrentBuildingSet(string entityID, EntityData buildingData)
         {
             var building = ObjectPooler.Instance.SpawnFromPool(buildingData.Prefab, Vector3.zero, Quaternion.identity, true);
+            building.GetComponent<Entity>().Team = Team.Player;
 
             Assert.IsNotNull(building, "Building out of ObjectPooler is null.");
 

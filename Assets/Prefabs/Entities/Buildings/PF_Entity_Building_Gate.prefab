@@ -196,7 +196,7 @@ PrefabInstance:
     - target: {fileID: 3874179427937144146, guid: 1f10db5a47a86f24e981e10d671b9984,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5000353791765197101, guid: 1f10db5a47a86f24e981e10d671b9984,
         type: 3}
@@ -292,6 +292,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _entityID
       value: building_gate
+      objectReference: {fileID: 0}
+    - target: {fileID: 7602055227293083283, guid: 1f10db5a47a86f24e981e10d671b9984,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8892646738251568431, guid: 1f10db5a47a86f24e981e10d671b9984,
         type: 3}

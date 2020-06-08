@@ -45,7 +45,7 @@ namespace Game.Entities
 
                 // unsupported cases
                 default:
-                    throw new System.NotImplementedException();
+                    throw new System.NotImplementedException("Unsupported value is '" + team + "'.");
             }
         }
         #endregion
