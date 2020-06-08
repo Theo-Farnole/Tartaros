@@ -15,6 +15,8 @@ namespace Game.Entities
     public class EntitySelectable : EntityComponent
     {
         #region Fields
+        private static int layerMaskTerrain = -1;
+
         public event OnSelected OnSelected;
         public event OnUnselected OnUnselected;
 
@@ -51,6 +53,12 @@ namespace Game.Entities
 
         #region Methods
         #region Mono Callbacks
+       void Awake()
+        {
+            if (layerMaskTerrain == -1)
+                layerMaskTerrain = LayerMask.GetMask("Terrain");
+        }
+
         void OnEnable()
         {
             Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover += OnFogCover;
@@ -77,7 +85,7 @@ namespace Game.Entities
         }
         #endregion
 
-        #region Public methods
+        #region Private methods
         void OnSelection()
         {
             DisplaySelectionCircle();
@@ -87,9 +95,7 @@ namespace Game.Entities
         {
             HideSelectionCircle();
         }
-        #endregion
 
-        #region Private methods
         private void DisplaySelectionCircle()
         {
             if (_selectionCircle != null)
@@ -98,7 +104,10 @@ namespace Game.Entities
                 return;
             }
 
-            Vector3 pos = transform.position + Vector3.up * 0.78f;
+            // raycast 
+            Vector3 pos = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, layerMaskTerrain) ? 
+                hit.point + Vector3.up * 0.01f : 
+                transform.position;
             Quaternion rot = Quaternion.Euler(90, 0, 0);
 
             _selectionCircle = ObjectPooler.Instance.SpawnFromPool(ObjectPoolingTags.keySelectionCircle, pos, rot);
@@ -110,8 +119,10 @@ namespace Game.Entities
             }
 
             _selectionCircle.transform.parent = transform;
-            _selectionCircle.GetComponent<SelectionCircle>().SetCircleOwner(Entity.Team);
-            _selectionCircle.GetComponent<Projector>().orthographicSize = Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y);
+
+            SelectionCircle selectionCircle = _selectionCircle.GetComponent<SelectionCircle>();
+            selectionCircle.SetCircleColor(Entity.Team);
+            selectionCircle.SetSize(Entity.Data.GetBiggerTileSize());
         }
 
         private void HideSelectionCircle()

@@ -6,41 +6,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionCircle : MonoBehaviour, IPooledObject
+namespace Game.Selection
 {
-    #region Fields
-    [EnumNamedArray(typeof(Team))]
-    [SerializeField] private Material[] _materials;
 
-    private Projector _projector;
-
-    public string ObjectTag { get; set; }
-    #endregion
-
-    #region Methods
-    #region Mono Callbacks
-    void Awake()
+    [RequireComponent(typeof(SpriteRenderer))]
+    public class SelectionCircle : MonoBehaviour
     {
-        _projector = GetComponent<Projector>();
-    }
+        #region Fields
+        [SerializeField] private SelectionCircleColorData _selectionCircleColor;
 
-    // force array to be the size of TEnum
-    void OnValidate()
-    {
-        Array.Resize(ref _materials, Enum.GetValues(typeof(Team)).Length);
-    }
-    #endregion
+        private SpriteRenderer _spriteRenderer;
+        #endregion
 
-    #region Public methods
-    public void SetCircleOwner(Team owner)
-    {
-        _projector.material = _materials[(int)owner];
+        #region Properties
+        public SpriteRenderer SpriteRenderer
+        {
+            get
+            {
+                if (_spriteRenderer == null)
+                    _spriteRenderer = GetComponent<SpriteRenderer>();
+
+                return _spriteRenderer;
+            }
+        }
+        #endregion
+
+        #region Methods
+        #region Public methods
+        public void SetCircleColor(Team team)
+        {
+            SpriteRenderer.color = _selectionCircleColor.GetColor(team);
+        }
+
+        public void SetSize(string entityID)
+         => SetSize(MainRegister.Instance.GetEntityData(entityID).GetBiggerTileSize());
+
+        public void SetSize(float size)
+        {
+            transform.localScale = Vector3.one * size;
+        }
+        #endregion
+        #endregion
     }
-    
-    public void OnObjectSpawn()
-    {
-        _projector.enabled = true;
-    }
-    #endregion
-    #endregion
 }
