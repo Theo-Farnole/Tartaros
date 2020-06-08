@@ -30,8 +30,7 @@ namespace Game.ConstructionSystem
         #endregion
 
         #region Protected override        
-        protected override void OnMouseUp()
-            => ConstructBuilding();
+        protected override void OnMouseUp() => ConstructBuilding();
 
         protected override void OnCurrentBuildingSet(string entityID, EntityData buildingData)
         {
@@ -48,17 +47,21 @@ namespace Game.ConstructionSystem
         protected override void ConstructBuilding()
         {
             GameObject building = _constructionBuilding.Building;
-
-            // register tile
+            
             const TileFlag tileFlagCondition = TileFlag.Free | TileFlag.Visible;
-            bool successfulSetTile = TileSystem.Instance.TrySetTile(building, EntityData.TileSize, tileFlagCondition);
 
-            if (successfulSetTile)
+            if (TileSystem.Instance.DoTilesFillConditions(building.transform.position, EntityData.TileSize, tileFlagCondition))
             {
+                TileSystem.Instance.SetTile(building, EntityData.TileSize);
                 _constructionBuilding.SetConstructionAsFinish(Team.Player);
+
+                SucessfulBuild = true;
+            }
+            else
+            {
+                SucessfulBuild = true;
             }
 
-            SucessfulBuild = successfulSetTile;
             LeaveState();
         }
 
@@ -67,8 +70,7 @@ namespace Game.ConstructionSystem
             _constructionBuilding.Destroy();
         }
 
-        protected override ResourcesWrapper GetConstructionCost()
-            => EntityData.SpawningCost;
+        protected override ResourcesWrapper GetConstructionCost() => EntityData.SpawningCost;
         #endregion
 
         #region Private methods

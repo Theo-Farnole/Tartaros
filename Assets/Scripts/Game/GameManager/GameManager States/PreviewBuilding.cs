@@ -61,14 +61,15 @@ namespace Game.ConstructionSystem
         /// </summary>
         public void ResetBuildingMeshColor()
         {
-            if (_building.TryGetComponent(out BuildingMesh buildingMesh))
-            {
-                buildingMesh.SetState(BuildingMesh.State.NotInBuildState);
-            }
-            else
+            BuildingMesh buildingMesh = _building.GetComponent<BuildingMesh>();
+
+            if (BuildingMesh == null)
             {
                 Debug.LogErrorFormat(debugLogHeader + "The current building {0} is missing a BuildingMesh component.", _building.name);
+                return;
             }
+
+            buildingMesh.SetState(BuildingMesh.State.NotInBuildState);
         }
 
         public void EnableBuildingComponents(bool enabled)

@@ -20,7 +20,7 @@ namespace Game.ConstructionSystem
         private EntityData _entityData;
 
         private bool _sucessfulBuild = false;
-        private bool _firstFrame = true;
+        private bool _firstFrame = true; // avoid check for input the first frame. Without it, if you click on the UI to start build, you'll also finish the build.
         private bool _stateLeaving = false;
         #endregion
 

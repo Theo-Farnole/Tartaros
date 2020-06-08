@@ -39,7 +39,7 @@ namespace Game.ConstructionSystem
             base.OnStateExit();
 
             if (SucessfulBuild)
-            {
+            {                
                 DestroyUnachievedBuilding();
             }
         }
