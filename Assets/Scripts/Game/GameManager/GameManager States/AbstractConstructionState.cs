@@ -21,6 +21,7 @@ namespace Game.ConstructionSystem
 
         private bool _sucessfulBuild = false;
         private bool _firstFrame = true;
+        private bool _stateLeaving = false;
         #endregion
 
         #region Properties
@@ -38,6 +39,7 @@ namespace Game.ConstructionSystem
         protected bool SucessfulBuild { get => _sucessfulBuild; set => _sucessfulBuild = value; }
         protected EntityData EntityData { get => _entityData; }
         protected string EntityID { get => _entityID; }
+        protected bool StateLeaving { get => _stateLeaving; }
         #endregion
 
         #region Methods
@@ -125,7 +127,7 @@ namespace Game.ConstructionSystem
             }
         }
 
-        protected void LeaveState()
+        protected virtual void LeaveState()
         {
             _owner.State = null;
         }
@@ -152,7 +154,12 @@ namespace Game.ConstructionSystem
 
         private void DestroyAndRefundBuilding()
         {
+            Refund();
             DestroyAllConstructionBuildings();
+        }
+
+        private void Refund()
+        {
             _owner.Resources += GetConstructionCost();
         }
         #endregion

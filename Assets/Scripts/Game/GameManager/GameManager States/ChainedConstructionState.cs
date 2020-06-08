@@ -21,6 +21,9 @@ namespace Game.ConstructionSystem
         private List<ConstructionBuilding> _constructionBuildings = new List<ConstructionBuilding>();
         private List<ConstructionBuilding> _constructionAchievedBuilding;
 
+        private int _constructableBuildingCount = 0;
+
+        private bool _stateLeaving;
         private bool _anchorSet = false;
         private Vector3 _anchorPosition;
         #endregion
@@ -53,7 +56,7 @@ namespace Game.ConstructionSystem
 
         protected override ResourcesWrapper GetConstructionCost()
         {
-            int constructableBuildings = CalculateConstructableBuildingCount();
+            int constructableBuildings = StateLeaving ? _constructableBuildingCount : CalculateConstructableBuildingCount();
             return EntityData.SpawningCost * constructableBuildings;
         }
 
@@ -79,6 +82,13 @@ namespace Game.ConstructionSystem
             {
                 ConstructBuilding();
             }
+        }
+
+        protected override void LeaveState()
+        {
+            _constructableBuildingCount = CalculateConstructableBuildingCount();
+
+            base.LeaveState();
         }
 
         public override void OnGUI()
