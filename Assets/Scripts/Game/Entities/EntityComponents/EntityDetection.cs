@@ -1,5 +1,6 @@
 ﻿using Lortedo.Utilities.Pattern;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,18 +28,14 @@ namespace Game.Entities
         private Entity _nearestOpponentTeamEntity = null;
         private Entity _nearestAllyTeamEntity = null;
 
-        public int _frameOffset = -1;
+        private int _frameOffset = -1;
         #endregion
 
         #region Methods
         #region MonoBehaviour Callbacks   
         void Awake()
         {
-            _frameOffset = Random.Range(0, frameIntervalToCheckNearestEntities);
-        }
-
-        void Start()
-        {
+            _frameOffset = UnityEngine.Random.Range(0, frameIntervalToCheckNearestEntities);
             EntitiesManager.Initialize();
         }
 
@@ -49,6 +46,42 @@ namespace Game.Entities
             {
                 CalculateNearestAllyTeamEntity();
                 CalculateNearestOpponentTeamEntity();
+            }
+
+            Debug_DrawAttackRange();
+        }
+
+        void OnEnable()
+        {
+            Entity.OnDeath += Entity_OnDeath;
+        }
+
+        void OnDisable()
+        {
+            Entity.OnDeath -= Entity_OnDeath;
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            Debug_DrawAttackRange();
+        }
+        #endregion
+
+        #region Events Handlers
+        private void Entity_OnDeath(Entity entity)
+        {
+            if (_nearestOpponentTeamEntity == entity)
+            {
+                CalculateNearestOpponentTeamEntity();
+
+                if (_nearestOpponentTeamEntity == entity) Debug.LogWarningFormat("Nearest opponent {0} is dead. It's shouldn't be the _nearestOpponentTeamEntity!", entity.name);
+            }
+
+            if (_nearestAllyTeamEntity == entity)
+            {
+                CalculateNearestOpponentTeamEntity();
+
+                if (_nearestAllyTeamEntity == entity) Debug.LogWarningFormat("Nearest ally {0} is dead. It's shouldn't be the _nearestAllyTeamEntity!", entity.name);
             }
         }
         #endregion
@@ -61,7 +94,7 @@ namespace Game.Entities
             Assert.IsNotNull(Entity);
             Assert.IsNotNull(Entity.Data);
 
-            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius + Mathf.Max(target.Data.TileSize.x, target.Data.TileSize.y);
+            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius + (target.Data.GetBiggerTileSize() + Entity.Data.GetBiggerTileSize()) / 2;
         }
 
         public bool IsEntityInShiftRange(Entity target)
@@ -71,12 +104,12 @@ namespace Game.Entities
             Assert.IsNotNull(Entity);
             Assert.IsNotNull(Entity.Data);
 
-            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.StartShiftRange + Mathf.Max(target.Data.TileSize.x, target.Data.TileSize.y);
+            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.StartShiftRange + (target.Data.GetBiggerTileSize() + Entity.Data.GetBiggerTileSize()) / 2;
         }
 
         public bool IsNearFromEntity(Entity target)
         {
-            return Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD + Mathf.Max(target.Data.TileSize.x, target.Data.TileSize.y);
+            return Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD + (target.Data.GetBiggerTileSize() + Entity.Data.GetBiggerTileSize()) / 2;
         }
 
         public bool IsNearFromPosition(Vector3 position)
@@ -84,11 +117,31 @@ namespace Game.Entities
             return Vector3.Distance(transform.position, position) <= DISTANCE_THRESHOLD;
         }
 
-        public Entity GetNearestOpponentInViewRadius()
+        public Entity GetNearestOpponent()
         {
+            if (_nearestOpponentTeamEntity != null && !_nearestOpponentTeamEntity.IsInstanciate)
+                _nearestOpponentTeamEntity = null;
+
             return _nearestOpponentTeamEntity;
         }
 
+        public Entity GetNearestAlly()
+        {
+            if (_nearestAllyTeamEntity != null && !_nearestAllyTeamEntity.IsInstanciate)
+                _nearestAllyTeamEntity = null;
+
+            return _nearestAllyTeamEntity;
+        }
+
+        [Obsolete("Use GetNearestOpponent with 'IsInViewRadius' please.")]
+        public Entity GetNearestOpponentInViewRadius()
+        {
+            if (_nearestOpponentTeamEntity.Team == Entity.Team) Debug.LogErrorFormat("Entity Detection : Nearest opponent has the same team of EntityDetection.");
+
+            return _nearestOpponentTeamEntity;
+        }
+
+        [Obsolete("Use GetNearestOpponent with 'IsInViewRadius' please.")]
         public Entity GetNearestAllyInViewRadius()
         {
             return _nearestAllyTeamEntity;
@@ -119,6 +172,25 @@ namespace Game.Entities
             {
                 OnAllyEnterShiftRange?.Invoke(_nearestAllyTeamEntity);
             }
+        }
+
+        private void Debug_DrawAttackRange()
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+                return;
+
+            if (!GetCharacterComponent<EntitySelectable>().IsSelected)
+                return;
+
+            if (Entity.EntityID == string.Empty)
+                return;
+
+            Assert.IsNotNull(Entity);
+            Assert.IsNotNull(Entity.Data);
+
+            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius + Entity.Data.GetBiggerTileSize());
+#endif
         }
         #endregion
         #endregion

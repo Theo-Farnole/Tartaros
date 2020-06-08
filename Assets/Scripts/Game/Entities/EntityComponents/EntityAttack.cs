@@ -94,18 +94,25 @@ namespace Game.Entities
             if (!Entity.Data.CanAttack)
                 return false;
 
-            var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestOpponentInViewRadius();
+            var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestOpponent();
 
-            // enemy found
-            if (nearestEnemy != null)
+
+            if (nearestEnemy == null)
+                return false;
+
+            if (nearestEnemy.Team == Entity.Team) Debug.LogWarningFormat("Entity Attack : Entity {0} tries to auto attack an ally.", name);
+            
+            if (Entity.GetCharacterComponent<EntityDetection>().IsEntityInAttackRange(nearestEnemy))
             {
                 var action = new ActionAttackEntity(Entity, nearestEnemy);
                 Entity.SetAction(action);
 
                 return true;
             }
-
-            return false;
+            else
+            {
+                return false;
+            }
         }
         #endregion
 

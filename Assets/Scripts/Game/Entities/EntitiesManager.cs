@@ -3,7 +3,7 @@
 namespace Game.Entities
 {
     /// <summary>
-    /// This script has been created for performance. It only call FindObjectOfType each frame.
+    /// This script has been created for performance. Store KDTree to find nearest entities.
     /// </summary>
     public static class EntitiesManager
     {

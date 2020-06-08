@@ -70,9 +70,11 @@ namespace Game.Entities.Actions
             // if not enemy nearest, stop current action
             if (!attacksANewEnemy)
             {
-                entity.StopCurrentAction();
-            }
-
+                // WARNING:
+                // If we LeaveAction without checking if is attacking an enemy
+                // We'll overwrite 'attack nearest action'.
+                LeaveAction();
+            }            
         }
     }
 }

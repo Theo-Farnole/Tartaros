@@ -249,6 +249,11 @@ namespace Game.Entities
         #endregion
         #endregion
 
+        public float GetBiggerTileSize()
+        {
+            return Mathf.Max(_tileSize.x, _tileSize.y);
+        }
+
         public bool CanDoOverallAction(OverallAction overallAction)
         {
             switch (overallAction)
