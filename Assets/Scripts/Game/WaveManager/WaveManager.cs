@@ -107,7 +107,7 @@ namespace Game.WaveSystem
         #region Private Methods
         private void StartWave()
         {
-            if (_entitiesFromWave.Count == 0) Debug.LogError("Field '_entitiesFromWave' should be clear before calling 'StartWave()'.");
+            if (_entitiesFromWave.Count > 0) Debug.LogError("Field '_entitiesFromWave' should be clear before calling 'StartWave()'.");
 
             _entitiesFromWave.Clear();
 
