@@ -211,6 +211,6 @@ public static class SelectedGroupsActionsCaller
         }
 
         OnOrderGiven?.Invoke();
-        OnOrder_TurnIntoEntities(entityID);
+        OnOrder_TurnIntoEntities?.Invoke(entityID);
     }
 }
