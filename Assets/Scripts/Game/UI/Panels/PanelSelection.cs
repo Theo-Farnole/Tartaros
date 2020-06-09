@@ -9,8 +9,7 @@ using UnityEngine.Assertions;
 
 namespace Game.UI
 {
-    [Serializable]
-    public class PanelSelection : Panel
+    public class PanelSelection : AbstractPanel
     {
         #region Fields
         [Space(order = 0)]
@@ -25,8 +24,8 @@ namespace Game.UI
         #endregion
 
         #region Methods
-        #region Public Override
-        public override void Initialize<T>(T uiManager)
+        #region MonoBehaviour Callbacks
+        void Start()
         {
             CreationSelectionPortraitUI();
 

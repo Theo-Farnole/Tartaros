@@ -120,6 +120,15 @@ public struct ResourcesWrapper
     }
 
     #region Operator
+    public static ResourcesWrapper CrossProduct(ResourcesWrapper current, float factor, float divider)
+    {
+        return new ResourcesWrapper(
+            Mathf.RoundToInt((float)current.food * factor / divider),
+            Mathf.RoundToInt((float)current.wood * factor / divider),
+            Mathf.RoundToInt((float)current.stone * factor / divider)
+        );
+    }
+
     public static ResourcesWrapper operator -(ResourcesWrapper a, ResourcesWrapper b) =>
         new ResourcesWrapper(a.food - b.food, a.wood - b.wood, a.stone - b.stone);
 
@@ -128,9 +137,6 @@ public struct ResourcesWrapper
 
     public static ResourcesWrapper operator *(ResourcesWrapper a, int b) =>
         new ResourcesWrapper(a.food * b, a.wood * b, a.stone * b);
-
-    public static ResourcesWrapper operator +(ResourcesWrapper a, int b) =>
-        new ResourcesWrapper(a.food + b, a.wood + b, a.stone + b);
 
     public static bool operator <(ResourcesWrapper a, ResourcesWrapper b) =>
         a.food < b.food && a.wood < b.wood && a.stone < b.stone;

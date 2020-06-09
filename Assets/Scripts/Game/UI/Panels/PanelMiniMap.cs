@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Game.UI
 {   
-    public class PanelMiniMap : MonoBehaviour
+    public class PanelMiniMap : AbstractPanel
     {
         #region Fields        
         [SerializeField] private GameObject _prefabSpriteWaveIndicator;

@@ -10,8 +10,7 @@ using UnityEngine.UI;
 
 namespace Game.UI
 {
-    [Serializable]
-    public class PanelConstruction : Panel
+    public class PanelConstruction : AbstractPanel
     {
         #region Fields
         private const string debugLogHeader = "Panel Construction : ";
@@ -26,28 +25,22 @@ namespace Game.UI
 
         #region Methods
         #region Public override
-        public override void Initialize<T>(T uiManager)
+        void Start()
         {
-            base.Initialize(uiManager);
-
             if (_orderButtons == null)
                 CreateConstructionButtons();
         }
 
-        public override void SubscribeToEvents<T>(T uiManager)
+        void OnEnable()
         {
-            base.SubscribeToEvents(uiManager);
-
             foreach (var orderButton in _orderButtons)
             {
                 orderButton.EnableButtonInteraction();
             }
         }
 
-        public override void UnsubscribeToEvents<T>(T uiManager)
+        void OnDisable()
         {
-            base.UnsubscribeToEvents(uiManager);
-
             foreach (var orderButton in _orderButtons)
             {
                 orderButton.DisableButtonInteraction();

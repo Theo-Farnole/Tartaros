@@ -28,7 +28,7 @@ public class GameManager : Singleton<GameManager>
     public static event OnStartBuild OnStartBuild;
     public static event OnStopBuild OnStopBuild;
     public static event OnBuildSuccessful OnBuildSuccessful;
-    public static event HasNotEnoughtResources HasNotEnoughtResources;
+    public static event HasNotEnoughtResources HasNotEnoughtResources;    
 
     [Header("COMPONENTS")]
     [SerializeField] private SnapGridDatabase _grid;

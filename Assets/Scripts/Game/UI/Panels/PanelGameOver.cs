@@ -5,8 +5,7 @@ using UnityEngine;
 
 namespace Game.UI
 {
-    [System.Serializable]
-    public class PanelGameOver : Panel
+    public class PanelGameOver : AbstractPanel
     {
         
     }
