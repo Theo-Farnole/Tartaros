@@ -12,6 +12,8 @@ namespace Game.UI
     public class PanelGameResources : AbstractPanel
     {
         #region Fields
+        private const string incomeFormat = "+{0}";
+
         [Space(order = 0)]
         [Header("RESOURCES", order = 1)]
         [SerializeField] private TextMeshProUGUI[] _resourcesLabel;
@@ -26,9 +28,7 @@ namespace Game.UI
         #region MonoBehaviour Callbacks
         void Start()
         {
-            _incomesLabels[(int)Resource.Food].text = "0";
-            _incomesLabels[(int)Resource.Wood].text = "0";
-            _incomesLabels[(int)Resource.Stone].text = "0";
+            UpdateIncomeLabel(0, 0, 0);
         }
 
         void OnEnable()
@@ -65,10 +65,13 @@ namespace Game.UI
         }
 
         private void UpdateIncomeLabel(ResourcesWrapper incomeLabel)
+        => UpdateIncomeLabel(incomeLabel.wood, incomeLabel.food, incomeLabel.stone);
+
+        private void UpdateIncomeLabel(int wood, int food, int stone)
         {
-            _incomesLabels[(int)Resource.Food].text = incomeLabel.food.ToString();
-            _incomesLabels[(int)Resource.Wood].text = incomeLabel.wood.ToString();
-            _incomesLabels[(int)Resource.Stone].text = incomeLabel.stone.ToString();
+            _incomesLabels[(int)Resource.Food].text = string.Format(incomeFormat, wood);
+            _incomesLabels[(int)Resource.Wood].text = string.Format(incomeFormat, food);
+            _incomesLabels[(int)Resource.Stone].text = string.Format(incomeFormat, stone);
         }
         #endregion
         #endregion
