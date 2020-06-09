@@ -33,6 +33,9 @@ namespace Game.UI
 
         void OnEnable()
         {
+            if (_orderButtons == null)
+                CreateConstructionButtons();
+
             foreach (var orderButton in _orderButtons)
             {
                 orderButton.EnableButtonInteraction();
