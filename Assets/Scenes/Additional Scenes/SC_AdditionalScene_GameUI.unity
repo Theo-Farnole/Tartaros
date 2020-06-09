@@ -8462,6 +8462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _canvas: {fileID: 662713453}
   _waveLabel: {fileID: 405148027}
+  _timeUntilWaveLabel: {fileID: 689691802}
 --- !u!1 &1630003668
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,12 +9,9 @@ namespace Game.UI
     public class PanelWavesInformation : AbstractPanel
     {
         [SerializeField] private TextMeshProUGUI _waveLabel;
+        [SerializeField] private TextMeshProUGUI _timeUntilWaveLabel;
 
         private int _cachedFinalWave;
-
-        // TODO: Current Wave
-        // TODO: Max wave
-        // TODO: Time next wave
 
         #region Methods
         #region MonoBehaviour Callbcks
@@ -26,7 +23,23 @@ namespace Game.UI
 
         void OnEnable()
         {
-            WaveManager.OnWaveStart += UpdateWaveLabel;   
+            WaveManager.OnWaveStart += UpdateWaveLabel;
+            WaveManager.OnWaveTimerUpdate += WaveManager_OnWaveTimerUpdate;
+        }
+
+        void OnDisable()
+        {
+            WaveManager.OnWaveStart -= UpdateWaveLabel;
+            WaveManager.OnWaveTimerUpdate -= WaveManager_OnWaveTimerUpdate;
+        }
+        #endregion
+
+        #region Events Handlers
+        private void WaveManager_OnWaveTimerUpdate(int waveCount, float remainingTime)
+        {
+            int minutes = Mathf.FloorToInt(remainingTime / 60);
+
+            UpdateTimeLeft(minutes);
         }
         #endregion
 
@@ -36,6 +49,11 @@ namespace Game.UI
         private void UpdateWaveLabel(int currentWave, int finalWave)
         {
             _waveLabel.text = string.Format("{0}/{1}", currentWave, finalWave);
+        }
+
+        private void UpdateTimeLeft(int minutes)
+        {
+            _timeUntilWaveLabel.text = string.Format("{0}h", minutes.ToString());
         }
 
         private int GetFinalWave()
