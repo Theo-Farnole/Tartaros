@@ -45,8 +45,6 @@ public class GameManager : Singleton<GameManager>
     private AbstractConstructionState _state = null;
     private ResourcesWrapper _resources = new ResourcesWrapper();
 
-    private int _finalWave;
-
     private static bool _applicationIsQuitting = false;
     private List<string> _pendingCreation = new List<string>();
     #endregion
@@ -104,12 +102,6 @@ public class GameManager : Singleton<GameManager>
         _populationManager.StartPopulation = _data.StartMaxPopulationCount;
     }
 
-    void Start()
-    {
-        _finalWave = CalculateFinalWaveIndex();
-        Debug.Log("Final wave = " + _finalWave);
-    }
-
     void Update()
     {
         _state?.Tick();
@@ -139,13 +131,13 @@ public class GameManager : Singleton<GameManager>
     void OnEnable()
     {
         Entity.OnDeath += Entity_OnDeath;
-        WaveManager.OnWaveClear += WaveManager_OnWaveClear;
+        WaveManager.OnFinalWaveClear += Victory;
     }
 
     void OnDisable()
     {
         Entity.OnDeath -= Entity_OnDeath;
-        WaveManager.OnWaveClear -= WaveManager_OnWaveClear;
+        WaveManager.OnFinalWaveClear -= Victory;
     }
     #endregion
 
@@ -161,14 +153,6 @@ public class GameManager : Singleton<GameManager>
             {
                 GameOver();
             }
-        }
-    }
-
-    private void WaveManager_OnWaveClear(int waveCountCleared)
-    {
-        if (waveCountCleared == _finalWave)
-        {
-            Victory();
         }
     }
     #endregion
@@ -254,19 +238,6 @@ public class GameManager : Singleton<GameManager>
     {
         _state = null;
         OnVictory?.Invoke(this);
-    }
-
-    int CalculateFinalWaveIndex()
-    {
-        var spawnPoints = FindObjectsOfType<WaveSpawnPoint>();
-
-        if (spawnPoints.Length == 0)
-        {
-            Debug.LogWarningFormat("Game Manager : There is 0 WaveSpawnPoint in scene. Can't get final wave.");
-            return -1;
-        }
-
-        return spawnPoints.OrderByDescending(x => x.WavesData.GetWavesCount()).First().WavesData.GetWavesCount();
     }
     #endregion
     #endregion

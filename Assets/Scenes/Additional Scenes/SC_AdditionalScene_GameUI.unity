@@ -2333,7 +2333,7 @@ GameObject:
   - component: {fileID: 405148028}
   - component: {fileID: 405148027}
   m_Layer: 5
-  m_Name: Wave Label (1)
+  m_Name: Wave Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3740,7 +3740,7 @@ GameObject:
   - component: {fileID: 662713452}
   - component: {fileID: 662713451}
   m_Layer: 5
-  m_Name: Canvas - Pause Panel
+  m_Name: Canvas - Wave Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3838,7 +3838,7 @@ GameObject:
   - component: {fileID: 689691803}
   - component: {fileID: 689691802}
   m_Layer: 5
-  m_Name: Time Left Label (1)
+  m_Name: Time Left Count
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7120,7 +7120,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1345570577}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -7752,7 +7752,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1557775052}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -8314,12 +8314,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1624077385}
-  - component: {fileID: 1624077384}
   - component: {fileID: 1624077383}
-  - component: {fileID: 1624077382}
   - component: {fileID: 1624077381}
   - component: {fileID: 1624077380}
+  - component: {fileID: 1624077384}
+  - component: {fileID: 1624077382}
   - component: {fileID: 1624077379}
+  - component: {fileID: 1624077386}
   m_Layer: 5
   m_Name: Panels Managers
   m_TagString: Untagged
@@ -8362,7 +8363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cac7a23e7fa588d49ae9a0afe6d5d5fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvas: {fileID: 0}
+  _canvas: {fileID: 1345570581}
 --- !u!114 &1624077381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8375,7 +8376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899af86735f8d8f4da3159ddb3937520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _canvas: {fileID: 0}
+  _canvas: {fileID: 1557775056}
 --- !u!114 &1624077382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8447,6 +8448,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1624077386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624077378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddf5e9e7d81566c41af9d8f81c667291, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvas: {fileID: 662713453}
+  _waveLabel: {fileID: 405148027}
 --- !u!1 &1630003668
 GameObject:
   m_ObjectHideFlags: 0

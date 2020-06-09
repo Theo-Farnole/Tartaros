@@ -1,15 +1,17 @@
 ﻿using Game.Entities;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public delegate void OnWaveTimerUpdate(int waveCount, float remainingTime);
-public delegate void OnWaveStart(int waveCount);
-public delegate void OnWaveClear(int waveCountCleared);
-
 namespace Game.WaveSystem
 {
+    public delegate void OnWaveTimerUpdate(int waveCount, float remainingTime);
+    public delegate void OnWaveStart(int waveCount);
+    public delegate void OnWaveClear(int waveCountCleared);
+    public delegate void OnFinalWaveClear();
+
     /// <summary>
     /// Spawn enemies waves frequently.
     /// </summary>
@@ -21,6 +23,7 @@ namespace Game.WaveSystem
         public static event OnWaveTimerUpdate OnWaveTimerUpdate;
         public static event OnWaveStart OnWaveStart;
         public static event OnWaveClear OnWaveClear;
+        public static event OnFinalWaveClear OnFinalWaveClear;
 
         [SerializeField] private WaveManagerData _data;
 
@@ -31,14 +34,31 @@ namespace Game.WaveSystem
         private int _lastFrame_TimerInSeconds;
 
         private List<Entity> _entitiesFromWave = new List<Entity>();
+        private int _finalWave = -1;
         #endregion
 
         #region Properties
         public int WaveCount { get => _waveCount; }
+        public int FinalWave
+        {
+            get
+            {
+                if (_finalWave == -1)
+                    _finalWave = GetFinalWaveIndex();
+
+                return _finalWave;
+            }
+        }
         #endregion
 
         #region Methods
         #region MonoBehaviour Callbacks
+        void Start()
+        {
+            if (_finalWave == -1)
+                _finalWave = GetFinalWaveIndex();
+        }
+
         void Update()
         {
             _nextWaveTimer += Time.deltaTime;
@@ -107,9 +127,11 @@ namespace Game.WaveSystem
         #region Private Methods
         private void StartWave()
         {
-            if (_entitiesFromWave.Count > 0) Debug.LogError("Field '_entitiesFromWave' should be clear before calling 'StartWave()'.");
-
-            _entitiesFromWave.Clear();
+            if (_entitiesFromWave.Count > 0)
+            {
+                Debug.LogError("Field '_entitiesFromWave' should be clear before calling 'StartWave()'.");
+                _entitiesFromWave.Clear();
+            }
 
             _isInUnclearWave = true;
             _waveCount++;
@@ -117,6 +139,11 @@ namespace Game.WaveSystem
             Debug.LogFormat(debugLogHeader + "Wave {0} starts.", _waveCount);
 
             OnWaveStart?.Invoke(_waveCount);
+
+            if (_waveCount == _finalWave)
+            {
+                OnFinalWaveClear?.Invoke();
+            }
         }
 
         private void EndWave()
@@ -141,6 +168,19 @@ namespace Game.WaveSystem
         private bool DoAllEntitesFromWaveAreDead()
         {
             return _entitiesFromWave.Count == 0;
+        }
+
+        int GetFinalWaveIndex()
+        {
+            var spawnPoints = FindObjectsOfType<WaveSpawnPoint>();
+
+            if (spawnPoints.Length == 0)
+            {
+                Debug.LogWarningFormat("Game Manager : There is 0 WaveSpawnPoint in scene. Can't get final wave.");
+                return -1;
+            }
+
+            return spawnPoints.OrderByDescending(x => x.WavesData.GetWavesCount()).First().WavesData.GetWavesCount();
         }
         #endregion
         #endregion
