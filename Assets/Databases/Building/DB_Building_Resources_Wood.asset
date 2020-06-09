@@ -122,7 +122,7 @@ MonoBehaviour:
   _entityName: Lumber Camp
   _entityType: 1
   _hotkey: 119
-  _portrait: {fileID: 21300000, guid: 611dc461b85e6b74a90d20260a2b768f, type: 3}
+  _portrait: {fileID: 21300000, guid: 43fe52d9956ed774db76a055704aa826, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 302af1b49b0739d4fbdc498d874c6adb, type: 3}
   _populationUse: 0
   _tileSize: {x: 3, y: 3}
@@ -135,6 +135,7 @@ MonoBehaviour:
     stone: 0
   _creationDuration: 0
   _viewRadius: 1
+  _canDetectEntities: 0
   _isConstructionChained: 0
   _canAttack: 0
   _isMelee: 1
@@ -145,6 +146,8 @@ MonoBehaviour:
   _damagePerSecond: 3
   _canMove: 0
   _speed: 3
+  _shiftLength: 3
+  _startShiftCollision: 3
   _canCreateUnit: 0
   _availableUnitsForCreation: []
   _canGenerateResources: 1
