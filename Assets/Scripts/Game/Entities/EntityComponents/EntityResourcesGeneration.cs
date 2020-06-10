@@ -1,4 +1,5 @@
 ﻿using Game.MapCellEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ namespace Game.Entities
     public class EntityResourcesGeneration : EntityComponent
     {
         #region Fields
+        public static event Action<Entity> OnResourceGenerationEnable;
+        public static event Action<Entity> OnResourceGenerationDisable;
+
         private float _nextTimeGenerationTick = 0; // Time.time + Entity.Data.GenerationTick
         private ResourcesWrapper _resourcesPerTick;
 
@@ -24,7 +28,21 @@ namespace Game.Entities
             get => _resourceProductionEnable;
             set
             {
+                if (value == _resourceProductionEnable)
+                    return;
+
+                var oldValue = _resourceProductionEnable;
                 _resourceProductionEnable = value;
+
+                if (_resourceProductionEnable)
+                {
+                    OnResourceGenerationEnable?.Invoke(Entity);
+                }
+                else
+                {
+                    OnResourceGenerationDisable?.Invoke(Entity);
+                }
+
                 CalculateNextTimeGenerationTick();
             }
         }
@@ -44,6 +62,10 @@ namespace Game.Entities
             {
                 CalculateResourcesPerTick();
                 CalculateNextTimeGenerationTick();
+
+                // because _resourceProductionEnable is true,
+                // invoke event
+                OnResourceGenerationEnable?.Invoke(Entity);
             }
         }
 

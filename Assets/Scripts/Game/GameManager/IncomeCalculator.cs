@@ -18,21 +18,26 @@ namespace Game
         [SerializeField] private Team _teamToListen = Team.Player;
 
         private ResourcesWrapper _currentIncome = new ResourcesWrapper();
+        private List<Entity> _incomeGeneratorEntities = new List<Entity>();
 
         #region Methods
         #region MonoBehaviour Callbacks
         void OnEnable()
         {
-            Entity.OnSpawn += Entity_OnSpawn;
+            //Entity.OnSpawn += Entity_OnSpawn;
             Entity.OnTeamSwap += Entity_OnTeamSwap;
-            Entity.OnDeath += Entity_OnDeath;
+            //Entity.OnDeath += Entity_OnDeath;
+            EntityResourcesGeneration.OnResourceGenerationEnable += EntityResourcesGeneration_OnResourceGenerationEnable;
+            EntityResourcesGeneration.OnResourceGenerationDisable += EntityResourcesGeneration_OnResourceGenerationDisable;
         }
 
         void OnDisable()
         {
-            Entity.OnSpawn -= Entity_OnSpawn;
+            //Entity.OnSpawn -= Entity_OnSpawn;
             Entity.OnTeamSwap -= Entity_OnTeamSwap;
-            Entity.OnDeath -= Entity_OnDeath;
+            //Entity.OnDeath -= Entity_OnDeath;
+            EntityResourcesGeneration.OnResourceGenerationEnable  -= EntityResourcesGeneration_OnResourceGenerationEnable;
+            EntityResourcesGeneration.OnResourceGenerationDisable -= EntityResourcesGeneration_OnResourceGenerationDisable;
         }
         #endregion
 
@@ -47,10 +52,13 @@ namespace Game
 
         private void Entity_OnTeamSwap(Entity entity, Team oldTeam, Team newTeam)
         {
+            if (!_incomeGeneratorEntities.Contains(entity))
+                return;
+
             if (!entity.Data.CanCreateResources)
                 return;
 
-            if (oldTeam == Team.Enemy && newTeam == Team.Player)
+            if (oldTeam != _teamToListen && newTeam == _teamToListen)
             {
                 AddEntity(entity);
             }
@@ -61,6 +69,22 @@ namespace Game
         }
 
         private void Entity_OnDeath(Entity entity)
+        {
+            if (entity.Data.CanCreateResources && entity.Team == _teamToListen)
+            {
+                RemoveEntity(entity);
+            }
+        }
+
+        private void EntityResourcesGeneration_OnResourceGenerationEnable(Entity entity)
+        {
+            if (entity.Data.CanCreateResources && entity.Team == _teamToListen)
+            {
+                AddEntity(entity);
+            }
+        }
+
+        private void EntityResourcesGeneration_OnResourceGenerationDisable(Entity entity)
         {
             if (entity.Data.CanCreateResources && entity.Team == _teamToListen)
             {
@@ -81,6 +105,8 @@ namespace Game
                 return;
             }
 
+            _incomeGeneratorEntities.Add(entity);
+
             _currentIncome += ResourcesWrapper.CrossProduct(entity.Data.ConstantResourcesGeneration, _incomeTick, entity.Data.GenerationTick);
             OnIncomeChanged?.Invoke(_currentIncome);
         }
@@ -95,6 +121,8 @@ namespace Game
                 Debug.LogErrorFormat("Income Calculator : Can't calculate income of building '{0}' because its generation is 'PerCell'.", entity.EntityID);
                 return;
             }
+
+            _incomeGeneratorEntities.Remove(entity);
 
             _currentIncome -= ResourcesWrapper.CrossProduct(entity.Data.ConstantResourcesGeneration, _incomeTick, entity.Data.GenerationTick);
             OnIncomeChanged?.Invoke(_currentIncome);
