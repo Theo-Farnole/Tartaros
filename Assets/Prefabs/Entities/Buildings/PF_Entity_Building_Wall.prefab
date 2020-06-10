@@ -45,7 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jointModel: {fileID: 9163932849320742854}
   _wallModel: {fileID: 3557356657614828961}
-  _wallID: building_wall
+  _wallIDs:
+  - building_wall
 --- !u!1 &3557356657614828961
 GameObject:
   m_ObjectHideFlags: 0

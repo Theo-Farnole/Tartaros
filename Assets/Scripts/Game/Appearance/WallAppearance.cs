@@ -1,6 +1,7 @@
 ﻿using Game.Entities;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -23,13 +24,13 @@ public class WallAppearance : MonoBehaviour
     [SerializeField] private GameObject _wallModel;
 
     [Header("IDS")]
-    [SerializeField] private string _wallID = "building_wall";
+    [SerializeField] private string[] _wallIDs = new string[] { "building_wall", "building_gate" };
 
     void OnEnable()
     {
         if (TileSystem.Instance != null)
         {
-            TileSystem.Instance.OnTileTerrainChanged += Instance_OnTileTerrainChanged;            
+            TileSystem.Instance.OnTileTerrainChanged += Instance_OnTileTerrainChanged;
         }
         else
         {
@@ -87,7 +88,7 @@ public class WallAppearance : MonoBehaviour
         bool hasSouthWall = IsWall(southCoords);
         bool hasEastWall = IsWall(eastCoords);
         bool hasWestWall = IsWall(westCoords);
-        
+
         if (hasNorthWall && hasSouthWall && !hasEastWall && !hasWestWall) // N/S walls only
         {
             wallOrientation = WallOrientation.NorthToSouth;
@@ -100,7 +101,7 @@ public class WallAppearance : MonoBehaviour
         }
         else
         {
-            wallOrientation = WallOrientation.NotAWall;            
+            wallOrientation = WallOrientation.NotAWall;
             return true;
         }
     }
@@ -116,18 +117,22 @@ public class WallAppearance : MonoBehaviour
 
         if (tile.TryGetComponent(out Entity entity))
         {
-            if (entity.EntityID == _wallID)
-                return true;
-        }
+            if (_wallIDs.Length == 0) Debug.LogWarningFormat("Wall IDS of {0} is empty!", name);
 
-        return false;
+            Debug.LogFormat("{2} Entity '{0}' => {1} ", entity.EntityID, _wallIDs.Contains(entity.EntityID), name);
+            return _wallIDs.Contains(entity.EntityID);
+        }
+        else
+        {
+            return false;
+        }
     }
 
     Quaternion WallOrientationToRotation(WallOrientation wallOrientation)
     {
         switch (wallOrientation)
         {
-            case WallOrientation.NotAWall:                
+            case WallOrientation.NotAWall:
             case WallOrientation.NorthToSouth:
                 return Quaternion.Euler(0, 0, 0);
 
