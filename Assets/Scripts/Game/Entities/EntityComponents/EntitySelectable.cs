@@ -103,9 +103,13 @@ namespace Game.Entities
                 Debug.LogWarning("Entity Selectable : Cannot display selection, it's already displayed. But it's okay.");
                 return;
             }
+            
+            Ray ray = new Ray(
+                transform.position + Vector3.up, // transform.position should already touch the terrain. We raise a lit bittle to make the raycast works
+                Vector3.down
+            );
 
-            // raycast 
-            Vector3 pos = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, layerMaskTerrain) ? 
+            Vector3 pos = Physics.Raycast(ray, out RaycastHit hit, layerMaskTerrain) ? 
                 hit.point + Vector3.up * 0.01f : 
                 transform.position;
             Quaternion rot = Quaternion.Euler(90, 0, 0);
