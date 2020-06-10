@@ -66,6 +66,11 @@ namespace Game.Entities.Actions
             // then kill the current entity
             _owner.Death();
             _owner.StopEveryActions();
+
+            if (entity.Data.EntityType == EntityType.Building)
+            {
+                TileSystem.Instance.SetTile(entity.gameObject, entity.Data.TileSize);
+            }
         }
 
         private void SetInPendingCreation()
