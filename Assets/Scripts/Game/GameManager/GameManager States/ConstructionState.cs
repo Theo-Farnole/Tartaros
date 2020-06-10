@@ -59,7 +59,7 @@ namespace Game.ConstructionSystem
             }
             else
             {
-                SucessfulBuild = true;
+                SucessfulBuild = false;
             }
 
             LeaveState();
