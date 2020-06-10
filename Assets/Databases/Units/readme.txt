@@ -1,0 +1,1 @@
+DB_Unit_X_X_Wave are spawned in waves. They intend to have less wave than classic units
