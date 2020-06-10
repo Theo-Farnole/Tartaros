@@ -1,6 +1,8 @@
 ﻿using Lortedo.Utilities.Pattern;
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -60,6 +62,12 @@ public class BuildingMesh : MonoBehaviour, IPooledObject
             default:
                 throw new System.NotImplementedException();
         }
+    }
+
+    [Button("Get MeshRenderer in children")]
+    public void GetMeshRenderersInChild()
+    {
+        _meshes = GetComponentsInChildren<MeshRenderer>();
     }
 
     private bool CanBuild(State state)
