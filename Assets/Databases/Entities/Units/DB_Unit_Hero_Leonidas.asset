@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 837cd282449c9854aa2145cba35a332f, type: 3}
-  m_Name: DB_Building_Temple
+  m_Name: DB_Unit_Hero_Leonidas
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -47,39 +47,39 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  _entityName: Temple
-  _entityType: 1
-  _hotkey: 0
-  _portrait: {fileID: 21300000, guid: 93738f936b7436b4d8935d79c74ac541, type: 3}
-  _prefab: {fileID: 545007711727897807, guid: f9cd4649e773d2e4199850a089ff5003, type: 3}
-  _populationUse: 0
-  _tileSize: {x: 5, y: 8}
-  _hoverPopupData: {fileID: 11400000, guid: 792246e03ecbdce458895a7da1944788, type: 2}
-  _isInvincible: 0
-  _hp: 10
+  _entityName: Leonidas
+  _entityType: 0
+  _hotkey: 108
+  _portrait: {fileID: 21300000, guid: 9cdff1d878a982245a2658b6df36892b, type: 3}
+  _prefab: {fileID: 7475237624608698167, guid: 1330bb067e85b654a9d2a3ee5c9a7463, type: 3}
+  _populationUse: 5
+  _tileSize: {x: 1, y: 1}
+  _hoverPopupData: {fileID: 11400000, guid: 4d613de1ed0e4694590c2a31afd07026, type: 2}
+  _isInvincible: 1
+  _hp: 0
   _spawningCost:
-    food: 0
+    food: 20
     wood: 5
     stone: 0
-  _creationDuration: 0
-  _viewRadius: 12.93
-  _canDetectEntities: 0
+  _creationDuration: 10
+  _viewRadius: 8
+  _canDetectEntities: 1
   _isConstructionChained: 0
-  _canAttack: 0
+  _canAttack: 1
   _isMelee: 1
-  _prefabProjectile: {fileID: 0}
-  _damage: 3
+  _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
+    type: 3}
+  _damage: 1
   _attackPerSecond: 1
-  _attackRadius: 3
-  _damagePerSecond: 3
-  _canMove: 0
+  _attackRadius: 5
+  _damagePerSecond: 1
+  _canMove: 1
   _speed: 3
-  _canCreateUnit: 1
-  _availableUnitsForCreation:
-  - unit_hero_leonidas
+  _canCreateUnit: 0
+  _availableUnitsForCreation: []
   _canGenerateResources: 0
-  _generationTick: 1
-  _generationType: 0
+  _generationTick: 0
+  _generationType: 1
   _radiusToReachCells: 5
   _constantResourcesGeneration:
     food: 0

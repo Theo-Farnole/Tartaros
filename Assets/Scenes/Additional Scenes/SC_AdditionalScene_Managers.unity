@@ -331,6 +331,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 15411ef640f1dd642b6e019e83a5d5b2, type: 2}
     - {fileID: 11400000, guid: 61919cb135bcb234c8db478506efacd8, type: 2}
     - {fileID: 11400000, guid: 9206e1b3d47c0464bbb1cf1db6023228, type: 2}
+    - {fileID: 11400000, guid: f0a7189b3c0e7b34781828d930cae163, type: 2}
     - {fileID: 11400000, guid: 74889946139d707488b53b8deef72764, type: 2}
     - {fileID: 11400000, guid: d65e210e04d278d49b604c93a8d75a15, type: 2}
     - {fileID: 11400000, guid: 5b1c55666a90466449d0422ab25c147c, type: 2}
@@ -353,7 +354,7 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
-      Data: 13
+      Data: 14
     - Name: 
       Entry: 7
       Data: 
@@ -511,6 +512,18 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 1
+      Data: unit_hero_leonidas
+    - Name: $v
+      Entry: 10
+      Data: 13
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -544,7 +557,7 @@ MonoBehaviour:
       Data: 0
     - Name: $v
       Entry: 10
-      Data: 13
+      Data: 14
     - Name: 
       Entry: 8
       Data: 
@@ -556,7 +569,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 10
-      Data: 14
+      Data: 15
     - Name: 
       Entry: 8
       Data: 
@@ -568,7 +581,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 10
-      Data: 15
+      Data: 16
     - Name: 
       Entry: 8
       Data: 
@@ -580,7 +593,7 @@ MonoBehaviour:
       Data: 3
     - Name: $v
       Entry: 10
-      Data: 16
+      Data: 17
     - Name: 
       Entry: 8
       Data: 
@@ -1050,8 +1063,6 @@ MonoBehaviour:
   _mapCells: {fileID: 11400000, guid: b94691d0a274cd844819b86a415c342c, type: 2}
   _populationManager: {fileID: 5682737043787708820}
   _data: {fileID: 11400000, guid: 18e0ace1bc99010459f3962f36bf8e4f, type: 2}
-  _collisionScalerData: {fileID: 11400000, guid: ec0a524eecc0b374ca058f8b5d860154,
-    type: 2}
   _attackSlotsData: {fileID: 11400000, guid: 68f195092593ef145a60ecd840aff05e, type: 2}
   _debugDrawSnapGrid: 0
   _debugDrawMapCells: 0
