@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace Game.Entities
 {
-    public class EntityObstacle : EntityComponent
+    public class EntitySizeSetter : EntityComponent
     {
         #region Fields
         private const string debugLogHeader = "Entity Obstacle : ";
@@ -13,67 +13,49 @@ namespace Game.Entities
         NavMeshObstacle _navMeshObstacle;
         #endregion
 
-        #region Properties
-        private NavMeshObstacle NavMeshObstacle
-        {
-            get
-            {
-                if (_navMeshObstacle == null)
-                    _navMeshObstacle = GetComponent<NavMeshObstacle>();
-
-                return _navMeshObstacle;
-            }
-        }
-        #endregion
-
         #region Methods
         void Start()
         {
-            SetupNavMeshObstacle();
+            _navMeshObstacle = GetComponent<NavMeshObstacle>();
+
+            SetSize_NavMeshObstacle();
+            SetSize_BoxCollider();
         }
 
-        private void SetupNavMeshObstacle()
+        #region Private Methods
+        private void SetSize_NavMeshObstacle()
         {
-            if (NavMeshObstacle == null)
-                return;
+            if (_navMeshObstacle.shape != NavMeshObstacleShape.Box)
+                throw new System.NotSupportedException("Can't set obstacle size with NavMeshObstacle's shape set as " + _navMeshObstacle.shape + ".");
 
-            switch (NavMeshObstacle.shape)
+            Vector3 carveOffset = new Vector3(0.9f, 0, 0.9f);
+
+            Vector3 size = new Vector3
             {
-                case NavMeshObstacleShape.Capsule:
-                    SetupNavMeshObstacle_Capsule();
-                    break;
+                x = Entity.Data.TileSize.x,
+                y = 3,
+                z = Entity.Data.TileSize.y
+            };
 
-                case NavMeshObstacleShape.Box:
-                    SetupNavMeshObstacle_Box();
-                    break;
-
-                default:
-                    throw new System.NotImplementedException();
-            }
-
+            _navMeshObstacle.size = size - carveOffset;
+            _navMeshObstacle.center = size.y / 2 * Vector3.up;
         }
 
-        private void SetupNavMeshObstacle_Capsule()
+        void SetSize_BoxCollider()
         {
-            if (Entity.Data.TileSize.x != Entity.Data.TileSize.y)
+            Vector2Int tileSize = Entity.Data.TileSize;
+            Vector3 size = new Vector3(tileSize.x, 2, tileSize.y);
+
+            if (TryGetComponent(out BoxCollider boxCollider))
             {
-                Debug.LogWarningFormat(debugLogHeader + "TileSize isn't a square. We set nav mesh agent's radius with highest value of tile size.");
+                // keep the Y commponent of size
+                size.y = boxCollider.size.y;
+
+                boxCollider.size = size;
+                boxCollider.center = size.y / 2 * Vector3.up;
             }
-
-            float diameter = Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y);
-            NavMeshObstacle.radius = diameter / 2;
         }
-
-        private void SetupNavMeshObstacle_Box()
-        {
-            Vector3 box = NavMeshObstacle.size;
-
-            box.x = Entity.Data.TileSize.x;
-            box.y = 3;
-            box.z = Entity.Data.TileSize.y;
-
-            NavMeshObstacle.size = box;
-        }
+        #endregion
         #endregion
     }
 }

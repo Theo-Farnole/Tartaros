@@ -7,12 +7,8 @@ using UnityEngine.Assertions;
 
 namespace Game.Entities
 {
-    // REFACTOR NOTE: for the sake of Single-responsiblity principle
-    // We could split this script into 2 scripts
-    // - one for UpdateCollisionSize() method
-    // - one for Enable/Disable Nav Mesh Obstacle
     [RequireComponent(typeof(Entity))]
-    public class EntityNavMeshCollision : EntityComponent
+    public class EntityNavMeshCollisionToggler : EntityComponent
     {
         private const string header = "Update Mesh on Obstacle Update";
 
@@ -32,8 +28,7 @@ namespace Game.Entities
         {
             _navMeshObstacle = GetComponent<NavMeshObstacle>();
 
-            UpdateCollisionSize();
-            UpdateMesh();
+            UpdateMeshAppereance();
         }
         #endregion
 
@@ -50,7 +45,7 @@ namespace Game.Entities
                 return;
 
             _navMeshObstacle.enabled = true;
-            UpdateMesh();
+            UpdateMeshAppereance();
         }
 
         public void DisableNavMeshObstacle()
@@ -65,7 +60,7 @@ namespace Game.Entities
                 return;
 
             _navMeshObstacle.enabled = false;
-            UpdateMesh();
+            UpdateMeshAppereance();
         }
 
         public void ToggleNavMeshObstacle()
@@ -79,12 +74,12 @@ namespace Game.Entities
         #endregion
 
         #region Private Methods
-        private void UpdateMesh()
+        private void UpdateMeshAppereance()
         {
             if (!Entity.Data.CanToggleNavMeshObstacle)
                 return;
 
-            if (!_navMeshObstacle)
+            if (_navMeshObstacle != null)
                 return;
 
             if (!_updateMeshOnObstacleUpdate)
@@ -92,37 +87,6 @@ namespace Game.Entities
 
             _meshNavMeshEnabled.SetActive(_navMeshObstacle.enabled);
             _meshNavMeshDisabled.SetActive(!_navMeshObstacle.enabled);
-        }
-
-        private void UpdateCollisionSize()
-        {
-            Vector2Int tileSize = Entity.Data.TileSize;
-            Vector3 size = new Vector3(tileSize.x, 2, tileSize.y);
-
-            UpdateBoxCollisionSize(size);
-            UpdateNavMeshObstacleSize(size);
-        }
-
-        void UpdateBoxCollisionSize(Vector3 size)
-        {
-            if (TryGetComponent(out BoxCollider boxCollider))
-            {
-                // keep the Y commponent of size
-                size.y = boxCollider.size.y;
-
-                boxCollider.size = size;
-                boxCollider.center = size.y / 2 * Vector3.up;
-            }
-        }
-
-        void UpdateNavMeshObstacleSize(Vector3 size)
-        {
-            if (TryGetComponent(out NavMeshObstacle navMeshObstacle))
-            {
-                Vector3 carveOffset = new Vector3(0.9f, 0, 0.9f);
-                navMeshObstacle.size = size - carveOffset;
-                navMeshObstacle.center = size.y / 2 * Vector3.up;
-            }
         }
         #endregion
     }

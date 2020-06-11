@@ -38,7 +38,7 @@ namespace Game.Entities.Actions
 
         void ToggleNavMeshObstacle()
         {
-            _owner.GetCharacterComponent<EntityNavMeshCollision>().ToggleNavMeshObstacle();
+            _owner.GetCharacterComponent<EntityNavMeshCollisionToggler>().ToggleNavMeshObstacle();
             LeaveAction();
         }
     }
