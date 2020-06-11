@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f2455135cf89dbe46912d075710e2cd1
+guid: 3c2f915aa7863f648a9cd0740e5f9143
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: polySurface446Mat
-    second: {fileID: 2100000, guid: 5dc96e99e1890a842befc5baad9be15b, type: 2}
+    second: {fileID: 2100000, guid: 8b66e9328af8b07468fd1c855e950691, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -92,7 +92,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   avatarSetup: 0
   additionalBone: 0
