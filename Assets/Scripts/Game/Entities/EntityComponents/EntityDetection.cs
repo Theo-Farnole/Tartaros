@@ -143,14 +143,17 @@ namespace Game.Entities
         {
             int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);
 
-            Entity[] entities = new Entity[collidersCount];
+            List<Entity> entities = new List<Entity>();
             
             for (int i = 0; i < collidersCount; i++)
             {
-                entities[i] = _overlapSphereBuffer[i].GetComponent<Entity>();
+                if (_overlapSphereBuffer[i].TryGetComponent(out Entity entity))
+                {
+                    entities.Add(entity);
+                }
             }
 
-            return entities;
+            return entities.ToArray();
         }
 
         public Entity GetNearestAlly()
