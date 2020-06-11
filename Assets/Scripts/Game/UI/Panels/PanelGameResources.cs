@@ -69,6 +69,10 @@ namespace Game.UI
 
         private void UpdateIncomeLabel(int wood, int food, int stone)
         {
+            _incomesLabels[(int)Resource.Food].enabled = food != 0;
+            _incomesLabels[(int)Resource.Wood].enabled = wood != 0;
+            _incomesLabels[(int)Resource.Stone].enabled = stone != 0;
+
             _incomesLabels[(int)Resource.Food].text = string.Format(incomeFormat, food);
             _incomesLabels[(int)Resource.Wood].text = string.Format(incomeFormat, wood);
             _incomesLabels[(int)Resource.Stone].text = string.Format(incomeFormat, stone);
