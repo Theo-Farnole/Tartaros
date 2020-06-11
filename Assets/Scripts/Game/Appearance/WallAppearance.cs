@@ -8,138 +8,62 @@ using UnityEngine.Assertions;
 /// <summary>
 /// Change model if the game object is a wall joint.
 /// </summary>
+[RequireComponent(typeof(WallChainDetector))]
 public class WallAppearance : MonoBehaviour
 {
-    private enum WallOrientation
-    {
-        NotAWall = 0,
-        NorthToSouth = 1,
-        WestToEast = 2,
-    }
-
+    #region Fields
     private const string debugLogHeader = "Wall Apperance : ";
 
     [Header("OBJECTS LINKING")]
     [SerializeField] private GameObject _jointModel;
     [SerializeField] private GameObject _wallModel;
 
-    [Header("IDS")]
-    [SerializeField] private string[] _wallIDs = new string[] { "building_wall", "building_gate" };
+    private WallChainDetector _wallChainDetector;
+    #endregion
 
+    #region Properties
+    public WallChainDetector WallChainDetector
+    {
+        get
+        {
+            if (_wallChainDetector == null)
+                _wallChainDetector = GetComponent<WallChainDetector>();
+
+            return _wallChainDetector;
+        }
+    }
+    #endregion
+
+    #region Methods
+    #region MonoBehaviour Callbacks
     void OnEnable()
     {
-        if (TileSystem.Instance != null)
-        {
-            TileSystem.Instance.OnTileTerrainChanged += Instance_OnTileTerrainChanged;
-        }
-        else
-        {
-            Debug.LogErrorFormat(debugLogHeader + "TileSystem is missing. Can't update wall apperance.");
-        }
+        WallChainDetector.OnWallJointChanged += WallChainDetector_OnWallJointChanged;
 
-        ChangeAppearance();
+        ForceUpdateAppearance();
     }
 
     void OnDisable()
     {
-        if (TileSystem.Instance != null)
-        {
-            TileSystem.Instance.OnTileTerrainChanged -= Instance_OnTileTerrainChanged;
-        }
+        WallChainDetector.OnWallJointChanged -= WallChainDetector_OnWallJointChanged;
     }
+    #endregion
 
-    void Instance_OnTileTerrainChanged(Vector2Int changedCoords, GameObject gameObjectAtCoords)
+    #region EventsHandlers
+    private void WallChainDetector_OnWallJointChanged(bool isWallJoint)
     {
-        Vector2Int myCoords = TileSystem.Instance.WorldToCoords(transform.position);
-
-        // only change appearance if tiles are neightboor
-        if (TileSystem.Instance.DoTilesAreNeightboor(myCoords, changedCoords))
-        {
-            ChangeAppearance();
-        }
-    }
-
-    void ChangeAppearance()
-    {
-        bool isWallJoint = Calculate_IsWallJoint(out WallOrientation wallOrientation);
-
         _jointModel.SetActive(isWallJoint);
         _wallModel.SetActive(!isWallJoint);
-
-        if (!isWallJoint)
-        {
-            Quaternion rotation = WallOrientationToRotation(wallOrientation);
-            _wallModel.transform.rotation = rotation;
-        }
     }
+    #endregion
 
-    bool Calculate_IsWallJoint(out WallOrientation wallOrientation)
+    #region Private Methods
+    private void ForceUpdateAppearance()
     {
-        Assert.IsNotNull(TileSystem.Instance, "You must have a TileSystem to change appareance.");
-
-        Vector2Int myCoords = TileSystem.Instance.WorldToCoords(transform.position);
-
-        Vector2Int northCoords = new Vector2Int(myCoords.x, myCoords.y + 1);
-        Vector2Int southCoords = new Vector2Int(myCoords.x, myCoords.y - 1);
-        Vector2Int eastCoords = new Vector2Int(myCoords.x + 1, myCoords.y);
-        Vector2Int westCoords = new Vector2Int(myCoords.x - 1, myCoords.y);
-
-        bool hasNorthWall = IsWall(northCoords);
-        bool hasSouthWall = IsWall(southCoords);
-        bool hasEastWall = IsWall(eastCoords);
-        bool hasWestWall = IsWall(westCoords);
-
-        if (hasNorthWall && hasSouthWall && !hasEastWall && !hasWestWall) // N/S walls only
-        {
-            wallOrientation = WallOrientation.NorthToSouth;
-            return false;
-        }
-        else if (!hasNorthWall && !hasSouthWall && hasEastWall && hasWestWall) // E/W walls only
-        {
-            wallOrientation = WallOrientation.WestToEast;
-            return false;
-        }
-        else
-        {
-            wallOrientation = WallOrientation.NotAWall;
-            return true;
-        }
+        bool isWallJoint = WallChainDetector.Cached_IsWallJoint;
+        _jointModel.SetActive(isWallJoint);
+        _wallModel.SetActive(!isWallJoint);
     }
-
-    bool IsWall(Vector2Int coords)
-    {
-        Assert.IsNotNull(TileSystem.Instance, "You must have a TileSystem check if object at coords is a wall.");
-
-        var tile = TileSystem.Instance.GetTile(coords);
-
-        if (tile == null)
-            return false;
-
-        if (tile.TryGetComponent(out Entity entity))
-        {
-            if (_wallIDs.Length == 0) Debug.LogWarningFormat("Wall IDS of {0} is empty!", name);
-
-            Debug.LogFormat("{2} Entity '{0}' => {1} ", entity.EntityID, _wallIDs.Contains(entity.EntityID), name);
-            return _wallIDs.Contains(entity.EntityID);
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    Quaternion WallOrientationToRotation(WallOrientation wallOrientation)
-    {
-        switch (wallOrientation)
-        {
-            case WallOrientation.NotAWall:
-            case WallOrientation.NorthToSouth:
-                return Quaternion.Euler(0, 0, 0);
-
-            case WallOrientation.WestToEast:
-                return Quaternion.Euler(0, 90, 0);
-            default:
-                throw new System.NotImplementedException();
-        }
-    }
+    #endregion
+    #endregion
 }
