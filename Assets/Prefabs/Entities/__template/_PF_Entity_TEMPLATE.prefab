@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 5282470303608120372}
   - component: {fileID: 4525459865806292518}
   - component: {fileID: 5038305241564417077}
+  - component: {fileID: 8942491577002155834}
   m_Layer: 10
   m_Name: _PF_Entity_TEMPLATE
   m_TagString: Untagged
@@ -336,6 +337,18 @@ MonoBehaviour:
   _updateMeshOnObstacleUpdate: 1
   _meshNavMeshEnabled: {fileID: 0}
   _meshNavMeshDisabled: {fileID: 0}
+--- !u!114 &8942491577002155834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927950564186908724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af5458d9c04f9de459a7fca9ea12fedf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9025644110156182020
 GameObject:
   m_ObjectHideFlags: 0

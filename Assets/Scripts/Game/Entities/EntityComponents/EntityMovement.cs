@@ -35,6 +35,10 @@ namespace Game.Entities
         private CapsuleCollider _collider;
         #endregion
 
+        #region Properties
+        public Vector3 Destination { get => _destination; }
+        #endregion
+
         #region Methods
         #region Mono Callbacks
         void Awake()
@@ -127,7 +131,7 @@ namespace Game.Entities
             if (!Entity.Data.CanMove)
                 return;
 
-            MoveToPosition(target.transform.position);            
+            MoveToPosition(target.transform.position);
         }
 
         public void MoveToPosition(Vector3 position)

@@ -19,7 +19,7 @@ namespace Game.Entities
         #region Fields
         private const string debugLogHeader = "Entity Detection : ";
         public readonly static float DISTANCE_THRESHOLD = 0.3f;
-        public readonly static int frameIntervalToCheckNearestEntities = 5;
+        public readonly static int frameIntervalToCheckNearestEntities = 5;        
 
         public event OnEntityDetected OnAllyEnterShiftRange;
         public event OnEntityDetected OnOpponentEnterAttackRange;
@@ -29,7 +29,9 @@ namespace Game.Entities
         private Entity _nearestOpponentTeamEntity = null;
         private Entity _nearestAllyTeamEntity = null;
 
+        private Collider[] _overlapSphereBuffer = new Collider[20];
         private int _frameOffset = -1;
+        private int _layerMaskEntity = -1;
         #endregion
 
         #region Methods
@@ -38,6 +40,9 @@ namespace Game.Entities
         {
             _frameOffset = UnityEngine.Random.Range(0, frameIntervalToCheckNearestEntities);
             EntitiesNeightboorManager.Initialize();
+
+            if (_layerMaskEntity == -1)
+                _layerMaskEntity = LayerMask.GetMask("Entity");
         }
 
         void Start()
@@ -132,6 +137,20 @@ namespace Game.Entities
                 _nearestOpponentTeamEntity = null;
 
             return _nearestOpponentTeamEntity;
+        }
+
+        public Entity[] GetAlliesInRadius(float radius)
+        {
+            int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);
+
+            Entity[] entities = new Entity[collidersCount];
+            
+            for (int i = 0; i < collidersCount; i++)
+            {
+                entities[i] = _overlapSphereBuffer[i].GetComponent<Entity>();
+            }
+
+            return entities;
         }
 
         public Entity GetNearestAlly()
