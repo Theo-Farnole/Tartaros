@@ -9,7 +9,9 @@
     /// </summary>
     public class EntityTransitiveStop : EntityComponent
     {
-        private bool _transitiveStopEnable = true;
+        [SerializeField] private float _maxDistanceFromDestinationToAllowStopping = -1;
+
+        private bool _transitiveStopEnable = false;
 
         private EntityDetection _cachedEntityDetection;
         private EntityMovement _cachedEntityMovement;
@@ -21,13 +23,21 @@
         }
 
         void Update()
-        {
-            TryToStop();
+        {            
+            TryToStopMovement();
         }
 
-        private void TryToStop()
+        private void TryToStopMovement()
         {
+            // don't try to stop if idling
+            if (Entity.IsIdle)
+                return;
+
             if (!_transitiveStopEnable)
+                return;
+
+            // not enought near from destination
+            if (_maxDistanceFromDestinationToAllowStopping != -1 && Vector3.Distance(_cachedEntityMovement.Destination, transform.position) > _maxDistanceFromDestinationToAllowStopping)
                 return;
 
             float radius = Entity.Data.GetBiggerTileSize();
