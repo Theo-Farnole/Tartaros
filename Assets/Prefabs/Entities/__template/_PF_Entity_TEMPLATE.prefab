@@ -301,6 +301,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e41ca93b9e8f9f4fa935d79b34e78fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collisionScalerData: {fileID: 11400000, guid: ec0a524eecc0b374ca058f8b5d860154,
+    type: 2}
+  _reduceCollisionOnMove: 1
 --- !u!114 &4525459865806292518
 MonoBehaviour:
   m_ObjectHideFlags: 0

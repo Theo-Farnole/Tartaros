@@ -1,5 +1,6 @@
 ﻿using Game.Entities.Actions;
 using Lortedo.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,9 +18,17 @@ namespace Game.Entities
         private const float reachDestinationThreshold = 0.5f;
         private const float radiusThreshold = 0.1f;
 
+        public event Action<Vector3> DestinationReached;
+        public event Action<Vector3> StartMove;
+        /// <summary>
+        /// Called on DestinationReached and on StopMove();
+        /// </summary>
+        public event System.Action MovementStopped;
+
         [SerializeField] private EntityShiftData _shiftData;
 
         private Vector3 _destination;
+        private bool _hasReachedDestination = false;
 
         // cache variable
         private NavMeshAgent _navMeshAgent;
@@ -39,6 +48,22 @@ namespace Game.Entities
             if (_navMeshAgent != null)
             {
                 SetupNavMeshAgent();
+            }
+        }
+
+        void Update()
+        {
+            if (!Entity.Data.CanMove)
+                return;
+
+            var oldHasReachedDestination = _hasReachedDestination;
+            _hasReachedDestination = HasReachedDestination();
+
+            // has just reached destination ?
+            if (!oldHasReachedDestination && _hasReachedDestination)
+            {
+                DestinationReached?.Invoke(_destination);
+                MovementStopped?.Invoke();
             }
         }
 
@@ -102,7 +127,7 @@ namespace Game.Entities
             if (!Entity.Data.CanMove)
                 return;
 
-            MoveToPosition(target.transform.position);
+            MoveToPosition(target.transform.position);            
         }
 
         public void MoveToPosition(Vector3 position)
@@ -116,6 +141,8 @@ namespace Game.Entities
 
             _navMeshAgent.isStopped = false;
             _navMeshAgent.SetDestination(position);
+
+            StartMove?.Invoke(position);
         }
 
         public void StopMoving()
@@ -126,6 +153,7 @@ namespace Game.Entities
             SetAvoidance(Avoidance.Idle);
 
             _navMeshAgent.isStopped = true;
+            MovementStopped?.Invoke();
         }
 
 
@@ -157,7 +185,7 @@ namespace Game.Entities
 
         private void Shift(Entity hitEntity)
         {
-            Vector3 fleeHitEntityDirection = Quaternion.Euler(0, -90, 0) * -Math.Direction(Entity.transform.position, hitEntity.transform.position);
+            Vector3 fleeHitEntityDirection = Quaternion.Euler(0, -90, 0) * -Lortedo.Utilities.Math.Direction(Entity.transform.position, hitEntity.transform.position);
 
             var action = new ActionMoveToPosition(Entity, transform.position + fleeHitEntityDirection * _shiftData.ShiftLength);
 
