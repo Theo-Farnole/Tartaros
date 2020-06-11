@@ -19,6 +19,9 @@ public class EntityDetectionCustomEditor : Editor
     {
         EntityDetection ent = target as EntityDetection;
 
+        if (!ent.Entity.Data.CanDetectEntities)
+            return;
+
         EditorGUILayout.BeginHorizontal();
         {
             EditorGUILayout.PrefixLabel("Nearest Ally");
