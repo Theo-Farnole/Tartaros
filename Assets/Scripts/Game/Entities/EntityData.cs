@@ -32,7 +32,7 @@ namespace Game.Entities
     [CreateAssetMenu(menuName = "Tartaros/Entity")]
     public class EntityData : SerializedScriptableObject
     {
-
+        #region Fields
         private const string attackSettingsHeaderName = "Can Attack";
         private const string movementSettingsHeaderName = "Can Move";
         private const string createUnitSettingsHeaderName = "Can Create Unit";
@@ -170,15 +170,7 @@ namespace Game.Entities
         [PositiveValueOnly]
         [SerializeField] private float _speed = 3;
 
-        [ToggleGroup(nameof(_canMove), movementSettingsHeaderName)]
-        [SerializeField] private float _shiftLength = 3;
-
-        [ToggleGroup(nameof(_canMove), movementSettingsHeaderName)]
-        [SerializeField] private float _startShiftCollision = 3;
-
         public float Speed { get => _speed; }
-        public float ShiftLength { get => _shiftLength; }
-        public float StartShiftRange { get => _startShiftCollision; }
         #endregion
 
         #region Units Creation
@@ -253,7 +245,9 @@ namespace Game.Entities
         public bool CanDetectEntities { get => _canDetectEntities; set => _canDetectEntities = value; }
         #endregion
         #endregion
+        #endregion
 
+        #region Methods
         public float GetBiggerTileSize()
         {
             return Mathf.Max(_tileSize.x, _tileSize.y);
@@ -353,4 +347,5 @@ namespace Game.Entities
             return output.ToArray();
         }
     }
+    #endregion
 }

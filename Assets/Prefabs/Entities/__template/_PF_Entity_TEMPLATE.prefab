@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a481bbd335ece46994e99498e74332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shiftData: {fileID: 11400000, guid: adb318320016d9d47bd7315858864ef2, type: 2}
 --- !u!114 &1664664131638771059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a3b8aee61d47149affd45d7ac47fcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _frameOffset: -1
+  _shiftData: {fileID: 11400000, guid: adb318320016d9d47bd7315858864ef2, type: 2}
 --- !u!114 &1973910105360460874
 MonoBehaviour:
   m_ObjectHideFlags: 0

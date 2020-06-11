@@ -17,6 +17,8 @@ namespace Game.Entities
         private const float reachDestinationThreshold = 0.5f;
         private const float radiusThreshold = 0.1f;
 
+        [SerializeField] private EntityShiftData _shiftData;
+
         private Vector3 _destination;
 
         // cache variable
@@ -157,7 +159,7 @@ namespace Game.Entities
         {
             Vector3 fleeHitEntityDirection = Quaternion.Euler(0, -90, 0) * -Math.Direction(Entity.transform.position, hitEntity.transform.position);
 
-            var action = new ActionMoveToPosition(Entity, transform.position + fleeHitEntityDirection * Entity.Data.ShiftLength);
+            var action = new ActionMoveToPosition(Entity, transform.position + fleeHitEntityDirection * _shiftData.ShiftLength);
 
             Entity.SetAction(action, false);
         }

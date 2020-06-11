@@ -19,11 +19,12 @@ namespace Game.Entities
         #region Fields
         private const string debugLogHeader = "Entity Detection : ";
         public readonly static float DISTANCE_THRESHOLD = 0.3f;
-
         public readonly static int frameIntervalToCheckNearestEntities = 5;
 
         public event OnEntityDetected OnAllyEnterShiftRange;
         public event OnEntityDetected OnOpponentEnterAttackRange;
+
+        [SerializeField] private EntityShiftData _shiftData;
 
         private Entity _nearestOpponentTeamEntity = null;
         private Entity _nearestAllyTeamEntity = null;
@@ -110,7 +111,7 @@ namespace Game.Entities
             Assert.IsNotNull(Entity);
             Assert.IsNotNull(Entity.Data);
 
-            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.StartShiftRange + (target.Data.GetBiggerTileSize() + Entity.Data.GetBiggerTileSize()) / 2;
+            return Vector3.Distance(transform.position, target.transform.position) <= _shiftData.ShiftCollisionRadius + (target.Data.GetBiggerTileSize() + Entity.Data.GetBiggerTileSize()) / 2;
         }
 
         public bool IsNearFromEntity(Entity target)
