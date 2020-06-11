@@ -24,16 +24,19 @@ namespace Game.Entities.Actions
             _entityMovement = entity.GetCharacterComponent<EntityMovement>();
         }
 
-        public override void OnStateExit()
-        {
-            _entityMovement.StopMoving();
-        }
-
         public override void OnStateEnter()
         {
             base.OnStateEnter();
 
             MoveToPosition(true);
+
+            _owner.GetCharacterComponent<EntityTransitiveStop>().EnableTransitiveStop();
+        }
+
+        public override void OnStateExit()
+        {
+            _entityMovement.StopMoving();
+            _owner.GetCharacterComponent<EntityTransitiveStop>().DisableTransitiveStop();
         }
 
         public override void Tick()

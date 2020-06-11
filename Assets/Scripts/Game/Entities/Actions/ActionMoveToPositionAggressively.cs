@@ -26,6 +26,8 @@ namespace Game.Entities.Actions
 
             entity.GetCharacterComponent<EntityMovement>().MoveToPosition(_position);
             entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += OnOpponentEnterAttackRange;
+
+            _owner.GetCharacterComponent<EntityTransitiveStop>().EnableTransitiveStop();
         }
 
         public override void OnStateExit()
@@ -34,6 +36,8 @@ namespace Game.Entities.Actions
 
             entity.GetCharacterComponent<EntityMovement>().StopMoving();
             entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange -= OnOpponentEnterAttackRange;
+
+            _owner.GetCharacterComponent<EntityTransitiveStop>().DisableTransitiveStop();
         }
 
         public override void Tick()
