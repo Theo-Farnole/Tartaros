@@ -36,7 +36,6 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private PopulationManager _populationManager;
     [Header("DATA")]
     [SerializeField] private GameManagerData _data;
-    [SerializeField] private CollisionScalerData _collisionScalerData;
     [SerializeField] private AttackSlotsData _attackSlotsData;
     [Header("DEBUG")]
     [SerializeField] private bool _debugDrawSnapGrid;
@@ -83,7 +82,6 @@ public class GameManager : Singleton<GameManager>
 
     public SnapGridDatabase Grid { get => _grid; }
     public static bool ApplicationIsQuitting { get => _applicationIsQuitting; }
-    public CollisionScalerData CollisionScalerData { get => _collisionScalerData; }
     public AttackSlotsData AttackSlotsData { get => _attackSlotsData; }
     public MapCells MapCells { get => _mapCells; }
 
