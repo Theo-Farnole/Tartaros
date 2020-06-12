@@ -213,18 +213,18 @@ public partial class GameManager : Singleton<GameManager>
         }
         else
         {
-            UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enough resources to build " + buildingID);
+            UIMessagesLogger.Instance.LogErrorFormat("You doesn't have enough resources to build ", buildingID);
             HasNotEnoughtResources?.Invoke(this, buildingCost);
         }
     }
 
 
-    public Entity SpawnEntity(string unitID, Vector3 position, Quaternion rotation, Team team)
+    public Entity SpawnEntity(string entityID, Vector3 position, Quaternion rotation, Team team)
     {
         Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
         Assert.IsNotNull(ObjectPooler.Instance, "MainRegister is missing. Can't spawn unit");
 
-        EntityData entityData = MainRegister.Instance.GetEntityData(unitID);
+        EntityData entityData = MainRegister.Instance.GetEntityData(entityID);
 
         Resources -= entityData.SpawningCost;
 
@@ -248,11 +248,11 @@ public partial class GameManager : Singleton<GameManager>
 
         EntityData unitData = MainRegister.Instance.GetEntityData(entityID);
 
-        if (unitData.PopulationUse > 0 && !GameManager.Instance.HasEnoughtPopulationToSpawn())
+        if (unitData.PopulationUse > 0 && !HasEnoughtPopulationToSpawn())
         {
             if (logErrors)
             {
-                UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", entityID));
+                UIMessagesLogger.Instance.LogErrorFormat("Build more house to create {0} unit.", entityID);
             }
 
             return false;
@@ -262,7 +262,7 @@ public partial class GameManager : Singleton<GameManager>
         {
             if (logErrors)
             {
-                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + entityID + ".");
+                UIMessagesLogger.Instance.LogError("You doesn't have enought resources to create " + entityID + ".");
             }
 
             return false;

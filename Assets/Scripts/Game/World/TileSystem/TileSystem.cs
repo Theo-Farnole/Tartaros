@@ -151,7 +151,7 @@ public class TileSystem : Singleton<TileSystem>
         {
             if (!IsTileFree(tileCoords))
             {
-                if (logBuildError) UIMessagesLogger.Instance.AddErrorMessage("Can't on non-empty tile.");
+                if (logBuildError) UIMessagesLogger.Instance.LogError("Can't on non-empty tile.");
                 return false;
             }
         }
@@ -166,7 +166,7 @@ public class TileSystem : Singleton<TileSystem>
 
             if (!IsTileVisible(tileWorldPosition))
             {
-                if (logBuildError) UIMessagesLogger.Instance.AddErrorMessage("Can't on non-visible tile.");
+                if (logBuildError) UIMessagesLogger.Instance.LogError("Can't on non-visible tile.");
                 return false;
             }
         }
@@ -175,7 +175,7 @@ public class TileSystem : Singleton<TileSystem>
         {
             if (GetTile(tileCoords) != null && !DoTileContainsEntityOfID(tileCoords, entityID))
             {
-                if (logBuildError) UIMessagesLogger.Instance.AddErrorMessage(string.Format("Can't build on {0} building.", GetTileID(tileCoords)));
+                if (logBuildError) UIMessagesLogger.Instance.LogError(string.Format("Can't build on {0} building.", GetTileID(tileCoords)));
                 return false;
             }
         }
@@ -266,7 +266,7 @@ public class TileSystem : Singleton<TileSystem>
 
         if (!canBuildOnNonEmptyCell && _tiles[coords] != null)
         {
-            UIMessagesLogger.Instance.AddErrorMessage("You can't build on non-empty cell.");
+            UIMessagesLogger.Instance.LogError("You can't build on non-empty cell.");
             return false;
         }
 

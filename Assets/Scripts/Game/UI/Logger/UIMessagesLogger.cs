@@ -1,4 +1,4 @@
-using Lortedo.Utilities;
+﻿using Lortedo.Utilities;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +26,19 @@ public class UIMessagesLogger : Singleton<UIMessagesLogger>
             _parentErrors.parent.gameObject.SetActive(true);
         }
     }
+
+    public void LogErrorFormat(string text, string arg)
+    {
+        LogError(string.Format(text, arg));
+    }
+
+    public void LogErrorFormat(string text, params string[] args)
+    {
+        LogError(string.Format(text, args));
+    }
+
+    public void LogError(string text)
+    {
         // we use instantiate method to avoid need to reset scale
         Transform errorTransform = new GameObject().transform;
         errorTransform.SetParent(_parentErrors, false);
