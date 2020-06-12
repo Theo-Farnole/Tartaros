@@ -61,12 +61,10 @@ namespace Game.UI
 
             if (orderContent.Enabled)
             {
-                Debug.LogFormat("EnableButtonInteraction {0}", orderContent.Portrait.name);
                 EnableButtonInteraction();
             }
             else
             {
-                Debug.LogFormat("DisableButtonInteraction {0}", orderContent.Portrait.name);
                 DisableButtonInteraction();
             }
         }
