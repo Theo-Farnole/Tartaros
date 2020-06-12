@@ -15,6 +15,7 @@ public delegate void OnStartBuild(GameManager gameManager);
 public delegate void OnStopBuild(GameManager gameManager);
 public delegate void OnBuildSuccessful(GameManager gameManager);
 public delegate void HasNotEnoughtResources(GameManager gameManager, ResourcesWrapper cost);
+public delegate void PendingCreationChanged(string id);
 
 public class GameManager : Singleton<GameManager>
 {
@@ -28,7 +29,10 @@ public class GameManager : Singleton<GameManager>
     public static event OnStartBuild OnStartBuild;
     public static event OnStopBuild OnStopBuild;
     public static event OnBuildSuccessful OnBuildSuccessful;
-    public static event HasNotEnoughtResources HasNotEnoughtResources;    
+    public static event HasNotEnoughtResources HasNotEnoughtResources;
+
+    public static event PendingCreationChanged PendingCreationEntityAdded;
+    public static event PendingCreationChanged PendingCreationEntityRemoved;
 
     [Header("COMPONENTS")]
     [SerializeField] private SnapGridDatabase _grid;
@@ -173,6 +177,8 @@ public class GameManager : Singleton<GameManager>
 
         _populationManager.PopulationCount += entityData.PopulationUse;
         Resources -= entityData.SpawningCost;
+
+        PendingCreationEntityAdded?.Invoke(entityID);
     }
 
     public void RemovePendingCreationEntity(string entityID)
@@ -187,6 +193,8 @@ public class GameManager : Singleton<GameManager>
             Resources += entityData.SpawningCost;
 
             Debug.LogFormat("Remove pending: before {0} / after {1}", pendingCreationBeforeRemove, _pendingCreation.Count);
+
+            PendingCreationEntityRemoved?.Invoke(entityID);
         }
     }
 

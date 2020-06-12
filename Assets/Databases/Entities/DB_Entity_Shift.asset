@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42305a96980bd774882de01f8d7359df, type: 3}
   m_Name: DB_Entity_Shift
   m_EditorClassIdentifier: 
-  _shiftCollisionRadius: 3
-  _shiftLength: 3
+  _shiftCollisionRadius: 0.2
+  _shiftLength: 0.1

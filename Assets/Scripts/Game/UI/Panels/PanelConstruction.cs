@@ -20,7 +20,7 @@ namespace Game.UI
         [SerializeField] private GameObject _prefabConstructionButton;
         [SerializeField] private Transform _parentConstructionButton;
 
-        private UI_OrderWrapper[] _orderButtons = null;
+        private OrderButton[] _orderButtons = null;
         #endregion
 
         #region Methods
@@ -65,7 +65,7 @@ namespace Game.UI
             // create a button for each entries in game manager 'buildings in panel construction'
             var constructionOrders = GameManager.Instance.ManagerData.GetConstructionOrders();
 
-            _orderButtons = new UI_OrderWrapper[constructionOrders.Length];
+            _orderButtons = new OrderButton[constructionOrders.Length];
 
             for (int i = 0; i < constructionOrders.Length; i++)
             {
@@ -83,7 +83,7 @@ namespace Game.UI
             instanciatedButton.transform.SetParent(_parentConstructionButton, false);
 
             // set building type on construction button
-            UI_OrderWrapper orderWrapper = instanciatedButton.GetComponent<UI_OrderWrapper>();
+            OrderButton orderWrapper = instanciatedButton.GetComponent<OrderButton>();
             orderWrapper.SetContent(orderContent);
 
             Assert.IsNotNull(orderWrapper, "Prefab construction prefab misses a UI_ConstructionButton component.");

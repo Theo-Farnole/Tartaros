@@ -63,6 +63,7 @@ MonoBehaviour:
     stone: 0
   _creationDuration: 0
   _viewRadius: 3
+  _canDetectEntities: 0
   _isConstructionChained: 0
   _canAttack: 0
   _isMelee: 1
@@ -74,9 +75,13 @@ MonoBehaviour:
   _canMove: 0
   _speed: 3
   _canCreateUnit: 1
-  _availableUnitsForCreation:
-  - unit_melee_hoplite
-  - unit_range_archer
+  _unitsSpawnConditions:
+  - _entityIDToSpawn: unit_range_archer
+    _hasSpawnCondition: 0
+    _maxAlliesOfSameIDAlive: -1
+  - _entityIDToSpawn: unit_melee_hoplite
+    _hasSpawnCondition: 0
+    _maxAlliesOfSameIDAlive: -1
   _canGenerateResources: 0
   _generationTick: 1
   _generationType: 1
@@ -89,3 +94,9 @@ MonoBehaviour:
   _increaseMaxPopulationAmount: 0
   _canTurnIntoAnotherEntity: 0
   _turnIntoAnotherEntityList: []
+  _canToggleNavMeshObstacle: 0
+  _orderToggleNavMeshObstacle:
+    _hotkey: 0
+    _portrait: {fileID: 0}
+    _hoverPopupData: {fileID: 0}
+    _linePosition: 0

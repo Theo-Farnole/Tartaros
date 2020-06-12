@@ -94,29 +94,43 @@ namespace Game.Entities
         {
             if (!Entity.Data.CanSpawnUnit)
             {
-                Debug.LogWarningFormat("You must tick 'can spawn unit' on database " + Entity.EntityID + ".");
+                Debug.LogErrorFormat("You must tick 'can spawn unit' on database " + Entity.EntityID + ".");
+                return false;
             }
 
-            if (!Entity.Data.AvailableUnitsForCreation.Contains(entityID))
+            UnitSpawnCondition spawnCondition = Entity.Data.GetSpawnCondition(entityID);
+
+            if (spawnCondition == null)
             {
-                Debug.LogWarningFormat(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", entityID, name);
+                Debug.LogErrorFormat(debugLogHeader + "Can't create {0} because it's not inside _creatableUnits of {1}.", entityID, name);
+                return false;
             }
+
+            if (spawnCondition != null && !spawnCondition.DoConditionsAreMet())
+                return false;
 
             Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
             Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
 
-            var unitData = MainRegister.Instance.GetEntityData(entityID);
-            Assert.IsNotNull(unitData, string.Format(debugLogHeader + "Entity Unit Spawn could find EntityData of {0}. Aborting method.", entityID));
+            EntityData unitData = MainRegister.Instance.GetEntityData(entityID);
 
             if (unitData.PopulationUse > 0 && !GameManager.Instance.HasEnoughtPopulationToSpawn())
             {
-                if (logErrors) UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", entityID));
+                if (logErrors)
+                {
+                    UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", entityID));
+                }
+
                 return false;
             }
 
             if (!GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost))
             {
-                if (logErrors) UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + entityID + ".");
+                if (logErrors)
+                {
+                    UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + entityID + ".");
+                }
+
                 return false;
             }
 

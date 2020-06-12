@@ -14,7 +14,8 @@ namespace Game.UI
     {
         [SerializeField] private RectTransform[] _ordersLineParent;
 
-        private UI_OrderWrapper[][] _orders = null;
+        private OrderButton[][] _orders = null;
+        private Entity _selectedEntity;
 
         #region Methods
         #region MonoBehaviour Callbacks
@@ -27,11 +28,19 @@ namespace Game.UI
         void OnEnable()
         {
             SelectionManager.OnSelectionUpdated += SelectionManager_OnSelectionUpdated;
+            GameManager.PendingCreationEntityAdded += GameManager_PendingCreationEntityAdded;
+            GameManager.PendingCreationEntityRemoved += GameManager_PendingCreationEntityRemoved;
+            Entity.OnSpawn += Entity_OnSpawn;
+            Entity.OnDeath += Entity_OnDeath;
         }
 
         void OnDisable()
         {
             SelectionManager.OnSelectionUpdated -= SelectionManager_OnSelectionUpdated;
+            GameManager.PendingCreationEntityAdded -= GameManager_PendingCreationEntityAdded;
+            GameManager.PendingCreationEntityRemoved -= GameManager_PendingCreationEntityRemoved;
+            Entity.OnSpawn -= Entity_OnSpawn;
+            Entity.OnDeath -= Entity_OnDeath;
         }
         #endregion
 
@@ -43,10 +52,18 @@ namespace Game.UI
             {
                 Assert.IsTrue(selectedGroups.IsIndexInsideBounds(highlightGroupIndex), "Highlight group index is out of bounds of selectedGroups");
 
-                var firstEntitySelectedEntity = selectedGroups[highlightGroupIndex].unitsSelected[0];
-                UpdateOrders(firstEntitySelectedEntity);
+                _selectedEntity = selectedGroups[highlightGroupIndex].unitsSelected[0];                
+                UpdateOrders(_selectedEntity);
             }
         }
+
+        private void GameManager_PendingCreationEntityAdded(string id) => UpdateOrdersWithSelectedEntity();
+
+        private void GameManager_PendingCreationEntityRemoved(string id) => UpdateOrdersWithSelectedEntity();
+
+        private void Entity_OnSpawn(Entity entity) => UpdateOrdersWithSelectedEntity();
+
+        private void Entity_OnDeath(Entity entity) => UpdateOrdersWithSelectedEntity();
         #endregion
 
         #region Private Methods
@@ -61,7 +78,7 @@ namespace Game.UI
             if (entity == null)
                 return;
 
-            SetOrders(entity);
+            SetAllOrders(entity);
         }
 
         private void HideOrders()
@@ -75,7 +92,7 @@ namespace Game.UI
             }
         }
 
-        private void SetOrders(Entity entity)
+        private void SetAllOrders(Entity entity)
         {
             OrderContent[] orders = entity.Data.GetAvailableOrders();
 
@@ -90,13 +107,21 @@ namespace Game.UI
             Assert.IsNotNull(order);
 
             var orderWrapper = GetOrderWrapperFromOrder(order);
+
             Assert.IsNotNull(orderWrapper);
 
             orderWrapper.gameObject.SetActive(true);
             orderWrapper.SetContent(order);
         }
 
-        #region Getter Methods
+        private void UpdateOrdersWithSelectedEntity()
+        {
+            if (_selectedEntity == null)
+                return;
+
+            UpdateOrders(_selectedEntity);
+        }
+
         /// <summary>
         /// Find each UI_OrderWrapper inside _ordersLineParent.
         /// </summary>
@@ -104,30 +129,30 @@ namespace Game.UI
         {
             Assert.IsNull(_orders, "_orders field is not null. Can't initialize it.");
 
-            _orders = new UI_OrderWrapper[_ordersLineParent.Length][];
+            _orders = new OrderButton[_ordersLineParent.Length][];
 
             for (int i = 0; i < _ordersLineParent.Length; i++)
             {
                 int childCount = _ordersLineParent[i].childCount;
 
-                _orders[i] = new UI_OrderWrapper[childCount];
+                _orders[i] = new OrderButton[childCount];
 
                 for (int j = 0; j < childCount; j++)
                 {
-                    _orders[i][j] = _ordersLineParent[i].GetChild(j).GetComponent<UI_OrderWrapper>();
+                    _orders[i][j] = _ordersLineParent[i].GetChild(j).GetComponent<OrderButton>();
                 }
             }
 
         }
 
-        private UI_OrderWrapper GetOrderWrapperFromOrder(OrderContent order)
+        private OrderButton GetOrderWrapperFromOrder(OrderContent order)
         {
             var orderWrappers = GetLineOrders(order.LinePosition);
 
             return GetFirstInactiveOrderWrapper(orderWrappers);
         }
 
-        private UI_OrderWrapper GetFirstInactiveOrderWrapper(UI_OrderWrapper[] orderWrappers)
+        private OrderButton GetFirstInactiveOrderWrapper(OrderButton[] orderWrappers)
         {
             foreach (var orderWrapper in orderWrappers)
             {
@@ -138,7 +163,7 @@ namespace Game.UI
             throw new NotSupportedException("Not enought UI_OrderWrapper.");
         }
 
-        private UI_OrderWrapper[] GetLineOrders(int linePosition)
+        private OrderButton[] GetLineOrders(int linePosition)
         {
             // linePosition starts at 1
             // we remove one, to make linePosition starts at 0
@@ -147,7 +172,6 @@ namespace Game.UI
 
             return _orders[linePosition];
         }
-        #endregion
         #endregion
         #endregion
     }

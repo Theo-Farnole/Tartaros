@@ -75,8 +75,10 @@ MonoBehaviour:
   _canMove: 0
   _speed: 3
   _canCreateUnit: 1
-  _availableUnitsForCreation:
-  - unit_hero_leonidas
+  _unitsSpawnConditions:
+  - _entityIDToSpawn: unit_hero_leonidas
+    _hasSpawnCondition: 1
+    _maxAlliesOfSameIDAlive: 1
   _canGenerateResources: 0
   _generationTick: 1
   _generationType: 0

@@ -1,17 +1,16 @@
-using Game.MapCellEditor;
-using Lortedo.Utilities.Inspector;
-using MyBox;
-using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
-using Game.UI.HoverPopup;
-using UnityEngine;
-using UnityEngine.Serialization;
-using System;
-using Game.Selection;
-
 namespace Game.Entities
 {
+    using Game.MapCellEditor;
+    using MyBox;
+    using Sirenix.OdinInspector;
+    using System.Collections.Generic;
+    using Game.UI.HoverPopup;
+    using UnityEngine;
+    using UnityEngine.Serialization;
+    using System;
+    using Game.Selection;
+    using System.Linq;
+
     public enum GenerationType
     {
         Constant = 1,
@@ -22,6 +21,48 @@ namespace Game.Entities
     {
         Unit,
         Building
+    }
+
+    [Serializable]
+    public class UnitSpawnCondition
+    {
+        [SerializeField] private string _entityIDToSpawn = string.Empty;
+
+        [ToggleGroup(nameof(_hasSpawnCondition))]
+        [SerializeField] private bool _hasSpawnCondition = false;
+
+        [ToggleGroup(nameof(_hasSpawnCondition))]
+        [SerializeField] private int _maxAlliesOfSameIDAlive = -1;
+
+        public string EntityIDToSpawn { get => _entityIDToSpawn; }
+
+        /// <summary>
+        /// Warning, this method call 'FindObjectOfTypes'. It can be performance heavy.
+        /// </summary>
+        /// <returns></returns>
+        public bool DoConditionsAreMet()
+        {
+            if (!_hasSpawnCondition)
+                return true;
+
+            // PERFORMANCE NOTE:
+            // Create an EntityManager where it store every Entity[]
+            Entity[] entities = UnityEngine.Object.FindObjectsOfType<Entity>();
+
+            if (_maxAlliesOfSameIDAlive != -1)
+            {
+                int alliesOfSameIDAlive =
+                    entities.Where(x => x.EntityID == _entityIDToSpawn).Count()
+                    + GameManager.Instance.PendingCreation.Where(x => x == _entityIDToSpawn).Count();
+
+                bool conditionMet = alliesOfSameIDAlive < _maxAlliesOfSameIDAlive;
+
+                if (!conditionMet)
+                    return false;
+            }
+
+            return true;
+        }
     }
 
     // Warning!
@@ -79,7 +120,7 @@ namespace Game.Entities
         /// The size a building have on the world. TileSize equals to zero if the entity is an unit.
         /// </summary>
         public Vector2Int TileSize { get => _entityType == EntityType.Building ? _tileSize : Vector2Int.zero; }
-        public EntityType EntityType { get => _entityType ; }
+        public EntityType EntityType { get => _entityType; }
         public string EntityName { get => _entityName; }
         #endregion
 
@@ -183,9 +224,9 @@ namespace Game.Entities
         [SerializeField] private bool _canCreateUnit;
 
         [ToggleGroup(nameof(_canCreateUnit), createUnitSettingsHeaderName)]
-        [SerializeField] private string[] _availableUnitsForCreation;
+        [SerializeField] private UnitSpawnCondition[] _unitsSpawnConditions;
 
-        public string[] AvailableUnitsForCreation { get => _availableUnitsForCreation; }
+        public UnitSpawnCondition[] UnitsSpawnConditions { get => _unitsSpawnConditions; }
         #endregion
 
         #region Resources Generation
@@ -283,54 +324,69 @@ namespace Game.Entities
             _damagePerSecond = _damage * _attackPerSecond;
         }
 
+        public UnitSpawnCondition GetSpawnCondition(string entityID)
+        {
+            return _unitsSpawnConditions
+                .Where(x => x.EntityIDToSpawn == entityID)
+                .FirstOrDefault();
+        }
+
         public OrderContent[] GetAvailableOrders()
         {
             List<OrderContent> output = new List<OrderContent>();
 
-            if (_canCreateUnit)
+            GetUnitsSpawnOrders(output);
+            GetTurnIntoEntityOrders(output);
+            GetToggleNavMeshObstacleOrder(output);
+            GetOverallActionsOrders(output);
+
+            return output.ToArray();
+        }
+
+        private void GetToggleNavMeshObstacleOrder(List<OrderContent> output)
+        {
+            if (!_canToggleNavMeshObstacle)
+                return;
+
+            if (_orderToggleNavMeshObstacle.OnClick == null)
+                _orderToggleNavMeshObstacle.OnClick = () => SelectedGroupsActionsCaller.OrderToggleNavMeshObstacle();
+
+            output.Add(_orderToggleNavMeshObstacle);
+        }
+
+        #region Private Methods
+        private void GetUnitsSpawnOrders(List<OrderContent> output)
+        {
+            if (!_canCreateUnit)
+                return;
+
+            foreach (var unitSpawnCondition in _unitsSpawnConditions)
             {
-                foreach (var entityID in _availableUnitsForCreation)
-                {
-                    var entityData = MainRegister.Instance.GetEntityData(entityID);
+                var entityData = MainRegister.Instance.GetEntityData(unitSpawnCondition.EntityIDToSpawn);
 
-                    var order = new OrderContent(
-                        entityData.Hotkey,
-                        entityData.Portrait,
-                        entityData.HoverPopupData,
-                        () => SelectedGroupsActionsCaller.OrderSpawnUnits(entityID),
-                        1
-                    );
+                bool conditionMet = unitSpawnCondition.DoConditionsAreMet();
+                Action onClickAction;
 
-                    output.Add(order);
-                }
+                if (conditionMet)
+                    onClickAction = () => SelectedGroupsActionsCaller.OrderSpawnUnits(unitSpawnCondition.EntityIDToSpawn);
+                else
+                    onClickAction = null;
+
+                var order = new OrderContent(
+                    entityData.Hotkey,
+                    entityData.Portrait,
+                    entityData.HoverPopupData,
+                    onClickAction,
+                    1,
+                    conditionMet
+                );
+
+                output.Add(order);
             }
+        }
 
-            if (_canTurnIntoAnotherEntity)
-            {
-                foreach (var entityID in _turnIntoAnotherEntityList)
-                {
-                    var entityData = MainRegister.Instance.GetEntityData(entityID);
-
-                    var order = new OrderContent(
-                        entityData.Hotkey,
-                        entityData.Portrait,
-                        entityData.HoverPopupData,
-                        () => SelectedGroupsActionsCaller.OrderTurnIntoEntities(entityID),
-                        1
-                    );
-
-                    output.Add(order);
-                }
-            }
-
-            if (_canToggleNavMeshObstacle)
-            {
-                if (_orderToggleNavMeshObstacle.OnClick == null)
-                    _orderToggleNavMeshObstacle.OnClick = () => SelectedGroupsActionsCaller.OrderToggleNavMeshObstacle();
-
-                output.Add(_orderToggleNavMeshObstacle);
-            }
-
+        private void GetOverallActionsOrders(List<OrderContent> output)
+        {
             foreach (OverallAction overallAction in Enum.GetValues(typeof(OverallAction)))
             {
                 if (CanDoOverallAction(overallAction))
@@ -348,9 +404,29 @@ namespace Game.Entities
                     output.Add(order);
                 }
             }
-
-            return output.ToArray();
         }
+
+        private void GetTurnIntoEntityOrders(List<OrderContent> output)
+        {
+            if (!_canTurnIntoAnotherEntity)
+                return;
+
+            foreach (var entityID in _turnIntoAnotherEntityList)
+            {
+                var entityData = MainRegister.Instance.GetEntityData(entityID);
+
+                var order = new OrderContent(
+                    entityData.Hotkey,
+                    entityData.Portrait,
+                    entityData.HoverPopupData,
+                    () => SelectedGroupsActionsCaller.OrderTurnIntoEntities(entityID),
+                    1
+                );
+
+                output.Add(order);
+            }
+        }
+        #endregion
+        #endregion
     }
-    #endregion
 }
