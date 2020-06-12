@@ -7,6 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Tartaros/Camera Controller")]
 public class CameraControllerData : ScriptableObject
 {
+    #region Fields
     public const string keyboardInputHeader = "Use Keyboard Input";
     public const string screenEdgeInputHeader = "Screen Edge Input";
     public const string canZoomHeader = "Can Zoom";
@@ -59,6 +60,9 @@ public class CameraControllerData : ScriptableObject
 
     [ToggleGroup(nameof(_canZoom), canZoomHeader)]
     [SerializeField] private Bounds2D _zoomBounds = new Bounds2D(5, 10);
+
+    [ToggleGroup(nameof(_canZoom), canZoomHeader)]
+    [SerializeField] private bool _inverseInput = false;
     #endregion
 
     #region Center to Selected Units
@@ -68,10 +72,9 @@ public class CameraControllerData : ScriptableObject
     [ToggleGroup(nameof(_canCenterOnSelection), canCenterOnSelection)]
     [SerializeField] private KeyCode _centerKeyCode = KeyCode.Space;
     #endregion
+    #endregion
 
-
-
-
+    #region Properties
     public float ZoomSpeed { get => _zoomSpeed; }
     public float PanBorderThickness { get => _panBorderThickness; }
     public KeyCode KeyPanForward { get => _keyPanForward; }
@@ -90,4 +93,6 @@ public class CameraControllerData : ScriptableObject
     public bool CanZoom { get => _canZoom; }
     public bool CanCenterOnSelection { get => _canCenterOnSelection; }
     public KeyCode CenterKeyCode { get => _centerKeyCode; }
+    public bool InverseInput { get => _inverseInput; }
+    #endregion
 }
