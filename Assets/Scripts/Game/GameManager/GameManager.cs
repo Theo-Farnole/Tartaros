@@ -160,14 +160,17 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region Public methods
-    public bool HasEnoughtResources(ResourcesWrapper resources)
-        => _resources.HasEnoughResources(resources);
+    public bool HasEnoughtResources(ResourcesWrapper resources) => _resources.HasEnoughResources(resources);
 
-    public bool HasEnoughtPopulationToSpawn()
-        => _populationManager.HasEnoughtPopulationToSpawn();
+    public bool HasEnoughtPopulationToSpawn() => _populationManager.HasEnoughtPopulationToSpawn();
 
-    public bool HasEnoughtPopulationToSpawn(EntityData unitData)
-        => _populationManager.HasEnoughtPopulationToSpawn(unitData);
+    public bool HasEnoughtPopulationToSpawn(EntityData unitData) => _populationManager.HasEnoughtPopulationToSpawn(unitData);
+
+    public void Invoke_OnStartBuild() => OnStartBuild?.Invoke(this);
+
+    public void Invoke_OnStopBuild() => OnStopBuild?.Invoke(this);
+
+    public void Invoke_OnBuildSuccessful() => OnBuildSuccessful?.Invoke(this);
 
     public void AddPendingCreationEntity(string entityID)
     {
@@ -226,9 +229,58 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void Invoke_OnStartBuild() => OnStartBuild?.Invoke(this);
-    public void Invoke_OnStopBuild() => OnStopBuild?.Invoke(this);
-    public void Invoke_OnBuildSuccessful() => OnBuildSuccessful?.Invoke(this);
+
+    public Entity SpawnEntity(string unitID, Vector3 position, Quaternion rotation, Team team)
+    {
+        Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
+        Assert.IsNotNull(ObjectPooler.Instance, "MainRegister is missing. Can't spawn unit");
+
+        EntityData entityData = MainRegister.Instance.GetEntityData(unitID);
+
+        Resources -= entityData.SpawningCost;
+
+        Entity instanciatedEntity = ObjectPooler.Instance.SpawnFromPool(entityData.Prefab, position, rotation, true).GetComponent<Entity>();        
+
+        instanciatedEntity.Team = team;
+
+        if (entityData.EntityType == EntityType.Building)
+        {
+            TileSystem.Instance.SetTile(instanciatedEntity.gameObject, entityData.TileSize);
+        }
+
+        TF.Assertations.Assert.IsTrue(instanciatedEntity.IsIdle, "Spawn entity should be idle. Check if StopActions if called on Entity's death.");
+
+        return instanciatedEntity;
+    }
+
+    public bool CanSpawnEntity(string entityID, bool logErrors)
+    {
+        Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
+
+        EntityData unitData = MainRegister.Instance.GetEntityData(entityID);
+
+        if (unitData.PopulationUse > 0 && !GameManager.Instance.HasEnoughtPopulationToSpawn())
+        {
+            if (logErrors)
+            {
+                UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", entityID));
+            }
+
+            return false;
+        }
+
+        if (!Resources.HasEnoughResources(unitData.SpawningCost))
+        {
+            if (logErrors)
+            {
+                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + entityID + ".");
+            }
+
+            return false;
+        }
+
+        return true;
+    }
     #endregion
 
     #region Private methods

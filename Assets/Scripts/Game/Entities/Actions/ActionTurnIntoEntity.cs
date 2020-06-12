@@ -37,8 +37,8 @@ namespace Game.Entities.Actions
 
         public override bool CanExecuteAction()
         {
-            return !_doPendingCreationFailed && 
-                (_isInToPendingCreation || _successfulSpawnUnit || _owner.GetCharacterComponent<EntityUnitSpawner>().CanSpawnEntity(_entityIDToTurnInto, true));
+            return !_doPendingCreationFailed &&
+                (_isInToPendingCreation || _successfulSpawnUnit || GameManager.Instance.CanSpawnEntity(_entityIDToTurnInto, true));
         }
 
         public override void Tick()
@@ -56,21 +56,11 @@ namespace Game.Entities.Actions
         {
             _successfulSpawnUnit = true;
 
-            // spawn new entity
-            var entity = _owner.GetCharacterComponent<EntityUnitSpawner>().SpawnUnit(_entityIDToTurnInto);
-
-            entity.StopEveryActions(); // stop move to anchor action
-            entity.transform.position = _owner.transform.position;
-            entity.transform.rotation = _owner.transform.rotation;
-
-            // then kill the current entity
+            // first, we kill the _owner to free the tile
             _owner.Death();
-            _owner.StopEveryActions();
 
-            if (entity.Data.EntityType == EntityType.Building)
-            {
-                TileSystem.Instance.SetTile(entity.gameObject, entity.Data.TileSize);
-            }
+            // then, we spawn the entity
+            GameManager.Instance.SpawnEntity(_entityIDToTurnInto, _owner.transform.position, _owner.transform.rotation, _owner.Team);
         }
 
         private void SetInPendingCreation()

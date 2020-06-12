@@ -54,6 +54,7 @@ MonoBehaviour:
   _prefab: {fileID: 545007711727897807, guid: c42319024a50f144ba0a082d69f98a98, type: 3}
   _populationUse: 0
   _tileSize: {x: 1, y: 1}
+  _radius: 1
   _hoverPopupData: {fileID: 11400000, guid: 8f184cd145b314a41a90dd760bde2c3d, type: 2}
   _isInvincible: 0
   _hp: 10
@@ -63,6 +64,7 @@ MonoBehaviour:
     stone: 0
   _creationDuration: 0
   _viewRadius: 2
+  _canDetectEntities: 0
   _isConstructionChained: 1
   _canAttack: 0
   _isMelee: 1
@@ -74,7 +76,10 @@ MonoBehaviour:
   _canMove: 0
   _speed: 3
   _canCreateUnit: 0
-  _availableUnitsForCreation: []
+  _unitsSpawnConditions:
+  - _entityIDToSpawn: building_gate
+    _hasSpawnCondition: 0
+    _maxAlliesOfSameIDAlive: -1
   _canGenerateResources: 0
   _generationTick: 1
   _generationType: 1
@@ -88,3 +93,9 @@ MonoBehaviour:
   _canTurnIntoAnotherEntity: 1
   _turnIntoAnotherEntityList:
   - building_gate
+  _canToggleNavMeshObstacle: 0
+  _orderToggleNavMeshObstacle:
+    _hotkey: 0
+    _portrait: {fileID: 0}
+    _hoverPopupData: {fileID: 0}
+    _linePosition: 0

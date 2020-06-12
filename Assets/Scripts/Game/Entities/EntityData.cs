@@ -370,6 +370,8 @@ namespace Game.Entities
             if (_orderToggleNavMeshObstacle.OnClick == null)
                 _orderToggleNavMeshObstacle.OnClick = () => SelectedGroupsActionsCaller.OrderToggleNavMeshObstacle();
 
+            _orderToggleNavMeshObstacle.Enabled = true;
+
             output.Add(_orderToggleNavMeshObstacle);
         }
 

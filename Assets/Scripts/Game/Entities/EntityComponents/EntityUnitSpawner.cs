@@ -82,6 +82,38 @@
                 return false;
             }
 
+            if (!DoSpawnConditionAreMet(entityID))
+            {
+                return false;
+            }
+
+            Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
+
+            return GameManager.Instance.CanSpawnEntity(entityID, logErrors);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="unitID"></param>
+        /// <returns></returns>
+        public Entity SpawnUnit(string unitID)
+        {
+            Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
+
+            Entity spawnedEntity = GameManager.Instance.SpawnEntity(unitID, GetSpawnPoint(), Quaternion.identity, Entity.Team);
+
+            MoveEntityToAnchor(spawnedEntity);
+
+            OnUnitCreated?.Invoke(Entity, spawnedEntity);
+
+            return spawnedEntity;
+        }
+        #endregion
+
+        #region Private Methods
+        private bool DoSpawnConditionAreMet(string entityID)
+        {
             UnitSpawnCondition spawnCondition = Entity.Data.GetSpawnCondition(entityID);
 
             if (spawnCondition == null)
@@ -93,57 +125,9 @@
             if (spawnCondition != null && !spawnCondition.DoConditionsAreMet())
                 return false;
 
-            Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
-            Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
-
-            EntityData unitData = MainRegister.Instance.GetEntityData(entityID);
-
-            if (unitData.PopulationUse > 0 && !GameManager.Instance.HasEnoughtPopulationToSpawn())
-            {
-                if (logErrors)
-                {
-                    UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", entityID));
-                }
-
-                return false;
-            }
-
-            if (!GameManager.Instance.Resources.HasEnoughResources(unitData.SpawningCost))
-            {
-                if (logErrors)
-                {
-                    UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + entityID + ".");
-                }
-
-                return false;
-            }
-
             return true;
         }
 
-        public Entity SpawnUnit(string unitID)
-        {
-            Assert.IsNotNull(GameManager.Instance, "GameManager is missing. Can't spawn unit");
-            Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
-
-            EntityData unitData = MainRegister.Instance.GetEntityData(unitID);
-
-            // remove resources
-            GameManager.Instance.Resources -= unitData.SpawningCost;
-
-            Entity instanciatedEntity = ObjectPooler.Instance.SpawnFromPool(unitData.Prefab, GetSpawnPoint(), Quaternion.identity, true).GetComponent<Entity>();
-            Assert.IsNotNull(instanciatedEntity, string.Format("Prefab {0} miss an Entity component.", unitData.Prefab.name));
-
-            instanciatedEntity.Team = Entity.Team;
-            MoveGameObjectToAnchor(instanciatedEntity);
-
-            OnUnitCreated?.Invoke(Entity, instanciatedEntity);
-
-            return instanciatedEntity;
-        }
-        #endregion
-
-        #region Private Methods
         void DisplayAnchorPoint()
         {
             Assert.IsTrue(Entity.Data.CanSpawnUnit, "Can't display anchor point of a unit that can't spawn unit.");
@@ -175,7 +159,7 @@
             _modelAnchorPoint.transform.position = _anchorPosition;
         }
 
-        private void MoveGameObjectToAnchor(Entity entity)
+        private void MoveEntityToAnchor(Entity entity)
         {
             Action moveToAnchorAction = new ActionMoveToPosition(entity, _anchorPosition);
             entity.SetAction(moveToAnchorAction);

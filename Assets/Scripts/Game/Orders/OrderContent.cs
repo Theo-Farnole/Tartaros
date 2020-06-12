@@ -23,7 +23,7 @@ public class OrderContent
     public Sprite Portrait { get => _portrait; }
     public KeyCode Hotkey { get => _hotkey; }
     public int LinePosition { get => _linePosition; }
-    public bool Enabled { get => _enabled; }
+    public bool Enabled { get => _enabled; set => _enabled = value; }
     #endregion
 
     #region ctor
