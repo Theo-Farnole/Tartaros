@@ -20,9 +20,9 @@ namespace Game.Entities.Actions
 
         public ActionSpawnUnit(Entity owner, float creationDuration, string entityIDToSpawn) : base(owner)
         {
-            this._entityIDToSpawn = entityIDToSpawn;
+            _entityIDToSpawn = entityIDToSpawn;
 
-            // overwrite 'creationDuration' is cheat is enabled
+            // overwrite 'creationDuration' if cheat is enabled
             if (TartarosCheatsManager.IsCreationTimeToZeroActive())
                 creationDuration = 1f;
 
