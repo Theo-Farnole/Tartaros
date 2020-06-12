@@ -37,6 +37,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.unitypackage.meta
 
 /Assets/__Addons/Odin/Demos
 /Assets/__Addons/Odin/Demos.meta
