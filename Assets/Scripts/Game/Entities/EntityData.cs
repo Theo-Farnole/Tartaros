@@ -102,26 +102,12 @@ namespace Game.Entities
         [HideLabel, PreviewField(72, ObjectFieldAlignment.Left)]
         [SerializeField] private GameObject _prefab;
 
-
         [SerializeField] private int _populationUse;
 
         [HideIf(nameof(_entityType), EntityType.Unit)]
         [SerializeField] private Vector2Int _tileSize = Vector2Int.one;
 
         [SerializeField] private HoverPopupData _hoverPopupData;
-
-
-        public Sprite Portrait { get => _portrait; }
-        public KeyCode Hotkey { get => _hotkey; }
-        public GameObject Prefab { get => _prefab; }
-        public HoverPopupData HoverPopupData { get => _hoverPopupData; }
-        public int PopulationUse { get => _populationUse; }
-        /// <summary>
-        /// The size a building have on the world. TileSize equals to zero if the entity is an unit.
-        /// </summary>
-        public Vector2Int TileSize { get => _entityType == EntityType.Building ? _tileSize : Vector2Int.zero; }
-        public EntityType EntityType { get => _entityType; }
-        public string EntityName { get => _entityName; }
         #endregion
 
         #region Health Settings
@@ -131,9 +117,6 @@ namespace Game.Entities
         [BoxGroup("Health Settings")]
         [DisableIf("_isInvincible")]
         [SerializeField] private int _hp = 10;
-
-        public bool IsInvincible { get => _isInvincible; }
-        public int Hp { get => _hp; }
         #endregion
 
         #region Spawning Cost Settings
@@ -142,15 +125,11 @@ namespace Game.Entities
 
         [BoxGroup("Spawning Settings")]
         [SerializeField] private float _creationDuration;
-
-        public ResourcesWrapper SpawningCost { get => _spawningCost; }
-        public float CreationDuration { get => _creationDuration; }
         #endregion
 
         #region Vision Settings
         [BoxGroup("Vision Settings")]
-        [SerializeField, Range(1, 15)] private float _viewRadius = 3;
-        public float ViewRadius { get => _viewRadius; }
+        [SerializeField, Range(1, 15)] private float _viewRadius = 3;        
 
         [BoxGroup("Vision Settings")]
         [SerializeField] private bool _canDetectEntities = false;
@@ -158,15 +137,9 @@ namespace Game.Entities
 
         [BoxGroup("Construction")]
         [Tooltip("Is construction like a wall ?")]
-        [SerializeField] private bool _isConstructionChained;
-        public bool IsConstructionChained { get => _isConstructionChained; }
+        [SerializeField] private bool _isConstructionChained;        
 
         #region Orders: MOVE, ATTACK, CREATE UNITS, CREATE RESOURCES
-        public bool CanMove { get => _canMove; }
-        public bool CanAttack { get => _canAttack; }
-        public bool CanSpawnUnit { get => _canCreateUnit; }
-        public bool CanCreateResources { get => _canGenerateResources; }
-
         #region Attack     
         [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
         [SerializeField] private bool _canAttack;
@@ -199,12 +172,6 @@ namespace Game.Entities
         [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
         [Sirenix.OdinInspector.ReadOnly]
         [SerializeField] private float _damagePerSecond;
-
-        public bool IsMelee { get => _isMelee; }
-        public GameObject PrefabProjectile { get => _prefabProjectile; }
-        public int Damage { get => _damage; }
-        public float AttackRadius { get => _attackRadius; }
-        public float AttackPerSecond { get => _attackPerSecond; }
         #endregion
 
         #region Movement
@@ -214,9 +181,7 @@ namespace Game.Entities
         [ToggleGroup(nameof(_canMove), movementSettingsHeaderName)]
         [Tooltip("Units per second")]
         [PositiveValueOnly]
-        [SerializeField] private float _speed = 3;
-
-        public float Speed { get => _speed; }
+        [SerializeField] private float _speed = 3;        
         #endregion
 
         #region Units Creation
@@ -224,9 +189,7 @@ namespace Game.Entities
         [SerializeField] private bool _canCreateUnit;
 
         [ToggleGroup(nameof(_canCreateUnit), createUnitSettingsHeaderName)]
-        [SerializeField] private UnitSpawnCondition[] _unitsSpawnConditions;
-
-        public UnitSpawnCondition[] UnitsSpawnConditions { get => _unitsSpawnConditions; }
+        [SerializeField] private UnitSpawnCondition[] _unitsSpawnConditions;        
         #endregion
 
         #region Resources Generation
@@ -251,12 +214,6 @@ namespace Game.Entities
         [ToggleGroup(nameof(_canGenerateResources), "Can Generate Resources")]
         [ShowIf(nameof(_generationType), Value = GenerationType.Constant)]
         [SerializeField] private ResourcesWrapper _constantResourcesGeneration;
-
-        public float GenerationTick { get => _generationTick; }
-        public float RadiusToReachCells { get => _radiusToReachCells; }
-        public Dictionary<CellType, ResourcesWrapper> ResourcesPerCell { get => _resourcesPerCell; }
-        public ResourcesWrapper ConstantResourcesGeneration { get => _constantResourcesGeneration; set => _constantResourcesGeneration = value; }
-        public GenerationType GenerationType { get => _generationType; }
         #endregion
 
         #region Give population
@@ -264,9 +221,7 @@ namespace Game.Entities
         [SerializeField] private bool _increaseMaxPopulation;
 
         [ToggleGroup(nameof(_increaseMaxPopulation), headerNamePopulation)]
-        [SerializeField] private int _increaseMaxPopulationAmount;
-
-        public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }
+        [SerializeField] private int _increaseMaxPopulationAmount;        
         #endregion
 
         #region Can Turn in Another Building
@@ -275,9 +230,6 @@ namespace Game.Entities
 
         [ToggleGroup(nameof(_canTurnIntoAnotherEntity), headerTurnIntoAnotherEntity)]
         [SerializeField] private string[] _turnIntoAnotherEntityList;
-
-        public bool CanTurnIntoAnotherBuilding { get => _canTurnIntoAnotherEntity; }
-        public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }
         #endregion
 
         #region Can Toggle Nav Mesh
@@ -286,11 +238,59 @@ namespace Game.Entities
 
         [ToggleGroup(nameof(_canToggleNavMeshObstacle), headerToggleNavmesh)]
         [SerializeField] private OrderContent _orderToggleNavMeshObstacle;
+        #endregion
+        #endregion
+        #endregion
+
+        #region Properties
+        public Sprite Portrait { get => _portrait; }
+        public KeyCode Hotkey { get => _hotkey; }
+        public GameObject Prefab { get => _prefab; }
+        public HoverPopupData HoverPopupData { get => _hoverPopupData; }
+        public int PopulationUse { get => _populationUse; }
+        /// <summary>
+        /// The size a building have on the world. TileSize equals to zero if the entity is an unit.
+        /// </summary>
+        public Vector2Int TileSize { get => _entityType == EntityType.Building ? _tileSize : Vector2Int.zero; }
+        public EntityType EntityType { get => _entityType; }
+        public string EntityName { get => _entityName; }
+
+        public bool IsInvincible { get => _isInvincible; }
+        public int Hp { get => _hp; }
+
+        public ResourcesWrapper SpawningCost { get => _spawningCost; }
+        public float CreationDuration { get => _creationDuration; }
+
+        public float ViewRadius { get => _viewRadius; }
+        public bool IsConstructionChained { get => _isConstructionChained; }
+
+        public bool CanMove { get => _canMove; }
+        public bool CanAttack { get => _canAttack; }
+        public bool CanSpawnUnit { get => _canCreateUnit; }
+        public bool CanCreateResources { get => _canGenerateResources; }
+
+        public bool IsMelee { get => _isMelee; }
+        public GameObject PrefabProjectile { get => _prefabProjectile; }
+        public int Damage { get => _damage; }
+        public float AttackRadius { get => _attackRadius; }
+        public float AttackPerSecond { get => _attackPerSecond; }
+
+        public float Speed { get => _speed; }
+        public UnitSpawnCondition[] UnitsSpawnConditions { get => _unitsSpawnConditions; }
+
+        public float GenerationTick { get => _generationTick; }
+        public float RadiusToReachCells { get => _radiusToReachCells; }
+        public Dictionary<CellType, ResourcesWrapper> ResourcesPerCell { get => _resourcesPerCell; }
+        public ResourcesWrapper ConstantResourcesGeneration { get => _constantResourcesGeneration; set => _constantResourcesGeneration = value; }
+        public GenerationType GenerationType { get => _generationType; }
+
+        public int IncreaseMaxPopulationAmount { get => _increaseMaxPopulation ? _increaseMaxPopulationAmount : 0; }
 
         public bool CanToggleNavMeshObstacle { get => _canToggleNavMeshObstacle; }
-        public bool CanDetectEntities { get => _canDetectEntities; set => _canDetectEntities = value; }
-        #endregion
-        #endregion
+        public bool CanDetectEntities { get => _canDetectEntities; }
+
+        public bool CanTurnIntoAnotherBuilding { get => _canTurnIntoAnotherEntity; }
+        public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }
         #endregion
 
         #region Methods
