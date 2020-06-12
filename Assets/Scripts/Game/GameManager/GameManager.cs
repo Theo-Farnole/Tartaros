@@ -17,7 +17,7 @@ public delegate void OnBuildSuccessful(GameManager gameManager);
 public delegate void HasNotEnoughtResources(GameManager gameManager, ResourcesWrapper cost);
 public delegate void PendingCreationChanged(string id);
 
-public class GameManager : Singleton<GameManager>
+public partial class GameManager : Singleton<GameManager>
 {
     #region Fields
     private const string debugLogHeader = "Game Manager : ";
@@ -112,17 +112,6 @@ public class GameManager : Singleton<GameManager>
     void OnApplicationQuit()
     {
         _applicationIsQuitting = true;
-    }
-
-    void OnDrawGizmos()
-    {
-        if (_debugDrawSnapGrid)
-            _grid?.DrawGizmos();
-
-#if UNITY_EDITOR
-        if (_debugDrawMapCells)
-            _mapCells?.DrawGizmos();
-#endif
     }
 
     void OnGUI()
@@ -239,7 +228,7 @@ public class GameManager : Singleton<GameManager>
 
         Resources -= entityData.SpawningCost;
 
-        Entity instanciatedEntity = ObjectPooler.Instance.SpawnFromPool(entityData.Prefab, position, rotation, true).GetComponent<Entity>();        
+        Entity instanciatedEntity = ObjectPooler.Instance.SpawnFromPool(entityData.Prefab, position, rotation, true).GetComponent<Entity>();
 
         instanciatedEntity.Team = team;
 
@@ -300,3 +289,17 @@ public class GameManager : Singleton<GameManager>
     #endregion
     #endregion
 }
+
+#if UNITY_EDITOR
+public partial class GameManager : Singleton<GameManager>
+{
+    void OnDrawGizmos()
+    {
+        if (_debugDrawSnapGrid)
+            _grid?.DrawGizmos();
+
+        if (_debugDrawMapCells)
+            _mapCells?.DrawGizmos();
+    }
+}
+#endif

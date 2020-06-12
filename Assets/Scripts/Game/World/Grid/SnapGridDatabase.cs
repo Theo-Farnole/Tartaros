@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Tartaros/World/Grid")]
-public class SnapGridDatabase : ScriptableObject
+public partial class SnapGridDatabase : ScriptableObject
 {
     [SerializeField] private int _cellCount = 51;
     public int CellCount { get => _cellCount; }
@@ -14,43 +14,8 @@ public class SnapGridDatabase : ScriptableObject
     [Header("Information")]
     [SerializeField, MyBox.ReadOnly] private int _cellsTotalCount = 0;
 
-    public void OnValidate()
-    {
-        // is _cellCount even ?
-        if (_cellCount % 2 == 0)
-        {
-            _cellCount++;
-        }
-
-        _cellsTotalCount = _cellCount * _cellCount;
-    }
-
-
-    public void DrawGizmos()
-    {
-        DrawGizmos(Color.red);
-    }
-
-    public void DrawGizmos(Color gridColor)
-    {
-        Gizmos.color = gridColor;
-
-        for (int x = 0; x <= _cellCount; x++)
-        {
-            for (int z = 0; z <= _cellCount; z++)
-            {
-                var point = new Vector3(x * _cellSize, 0, z * _cellSize);
-                Gizmos.DrawWireCube(point, new Vector3(_cellSize, 0, _cellSize));
-            }
-        }
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(Vector3.zero, 0.15f);
-    }
-
-
     public bool GetNearestPositionFromMouse(out Vector3 positionFromMouse, int layerMask = ~0)
-    {        
+    {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, layerMask))
@@ -111,3 +76,42 @@ public class SnapGridDatabase : ScriptableObject
         return new Vector3(coords.x * cellSize, 0, coords.y * cellSize);
     }
 }
+
+#if UNITY_EDITOR
+public partial class SnapGridDatabase : ScriptableObject
+{
+    public void OnValidate()
+    {
+        // is _cellCount even ?
+        if (_cellCount % 2 == 0)
+        {
+            _cellCount++;
+        }
+
+        _cellsTotalCount = _cellCount * _cellCount;
+    }
+
+
+    public void DrawGizmos()
+    {
+        DrawGizmos(Color.red);
+    }
+
+    public void DrawGizmos(Color gridColor)
+    {
+        Gizmos.color = gridColor;
+
+        for (int x = 0; x <= _cellCount; x++)
+        {
+            for (int z = 0; z <= _cellCount; z++)
+            {
+                var point = new Vector3(x * _cellSize, 0, z * _cellSize);
+                Gizmos.DrawWireCube(point, new Vector3(_cellSize, 0, _cellSize));
+            }
+        }
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(Vector3.zero, 0.15f);
+    }
+}
+#endif
