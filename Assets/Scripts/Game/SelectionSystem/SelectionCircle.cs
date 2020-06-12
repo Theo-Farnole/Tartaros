@@ -38,8 +38,7 @@ namespace Game.Selection
             SpriteRenderer.color = _selectionCircleColor.GetColor(team);
         }
 
-        public void SetSize(string entityID)
-         => SetSize(MainRegister.Instance.GetEntityData(entityID).GetBiggerTileSize());
+        public void SetSize(string entityID) => SetSize(MainRegister.Instance.GetEntityData(entityID).GetRadius());
 
         public void SetSize(float size)
         {

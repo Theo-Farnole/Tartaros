@@ -154,17 +154,8 @@
         #region Private methods
         private void SetupNavMeshAgent()
         {
-            _navMeshAgent.speed = Entity.Data.Speed;
-
-            TF.Assertations.Assert.AreEquals(Entity.Data.TileSize, Vector2Int.zero, "Can't set NavMeshAgent because TileSize is equals to zero.");
-
-            if (Entity.Data.TileSize.x != Entity.Data.TileSize.y)
-            {
-                Debug.LogWarningFormat(debugLogHeader + "TileSize isn't a square. We set nav mesh agent's radius with highest value of tile size.");
-            }
-
-            float diameter = Mathf.Max(Entity.Data.TileSize.x, Entity.Data.TileSize.y);
-            _navMeshAgent.radius = diameter / 2 - radiusThreshold;
+            _navMeshAgent.speed = Entity.Data.Speed;            
+            _navMeshAgent.radius = Entity.Data.GetRadius() - radiusThreshold;
         }
 
         private void Shift(Entity hitEntity)

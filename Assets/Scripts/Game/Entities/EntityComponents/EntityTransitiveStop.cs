@@ -50,7 +50,7 @@
             if (_maxDistanceFromDestinationToAllowStopping != -1 && Vector3.Distance(_cachedEntityMovement.Destination, transform.position) > _maxDistanceFromDestinationToAllowStopping)
                 return;
 
-            float radius = Entity.Data.GetBiggerTileSize();
+            float radius = Entity.Data.GetRadius();
             Entity[] allies = _cachedEntityDetection.GetAlliesInRadius(radius);
 
             for (int i = 0; i < allies.Length; i++)

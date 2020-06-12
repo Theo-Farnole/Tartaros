@@ -129,7 +129,7 @@ namespace Game.Entities
 
             SelectionCircle selectionCircle = _selectionCircle.GetComponent<SelectionCircle>();
             selectionCircle.SetCircleColor(Entity.Team);
-            selectionCircle.SetSize(Entity.Data.GetBiggerTileSize());
+            selectionCircle.SetSize(Entity.Data.GetRadius());
         }
 
         private void HideSelectionCircle()

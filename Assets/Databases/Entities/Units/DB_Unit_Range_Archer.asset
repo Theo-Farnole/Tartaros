@@ -54,6 +54,7 @@ MonoBehaviour:
   _prefab: {fileID: 1376740259545295656, guid: 70a2ebdc19b4eef43a9b95d3e1cdf775, type: 3}
   _populationUse: 1
   _tileSize: {x: 1, y: 1}
+  _radius: 0.5
   _hoverPopupData: {fileID: 11400000, guid: 4d613de1ed0e4694590c2a31afd07026, type: 2}
   _isInvincible: 0
   _hp: 2
@@ -75,10 +76,8 @@ MonoBehaviour:
   _damagePerSecond: 1
   _canMove: 1
   _speed: 3
-  _shiftLength: 3
-  _startShiftCollision: 3
   _canCreateUnit: 0
-  _availableUnitsForCreation: []
+  _unitsSpawnConditions: []
   _canGenerateResources: 0
   _generationTick: 0
   _generationType: 1

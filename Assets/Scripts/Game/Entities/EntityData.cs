@@ -104,8 +104,11 @@ namespace Game.Entities
 
         [SerializeField] private int _populationUse;
 
-        [HideIf(nameof(_entityType), EntityType.Unit)]
+        [ShowIf(nameof(_entityType), EntityType.Building)]
         [SerializeField] private Vector2Int _tileSize = Vector2Int.one;
+
+        [ShowIf(nameof(_entityType), EntityType.Unit)]
+        [SerializeField] private float _radius = 0.5f;
 
         [SerializeField] private HoverPopupData _hoverPopupData;
         #endregion
@@ -294,6 +297,22 @@ namespace Game.Entities
         #endregion
 
         #region Methods
+        public float GetRadius()
+        {
+            switch (_entityType)
+            {
+                case EntityType.Unit:
+                    return _radius;
+
+                case EntityType.Building:
+                    return Mathf.Max(_tileSize.x, _tileSize.y);
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        [Obsolete("Use GetRadius() instead")]
         public float GetBiggerTileSize()
         {
             return Mathf.Max(_tileSize.x, _tileSize.y);

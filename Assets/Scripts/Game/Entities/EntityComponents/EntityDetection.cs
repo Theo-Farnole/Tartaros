@@ -102,7 +102,7 @@ namespace Game.Entities
             Assert.IsNotNull(Entity);
             Assert.IsNotNull(Entity.Data);
 
-            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius + (target.Data.GetBiggerTileSize() + Entity.Data.GetBiggerTileSize()) / 2;
+            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius + (target.Data.GetRadius() + Entity.Data.GetRadius()) / 2;
         }
 
         public bool IsEntityInShiftRange(Entity target)
@@ -112,12 +112,12 @@ namespace Game.Entities
             Assert.IsNotNull(Entity);
             Assert.IsNotNull(Entity.Data);
 
-            return Vector3.Distance(transform.position, target.transform.position) <= _shiftData.ShiftCollisionRadius + (target.Data.GetBiggerTileSize() + Entity.Data.GetBiggerTileSize()) / 2;
+            return Vector3.Distance(transform.position, target.transform.position) <= _shiftData.ShiftCollisionRadius + (target.Data.GetRadius() + Entity.Data.GetRadius()) / 2;
         }
 
         public bool IsNearFromEntity(Entity target)
         {
-            return Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD + (target.Data.GetBiggerTileSize() + Entity.Data.GetBiggerTileSize()) / 2;
+            return Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD + (target.Data.GetRadius() + Entity.Data.GetRadius()) / 2;
         }
 
         public bool IsNearFromPosition(Vector3 position)
@@ -225,7 +225,7 @@ namespace Game.Entities
             if (Entity.EntityID == string.Empty)
                 return;            
 
-            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius + Entity.Data.GetBiggerTileSize());
+            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius + Entity.Data.GetRadius());
 #endif
         }
     }
