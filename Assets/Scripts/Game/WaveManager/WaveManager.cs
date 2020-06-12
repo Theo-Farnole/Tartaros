@@ -139,11 +139,6 @@ namespace Game.WaveSystem
             Debug.LogFormat(debugLogHeader + "Wave {0} starts.", _waveCount);
 
             OnWaveStart?.Invoke(_waveCount);
-
-            if (_waveCount == _finalWave)
-            {
-                OnFinalWaveClear?.Invoke();
-            }
         }
 
         private void EndWave()
@@ -158,6 +153,11 @@ namespace Game.WaveSystem
             Debug.LogFormat(debugLogHeader + "Wave {0} ended.", _waveCount);
 
             OnWaveClear?.Invoke(_waveCount);
+
+            if (_waveCount == _finalWave)
+            {
+                OnFinalWaveClear?.Invoke();
+            }
         }
 
         private float CalculateRemainingTime()
