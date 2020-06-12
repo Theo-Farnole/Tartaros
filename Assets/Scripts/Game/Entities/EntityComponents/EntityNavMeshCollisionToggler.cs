@@ -1,5 +1,6 @@
 ﻿namespace Game.Entities
 {
+    using Lortedo.Utilities.Pattern;
     using Sirenix.OdinInspector;
     using System.Collections;
     using System.Collections.Generic;
@@ -8,7 +9,7 @@
     using UnityEngine.Assertions;
 
     [RequireComponent(typeof(Entity))]
-    public class EntityNavMeshCollisionToggler : EntityComponent
+    public class EntityNavMeshCollisionToggler : EntityComponent, IPooledObject
     {
         #region Fields
         private const string header = "Update Mesh on Obstacle Update";
@@ -23,15 +24,21 @@
         [SerializeField] private GameObject _meshNavMeshDisabled;
 
         private NavMeshObstacle _navMeshObstacle;
+
+        string IPooledObject.ObjectTag { get; set; }
         #endregion
 
         #region MonoCallbacks
-        void Start()
+        void Awake()
         {
             _navMeshObstacle = GetComponent<NavMeshObstacle>();
-
-            UpdateMeshAppereance();
         }
+
+        void Start() => Initialize();
+        #endregion
+
+        #region IPooledObject
+        void IPooledObject.OnObjectSpawn() => Initialize();
         #endregion
 
         #region Public Methods
@@ -76,12 +83,22 @@
         #endregion
 
         #region Private Methods
+        private void Initialize()
+        {
+            if (_navMeshObstacle == null)
+                return;
+
+            _navMeshObstacle.enabled = true;
+
+            UpdateMeshAppereance();
+        }
+
         private void UpdateMeshAppereance()
         {
             if (!Entity.Data.CanToggleNavMeshObstacle)
                 return;
 
-            if (_navMeshObstacle != null)
+            if (_navMeshObstacle == null)
                 return;
 
             if (!_updateMeshOnObstacleUpdate)
