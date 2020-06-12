@@ -63,6 +63,8 @@ namespace Game.Entities
 
 
         [SerializeField] private int _populationUse;
+
+        [HideIf(nameof(_entityType), EntityType.Unit)]
         [SerializeField] private Vector2Int _tileSize = Vector2Int.one;
 
         [SerializeField] private HoverPopupData _hoverPopupData;
@@ -73,8 +75,11 @@ namespace Game.Entities
         public GameObject Prefab { get => _prefab; }
         public HoverPopupData HoverPopupData { get => _hoverPopupData; }
         public int PopulationUse { get => _populationUse; }
-        public Vector2Int TileSize { get => _tileSize; }
-        public EntityType EntityType { get => _entityType; }
+        /// <summary>
+        /// The size a building have on the world. TileSize equals to zero if the entity is an unit.
+        /// </summary>
+        public Vector2Int TileSize { get => _entityType == EntityType.Building ? _tileSize : Vector2Int.zero; }
+        public EntityType EntityType { get => _entityType ; }
         public string EntityName { get => _entityName; }
         #endregion
 
