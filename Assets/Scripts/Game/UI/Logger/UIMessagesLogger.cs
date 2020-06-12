@@ -1,4 +1,4 @@
-﻿using Lortedo.Utilities;
+using Lortedo.Utilities;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,8 +16,16 @@ public class UIMessagesLogger : Singleton<UIMessagesLogger>
     [SerializeField] private float _lifetime = 3;
     [SerializeField] private float _fadeDuration = 1;
 
-    public void AddErrorMessage(string text)
+    void Start()
     {
+        // sometime developer disable UI by deactivating the canvas
+        // however, for performance reason, we just disable the Canvas component
+        // so, we assert that our gameobject isn't disabled
+        if (_parentErrors.gameObject.activeInHierarchy)
+        {
+            _parentErrors.parent.gameObject.SetActive(true);
+        }
+    }
         // we use instantiate method to avoid need to reset scale
         Transform errorTransform = new GameObject().transform;
         errorTransform.SetParent(_parentErrors, false);
