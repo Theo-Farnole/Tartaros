@@ -1,11 +1,9 @@
-using Game.Selection;
-using Lortedo.Utilities.Pattern;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Game.Entities
 {
+    using Game.Selection;
+    using Lortedo.Utilities.Pattern;
+    using UnityEngine;
+
     public delegate void OnSelected(Entity entity);
     public delegate void OnUnselected(Entity entity);
 
@@ -17,11 +15,13 @@ namespace Game.Entities
         #region Fields
         private static int layerMaskTerrain = -1;
 
-        public event OnSelected OnSelected;
-        public event OnUnselected OnUnselected;
-
         private GameObject _selectionCircle = null;
         private bool _isSelected = false;
+        #endregion
+
+        #region Events
+        public event OnSelected OnSelected;
+        public event OnUnselected OnUnselected;
         #endregion
 
         #region Properties
@@ -30,6 +30,9 @@ namespace Game.Entities
             get => _isSelected;
             set
             {
+                // REFACTOR NOTE:
+                // Properties should only do checks!
+
                 if (value == _isSelected)
                     return;
 
@@ -53,7 +56,7 @@ namespace Game.Entities
 
         #region Methods
         #region Mono Callbacks
-       void Awake()
+        void Awake()
         {
             if (layerMaskTerrain == -1)
                 layerMaskTerrain = LayerMask.GetMask("Terrain");
@@ -68,9 +71,9 @@ namespace Game.Entities
         {
             Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover -= OnFogCover;
 
-            if (Selection.SelectionManager.Instance != null)
+            if (SelectionManager.Instance != null)
             {
-                Selection.SelectionManager.Instance.RemoveEntity(Entity);
+                SelectionManager.Instance.RemoveEntity(Entity);
             }
 
             IsSelected = false;
@@ -78,20 +81,20 @@ namespace Game.Entities
         #endregion
 
         #region Events handlers
-        void OnFogCover(Game.FogOfWar.IFogCoverable fogCoverable)
+        void OnFogCover(FogOfWar.IFogCoverable fogCoverable)
         {
-            Selection.SelectionManager.Instance.RemoveEntity(Entity);
+            SelectionManager.Instance.RemoveEntity(Entity);
             IsSelected = false;
         }
         #endregion
 
         #region Private methods
-        void OnSelection()
+        private void OnSelection()
         {
             DisplaySelectionCircle();
         }
 
-        void OnUnselection()
+        private void OnUnselection()
         {
             HideSelectionCircle();
         }
@@ -103,14 +106,14 @@ namespace Game.Entities
                 Debug.LogWarning("Entity Selectable : Cannot display selection, it's already displayed. But it's okay.");
                 return;
             }
-            
+
             Ray ray = new Ray(
                 transform.position + Vector3.up, // transform.position should already touch the terrain. We raise a lit bittle to make the raycast works
                 Vector3.down
             );
 
-            Vector3 pos = Physics.Raycast(ray, out RaycastHit hit, layerMaskTerrain) ? 
-                hit.point + Vector3.up * 0.01f : 
+            Vector3 pos = Physics.Raycast(ray, out RaycastHit hit, layerMaskTerrain) ?
+                hit.point + Vector3.up * 0.01f :
                 transform.position;
             Quaternion rot = Quaternion.Euler(90, 0, 0);
 

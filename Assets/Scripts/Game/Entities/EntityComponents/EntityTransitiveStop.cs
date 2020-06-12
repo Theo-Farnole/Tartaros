@@ -1,7 +1,5 @@
 ﻿namespace Game.Entities
 {
-    using System.Collections;
-    using System.Collections.Generic;
     using UnityEngine;
 
     /// <summary>
@@ -9,13 +7,18 @@
     /// </summary>
     public class EntityTransitiveStop : EntityComponent
     {
+        #region Fields
         [SerializeField] private float _maxDistanceFromDestinationToAllowStopping = -1;
 
         private bool _transitiveStopEnable = false;
 
+        // cache variable
         private EntityDetection _cachedEntityDetection;
         private EntityMovement _cachedEntityMovement;
+        #endregion
 
+        #region Methods
+        #region MonoBehaviour Callbacks
         void Start()
         {
             _cachedEntityDetection = GetComponent<EntityDetection>();
@@ -26,7 +29,14 @@
         {            
             TryToStopMovement();
         }
+        #endregion
 
+        #region Public Methods
+        public void EnableTransitiveStop() => _transitiveStopEnable = true;
+        public void DisableTransitiveStop() => _transitiveStopEnable = false;
+        #endregion
+
+        #region Private Methods
         private void TryToStopMovement()
         {
             // don't try to stop if idling
@@ -54,8 +64,7 @@
                 }
             }
         }
-
-        public void EnableTransitiveStop() => _transitiveStopEnable = true;
-        public void DisableTransitiveStop() => _transitiveStopEnable = false;
+        #endregion
+        #endregion
     }
 }

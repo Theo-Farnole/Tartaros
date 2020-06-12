@@ -1,15 +1,16 @@
-﻿using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Assertions;
-
-namespace Game.Entities
+﻿namespace Game.Entities
 {
+    using Sirenix.OdinInspector;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.AI;
+    using UnityEngine.Assertions;
+
     [RequireComponent(typeof(Entity))]
     public class EntityNavMeshCollisionToggler : EntityComponent
     {
+        #region Fields
         private const string header = "Update Mesh on Obstacle Update";
 
         [ToggleGroup(nameof(_updateMeshOnObstacleUpdate), header)]
@@ -22,6 +23,7 @@ namespace Game.Entities
         [SerializeField] private GameObject _meshNavMeshDisabled;
 
         private NavMeshObstacle _navMeshObstacle;
+        #endregion
 
         #region MonoCallbacks
         void Start()

@@ -1,25 +1,26 @@
 ﻿using Lortedo.Utilities.Pattern;
 using Sirenix.OdinInspector;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Assertions;
-
 namespace Game.Entities
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
+
     public delegate void OnEntityDetected(Entity entity);
 
     /// <summary>
     /// This script manage the detection of nearby entities.
     /// </summary>
-    public class EntityDetection : EntityComponent
+    public partial class EntityDetection : EntityComponent
     {
         #region Fields
         private const string debugLogHeader = "Entity Detection : ";
         public readonly static float DISTANCE_THRESHOLD = 0.3f;
-        public readonly static int frameIntervalToCheckNearestEntities = 5;        
+        public readonly static int frameIntervalToCheckNearestEntities = 5;
 
         public event OnEntityDetected OnAllyEnterShiftRange;
         public event OnEntityDetected OnOpponentEnterAttackRange;
@@ -71,11 +72,6 @@ namespace Game.Entities
         void OnDisable()
         {
             Entity.OnDeath -= Entity_OnDeath;
-        }
-
-        void OnDrawGizmosSelected()
-        {
-            Debug_DrawAttackRange();
         }
         #endregion
 
@@ -144,7 +140,7 @@ namespace Game.Entities
             int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);
 
             List<Entity> entities = new List<Entity>();
-            
+
             for (int i = 0; i < collidersCount; i++)
             {
                 if (_overlapSphereBuffer[i].TryGetComponent(out Entity entity))
@@ -207,9 +203,19 @@ namespace Game.Entities
             {
                 OnAllyEnterShiftRange?.Invoke(_nearestAllyTeamEntity);
             }
+        }        
+        #endregion
+        #endregion
+    }
+
+#if UNITY_EDITOR
+    public partial class EntityDetection : EntityComponent
+    {
+        private void OnDrawGizmosSelected()
+        {
+            Debug_DrawAttackRange();
         }
 
-        [Obsolete("Main behaviour in this method has been commented.")]
         private void Debug_DrawAttackRange()
         {
 #if UNITY_EDITOR
@@ -217,15 +223,11 @@ namespace Game.Entities
                 return;
 
             if (Entity.EntityID == string.Empty)
-                return;
+                return;            
 
-            Assert.IsNotNull(Entity);
-            Assert.IsNotNull(Entity.Data);
-
-            //UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius + Entity.Data.GetBiggerTileSize());
+            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius + Entity.Data.GetBiggerTileSize());
 #endif
         }
-        #endregion
-        #endregion
     }
+#endif
 }

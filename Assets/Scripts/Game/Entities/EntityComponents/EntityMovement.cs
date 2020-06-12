@@ -1,29 +1,19 @@
-﻿using Game.Entities.Actions;
-using Lortedo.Utilities;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-
-namespace Game.Entities
+﻿namespace Game.Entities
 {
+    using Game.Entities.Actions;
+    using System;
+    using UnityEngine;
+    using UnityEngine.AI;
+
     /// <summary>
     /// This script manage the moving of entity.
     /// </summary>
-    public class EntityMovement : EntityComponent
+    public partial class EntityMovement : EntityComponent
     {
         #region Fields
         private const string debugLogHeader = "Entity Movement : ";
         private const float reachDestinationThreshold = 0.5f;
         private const float radiusThreshold = 0.1f;
-
-        public event Action<Vector3> DestinationReached;
-        public event Action<Vector3> StartMove;
-        /// <summary>
-        /// Called on DestinationReached and on StopMove();
-        /// </summary>
-        public event System.Action MovementStopped;
 
         [SerializeField] private EntityShiftData _shiftData;
 
@@ -34,6 +24,16 @@ namespace Game.Entities
         private NavMeshAgent _navMeshAgent;
         private CapsuleCollider _collider;
         #endregion
+
+        #region Events
+        public event Action<Vector3> DestinationReached;
+        public event Action<Vector3> StartMove;
+        /// <summary>
+        /// Called on DestinationReached and on StopMove();
+        /// </summary>
+        public event System.Action MovementStopped;
+        #endregion
+
 
         #region Properties
         public Vector3 Destination { get => _destination; }
@@ -81,28 +81,6 @@ namespace Game.Entities
             Entity.GetCharacterComponent<EntityDetection>().OnAllyEnterShiftRange -= EntityMovement_OnAllyEnterShiftRange;
 
             StopMoving();
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (!Application.isPlaying)
-                return;
-
-            if (_navMeshAgent == null)
-                return;
-
-            // default _destination == Vector3.zero
-            if (_destination == Vector3.zero)
-                return;
-
-            if (!Entity.GetCharacterComponent<EntitySelectable>().IsSelected)
-                return;
-
-            Gizmos.color = Color.white;
-            Gizmos.DrawLine(transform.position, _destination);
-
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(_destination, _navMeshAgent.stoppingDistance);
         }
         #endregion
 
@@ -178,6 +156,8 @@ namespace Game.Entities
         {
             _navMeshAgent.speed = Entity.Data.Speed;
 
+            TF.Assertations.Assert.AreEquals(Entity.Data.TileSize, Vector2Int.zero, "Can't set NavMeshAgent because TileSize is equals to zero.");
+
             if (Entity.Data.TileSize.x != Entity.Data.TileSize.y)
             {
                 Debug.LogWarningFormat(debugLogHeader + "TileSize isn't a square. We set nav mesh agent's radius with highest value of tile size.");
@@ -198,4 +178,40 @@ namespace Game.Entities
         #endregion
         #endregion
     }
+
+#if UNITY_EDITOR
+    public partial class EntityMovement : EntityComponent
+    {
+        private void OnDrawGizmos()
+        {
+            if (!Application.isPlaying)
+                return;
+
+            // default _destination == Vector3.zero
+            if (_destination == Vector3.zero)
+                return;
+
+            if (!Entity.GetCharacterComponent<EntitySelectable>().IsSelected)
+                return;
+
+            DrawLineToDestination();
+            DrawDestination();
+        }
+
+        private void DrawLineToDestination()
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine(transform.position, _destination);
+        }
+
+        private void DrawDestination()
+        {
+            if (_navMeshAgent == null)
+                return;
+
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(_destination, _navMeshAgent.stoppingDistance);
+        }
+    }
+#endif
 }

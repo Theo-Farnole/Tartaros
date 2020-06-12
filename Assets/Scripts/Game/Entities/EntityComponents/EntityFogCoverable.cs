@@ -1,31 +1,39 @@
-﻿using Game.FogOfWar;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-namespace Game.Entities
+﻿namespace Game.Entities
 {
+    using Game.FogOfWar;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
     public delegate void OnFog(IFogCoverable fogCoverable);
 
     public class EntityFogCoverable : EntityComponent, IFogCoverable
     {
+        #region Fields
         private const string debugLogHeader = "Entity Fog Coverable : ";
 
+        [SerializeField] private GameObject[] _modelsToHide;
+
+        private Collider _collider;
+        private bool _isCover = false;
+        #endregion
+
+        #region Events
         public event OnFog OnFogCover;
         public event OnFog OnFogUncover;
+        #endregion
 
-        [SerializeField] private GameObject[] _modelsToHide;
-        private Collider _collider;
-
-        private bool _isCover = false;
-
+        #region Properties
         public bool IsCover
         {
             get => _isCover;
 
             set
             {
+                // REFACTOR NOTE:
+                // We should only do checks in properties!
+
                 // avoid calculation if _isCover value doesn't changes
                 if (value == _isCover)
                     return;
@@ -39,16 +47,16 @@ namespace Game.Entities
         }
 
         public Vector3 Position { get => transform.position; }
+        #endregion
 
-        private void Awake()
+        #region Methods
+        void Awake()
         {
             _collider = GetComponent<Collider>();
         }
 
         void OnEnable()
         {
-            Assert.IsNotNull(FOWManager.Instance, string.Format(debugLogHeader + "FOWManager is missing. Can't add {0} as a coverable", name));
-
             FOWManager.Instance.AddCoverable(this);
         }
 
@@ -67,5 +75,6 @@ namespace Game.Entities
             foreach (var mesh in _modelsToHide)
                 mesh.SetActive(!_isCover);
         }
+        #endregion
     }
 }

@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-using DG.Tweening;
-
-namespace Game.Entities
+﻿namespace Game.Entities
 {
+    using UnityEngine;
+    using UnityEngine.AI;
+    using DG.Tweening;
+
     public class EntitySizeSetter : EntityComponent
     {
         private enum Size
@@ -102,9 +100,9 @@ namespace Game.Entities
             _currentSize = Size.Expanding;
 
             DOTween.To(
-                () => _navMeshAgent.radius, 
-                x => _navMeshAgent.radius = x, 
-                _originalAgentRadius, 
+                () => _navMeshAgent.radius,
+                x => _navMeshAgent.radius = x,
+                _originalAgentRadius,
                 _collisionScalerData.IncreaseTime)
             .OnComplete(() => { _currentSize = Size.NormalSize; });
         }

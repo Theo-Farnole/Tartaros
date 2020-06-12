@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-namespace Game.Entities
+﻿namespace Game.Entities
 {
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
     public class EntityMinimap : EntityComponent
     {
         [SerializeField] private SpriteRenderer _minimapSprite;

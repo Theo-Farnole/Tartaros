@@ -1,12 +1,12 @@
-using Game.Entities.Actions;
-using Lortedo.Utilities.Pattern;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Assertions;
-
 namespace Game.Entities
 {
+    using Game.Entities.Actions;
+    using Lortedo.Utilities.Pattern;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
     /// <summary>
     /// This script manage the attack (smart classname isn't it ?).
     /// </summary>
@@ -26,13 +26,13 @@ namespace Game.Entities
         void OnEnable()
         {
             Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += OnEnemyEnterAttackRange;
-            Entity.GetCharacterComponent<EntityHealth>().OnDamageReceived += OnDamageReceived; 
+            Entity.GetCharacterComponent<EntityHealth>().OnDamageReceived += OnDamageReceived;
         }
 
         void OnDisable()
         {
             Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += OnEnemyEnterAttackRange;
-            Entity.GetCharacterComponent<EntityHealth>().OnDamageReceived -= OnDamageReceived; 
+            Entity.GetCharacterComponent<EntityHealth>().OnDamageReceived -= OnDamageReceived;
         }
         #endregion
 
@@ -113,7 +113,7 @@ namespace Game.Entities
                 return false;
 
             if (nearestEnemy.Team == Entity.Team) Debug.LogWarningFormat("Entity Attack : Entity {0} tries to auto attack an ally.", name);
-            
+
             if (Entity.GetCharacterComponent<EntityDetection>().IsEntityInViewRadius(nearestEnemy))
             {
                 var action = new ActionAttackEntity(Entity, nearestEnemy);

@@ -1,11 +1,9 @@
-﻿using Lortedo.Utilities.Pattern;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-namespace Game.Entities
+﻿namespace Game.Entities
 {
+    using Lortedo.Utilities.Pattern;
+    using UnityEngine;
+    using UnityEngine.UI;
+
     public delegate void OnDamageReceived(Entity entity, Entity attacker, int currentHp, int damageAmount);
 
     /// <summary>
@@ -14,8 +12,6 @@ namespace Game.Entities
     public class EntityHealth : EntityComponent, IPooledObject
     {
         #region Fields
-        public event OnDamageReceived OnDamageReceived;
-
         [Header("Health Slider Behaviour")]
         [SerializeField] private Canvas _sliderCanvas;
         [SerializeField] private Slider _healthSlider;
@@ -23,6 +19,10 @@ namespace Game.Entities
 
         private int _hp;
         private int _maxHp;
+        #endregion
+
+        #region Events
+        public event OnDamageReceived OnDamageReceived;
         #endregion
 
         #region Properties
@@ -41,24 +41,24 @@ namespace Game.Entities
 
         void OnEnable()
         {
-            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover += EntityHealth_OnFogCover;
-            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover += EntityHealth_OnFogUncover;
+            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover += OnFogCover;
+            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover += OnFogUncover;
         }
 
         void OnDisable()
         {
-            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover -= EntityHealth_OnFogCover;
-            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover -= EntityHealth_OnFogUncover;
+            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogCover -= OnFogCover;
+            Entity.GetCharacterComponent<EntityFogCoverable>().OnFogUncover -= OnFogUncover;
         }
         #endregion
 
         #region Events handlers
-        private void EntityHealth_OnFogCover(Game.FogOfWar.IFogCoverable fogCoverable)
+        private void OnFogCover(FogOfWar.IFogCoverable fogCoverable)
         {
             HideHealth();
         }
 
-        private void EntityHealth_OnFogUncover(Game.FogOfWar.IFogCoverable fogCoverable)
+        private void OnFogUncover(FogOfWar.IFogCoverable fogCoverable)
         {
             DisplayHealth();
         }
@@ -84,7 +84,7 @@ namespace Game.Entities
 
             if (!IsAlive)
             {
-                Entity.Death();                
+                Entity.Death();
             }
         }
         #endregion
@@ -130,7 +130,9 @@ namespace Game.Entities
 
             UpdateHealthSlider();
         }
+        #endregion
 
+        #region IPooledObject 
         void IPooledObject.OnObjectSpawn()
         {
             SetupHp();

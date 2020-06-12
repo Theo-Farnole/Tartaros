@@ -13,14 +13,20 @@
     public partial class EntityUnitSpawner : EntityComponent
     {
         #region Fields
-        public static event OnUnitCreated OnUnitCreated;
 
         private static readonly string debugLogHeader = "Entity Unit Spawn : ";
 
         [SerializeField] private Vector3 _spawnPointLocal;
 
-        private Vector3 _anchorPosition;
+        /// <summary>
+        /// The anchor is the little flag that said to player "my spawned units'll go there".
+        /// </summary>
         private GameObject _modelAnchorPoint;
+        private Vector3 _anchorPosition;
+        #endregion
+
+        #region Events
+        public static event OnUnitCreated OnUnitCreated;
         #endregion
 
         #region Methods
@@ -140,16 +146,22 @@
         #region Private Methods
         void DisplayAnchorPoint()
         {
-            Assert.IsNull(_modelAnchorPoint, "Model anchor is already displayed.");
             Assert.IsTrue(Entity.Data.CanSpawnUnit, "Can't display anchor point of a unit that can't spawn unit.");
+
+            // Model anchor is already displayed.
+            if (_modelAnchorPoint != null)
+                return;
 
             _modelAnchorPoint = ObjectPooler.Instance.SpawnFromPool(ObjectPoolingTags.keyAnchorPoint, _anchorPosition, Quaternion.identity);
         }
 
         void HideAnchorPoint()
         {
-            Assert.IsNotNull(_modelAnchorPoint, "Can't enqueue null _modelAnchorPoint. Call your coder please.");
             Assert.IsTrue(Entity.Data.CanSpawnUnit, "Can't hide anchor point of a unit that can't spawn unit.");
+
+            // Model is already hided.
+            if (_modelAnchorPoint == null)
+                return;
 
             ObjectPooler.Instance.EnqueueGameObject(ObjectPoolingTags.keyAnchorPoint, _modelAnchorPoint);
             _modelAnchorPoint = null;
@@ -157,8 +169,10 @@
 
         void UpdateAnchorPosition()
         {
-            if (_modelAnchorPoint != null)
-                _modelAnchorPoint.transform.position = _anchorPosition;
+            if (_modelAnchorPoint == null)
+                return;
+
+            _modelAnchorPoint.transform.position = _anchorPosition;
         }
 
         private void MoveGameObjectToAnchor(Entity entity)

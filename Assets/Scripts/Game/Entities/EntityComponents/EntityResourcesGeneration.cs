@@ -1,25 +1,24 @@
-﻿using Game.MapCellEditor;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Game.Entities
+﻿namespace Game.Entities
 {
+    using Game.MapCellEditor;
+    using UnityEngine;
+
     /// <summary>
     /// This script create resources each tick setted in EntityData.
     /// </summary>
-    public class EntityResourcesGeneration : EntityComponent
+    public partial class EntityResourcesGeneration : EntityComponent
     {
         #region Fields
-        public static event Action<Entity> OnResourceGenerationEnable;
-        public static event Action<Entity> OnResourceGenerationDisable;
-
         private float _nextTimeGenerationTick = 0; // Time.time + Entity.Data.GenerationTick
         private ResourcesWrapper _resourcesPerTick;
 
         private bool _onEnableFirstFrame = true;
         private bool _resourceProductionEnable = true;
+        #endregion
+
+        #region Events
+        public static event EntityDelegate OnResourceGenerationEnable;
+        public static event EntityDelegate OnResourceGenerationDisable;
         #endregion
 
         #region Properties
@@ -28,6 +27,9 @@ namespace Game.Entities
             get => _resourceProductionEnable;
             set
             {
+                // REFACTOR NOTE:
+                // Properties should only do checks!
+
                 if (value == _resourceProductionEnable)
                     return;
 
@@ -46,7 +48,6 @@ namespace Game.Entities
                 CalculateNextTimeGenerationTick();
             }
         }
-
         #endregion
 
         #region Methods
@@ -92,14 +93,6 @@ namespace Game.Entities
             UnsubscribeToEvents();
         }
 
-#if UNITY_EDITOR
-        void OnDrawGizmos()
-        {
-            if (Entity != null && Entity.EntityID != string.Empty && Entity.Data != null && Entity.Data.CanCreateResources)
-                UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.RadiusToReachCells);
-        }
-#endif
-
         void OnGUI()
         {
             DrawGUI_ResourcesPerTick();
@@ -136,8 +129,37 @@ namespace Game.Entities
         }
         #endregion
 
-        #region GUI Draw
+        #region Public Methods
+        public void CalculateResourcesPerTick()
+        {
+            if (!Entity.Data.CanCreateResources)
+                return;
 
+            ResourcesWrapper resourcesPerTick = new ResourcesWrapper(0, 0, 0);
+
+            switch (Entity.Data.GenerationType)
+            {
+                case GenerationType.Constant:
+                    resourcesPerTick = Entity.Data.ConstantResourcesGeneration;
+                    break;
+
+                case GenerationType.PerCell:
+                    foreach (var kvp in Entity.Data.ResourcesPerCell)
+                    {
+                        int cellCount = GetCellsInGenerationRadius(kvp.Key);
+                        resourcesPerTick += kvp.Value * cellCount;
+                    }
+                    break;
+
+                default:
+                    throw new System.NotImplementedException();
+            }
+
+            _resourcesPerTick = resourcesPerTick;
+        }
+        #endregion
+
+        #region Private Methods
         private void DrawGUI_ResourcesPerTick()
         {
             if (Camera.main == null)
@@ -166,15 +188,13 @@ namespace Game.Entities
                 GUI.Label(labelRect, _resourcesPerTick.ToString(true));
             }
         }
-        #endregion
 
-        #region Create resources 
-        void CalculateNextTimeGenerationTick()
+        private void CalculateNextTimeGenerationTick()
         {
             _nextTimeGenerationTick = Time.time + Entity.Data.GenerationTick;
         }
 
-        void TryCreateResources()
+        private void TryCreateResources()
         {
             if (_resourceProductionEnable && _nextTimeGenerationTick <= Time.time)
             {
@@ -183,46 +203,40 @@ namespace Game.Entities
             }
         }
 
-        void CreateResources()
+        private void CreateResources()
         {
             GameManager.Instance.Resources += _resourcesPerTick;
         }
-        #endregion
 
-        #region Calculate Resources Per Tick Methods
-        public void CalculateResourcesPerTick()
-        {
-            if (!Entity.Data.CanCreateResources)
-                return;
-
-            ResourcesWrapper resourcesPerTick = new ResourcesWrapper(0, 0, 0);
-
-            switch (Entity.Data.GenerationType)
-            {
-                case GenerationType.Constant:
-                    resourcesPerTick = Entity.Data.ConstantResourcesGeneration;
-                    break;
-
-                case GenerationType.PerCell:
-                    foreach (var kvp in Entity.Data.ResourcesPerCell)
-                    {
-                        int cellCount = GetCellsInGenerationRadius(kvp.Key);
-                        resourcesPerTick += kvp.Value * cellCount;
-                    }
-                    break;
-
-                default:
-                    throw new System.NotImplementedException();
-            }
-
-            _resourcesPerTick = resourcesPerTick;
-        }
-
-        int GetCellsInGenerationRadius(CellType cellType)
+        private int GetCellsInGenerationRadius(CellType cellType)
         {
             return GameManager.Instance.MapCells.GetCells_WorldPosition(transform.position.x, transform.position.z, Entity.Data.RadiusToReachCells, cellType).Length;
         }
         #endregion
         #endregion
     }
+
+#if UNITY_EDITOR
+    public partial class EntityResourcesGeneration : EntityComponent
+    {
+
+        void OnDrawGizmos()
+        {
+            if (Entity == null)
+                return;
+
+            if (Entity.EntityID != string.Empty)
+                return;
+
+            if (Entity.Data == null)
+                return;
+
+            if (!Entity.Data.CanCreateResources)
+                return;
+
+            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.RadiusToReachCells);
+        }
+
+    }
+#endif
 }
