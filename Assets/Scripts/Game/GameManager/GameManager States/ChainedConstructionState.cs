@@ -233,7 +233,7 @@ namespace Game.ConstructionSystem
         #region Set Building Position Methods
         private void UpdatePreviewsPosition()
         {
-            if (!GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 newPosition, terrainLayerMask))
+            if (!GameManager.Instance.Grid.GetNearestPositionFromMouse(out Vector3 mousePosition, terrainLayerMask))
             {
                 Debug.LogWarningFormat("Construction State : " + "Can't find nearest position from mouse. We can't update the building position.");
                 return;
@@ -242,11 +242,11 @@ namespace Game.ConstructionSystem
             // update the preview before anchoring
             if (!_anchorSet)
             {
-                SetBuildingsPosition(newPosition);
+                SetPreviewBuildingPosition(mousePosition);
                 return;
             }
 
-            Vector2Int[] path = TileSystem.Instance.GetPath(_anchorPosition, newPosition);
+            Vector2Int[] path = TileSystem.Instance.GetPath(_anchorPosition, mousePosition);
 
             if (path.Length > 0)
             {
@@ -254,13 +254,13 @@ namespace Game.ConstructionSystem
             }
             else
             {
-                SetBuildingsPosition(newPosition);
+                SetPreviewBuildingPosition(mousePosition);
             }
 
             ManageBuildingColorOverwrite();
         }
 
-        private void SetBuildingsPosition(Vector3 position)
+        private void SetPreviewBuildingPosition(Vector3 position)
         {
             ResizeConstructionBuildings(1);
 
@@ -282,7 +282,6 @@ namespace Game.ConstructionSystem
             }
             else
             {
-
                 foreach (var cbuilding in _previewBuildings)
                 {
                     cbuilding.StopForceColor();

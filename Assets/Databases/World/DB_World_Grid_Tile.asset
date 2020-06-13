@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 829c3e03a8cc47a4ab644dbb598ecaf3, type: 3}
   m_Name: DB_World_Grid_Tile
   m_EditorClassIdentifier: 
-  _cellCount: 61
-  _cellSize: 1
+  _gridLength: 180
+  _cellSize: 3
   _cellsTotalCount: 3721

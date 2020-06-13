@@ -5,15 +5,30 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Tartaros/World/Grid")]
 public partial class SnapGridDatabase : ScriptableObject
 {
-    [SerializeField] private int _cellCount = 51;
-    public int CellCount { get => _cellCount; }
-
+    #region Fields
+    [SerializeField] private float _gridLength = 80;
     [SerializeField] private float _cellSize = 1f;
-    public float CellSize { get => _cellSize; }
 
     [Header("Information")]
     [SerializeField, MyBox.ReadOnly] private int _cellsTotalCount = 0;
 
+    private int _cellCount = 51;
+    #endregion
+
+    #region Properties
+    public int CellCount { get => _cellCount; }
+    public float CellSize { get => _cellSize; }
+    #endregion
+
+    #region Methods
+    #region MonoBehaviour Callbacks
+    void Awake()
+    {
+        _cellCount = Mathf.RoundToInt(_gridLength / _cellSize);
+    }
+    #endregion
+
+    #region Public Methods
     public bool GetNearestPositionFromMouse(out Vector3 positionFromMouse, int layerMask = ~0)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -75,6 +90,8 @@ public partial class SnapGridDatabase : ScriptableObject
         var cellSize = _cellSize;
         return new Vector3(coords.x * cellSize, 0, coords.y * cellSize);
     }
+    #endregion
+    #endregion
 }
 
 #if UNITY_EDITOR
@@ -89,6 +106,8 @@ public partial class SnapGridDatabase : ScriptableObject
         }
 
         _cellsTotalCount = _cellCount * _cellCount;
+
+        _cellCount = Mathf.RoundToInt(_gridLength / _cellSize);
     }
 
 

@@ -76,6 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wallIDs:
   - building_wall
+  - building_gate
 --- !u!1 &3557356657614828961
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +102,7 @@ Transform:
   m_GameObject: {fileID: 3557356657614828961}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1, z: 1}
   m_Children:
   - {fileID: 4577261368053796536}
   m_Father: {fileID: 8802178015158528585}
@@ -225,7 +226,7 @@ Transform:
   m_GameObject: {fileID: 9163932849320742854}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.12, y: -0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_Children:
   - {fileID: 1725030140573244713}
   - {fileID: 1435863028723462121}

@@ -310,18 +310,12 @@ public class TileSystem : Singleton<TileSystem>
     #endregion
 
     #region Path Finding methods
-    public Vector2Int[] GetPath(Vector3 from, Vector3 to)
-    => GetPath(WorldToCoords(from), WorldToCoords(to));
+    public Vector2Int[] GetPath(Vector3 from, Vector3 to) => GetPath(WorldToCoords(from), WorldToCoords(to));
 
     public Vector2Int[] GetPath(Vector2Int from, Vector2Int to)
     {
-        Debug.DrawRay(to.ToXZ(), Vector3.up * 10, Color.red);
-
         Vector2 from2Right = Vector2.right - from;
         Vector2Int from2To = to - from;
-
-        Debug.DrawRay(from.ToXZ(), Vector2.right * 5);
-        Debug.DrawLine(from.ToXZ(), to.ToXZ());
 
         // calculate angle
         float angle = Vector2.SignedAngle(from2Right, from2To); // in degrees
@@ -333,24 +327,28 @@ public class TileSystem : Singleton<TileSystem>
 
         Vector2Int pathDirection;
         int pathCount;
-        var cellSize = GameManager.Instance.Grid.CellSize;
 
         // the direction of path is X ?
         if (Mathf.Abs(deltaX) >= Mathf.Abs(deltaY))
         {
             pathDirection = Vector2Int.right * (int)Mathf.Sign(-deltaX);
-            pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.x / cellSize));
+            pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.x));
         }
         else
         {
             pathDirection = Vector2Int.up * (int)Mathf.Sign(-deltaY);
-            pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.y / cellSize));
+            pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.y));
         }
 
         // we add one, to include current start
         pathCount++;
 
         Assert.IsTrue(pathCount >= 0, "TileSystem : Path count should greater or equals to '0'!");
+
+        // DEBUGS
+        Debug.DrawRay(CoordsToWorld(to), Vector3.up * 10, Color.red);
+        Debug.DrawRay(CoordsToWorld(from), Vector2.right * 5);
+        Debug.DrawLine(CoordsToWorld(from), CoordsToWorld(to));
 
         // calculate output
         Vector2Int[] o = new Vector2Int[pathCount];
