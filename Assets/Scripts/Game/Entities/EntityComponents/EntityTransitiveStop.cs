@@ -51,9 +51,9 @@
                 return;
 
             float radius = Entity.Data.GetRadius();
-            Entity[] allies = _cachedEntityDetection.GetAlliesInRadius(radius);
+            Entity[] allies = _cachedEntityDetection.GetAlliesInRadius(radius, out int arrayLength);
 
-            for (int i = 0; i < allies.Length; i++)
+            for (int i = 0; i < arrayLength; i++)
             {
                 Entity ally = allies[i];
 

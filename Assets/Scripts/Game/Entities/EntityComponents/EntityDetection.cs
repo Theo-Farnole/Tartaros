@@ -30,7 +30,9 @@ namespace Game.Entities
         private Entity _nearestOpponentTeamEntity = null;
         private Entity _nearestAllyTeamEntity = null;
 
-        private Collider[] _overlapSphereBuffer = new Collider[20];
+        private Collider[] _overlapSphereBuffer = new Collider[100];
+        private Entity[] _overlapSphereBufferEntities = new Entity[100];
+
         private int _frameOffset = -1;
         private int _layerMaskEntity = -1;
         #endregion
@@ -135,21 +137,26 @@ namespace Game.Entities
             return _nearestOpponentTeamEntity;
         }
 
-        public Entity[] GetAlliesInRadius(float radius)
+        /// <summary>
+        /// For performance reason, we use a immutable array. Some elements in array can be outdated. So use 'arrayLength' has browse limit in a for.
+        /// This method is performance heavy: it call GetComponent one time per entity founded.
+        /// </summary>
+        public Entity[] GetAlliesInRadius(float radius, out int arrayLength)
         {
-            int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);
-
-            List<Entity> entities = new List<Entity>();
+            int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);            
 
             for (int i = 0; i < collidersCount; i++)
             {
-                if (_overlapSphereBuffer[i].TryGetComponent(out Entity entity))
-                {
-                    entities.Add(entity);
-                }
+                TF.Assertations.Assert.HasComponent<Entity>(_overlapSphereBuffer[i], "GameObject '{0}' is in Entity layer, but doesn't have an Entity component on it.", _overlapSphereBuffer[i].name);
+
+                // PERFORMANCE NOTE:
+                // We are calling GetComponent for each collider.
+                _overlapSphereBufferEntities[i] = _overlapSphereBuffer[i].GetComponent<Entity>();
             }
 
-            return entities.ToArray();
+            arrayLength = collidersCount;
+
+            return _overlapSphereBufferEntities;
         }
 
         public Entity GetNearestAlly()
