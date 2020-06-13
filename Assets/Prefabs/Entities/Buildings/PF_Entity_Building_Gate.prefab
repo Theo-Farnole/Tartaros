@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wallIDs:
   - building_wall
+  - building_gate
 --- !u!114 &7513337810482483094
 MonoBehaviour:
   m_ObjectHideFlags: 0

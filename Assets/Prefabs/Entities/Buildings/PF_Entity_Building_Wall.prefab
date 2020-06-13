@@ -76,7 +76,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wallIDs:
   - building_wall
-  - building_gate
 --- !u!1 &3557356657614828961
 GameObject:
   m_ObjectHideFlags: 0
