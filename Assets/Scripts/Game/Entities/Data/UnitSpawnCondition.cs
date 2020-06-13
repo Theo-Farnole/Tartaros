@@ -27,23 +27,24 @@
             if (!_hasSpawnCondition)
                 return true;
 
+            return IsCondition_MaxAlliesOfSameIDAliveMet();
+        }
+
+        private bool IsCondition_MaxAlliesOfSameIDAliveMet()
+        {
+            if (_maxAlliesOfSameIDAlive == -1)
+                return true;
+
             // PERFORMANCE NOTE:
             // Create an EntityManager where it store every Entity[]
             Entity[] entities = UnityEngine.Object.FindObjectsOfType<Entity>();
 
-            if (_maxAlliesOfSameIDAlive != -1)
-            {
-                int alliesOfSameIDAlive =
-                    entities.Where(x => x.EntityID == _entityIDToSpawn).Count()
-                    + GameManager.Instance.PendingCreation.Where(x => x == _entityIDToSpawn).Count();
 
-                bool conditionMet = alliesOfSameIDAlive < _maxAlliesOfSameIDAlive;
+            int alliesOfSameIDAlive =
+                entities.Where(x => x.EntityID == _entityIDToSpawn).Count()
+                + GameManager.Instance.PendingCreation.Where(x => x == _entityIDToSpawn).Count();
 
-                if (!conditionMet)
-                    return false;
-            }
-
-            return true;
+            return alliesOfSameIDAlive < _maxAlliesOfSameIDAlive;
         }
     }
 }
