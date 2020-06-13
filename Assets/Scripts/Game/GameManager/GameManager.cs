@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Game.TileSystem;
 
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
 public delegate void OnGameOver(GameManager gameManager);

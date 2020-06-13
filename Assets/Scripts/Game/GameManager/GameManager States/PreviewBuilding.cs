@@ -1,16 +1,14 @@
-﻿using Game.Appearance;
-using Game.Appearance.Walls;
-using Game.Entities;
-using Lortedo.Utilities.Debugging;
-using Lortedo.Utilities.Pattern;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Assertions;
-
-namespace Game.ConstructionSystem
+﻿namespace Game.ConstructionSystem
 {
+    using Game.Appearance;
+    using Game.Appearance.Walls;
+    using Game.Entities;
+    using Lortedo.Utilities.Debugging;
+    using UnityEngine;
+    using UnityEngine.AI;
+    using UnityEngine.Assertions;
+    using Game.TileSystem;
+
     /// <summary>
     /// This script manages display of a building to be constructed.
     /// It manages deactivation of components. 

@@ -1,10 +1,8 @@
 namespace Game.Appearance.Walls
 {
-    using Game.Entities;
+    using Game.TileSystem;
     using System;
-    using System.Linq;
     using UnityEngine;
-    using UnityEngine.Assertions;
 
     /// <summary>
     /// Detect construction or deletion of neighboor on TileSystem.
@@ -15,26 +13,19 @@ namespace Game.Appearance.Walls
     /// </summary>
     public class WallChainDetector : MonoBehaviour
     {
-        public enum WallOrientation
-        {
-            NotAWallOrJoint = 0,
-            NorthToSouth = 1,
-            WestToEast = 2,
-        }
-
         #region Fields
-        public event Action<WallOrientation> OnWallOrientationChanged;
+        public event Action<BuildingChainOrientation> OnWallOrientationChanged;
         public event Action<bool> OnWallJointChanged;
 
         [Header("IDS")]
         [SerializeField] private string[] _wallIDs = new string[] { "building_wall" }; // used on "IsWall" method
 
-        private WallOrientation _currentWallOrientation;
+        private BuildingChainOrientation _currentBuildingChainOrientation;
         #endregion
 
         #region Properties
-        public bool Cached_IsWallJoint { get => _currentWallOrientation == WallOrientation.NotAWallOrJoint; }
-        public WallOrientation Cached_CurrentWallOrientation { get => _currentWallOrientation; }
+        public bool Cached_IsWallJoint { get => _currentBuildingChainOrientation == BuildingChainOrientation.NotAWallOrWallJoint; }
+        public BuildingChainOrientation Cached_CurrentWallOrientation { get => _currentBuildingChainOrientation; }
         #endregion
 
         #region Methods
@@ -63,8 +54,8 @@ namespace Game.Appearance.Walls
             {
                 ForceCalculateWallOrientation();
 
-                OnWallOrientationChanged?.Invoke(_currentWallOrientation);
-                OnWallJointChanged?.Invoke(_currentWallOrientation == WallOrientation.NotAWallOrJoint);
+                OnWallOrientationChanged?.Invoke(_currentBuildingChainOrientation);
+                OnWallJointChanged?.Invoke(_currentBuildingChainOrientation == BuildingChainOrientation.NotAWallOrWallJoint);
             }
         }
         #endregion
@@ -72,63 +63,10 @@ namespace Game.Appearance.Walls
         #region Private Methods
         public void ForceCalculateWallOrientation()
         {
-            _currentWallOrientation = GetCurrentWallOrientation();
+            _currentBuildingChainOrientation = GetCurrentWallOrientation();
         }
 
-        WallOrientation GetCurrentWallOrientation()
-        {
-            Assert.IsNotNull(TileSystem.Instance, "You must have a TileSystem to change appareance.");
-
-            Vector2Int myCoords = TileSystem.Instance.WorldToCoords(transform.position);
-
-            Vector2Int northCoords = new Vector2Int(myCoords.x, myCoords.y + 1);
-            Vector2Int southCoords = new Vector2Int(myCoords.x, myCoords.y - 1);
-            Vector2Int eastCoords = new Vector2Int(myCoords.x + 1, myCoords.y);
-            Vector2Int westCoords = new Vector2Int(myCoords.x - 1, myCoords.y);
-
-            bool hasNorthWall = IsWall(northCoords);
-            bool hasSouthWall = IsWall(southCoords);
-            bool hasEastWall = IsWall(eastCoords);
-            bool hasWestWall = IsWall(westCoords);
-
-            if (hasNorthWall && hasSouthWall && !hasEastWall && !hasWestWall) // N/S walls only
-            {
-                return WallOrientation.NorthToSouth;
-            }
-            else if (!hasNorthWall && !hasSouthWall && hasEastWall && hasWestWall) // E/W walls only
-            {
-                return WallOrientation.WestToEast;
-            }
-            else
-            {
-                return WallOrientation.NotAWallOrJoint;
-            }
-        }
-
-        bool IsWall(Vector2Int coords)
-        {
-            Assert.IsNotNull(TileSystem.Instance, "You must have a TileSystem check if object at coords is a wall.");
-
-            GameObject tile = TileSystem.Instance.GetTile(coords);
-
-            // not a wall if tile is empty
-            if (tile == null)
-                return false;
-
-            if (tile.TryGetComponent(out Entity entity))
-            {
-                if (_wallIDs.Length == 0) Debug.LogWarningFormat("Wall IDS of {0} is empty!", name);
-
-                return _wallIDs.Contains(entity.EntityID);
-            }
-            else
-            {
-                Debug.LogWarningFormat("Tile {0} doesn't have an Entity component on it.", tile.name);
-
-                // not a wall if building doesn't have Entity on it.
-                return false;
-            }
-        }
+        BuildingChainOrientation GetCurrentWallOrientation() => TileSystem.Instance.GetBuildingChainOrientation(transform.position, _wallIDs);
         #endregion
         #endregion
     }

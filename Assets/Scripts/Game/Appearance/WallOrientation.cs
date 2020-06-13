@@ -1,5 +1,6 @@
 ﻿namespace Game.Appearance.Walls
 {
+    using Game.TileSystem;
     using UnityEngine;
 
     /// <summary>
@@ -45,7 +46,7 @@
         #endregion
 
         #region Events Handlers
-        private void WallChainDetector_OnWallOrientationChanged(WallChainDetector.WallOrientation wallOrientation)
+        private void WallChainDetector_OnWallOrientationChanged(BuildingChainOrientation wallOrientation)
         {
             Quaternion rotation = WallOrientationToRotation(wallOrientation);
             _modelToRotate.rotation = rotation;
@@ -61,15 +62,15 @@
             _modelToRotate.rotation = rotation;
         }
 
-        Quaternion WallOrientationToRotation(WallChainDetector.WallOrientation wallOrientation)
+        Quaternion WallOrientationToRotation(BuildingChainOrientation wallOrientation)
         {
             switch (wallOrientation)
             {
-                case WallChainDetector.WallOrientation.NotAWallOrJoint:
-                case WallChainDetector.WallOrientation.NorthToSouth:
+                case BuildingChainOrientation.NotAWallOrWallJoint:
+                case BuildingChainOrientation.NorthToSouth:
                     return Quaternion.Euler(_eulerAnglesNorthToSouth);
 
-                case WallChainDetector.WallOrientation.WestToEast:
+                case BuildingChainOrientation.WestToEast:
                     return Quaternion.Euler(_eulerAnglesWestToEast);
 
                 default:

@@ -1,15 +1,11 @@
-﻿using Game.Entities;
-using Lortedo.Utilities.Debugging;
-using Lortedo.Utilities.Pattern;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Assertions;
-using UnityEngine.EventSystems;
-
-namespace Game.ConstructionSystem
+﻿namespace Game.ConstructionSystem
 {
+    using Game.Entities;
+    using Lortedo.Utilities.Pattern;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+    using Game.TileSystem;
+
     public class ConstructionState : AbstractConstructionState
     {
         #region Fields
@@ -47,7 +43,7 @@ namespace Game.ConstructionSystem
         protected override void ConstructBuilding()
         {
             GameObject building = _constructionBuilding.Building;
-            
+
             const TileFlag tileFlagCondition = TileFlag.Free | TileFlag.Visible;
 
             if (TileSystem.Instance.DoTilesFillConditions(building.transform.position, EntityData.TileSize, tileFlagCondition))

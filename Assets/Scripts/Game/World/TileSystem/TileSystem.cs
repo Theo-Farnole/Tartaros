@@ -1,367 +1,427 @@
-﻿using Game.Entities;
-using Game.FogOfWar;
-using Lortedo.Utilities.Pattern;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-public delegate void OnTileTerrainChanged(Vector2Int coords, GameObject gameObjectAtCoords);
-
-[System.Flags]
-public enum TileFlag
+﻿namespace Game.TileSystem
 {
-    None = 0,
-    Free = 1,
-    Visible = 2
-}
+    using Game.Entities;
+    using Game.FogOfWar;
+    using Lortedo.Utilities.Pattern;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEngine;
+    using UnityEngine.Assertions;
 
-/// <summary>
-/// This script used in building to know if a tile is free or not.
-/// </summary>
-public class TileSystem : Singleton<TileSystem>
-{
-    #region Fields
-    private const string debugLogHeader = "Tile System : ";
+    public delegate void OnTileTerrainChanged(Vector2Int coords, GameObject gameObjectAtCoords);
 
-    public event OnTileTerrainChanged OnTileTerrainChanged;
-
-    private Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>();
-    #endregion
-
-    #region Methods
-    #region MonoBehaviour Callbacks
-    private void Start()
+    [Flags]
+    public enum TileFlag
     {
-        ResetAllTiles();
+        None = 0,
+        Free = 1,
+        Visible = 2
     }
 
-    void OnEnable()
+    public enum BuildingChainOrientation
     {
-        Entity.OnDeath += Entity_OnDeath;
+        NotAWallOrWallJoint = 0,
+        NorthToSouth = 1,
+        WestToEast = 2,
     }
 
-    void OnDisable()
+    /// <summary>
+    /// This script used in building to know if a tile is free or not.
+    /// </summary>
+    public class TileSystem : Singleton<TileSystem>
     {
-        Entity.OnDeath -= Entity_OnDeath;
-    }
-    #endregion
+        #region Fields
+        private const string debugLogHeader = "Tile System : ";
 
-    #region Events Handlers
-    private void Entity_OnDeath(Entity entity)
-    {
-        if (entity.Data.EntityType == EntityType.Building)
+        private Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>();
+        #endregion
+
+        #region Events
+        public event OnTileTerrainChanged OnTileTerrainChanged;
+        #endregion
+
+        #region Methods
+        #region MonoBehaviour Callbacks
+        private void Start()
         {
-            Vector3 worldPosition = entity.transform.position;
+            ResetAllTiles();
+        }
+
+        void OnEnable()
+        {
+            Entity.OnDeath += Entity_OnDeath;
+        }
+
+        void OnDisable()
+        {
+            Entity.OnDeath -= Entity_OnDeath;
+        }
+        #endregion
+
+        #region Events Handlers
+        private void Entity_OnDeath(Entity entity)
+        {
+            if (entity.Data.EntityType == EntityType.Building)
+            {
+                Vector3 worldPosition = entity.transform.position;
+                Vector2Int coords = WorldToCoords(worldPosition);
+
+                // only set tile to null
+                // if tile is register at it position
+                //
+                // without this 'if', in construction mode
+                // pending construction building can't overwrite constructed building
+                if (GetTile(coords) == entity.gameObject)
+                {
+                    SetTile(null, entity.Data.TileSize, coords, true);
+                }
+            }
+        }
+        #endregion
+
+        #region Public Methods
+        #region IsTile Methods
+        public bool IsTileFree(Vector3 position)
+            => IsTileFree(WorldToCoords(position));
+
+        public bool IsTileFree(Vector2Int coords)
+        {
+            return (_tiles.ContainsKey(coords) && _tiles[coords] == null);
+        }
+
+        public bool IsTileVisible(Vector3 position)
+        {
+            Assert.IsNotNull(FOWManager.Instance, "Missing FOWManager.");
+
+            return FOWManager.Instance.TryGetTile(position, out FogState fogState) && fogState == FogState.Visible;
+        }
+
+        public bool DoTileContainsEntityOfID(Vector3 worldPosition, string entityID) => DoTileContainsEntityOfID(WorldToCoords(worldPosition), entityID);
+        public bool DoTileContainsEntityOfID(Vector3 worldPosition, string[] entitiesID) => DoTileContainsEntityOfID(WorldToCoords(worldPosition), entitiesID);
+
+        public bool DoTileContainsEntityOfID(Vector2Int coords, string entityID)
+        {
+            GameObject tile = GetTile(coords);
+
+            return GetTileID(coords) == entityID;
+        }
+
+        public bool DoTileContainsEntityOfID(Vector2Int coords, string[] entitiesID)
+        {
+            GameObject tile = GetTile(coords);
+
+            return entitiesID.Contains(GetTileID(coords));
+        }
+        #endregion
+
+        #region Tiles Getter Methods
+        private string GetTileID(Vector2Int coords)
+        {
+            GameObject tile = GetTile(coords);
+
+            if (tile != null && tile.TryGetComponent(out Entity entity))
+            {
+                return entity.EntityID;
+            }
+            else
+            {
+                throw new System.NotSupportedException("Can't get ID because the tile is null or has not entity component on it.");
+            }
+        }
+        #endregion
+
+        #region Fill Conditions Methods
+        public bool DoTilesFillConditions(Vector3 worldPosition, Vector2Int size, TileFlag condition, bool logBuildError = false)
+            => DoTilesFillConditions(worldPosition, size, condition, string.Empty, logBuildError);
+
+        public bool DoTilesFillConditions(Vector3 worldPosition, Vector2Int size, TileFlag condition, string entityID, bool logBuildError = false)
+        {
             Vector2Int coords = WorldToCoords(worldPosition);
+            Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, size);
 
-            // only set tile to null
-            // if tile is register at it position
-            //
-            // without this 'if', in construction mode
-            // pending construction building can't overwrite constructed building
-            if (GetTile(coords) == entity.gameObject)
+            for (int x = 0; x < size.x; x++)
             {
-                SetTile(null, entity.Data.TileSize, coords, true);
+                for (int y = 0; y < size.y; y++)
+                {
+                    Vector2Int coordsOffset = new Vector2Int(x, y);
+                    Vector2Int tileCoords = uncenteredCoords + coordsOffset;
+
+                    bool fillConditions = DoTileFillConditions(worldPosition, tileCoords, condition, entityID, logBuildError);
+
+                    //Debug.DrawRay(CoordsToWorld(tileCoords), Vector3.up * 5, fillConditions ? Color.green : Color.red, 3f);
+
+                    if (!fillConditions)
+                        return false;
+                }
             }
+
+            return true;
         }
-    }
-    #endregion
 
-    #region IsTile Methods
-    public bool IsTileFree(Vector3 position)
-        => IsTileFree(WorldToCoords(position));
+        private bool DoTileFillConditions(Vector3 worldPosition, Vector2Int tileCoords, TileFlag condition, bool logBuildError = false)
+            => DoTileFillConditions(worldPosition, tileCoords, condition, string.Empty, logBuildError);
 
-    public bool IsTileFree(Vector2Int coords)
-    {
-        return (_tiles.ContainsKey(coords) && _tiles[coords] == null);
-    }
-
-    public bool IsTileVisible(Vector3 position)
-    {
-        Assert.IsNotNull(FOWManager.Instance, "Missing FOWManager.");
-
-        return FOWManager.Instance.TryGetTile(position, out FogState fogState) && fogState == FogState.Visible;
-    }
-
-    public bool DoTileContainsEntityOfID(Vector3 worldPosition, string entityID)
-        => DoTileContainsEntityOfID(WorldToCoords(worldPosition), entityID);
-
-    public bool DoTileContainsEntityOfID(Vector2Int coords, string entityID)
-    {
-        GameObject tile = GetTile(coords);
-
-        Assert.IsNotNull(tile, "Tile is null. Can't get it entity of type.");
-
-        return GetTileID(coords) == entityID;
-    }
-    #endregion
-
-    #region Tiles Getter Methods
-    private string GetTileID(Vector2Int coords)
-    {
-        GameObject tile = GetTile(coords);
-
-        if (tile != null && tile.TryGetComponent(out Entity entity))
+        private bool DoTileFillConditions(Vector3 worldPosition, Vector2Int tileCoords, TileFlag condition, string entityID, bool logBuildError = false)
         {
-            return entity.EntityID;
-        }
-        else
-        {
-            throw new System.NotSupportedException("Can't get ID because the tile is null or has not entity component on it.");
-        }
-    }
-    #endregion
-
-    #region Fill Conditions Methods
-    public bool DoTilesFillConditions(Vector3 worldPosition, Vector2Int size, TileFlag condition, bool logBuildError = false)
-        => DoTilesFillConditions(worldPosition, size, condition, string.Empty, logBuildError);
-
-    public bool DoTilesFillConditions(Vector3 worldPosition, Vector2Int size, TileFlag condition, string entityID, bool logBuildError = false)
-    {
-        Vector2Int coords = WorldToCoords(worldPosition);
-        Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, size);
-
-        for (int x = 0; x < size.x; x++)
-        {
-            for (int y = 0; y < size.y; y++)
+            if (condition.HasFlag(TileFlag.Free))
             {
-                Vector2Int coordsOffset = new Vector2Int(x, y);
-                Vector2Int tileCoords = uncenteredCoords + coordsOffset;
-
-                bool fillConditions = DoTileFillConditions(worldPosition, tileCoords, condition, entityID, logBuildError);
-
-                //Debug.DrawRay(CoordsToWorld(tileCoords), Vector3.up * 5, fillConditions ? Color.green : Color.red, 3f);
-
-                if (!fillConditions)
+                if (!IsTileFree(tileCoords))
+                {
+                    if (logBuildError) UIMessagesLogger.Instance.LogError("Can't on non-empty tile.");
                     return false;
+                }
+            }
+
+            if (condition.HasFlag(TileFlag.Visible))
+            {
+                Assert.IsNotNull(FOWManager.Instance, "FOWManager missing");
+
+                Vector3 tileWorldPosition = CoordsToWorld(tileCoords);
+
+                Debug.DrawRay(tileWorldPosition, Vector3.up * 3f, Color.magenta, 1f);
+
+                if (!IsTileVisible(tileWorldPosition))
+                {
+                    if (logBuildError) UIMessagesLogger.Instance.LogError("Can't on non-visible tile.");
+                    return false;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(entityID))
+            {
+                if (GetTile(tileCoords) != null && !DoTileContainsEntityOfID(tileCoords, entityID))
+                {
+                    if (logBuildError) UIMessagesLogger.Instance.LogError(string.Format("Can't build on {0} building.", GetTileID(tileCoords)));
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        #endregion
+
+        #region Get Tiles Methods
+        public GameObject GetTile(Vector2Int coords)
+        {
+            if (_tiles.ContainsKey(coords))
+            {
+                return _tiles[coords];
+            }
+
+            return null;
+        }
+
+        public GameObject GetTile(Vector3 worldPosition)
+            => GetTile(WorldToCoords(worldPosition));
+
+        public bool DoTilesAreNeightboor(Vector2Int coordsOne, Vector2Int coordsTwo)
+        {
+            if (coordsOne.x + 1 == coordsTwo.x) // coordsTwo at EAST of coordsOne
+                return true;
+            else if (coordsOne.x - 1 == coordsTwo.x) // coordsTwo at WEST of coordsOne
+                return true;
+            else if (coordsOne.y + 1 == coordsTwo.y) // coordsTwo at NORTH of coordsOne
+                return true;
+            else if (coordsOne.y - 1 == coordsTwo.y) // coordsTwo at SOUTH of coordsOne
+                return true;
+            else
+                return false;
+        }
+        #endregion
+
+        #region Building Chain Methods
+        public BuildingChainOrientation GetBuildingChainOrientation(Vector3 position, string[] buildingChainIDs) => GetBuildingChainOrientation(WorldToCoords(position), buildingChainIDs);
+
+        public BuildingChainOrientation GetBuildingChainOrientation(Vector2Int coords, string[] buildingChainIDs)
+        {
+            Vector2Int northCoords = GetNorthCoords(coords);
+            Vector2Int southCoords = GetSouthCoords(coords);
+            Vector2Int eastCoords = GetEastCoords(coords);
+            Vector2Int westCoords = GetWestCoords(coords);
+
+            bool hasNorthBuilding = GetTile(northCoords) != null && DoTileContainsEntityOfID(northCoords, buildingChainIDs);
+            bool hasSouthBuilding = GetTile(southCoords) != null && DoTileContainsEntityOfID(southCoords, buildingChainIDs);
+            bool hasEastBuilding = GetTile(eastCoords) != null && DoTileContainsEntityOfID(eastCoords, buildingChainIDs);
+            bool hasWestBuilding = GetTile(westCoords) != null && DoTileContainsEntityOfID(westCoords, buildingChainIDs);
+
+            if (hasNorthBuilding && hasSouthBuilding && !hasEastBuilding && !hasWestBuilding) // N/S buildings only
+            {
+                return BuildingChainOrientation.NorthToSouth;
+            }
+            else if (!hasNorthBuilding && !hasSouthBuilding && hasEastBuilding && hasWestBuilding) // E/W buildings only
+            {
+                return BuildingChainOrientation.WestToEast;
+            }
+            else
+            {
+                return BuildingChainOrientation.NotAWallOrWallJoint;
             }
         }
 
-        return true;
-    }
+        #endregion
 
-    private bool DoTileFillConditions(Vector3 worldPosition, Vector2Int tileCoords, TileFlag condition, bool logBuildError = false)
-        => DoTileFillConditions(worldPosition, tileCoords, condition, string.Empty, logBuildError);
+        #region Neightboor
+        public Vector2Int GetNorthCoords(Vector2Int coords) => new Vector2Int(coords.x, coords.y + 1);
 
-    private bool DoTileFillConditions(Vector3 worldPosition, Vector2Int tileCoords, TileFlag condition, string entityID, bool logBuildError = false)
-    {
-        if (condition.HasFlag(TileFlag.Free))
+        public Vector2Int GetSouthCoords(Vector2Int coords) => new Vector2Int(coords.x, coords.y - 1);
+
+        public Vector2Int GetEastCoords(Vector2Int coords) => new Vector2Int(coords.x + 1, coords.y);
+
+        public Vector2Int GetWestCoords(Vector2Int coords) => new Vector2Int(coords.x - 1, coords.y);
+        #endregion
+
+        #region Set Tiles Methods    
+        public bool TrySetTile(GameObject gameObject, Vector2Int buildingSize, TileFlag condition)
+            => TrySetTile(gameObject, buildingSize, condition, string.Empty);
+
+        public bool TrySetTile(GameObject gameObject, Vector2Int buildingSize, TileFlag condition, string entityID)
         {
-            if (!IsTileFree(tileCoords))
+            Vector3 worldPosition = gameObject.transform.position;
+
+            bool tilesFree = DoTilesFillConditions(worldPosition, buildingSize, condition, entityID);
+
+            if (tilesFree)
             {
-                if (logBuildError) UIMessagesLogger.Instance.LogError("Can't on non-empty tile.");
+                SetTile(gameObject, buildingSize);
+                return true;
+            }
+            else
+            {
+                Debug.LogFormat(debugLogHeader + "Can't set tile on non empty cells.");
                 return false;
             }
         }
 
-        if (condition.HasFlag(TileFlag.Visible))
+        public void SetTile(GameObject gameObject, Vector2Int buildingSize, bool canBuildOnNonEmptyCell = false)
+            => SetTile(gameObject, buildingSize, WorldToCoords(gameObject.transform.position), canBuildOnNonEmptyCell);
+
+        public void SetTile(GameObject gameObject, Vector2Int buildingSize, Vector2Int coords, bool canBuildOnNonEmptyCell = false)
         {
-            Assert.IsNotNull(FOWManager.Instance, "FOWManager missing");
+            Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
 
-            Vector3 tileWorldPosition = CoordsToWorld(tileCoords);
-
-            Debug.DrawRay(tileWorldPosition, Vector3.up * 3f, Color.magenta, 1f);
-
-            if (!IsTileVisible(tileWorldPosition))
+            for (int x = 0; x < buildingSize.x; x++)
             {
-                if (logBuildError) UIMessagesLogger.Instance.LogError("Can't on non-visible tile.");
+                for (int y = 0; y < buildingSize.y; y++)
+                {
+                    Vector2Int coordsOffset = new Vector2Int(x, y);
+                    Vector2Int tileCoords = uncenteredCoords + coordsOffset;
+
+                    bool setTileSuccesful = TrySetTile(gameObject, tileCoords, canBuildOnNonEmptyCell);
+
+                    Assert.IsTrue(setTileSuccesful, "At this code section, 'setTileSuccessful' should always be true.");
+                }
+            }
+        }
+
+        private bool TrySetTile(GameObject gameObject, Vector2Int coords, bool canBuildOnNonEmptyCell = false)
+        {
+            if (_tiles.ContainsKey(coords) == false)
+            {
+                Debug.LogError("Can't set GameObject on Tile " + coords + ". It doesn't exist!");
                 return false;
             }
-        }
 
-        if (!string.IsNullOrEmpty(entityID))
-        {
-            if (GetTile(tileCoords) != null && !DoTileContainsEntityOfID(tileCoords, entityID))
+            if (!canBuildOnNonEmptyCell && _tiles[coords] != null)
             {
-                if (logBuildError) UIMessagesLogger.Instance.LogError(string.Format("Can't build on {0} building.", GetTileID(tileCoords)));
+                UIMessagesLogger.Instance.LogError("You can't build on non-empty cell.");
                 return false;
             }
-        }
 
-        return true;
-    }
-    #endregion
+            _tiles[coords] = gameObject;
+            OnTileTerrainChanged?.Invoke(coords, gameObject);
 
-    #region Get Tiles Methods
-    public GameObject GetTile(Vector2Int coords)
-    {
-        if (_tiles.ContainsKey(coords))
-        {
-            return _tiles[coords];
-        }
-
-        return null;
-    }
-
-    public GameObject GetTile(Vector3 worldPosition)
-        => GetTile(WorldToCoords(worldPosition));
-
-    public bool DoTilesAreNeightboor(Vector2Int coordsOne, Vector2Int coordsTwo)
-    {
-        if (coordsOne.x + 1 == coordsTwo.x) // coordsTwo at EAST of coordsOne
-            return true;
-        else if (coordsOne.x - 1 == coordsTwo.x) // coordsTwo at WEST of coordsOne
-            return true;
-        else if (coordsOne.y + 1 == coordsTwo.y) // coordsTwo at NORTH of coordsOne
-            return true;
-        else if (coordsOne.y - 1 == coordsTwo.y) // coordsTwo at SOUTH of coordsOne
-            return true;
-        else
-            return false;
-    }
-    #endregion
-
-    #region Set Tiles Methods    
-    public bool TrySetTile(GameObject gameObject, Vector2Int buildingSize, TileFlag condition)
-        => TrySetTile(gameObject, buildingSize, condition, string.Empty);
-
-    public bool TrySetTile(GameObject gameObject, Vector2Int buildingSize, TileFlag condition, string entityID)
-    {
-        Vector3 worldPosition = gameObject.transform.position;
-
-        bool tilesFree = DoTilesFillConditions(worldPosition, buildingSize, condition, entityID);
-
-        if (tilesFree)
-        {
-            SetTile(gameObject, buildingSize);
             return true;
         }
-        else
+
+        private void ResetAllTiles()
         {
-            Debug.LogFormat(debugLogHeader + "Can't set tile on non empty cells.");
-            return false;
-        }
-    }
+            int midCellCount = GameManager.Instance.Grid.CellCount / 2;
+            int cellCount = GameManager.Instance.Grid.CellCount;
 
-    public void SetTile(GameObject gameObject, Vector2Int buildingSize, bool canBuildOnNonEmptyCell = false)
-        => SetTile(gameObject, buildingSize, WorldToCoords(gameObject.transform.position), canBuildOnNonEmptyCell);
-
-    public void SetTile(GameObject gameObject, Vector2Int buildingSize, Vector2Int coords, bool canBuildOnNonEmptyCell = false)
-    {
-        Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, buildingSize);
-
-        for (int x = 0; x < buildingSize.x; x++)
-        {
-            for (int y = 0; y < buildingSize.y; y++)
+            for (int x = 0; x <= cellCount; x++)
             {
-                Vector2Int coordsOffset = new Vector2Int(x, y);
-                Vector2Int tileCoords = uncenteredCoords + coordsOffset;
-
-                bool setTileSuccesful = TrySetTile(gameObject, tileCoords, canBuildOnNonEmptyCell);
-
-                Assert.IsTrue(setTileSuccesful, "At this code section, 'setTileSuccessful' should always be true.");
+                for (int y = 0; y <= cellCount; y++)
+                {
+                    _tiles.Add(new Vector2Int(x, y), null);
+                }
             }
         }
-    }
+        #endregion
 
-    private bool TrySetTile(GameObject gameObject, Vector2Int coords, bool canBuildOnNonEmptyCell = false)
-    {
-        if (_tiles.ContainsKey(coords) == false)
+        #region Conversion methods
+        private Vector2Int CoordsToUncenteredCoords(Vector2Int centeredCoords, Vector2Int size)
         {
-            Debug.LogError("Can't set GameObject on Tile " + coords + ". It doesn't exist!");
-            return false;
+            if (size.x % 2 != 0) size.x--;
+            if (size.y % 2 != 0) size.y--;
+
+            Vector2Int uncenteredCoords = centeredCoords - size / 2;
+
+            return uncenteredCoords;
         }
 
-        if (!canBuildOnNonEmptyCell && _tiles[coords] != null)
+        public Vector2Int WorldToCoords(Vector3 position)
+            => GameManager.Instance.Grid.WorldToCoords(position);
+
+        public Vector3 CoordsToWorld(Vector2Int coords)
+            => GameManager.Instance.Grid.CoordsToWorldPosition(coords);
+        #endregion
+
+        #region Path Finding methods
+        public Vector2Int[] GetPath(Vector3 from, Vector3 to) => GetPath(WorldToCoords(from), WorldToCoords(to));
+
+        public Vector2Int[] GetPath(Vector2Int from, Vector2Int to)
         {
-            UIMessagesLogger.Instance.LogError("You can't build on non-empty cell.");
-            return false;
-        }
+            Vector2 from2Right = Vector2.right - from;
+            Vector2Int from2To = to - from;
 
-        _tiles[coords] = gameObject;
-        OnTileTerrainChanged?.Invoke(coords, gameObject);
+            // calculate angle
+            float angle = Vector2.SignedAngle(from2Right, from2To); // in degrees
+            angle *= Mathf.Deg2Rad; // in rads
 
-        return true;
-    }
+            // than, get position from angle
+            float deltaX = Mathf.Cos(angle) * Mathf.Abs(from2To.x);
+            float deltaY = Mathf.Sin(angle) * Mathf.Abs(from2To.y);
 
-    private void ResetAllTiles()
-    {
-        int midCellCount = GameManager.Instance.Grid.CellCount / 2;
-        int cellCount = GameManager.Instance.Grid.CellCount;
+            Vector2Int pathDirection;
+            int pathCount;
 
-        for (int x = 0; x <= cellCount; x++)
-        {
-            for (int y = 0; y <= cellCount; y++)
+            // the direction of path is X ?
+            if (Mathf.Abs(deltaX) >= Mathf.Abs(deltaY))
             {
-                _tiles.Add(new Vector2Int(x, y), null);
+                pathDirection = Vector2Int.right * (int)Mathf.Sign(-deltaX);
+                pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.x));
             }
+            else
+            {
+                pathDirection = Vector2Int.up * (int)Mathf.Sign(-deltaY);
+                pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.y));
+            }
+
+            // we add one, to include current start
+            pathCount++;
+
+            Assert.IsTrue(pathCount >= 0, "TileSystem : Path count should greater or equals to '0'!");
+
+            // DEBUGS
+            Debug.DrawRay(CoordsToWorld(to), Vector3.up * 10, Color.red);
+            Debug.DrawRay(CoordsToWorld(from), Vector2.right * 5);
+            Debug.DrawLine(CoordsToWorld(from), CoordsToWorld(to));
+
+            // calculate output
+            Vector2Int[] o = new Vector2Int[pathCount];
+
+            for (int i = 0; i < pathCount; i++)
+            {
+                o[i] = from + pathDirection * i;
+                Debug.DrawRay(o[i].ToXZ(), Vector3.up * 10);
+            }
+
+            return o;
         }
+
+        #endregion
+        #endregion
+        #endregion
     }
-    #endregion
-
-    #region Conversion methods
-    private Vector2Int CoordsToUncenteredCoords(Vector2Int centeredCoords, Vector2Int size)
-    {
-        if (size.x % 2 != 0) size.x--;
-        if (size.y % 2 != 0) size.y--;
-
-        Vector2Int uncenteredCoords = centeredCoords - size / 2;
-
-        return uncenteredCoords;
-    }
-
-    public Vector2Int WorldToCoords(Vector3 position)
-        => GameManager.Instance.Grid.WorldToCoords(position);
-
-    public Vector3 CoordsToWorld(Vector2Int coords)
-        => GameManager.Instance.Grid.CoordsToWorldPosition(coords);
-    #endregion
-
-    #region Path Finding methods
-    public Vector2Int[] GetPath(Vector3 from, Vector3 to) => GetPath(WorldToCoords(from), WorldToCoords(to));
-
-    public Vector2Int[] GetPath(Vector2Int from, Vector2Int to)
-    {
-        Vector2 from2Right = Vector2.right - from;
-        Vector2Int from2To = to - from;
-
-        // calculate angle
-        float angle = Vector2.SignedAngle(from2Right, from2To); // in degrees
-        angle *= Mathf.Deg2Rad; // in rads
-
-        // than, get position from angle
-        float deltaX = Mathf.Cos(angle) * Mathf.Abs(from2To.x);
-        float deltaY = Mathf.Sin(angle) * Mathf.Abs(from2To.y);
-
-        Vector2Int pathDirection;
-        int pathCount;
-
-        // the direction of path is X ?
-        if (Mathf.Abs(deltaX) >= Mathf.Abs(deltaY))
-        {
-            pathDirection = Vector2Int.right * (int)Mathf.Sign(-deltaX);
-            pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.x));
-        }
-        else
-        {
-            pathDirection = Vector2Int.up * (int)Mathf.Sign(-deltaY);
-            pathCount = Mathf.RoundToInt(Mathf.Abs(from2To.y));
-        }
-
-        // we add one, to include current start
-        pathCount++;
-
-        Assert.IsTrue(pathCount >= 0, "TileSystem : Path count should greater or equals to '0'!");
-
-        // DEBUGS
-        Debug.DrawRay(CoordsToWorld(to), Vector3.up * 10, Color.red);
-        Debug.DrawRay(CoordsToWorld(from), Vector2.right * 5);
-        Debug.DrawLine(CoordsToWorld(from), CoordsToWorld(to));
-
-        // calculate output
-        Vector2Int[] o = new Vector2Int[pathCount];
-
-        for (int i = 0; i < pathCount; i++)
-        {
-            o[i] = from + pathDirection * i;
-            Debug.DrawRay(o[i].ToXZ(), Vector3.up * 10);
-        }
-
-        return o;
-    }
-
-    #endregion
-    #endregion
 }

@@ -1,15 +1,13 @@
-﻿using Game.Appearance;
-using Game.Entities;
-using Lortedo.Utilities.Pattern;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.EventSystems;
-
-namespace Game.ConstructionSystem
+﻿namespace Game.ConstructionSystem
 {
+    using Game.Appearance;
+    using Game.Entities;
+    using Lortedo.Utilities.Pattern;
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEngine;
+    using Game.TileSystem;
+
     /// <summary>
     /// This state is managed by GameManager. 
     /// It manage building that can be contrustec more than once per construct like walls.
@@ -268,7 +266,7 @@ namespace Game.ConstructionSystem
             if (_previewBuildings.Count == 0)
                 AddConstructionBuilding();
 
-            _previewBuildings[0].SetPosition(position);            
+            _previewBuildings[0].SetPosition(position);
         }
 
         private void ManageBuildingColorOverwrite()
