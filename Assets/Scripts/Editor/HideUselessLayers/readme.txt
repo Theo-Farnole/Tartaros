@@ -1,0 +1,1 @@
+We should set this folder inside Utilities. But for performance reasons, it's better to have only one folder named "Editor".
