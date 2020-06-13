@@ -1,4 +1,5 @@
-﻿using Game.Entities;
+﻿using Game.Appearance;
+using Game.Entities;
 using Lortedo.Utilities.Pattern;
 using System.Collections;
 using System.Collections.Generic;

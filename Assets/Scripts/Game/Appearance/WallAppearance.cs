@@ -1,69 +1,67 @@
-﻿using Game.Entities;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-/// <summary>
-/// Change model if the game object is a wall joint.
-/// </summary>
-[RequireComponent(typeof(WallChainDetector))]
-public class WallAppearance : MonoBehaviour
+﻿namespace Game.Appearance.Walls
 {
-    #region Fields
-    private const string debugLogHeader = "Wall Apperance : ";
+    using UnityEngine;
 
-    [Header("OBJECTS LINKING")]
-    [SerializeField] private GameObject _jointModel;
-    [SerializeField] private GameObject _wallModel;
-
-    private WallChainDetector _wallChainDetector;
-    #endregion
-
-    #region Properties
-    public WallChainDetector WallChainDetector
+    /// <summary>
+    /// Change model if the game object is a wall joint.
+    /// </summary>
+    [RequireComponent(typeof(WallChainDetector))]
+    public class WallAppearance : MonoBehaviour
     {
-        get
+        #region Fields
+        private const string debugLogHeader = "Wall Apperance : ";
+
+        [Header("OBJECTS LINKING")]
+        [SerializeField] private GameObject _jointModel;
+        [SerializeField] private GameObject _wallModel;
+
+        private WallChainDetector _wallChainDetector;
+        #endregion
+
+        #region Properties
+        public WallChainDetector WallChainDetector
         {
-            if (_wallChainDetector == null)
-                _wallChainDetector = GetComponent<WallChainDetector>();
+            get
+            {
+                if (_wallChainDetector == null)
+                    _wallChainDetector = GetComponent<WallChainDetector>();
 
-            return _wallChainDetector;
+                return _wallChainDetector;
+            }
         }
-    }
-    #endregion
+        #endregion
 
-    #region Methods
-    #region MonoBehaviour Callbacks
-    void OnEnable()
-    {
-        WallChainDetector.OnWallJointChanged += WallChainDetector_OnWallJointChanged;
+        #region Methods
+        #region MonoBehaviour Callbacks
+        void OnEnable()
+        {
+            WallChainDetector.OnWallJointChanged += WallChainDetector_OnWallJointChanged;
 
-        ForceUpdateAppearance();
-    }
+            ForceUpdateAppearance();
+        }
 
-    void OnDisable()
-    {
-        WallChainDetector.OnWallJointChanged -= WallChainDetector_OnWallJointChanged;
-    }
-    #endregion
+        void OnDisable()
+        {
+            WallChainDetector.OnWallJointChanged -= WallChainDetector_OnWallJointChanged;
+        }
+        #endregion
 
-    #region EventsHandlers
-    private void WallChainDetector_OnWallJointChanged(bool isWallJoint)
-    {
-        _jointModel.SetActive(isWallJoint);
-        _wallModel.SetActive(!isWallJoint);
-    }
-    #endregion
+        #region EventsHandlers
+        private void WallChainDetector_OnWallJointChanged(bool isWallJoint)
+        {
+            _jointModel.SetActive(isWallJoint);
+            _wallModel.SetActive(!isWallJoint);
+        }
+        #endregion
 
-    #region Private Methods
-    private void ForceUpdateAppearance()
-    {
-        bool isWallJoint = WallChainDetector.Cached_IsWallJoint;
-        _jointModel.SetActive(isWallJoint);
-        _wallModel.SetActive(!isWallJoint);
+        #region Private Methods
+        private void ForceUpdateAppearance()
+        {
+            bool isWallJoint = WallChainDetector.Cached_IsWallJoint;
+            _jointModel.SetActive(isWallJoint);
+            _wallModel.SetActive(!isWallJoint);
+        }
+        #endregion
+        #endregion
     }
-    #endregion
-    #endregion
 }

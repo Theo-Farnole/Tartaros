@@ -1,160 +1,161 @@
-using Game.Entities;
-using Game.Inputs;
-using Game.Selection;
-using Lortedo.Utilities.Inspector;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.EventSystems;
-
-/// <summary>
-/// Change cursor aspect in fonction of mosue over game object.
-/// </summary>
-public class CursorAspectManager : MonoBehaviour
+namespace Game.Appearance.Cursor
 {
-    public enum CursorState
+    using Game.Entities;
+    using Game.Inputs;
+    using Game.Selection;
+    using System;
+    using UnityEngine;
+    using UnityEngine.EventSystems;
+
+    /// <summary>
+    /// Change cursor aspect in fonction of mosue over game object.
+    /// </summary>
+    public class CursorAspectManager : MonoBehaviour
     {
-        Default = 0,
-        OverAlly = 1, // over entity without selection
-        OrderMove = 2,
-        OrderAttack = 3,
-        OverEnemy = 4,
-        OverAlly_WithSelection = 5
-    }
-
-    #region Fields
-    [SerializeField] CursorMode _cursorMode = CursorMode.Auto;
-    [SerializeField] private Texture2D[] _cursorTextures;
-    [SerializeField] private Vector2 _cursorOffset;
-
-    private CursorState _cursorState = CursorState.Default;
-
-    // cache variable
-    private Camera _mainCamera;
-    private int _layerMaskTerrain;
-    private int _layerMaskEntity;
-    #endregion
-
-    #region Properties
-    public CursorState CurrentCursorState { get => _cursorState;
-        private set
+        public enum CursorState
         {
-            var oldValue = _cursorState;
-            _cursorState = value;
+            Default = 0,
+            OverAlly = 1, // over entity without selection
+            OrderMove = 2,
+            OrderAttack = 3,
+            OverEnemy = 4,
+            OverAlly_WithSelection = 5
+        }
 
-            if (oldValue != _cursorState)
+        #region Fields
+        [SerializeField] CursorMode _cursorMode = CursorMode.Auto;
+        [SerializeField] private Texture2D[] _cursorTextures;
+        [SerializeField] private Vector2 _cursorOffset;
+
+        private CursorState _cursorState = CursorState.Default;
+
+        // cache variable
+        private Camera _mainCamera;
+        private int _layerMaskTerrain;
+        private int _layerMaskEntity;
+        #endregion
+
+        #region Properties
+        public CursorState CurrentCursorState
+        {
+            get => _cursorState;
+            private set
             {
-                SetCursorSprite();
+                var oldValue = _cursorState;
+                _cursorState = value;
+
+                if (oldValue != _cursorState)
+                {
+                    SetCursorSprite();
+                }
             }
         }
-    }
-    #endregion
+        #endregion
 
-    #region Methods
-    #region MonoBehaviour Callbacks
-    void Start()
-    {
-        _mainCamera = Camera.main;
-    }
-
-    void Update()
-    {
-        UpdateCursorState();        
-    }
-
-    void OnEnable()
-    {
-        SetCursorSprite();    
-    }
-
-    void OnDisable()
-    {
-        SetCursorSpriteToDefault();
-    }
-
-    void OnMouseExit()
-    {
-        SetCursorSpriteToDefault();
-    }
-
-    void OnValidate()
-    {
-        Array.Resize(ref _cursorTextures, Enum.GetValues(typeof(CursorState)).Length);
-    }
-    #endregion
-
-    void UpdateCursorState()
-    {        
-        if (SecondClickListener.Instance.ListenToClick)
+        #region Methods
+        #region MonoBehaviour Callbacks
+        void Start()
         {
-            CurrentCursorState = SecondClickListener.Instance.CursorOverride;
-            return;
+            _mainCamera = Camera.main;
         }
 
-        // is over UI
-        if (EventSystem.current.IsPointerOverGameObject())
+        void Update()
         {
-            SetCursorSprite(CursorState.Default);
+            UpdateCursorState();
         }
 
-        if (MouseInput.IsMouseOver(out RaycastHit hit, MouseLayer.Entity))
+        void OnEnable()
         {
-            SetCursorState_OverEntity(hit.transform.GetComponent<Entity>());
+            SetCursorSprite();
         }
-        else if (MouseInput.IsMouseOver(out hit, MouseLayer.Terrain))
-        {
-            SetCursorState_OverTerrain();
-        }
-        else
-        {
-            CurrentCursorState = CursorState.Default;
-        }
-    }
 
-    private void SetCursorState_OverTerrain()
-    {
-        if (SelectionManager.Instance.HasSelection)
-            CurrentCursorState = CursorState.OrderMove;
-        else
-            CurrentCursorState = CursorState.Default;
-    }
-
-    private void SetCursorState_OverEntity(Entity clickedEntity)
-    {        
-        // order cursor
-        if (SelectionManager.Instance.HasSelection)
+        void OnDisable()
         {
-            if (clickedEntity.Team == Team.Player)
-                CurrentCursorState = CursorState.OverAlly_WithSelection;
-            else if (clickedEntity.Team != Team.Player)
-                CurrentCursorState = CursorState.OrderAttack;
+            SetCursorSpriteToDefault();
         }
-        // over cursor
-        else
-        {
-            if (clickedEntity.Team == Team.Player)
-                CurrentCursorState = CursorState.OverAlly;
 
+        void OnMouseExit()
+        {
+            SetCursorSpriteToDefault();
+        }
+
+        void OnValidate()
+        {
+            Array.Resize(ref _cursorTextures, Enum.GetValues(typeof(CursorState)).Length);
+        }
+        #endregion
+
+        void UpdateCursorState()
+        {
+            if (SecondClickListener.Instance.ListenToClick)
+            {
+                CurrentCursorState = SecondClickListener.Instance.CursorOverride;
+                return;
+            }
+
+            // is over UI
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                SetCursorSprite(CursorState.Default);
+            }
+
+            if (MouseInput.IsMouseOver(out RaycastHit hit, MouseLayer.Entity))
+            {
+                SetCursorState_OverEntity(hit.transform.GetComponent<Entity>());
+            }
+            else if (MouseInput.IsMouseOver(out hit, MouseLayer.Terrain))
+            {
+                SetCursorState_OverTerrain();
+            }
             else
-                CurrentCursorState = CursorState.OverEnemy;
+            {
+                CurrentCursorState = CursorState.Default;
+            }
         }
-    }
 
-    private void SetCursorSprite()
-    {
-        Cursor.SetCursor(_cursorTextures[(int)CurrentCursorState], _cursorOffset, _cursorMode);
-    }
+        private void SetCursorState_OverTerrain()
+        {
+            if (SelectionManager.Instance.HasSelection)
+                CurrentCursorState = CursorState.OrderMove;
+            else
+                CurrentCursorState = CursorState.Default;
+        }
 
-    private void SetCursorSprite(CursorState cursorState)
-    {
-        Cursor.SetCursor(_cursorTextures[(int)cursorState], _cursorOffset, _cursorMode);
-    }
+        private void SetCursorState_OverEntity(Entity clickedEntity)
+        {
+            // order cursor
+            if (SelectionManager.Instance.HasSelection)
+            {
+                if (clickedEntity.Team == Team.Player)
+                    CurrentCursorState = CursorState.OverAlly_WithSelection;
+                else if (clickedEntity.Team != Team.Player)
+                    CurrentCursorState = CursorState.OrderAttack;
+            }
+            // over cursor
+            else
+            {
+                if (clickedEntity.Team == Team.Player)
+                    CurrentCursorState = CursorState.OverAlly;
 
-    private void SetCursorSpriteToDefault()
-    {
-        Cursor.SetCursor(null, Vector2.zero, _cursorMode);
+                else
+                    CurrentCursorState = CursorState.OverEnemy;
+            }
+        }
+
+        private void SetCursorSprite()
+        {
+            Cursor.SetCursor(_cursorTextures[(int)CurrentCursorState], _cursorOffset, _cursorMode);
+        }
+
+        private void SetCursorSprite(CursorState cursorState)
+        {
+            Cursor.SetCursor(_cursorTextures[(int)cursorState], _cursorOffset, _cursorMode);
+        }
+
+        private void SetCursorSpriteToDefault()
+        {
+            Cursor.SetCursor(null, Vector2.zero, _cursorMode);
+        }
+        #endregion
     }
-    #endregion
 }
