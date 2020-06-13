@@ -29,7 +29,7 @@ public class HoverPopupDataForceUpdateContent : IPreprocessBuildWithReport
         ForceUpdateHoverPopupData();
     }
 
-    [MenuItem("Tartaros/Force update HoverPopupData", priority = 2)]
+    [MenuItem("Tartaros/Advanced - DON'T TOUCH/Force update HoverPopupData", priority = 2)]
     private static void ForceUpdateHoverPopupData()
     {
         string[] guids = AssetDatabase.FindAssets("t:" + nameof(HoverPopupData));
