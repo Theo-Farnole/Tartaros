@@ -55,7 +55,7 @@ MonoBehaviour:
   _populationUse: 5
   _tileSize: {x: 1, y: 1}
   _radius: 0.5
-  _hoverPopupData: {fileID: 11400000, guid: 4d613de1ed0e4694590c2a31afd07026, type: 2}
+  _hoverPopupData: {fileID: 11400000, guid: 4a0f79037b3cc19418ee65edb9025874, type: 2}
   _isInvincible: 1
   _hp: 0
   _spawningCost:
