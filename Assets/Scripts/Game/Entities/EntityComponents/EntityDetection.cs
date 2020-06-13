@@ -143,7 +143,12 @@ namespace Game.Entities
         /// </summary>
         public Entity[] GetAlliesInRadius(float radius, out int arrayLength)
         {
-            int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);            
+            int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);
+
+            // we remove entity itself from colliders
+            collidersCount--;
+
+            arrayLength = collidersCount;
 
             for (int i = 0; i < collidersCount; i++)
             {
@@ -151,10 +156,18 @@ namespace Game.Entities
 
                 // PERFORMANCE NOTE:
                 // We are calling GetComponent for each collider.
-                _overlapSphereBufferEntities[i] = _overlapSphereBuffer[i].GetComponent<Entity>();
+                if (_overlapSphereBuffer[i].TryGetComponent(out Entity entity))
+                {
+                    if (entity != Entity)
+                    {
+                        _overlapSphereBufferEntities[i] = entity;
+                    }
+                    else
+                    {
+                        i--;
+                    }
+                }
             }
-
-            arrayLength = collidersCount;
 
             return _overlapSphereBufferEntities;
         }
