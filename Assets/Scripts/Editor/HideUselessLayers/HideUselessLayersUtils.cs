@@ -9,8 +9,8 @@ public static class ForceLayersWindow
 {
     private static readonly int _wantedVisibleMask = ~LayerMask.GetMask("FogOfWar", "UI", "MiniMap");
 
-    private const string DIALOG_POPUP_TITLE = "TARTAROS - Déactiver les layers inutiles";
-    private const string DIALOG_POPUP_MESSAGE = "Est-ce que tu veux cacher des layers qui pourrait être te gêner (ça changera juste ta vue, rien au projet). Par exemple, actuellement l'UI qui s'affiche dans la fenêtre scène alors que tu en as pas besoin.";
+    private const string DIALOG_POPUP_TITLE = "Le super popup de Tartaros";
+    private const string DIALOG_POPUP_MESSAGE = "C'est un peu long a expliquer, mais clique sur '" + DIALOG_POPUP_OK + "' stp.\nBisous, Théo.";
     private const string DIALOG_POPUP_OK = "Avec plaisir!";
     private const string DIALOG_POPUP_CANCEL = "Non merci, mais t'es le boss";
 
@@ -27,15 +27,17 @@ public static class ForceLayersWindow
     {
         if (DISPLAY_DIALOG_POPUP_ONSTART)
         {
-            DisplayPopup();
+            if (Tools.visibleLayers != _wantedVisibleMask)
+            {
+                DisplayPopup();
+            }
         }
     }
 
+    [MenuItem("Tartaros/Advanced - DON'T TOUCH/Display 'useless less' popup")]
     private static void DisplayPopup()
     {
-        // don't display popup if visible layers are the same of layerMask
-        if (Tools.visibleLayers == _wantedVisibleMask)
-            return;
+
 
         bool setVisibleLayers = EditorUtility.DisplayDialog(DIALOG_POPUP_TITLE, DIALOG_POPUP_MESSAGE, DIALOG_POPUP_OK, DIALOG_POPUP_CANCEL);
 
