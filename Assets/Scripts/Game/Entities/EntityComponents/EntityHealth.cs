@@ -9,7 +9,7 @@
     /// <summary>
     /// Manage health of Entity.
     /// </summary>
-    public class EntityHealth : EntityComponent, IPooledObject
+    public class EntityHealth : AbstractEntityComponent, IPooledObject
     {
         #region Fields
         [Header("Health Slider Behaviour")]

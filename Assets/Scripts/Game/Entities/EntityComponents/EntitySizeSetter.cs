@@ -4,7 +4,7 @@
     using UnityEngine.AI;
     using DG.Tweening;
 
-    public class EntitySizeSetter : EntityComponent
+    public class EntitySizeSetter : AbstractEntityComponent
     {
         private enum Size
         {

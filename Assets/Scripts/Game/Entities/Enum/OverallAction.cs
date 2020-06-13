@@ -1,9 +1,9 @@
-﻿using Game.Inputs;
-using Game.Selection;
-using System;
-
-namespace Game.Entities
+﻿namespace Game.Entities
 {
+    using Game.Inputs;
+    using Game.Selection;
+    using System;
+
     public enum OverallAction
     {
         Stop = 0,

@@ -9,7 +9,7 @@
     using UnityEngine.Assertions;
 
     [RequireComponent(typeof(Entity))]
-    public class EntityNavMeshCollisionToggler : EntityComponent, IPooledObject
+    public class EntityNavMeshCollisionToggler : AbstractEntityComponent, IPooledObject
     {
         #region Fields
         private const string header = "Update Mesh on Obstacle Update";

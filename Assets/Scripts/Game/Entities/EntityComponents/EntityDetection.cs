@@ -15,7 +15,7 @@ namespace Game.Entities
     /// <summary>
     /// This script manage the detection of nearby entities.
     /// </summary>
-    public partial class EntityDetection : EntityComponent
+    public partial class EntityDetection : AbstractEntityComponent
     {
         #region Fields
         private const string debugLogHeader = "Entity Detection : ";
@@ -216,7 +216,7 @@ namespace Game.Entities
     }
 
 #if UNITY_EDITOR
-    public partial class EntityDetection : EntityComponent
+    public partial class EntityDetection : AbstractEntityComponent
     {
         private void OnDrawGizmosSelected()
         {

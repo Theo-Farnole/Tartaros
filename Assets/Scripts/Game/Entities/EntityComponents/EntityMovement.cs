@@ -8,7 +8,7 @@
     /// <summary>
     /// This script manage the moving of entity.
     /// </summary>
-    public partial class EntityMovement : EntityComponent
+    public partial class EntityMovement : AbstractEntityComponent
     {
         #region Fields
         private const string debugLogHeader = "Entity Movement : ";
@@ -171,7 +171,7 @@
     }
 
 #if UNITY_EDITOR
-    public partial class EntityMovement : EntityComponent
+    public partial class EntityMovement : AbstractEntityComponent
     {
         private void OnDrawGizmos()
         {

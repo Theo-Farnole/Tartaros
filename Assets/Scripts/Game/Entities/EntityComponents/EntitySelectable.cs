@@ -10,7 +10,7 @@ namespace Game.Entities
     /// <summary>
     /// Manage display of selection circle.
     /// </summary>
-    public class EntitySelectable : EntityComponent
+    public class EntitySelectable : AbstractEntityComponent
     {
         #region Fields
         private static int layerMaskTerrain = -1;

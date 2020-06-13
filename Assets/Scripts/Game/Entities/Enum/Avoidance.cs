@@ -1,31 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum Avoidance
+﻿namespace Game.Entities
 {
-    Idle,
-    Move,
-    Fight
-}
+    using UnityEngine;
 
-public static class AvoidanceExtension
-{
-    public static int ToPriority(this Avoidance a)
+    public enum Avoidance
     {
-        switch (a)
+        Idle,
+        Move,
+        Fight
+    }
+
+    public static class AvoidanceExtension
+    {
+        public static int ToPriority(this Avoidance a)
         {
-            case Avoidance.Fight:
-                return 50;
+            switch (a)
+            {
+                case Avoidance.Fight:
+                    return 50;
 
-            case Avoidance.Move:
-                return 30;
+                case Avoidance.Move:
+                    return 30;
 
-            case Avoidance.Idle:
-                return 5;
-            default:
-                Debug.LogErrorFormat("{0} isn't set in AvoidanceExtension.");
-                return 99;
+                case Avoidance.Idle:
+                    return 5;
+                default:
+                    Debug.LogErrorFormat("{0} isn't set in AvoidanceExtension.");
+                    return 99;
+            }
         }
     }
 }

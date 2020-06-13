@@ -10,7 +10,7 @@
 
     public delegate void OnUnitCreated(Entity creator, Entity spawned);
 
-    public partial class EntityUnitSpawner : EntityComponent
+    public partial class EntityUnitSpawner : AbstractEntityComponent
     {
         #region Fields
 
@@ -174,7 +174,7 @@
     }
 
 #if UNITY_EDITOR
-    public partial class EntityUnitSpawner : EntityComponent
+    public partial class EntityUnitSpawner : AbstractEntityComponent
     {
         [SerializeField] private Color _spawnPointColor = Color.cyan;
 

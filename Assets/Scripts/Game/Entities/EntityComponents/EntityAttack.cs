@@ -10,7 +10,7 @@ namespace Game.Entities
     /// <summary>
     /// This script manage the attack (smart classname isn't it ?).
     /// </summary>
-    public class EntityAttack : EntityComponent
+    public class EntityAttack : AbstractEntityComponent
     {
         #region Fields
         private float _attackTime = 0;

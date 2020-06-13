@@ -5,13 +5,11 @@ using UnityEngine.Assertions;
 
 namespace Game.Entities
 {
-    public abstract class EntityComponent : MonoBehaviour
+    public abstract class AbstractEntityComponent : MonoBehaviour
     {
         private Entity _entity = null;
 
-        // REFACTOR NOTE:
-        // Do 'virtual' keyword is useful ?
-        public virtual Entity Entity
+        public Entity Entity
         {
             get
             {
@@ -19,7 +17,7 @@ namespace Game.Entities
                 {
                     _entity = GetComponent<Entity>();
 
-                    Assert.IsNotNull(_entity, "Missing component 'Entity' on entity " + name + ".");
+                    Assert.IsNotNull(_entity, "Missing component 'Entity' on entity '" + name + "'.");
 
                     _entity.RegisterComponent(this);
                 }
@@ -29,6 +27,7 @@ namespace Game.Entities
 
             set
             {
+                // prevent initialization a second time
                 if (_entity != null)
                     return;
 
@@ -36,7 +35,7 @@ namespace Game.Entities
             }
         }
 
-        public T GetCharacterComponent<T>() where T : EntityComponent
-            => Entity.GetCharacterComponent<T>();
+        public T GetCharacterComponent<T>() where T : AbstractEntityComponent => Entity.GetCharacterComponent<T>();
+        public EntityData Data => Entity.Data;
     }
 }

@@ -3,7 +3,7 @@
     using UnityEngine;
     using UnityEngine.Assertions;
 
-    public class EntityMinimap : EntityComponent
+    public class EntityMinimap : AbstractEntityComponent
     {
         [SerializeField] private SpriteRenderer _minimapSprite;
         [SerializeField] private Color[] _teamColor;

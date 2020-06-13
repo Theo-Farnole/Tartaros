@@ -6,7 +6,7 @@
     /// <summary>
     /// This script create resources each tick setted in EntityData.
     /// </summary>
-    public partial class EntityResourcesGeneration : EntityComponent
+    public partial class EntityResourcesGeneration : AbstractEntityComponent
     {
         #region Fields
         private float _nextTimeGenerationTick = 0; // Time.time + Entity.Data.GenerationTick
@@ -217,7 +217,7 @@
     }
 
 #if UNITY_EDITOR
-    public partial class EntityResourcesGeneration : EntityComponent
+    public partial class EntityResourcesGeneration : AbstractEntityComponent
     {
 
         void OnDrawGizmos()

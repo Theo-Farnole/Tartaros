@@ -23,48 +23,6 @@ namespace Game.Entities
         Building
     }
 
-    [Serializable]
-    public class UnitSpawnCondition
-    {
-        [SerializeField] private string _entityIDToSpawn = string.Empty;
-
-        [ToggleGroup(nameof(_hasSpawnCondition))]
-        [SerializeField] private bool _hasSpawnCondition = false;
-
-        [ToggleGroup(nameof(_hasSpawnCondition))]
-        [SerializeField] private int _maxAlliesOfSameIDAlive = -1;
-
-        public string EntityIDToSpawn { get => _entityIDToSpawn; }
-
-        /// <summary>
-        /// Warning, this method call 'FindObjectOfTypes'. It can be performance heavy.
-        /// </summary>
-        /// <returns></returns>
-        public bool DoConditionsAreMet()
-        {
-            if (!_hasSpawnCondition)
-                return true;
-
-            // PERFORMANCE NOTE:
-            // Create an EntityManager where it store every Entity[]
-            Entity[] entities = UnityEngine.Object.FindObjectsOfType<Entity>();
-
-            if (_maxAlliesOfSameIDAlive != -1)
-            {
-                int alliesOfSameIDAlive =
-                    entities.Where(x => x.EntityID == _entityIDToSpawn).Count()
-                    + GameManager.Instance.PendingCreation.Where(x => x == _entityIDToSpawn).Count();
-
-                bool conditionMet = alliesOfSameIDAlive < _maxAlliesOfSameIDAlive;
-
-                if (!conditionMet)
-                    return false;
-            }
-
-            return true;
-        }
-    }
-
     // Warning!
     // The code below is a bit messy.
     // 

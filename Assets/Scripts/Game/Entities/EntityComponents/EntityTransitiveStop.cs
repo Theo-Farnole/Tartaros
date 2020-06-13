@@ -5,7 +5,7 @@
     /// <summary>
     /// This script stops the entity movement, if the current entity hits another entity that's idling and has the destination of entity.
     /// </summary>
-    public class EntityTransitiveStop : EntityComponent
+    public class EntityTransitiveStop : AbstractEntityComponent
     {
         #region Fields
         [SerializeField] private float _maxDistanceFromDestinationToAllowStopping = -1;

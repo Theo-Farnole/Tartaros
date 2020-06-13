@@ -31,7 +31,7 @@ namespace Game.Entities
         private Queue<Action> _queueAction = new Queue<Action>();
 
         // cache variables
-        private Dictionary<System.Type, EntityComponent> _components = new Dictionary<System.Type, EntityComponent>();
+        private Dictionary<System.Type, AbstractEntityComponent> _components = new Dictionary<System.Type, AbstractEntityComponent>();
         #endregion
 
         #region Properties
@@ -110,11 +110,11 @@ namespace Game.Entities
         /// <summary>
         /// Get cached character component.
         /// </summary>
-        public T GetCharacterComponent<T>() where T : EntityComponent
+        public T GetCharacterComponent<T>() where T : AbstractEntityComponent
         {
             System.Type key = typeof(T);
 
-            if (_components.TryGetValue(key, out EntityComponent entityComponent))
+            if (_components.TryGetValue(key, out AbstractEntityComponent entityComponent))
             {
                 return (T)entityComponent;
             }
@@ -125,7 +125,7 @@ namespace Game.Entities
             }
         }
 
-        public void RegisterComponent(EntityComponent component)
+        public void RegisterComponent(AbstractEntityComponent component)
         {
             System.Type key = component.GetType();
 

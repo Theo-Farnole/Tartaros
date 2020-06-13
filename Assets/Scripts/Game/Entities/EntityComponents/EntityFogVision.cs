@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class EntityFogVision : EntityComponent, IFogVision
+    public class EntityFogVision : AbstractEntityComponent, IFogVision
     {
         #region Fields
         [Header("Viewer Settings")]

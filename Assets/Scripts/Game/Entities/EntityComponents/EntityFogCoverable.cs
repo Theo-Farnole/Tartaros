@@ -8,7 +8,7 @@
 
     public delegate void OnFog(IFogCoverable fogCoverable);
 
-    public class EntityFogCoverable : EntityComponent, IFogCoverable
+    public class EntityFogCoverable : AbstractEntityComponent, IFogCoverable
     {
         #region Fields
         private const string debugLogHeader = "Entity Fog Coverable : ";

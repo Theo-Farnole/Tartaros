@@ -1,7 +1,7 @@
-using System;
-
 namespace Game.Entities
 {
+    using System;
+
     public enum Team
     {
         Player,
