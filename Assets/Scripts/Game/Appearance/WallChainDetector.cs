@@ -1,4 +1,4 @@
-﻿using Game.Entities;
+using Game.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -109,7 +109,7 @@ public class WallChainDetector : MonoBehaviour
     {
         Assert.IsNotNull(TileSystem.Instance, "You must have a TileSystem check if object at coords is a wall.");
 
-        var tile = TileSystem.Instance.GetTile(coords);
+        GameObject tile = TileSystem.Instance.GetTile(coords);
 
         // not a wall if tile is empty
         if (tile == null)
@@ -123,6 +123,8 @@ public class WallChainDetector : MonoBehaviour
         }
         else
         {
+            Debug.LogWarningFormat("Tile {0} doesn't have an Entity component on it.", tile.name);
+
             // not a wall if building doesn't have Entity on it.
             return false;
         }

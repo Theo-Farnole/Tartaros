@@ -38,11 +38,6 @@ public class WallOrientation : MonoBehaviour
         ForceUpdateRotation();
     }
 
-    void Update()
-    {
-        ForceUpdateRotation();        
-    }
-
     void OnDisable()
     {
         WallChainDetector.OnWallOrientationChanged -= WallChainDetector_OnWallOrientationChanged;           
@@ -54,9 +49,6 @@ public class WallOrientation : MonoBehaviour
     {       
         Quaternion rotation = WallOrientationToRotation(wallOrientation);
         _modelToRotate.rotation = rotation;
-
-        // on est dans une gate
-        if (GetComponent<WallAppearance>() == null) Debug.Log("On est dans une gate Rotation updated to " + rotation);
     }
     #endregion
 
