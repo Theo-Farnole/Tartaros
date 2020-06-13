@@ -47,11 +47,10 @@ namespace Game.Entities.Actions
 
         private void OnOpponentEnterAttackRange(Entity entity)
         {
-            var action = new ActionAttackEntity(_owner, entity);
+            var action = new ActionAttackEntity(_owner, entity, false);
             _owner.SetAction(action);
 
-            // after the entity killed,
-            // continue to move to position
+            // after the entity killed, continue to move to position
             _owner.SetAction(this, true);
         }
 

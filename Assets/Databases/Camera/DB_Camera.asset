@@ -30,3 +30,6 @@ MonoBehaviour:
   _zoomBounds:
     min: 10
     max: 25
+  _inverseInput: 0
+  _canCenterOnSelection: 1
+  _centerKeyCode: 32

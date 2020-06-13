@@ -225,7 +225,7 @@
             if (Entity == null)
                 return;
 
-            if (Entity.EntityID != string.Empty)
+            if (Entity.EntityID == string.Empty)
                 return;
 
             if (Entity.Data == null)
@@ -234,7 +234,10 @@
             if (!Entity.Data.CanCreateResources)
                 return;
 
-            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.RadiusToReachCells);
+            if (Entity.Data.GenerationType != GenerationType.PerCell)
+            {
+                UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.RadiusToReachCells);
+            }
         }
 
     }

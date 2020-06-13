@@ -8,15 +8,19 @@ using UnityEngine.Assertions;
 
 [RequireComponent(typeof(Camera))]
 [AddComponentMenu("RTS Camera")]
-public class CameraController : MonoBehaviour
+public partial class CameraController : MonoBehaviour
 {
+    #region Fields
     [Required]
     [SerializeField] private CameraControllerData _data;
 
     [SerializeField] private bool _enableMapLimit = true;
     [SerializeField] private Bounds2D _mapLimitX = new Bounds2D(-100, 100);
     [SerializeField] private Bounds2D _mapLimitZ = new Bounds2D(-100, 100);
+    #endregion
 
+    #region Methods
+    #region MonoBehaviour Callbacks
     void Update()
     {
         ManageMovement();
@@ -26,30 +30,9 @@ public class CameraController : MonoBehaviour
             CenterOnSelection();
         }
     }
+    #endregion
 
-    void OnDrawGizmosSelected()
-    {
-        // don't draw if we don't have 'zoom bounds'
-        if (_data == null)
-            return;
-
-        var size = new Vector3(
-            _mapLimitX.max - _mapLimitX.min,
-            _data.ZoomBounds.max - _data.ZoomBounds.min,
-            _mapLimitZ.max - _mapLimitZ.min
-        );
-
-        var center = new Vector3(
-            _mapLimitX.min,
-            _data.ZoomBounds.min,
-            _mapLimitZ.min
-        ) + size / 2;
-
-        Bounds bounds = new Bounds(size, center);
-
-        Gizmos.DrawWireCube(center, size);
-    }
-
+    #region Private Methods
     private void CenterOnSelection()
     {
         // Centroid
@@ -139,11 +122,12 @@ public class CameraController : MonoBehaviour
         if (!_data.CanZoom)
             return;
 
-        var inputDelta = Input.mouseScrollDelta.y;
+        float inputDelta = Input.mouseScrollDelta.y;
 
-        // we need to reverse 'positionDeltaY'
-        // to make the camera goes up, when the mouse scroll goes up
-        deltaPosition.y += -(inputDelta * deltaTime * _data.ZoomSpeed);
+        if (_data.InverseInput)
+            inputDelta *= -1f;
+
+        deltaPosition.y += inputDelta * deltaTime * _data.ZoomSpeed;
     }
 
 
@@ -190,4 +174,34 @@ public class CameraController : MonoBehaviour
             Assert.AreEqual(transform.position.z, Mathf.Clamp(transform.position.z, _mapLimitZ.min, _mapLimitZ.max), "Camera out of map limits");
         }
     }
+    #endregion
+    #endregion
 }
+
+#if UNITY_EDITOR
+public partial class CameraController : MonoBehaviour
+{
+    void OnDrawGizmosSelected()
+    {
+        // don't draw if we don't have 'zoom bounds'
+        if (_data == null)
+            return;
+
+        var size = new Vector3(
+            _mapLimitX.max - _mapLimitX.min,
+            _data.ZoomBounds.max - _data.ZoomBounds.min,
+            _mapLimitZ.max - _mapLimitZ.min
+        );
+
+        var center = new Vector3(
+            _mapLimitX.min,
+            _data.ZoomBounds.min,
+            _mapLimitZ.min
+        ) + size / 2;
+
+        Bounds bounds = new Bounds(size, center);
+
+        Gizmos.DrawWireCube(center, size);
+    }
+}
+#endif

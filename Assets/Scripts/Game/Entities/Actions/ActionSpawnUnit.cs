@@ -82,8 +82,9 @@ namespace Game.Entities.Actions
         #region Private Methods
         private void Refund()
         {
+            // Can't refund because not in pending creation list.
             if (!_isInToPendingCreation)
-                Debug.LogWarningFormat("{0} : Can't refund because not in pending creation list.", GetType());
+                return;
 
             GameManager.Instance.RemovePendingCreationEntity(_entityIDToSpawn);
             _isInToPendingCreation = false;

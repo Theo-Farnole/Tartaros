@@ -1,4 +1,6 @@
-﻿using Game.Entities;
+﻿using Game.Appearance;
+using Game.Appearance.Walls;
+using Game.Entities;
 using Lortedo.Utilities.Debugging;
 using Lortedo.Utilities.Pattern;
 using System.Collections;

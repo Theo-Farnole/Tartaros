@@ -42,7 +42,7 @@ namespace Game.Entities
             if (Entity.IsIdle)
             {
                 // auto attack the enemy
-                var action = new ActionAttackEntity(Entity, enemy);
+                ActionAttackEntity action = new ActionAttackEntity(Entity, enemy, true);
                 Entity.SetAction(action);
             }
         }
@@ -52,7 +52,7 @@ namespace Game.Entities
             if (Entity.IsIdle)
             {
                 // auto attack the enemy
-                var action = new ActionAttackEntity(Entity, attacker);
+                ActionAttackEntity action = new ActionAttackEntity(Entity, attacker, true);
                 Entity.SetAction(action);
             }
         }
@@ -108,7 +108,6 @@ namespace Game.Entities
 
             var nearestEnemy = Entity.GetCharacterComponent<EntityDetection>().GetNearestOpponent();
 
-
             if (nearestEnemy == null)
                 return false;
 
@@ -116,7 +115,7 @@ namespace Game.Entities
 
             if (Entity.GetCharacterComponent<EntityDetection>().IsEntityInViewRadius(nearestEnemy))
             {
-                var action = new ActionAttackEntity(Entity, nearestEnemy);
+                ActionAttackEntity action = new ActionAttackEntity(Entity, nearestEnemy, true);
                 Entity.SetAction(action);
 
                 return true;

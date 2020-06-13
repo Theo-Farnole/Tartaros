@@ -17,7 +17,7 @@ public delegate void OnBuildSuccessful(GameManager gameManager);
 public delegate void HasNotEnoughtResources(GameManager gameManager, ResourcesWrapper cost);
 public delegate void PendingCreationChanged(string id);
 
-public class GameManager : Singleton<GameManager>
+public partial class GameManager : Singleton<GameManager>
 {
     #region Fields
     private const string debugLogHeader = "Game Manager : ";
@@ -112,17 +112,6 @@ public class GameManager : Singleton<GameManager>
     void OnApplicationQuit()
     {
         _applicationIsQuitting = true;
-    }
-
-    void OnDrawGizmos()
-    {
-        if (_debugDrawSnapGrid)
-            _grid?.DrawGizmos();
-
-#if UNITY_EDITOR
-        if (_debugDrawMapCells)
-            _mapCells?.DrawGizmos();
-#endif
     }
 
     void OnGUI()
@@ -224,22 +213,22 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enough resources to build " + buildingID);
+            UIMessagesLogger.Instance.LogErrorFormat("You doesn't have enough resources to build ", buildingID);
             HasNotEnoughtResources?.Invoke(this, buildingCost);
         }
     }
 
 
-    public Entity SpawnEntity(string unitID, Vector3 position, Quaternion rotation, Team team)
+    public Entity SpawnEntity(string entityID, Vector3 position, Quaternion rotation, Team team)
     {
         Assert.IsNotNull(MainRegister.Instance, "MainRegister is missing. Can't spawn unit");
         Assert.IsNotNull(ObjectPooler.Instance, "MainRegister is missing. Can't spawn unit");
 
-        EntityData entityData = MainRegister.Instance.GetEntityData(unitID);
+        EntityData entityData = MainRegister.Instance.GetEntityData(entityID);
 
         Resources -= entityData.SpawningCost;
 
-        Entity instanciatedEntity = ObjectPooler.Instance.SpawnFromPool(entityData.Prefab, position, rotation, true).GetComponent<Entity>();        
+        Entity instanciatedEntity = ObjectPooler.Instance.SpawnFromPool(entityData.Prefab, position, rotation, true).GetComponent<Entity>();
 
         instanciatedEntity.Team = team;
 
@@ -259,11 +248,11 @@ public class GameManager : Singleton<GameManager>
 
         EntityData unitData = MainRegister.Instance.GetEntityData(entityID);
 
-        if (unitData.PopulationUse > 0 && !GameManager.Instance.HasEnoughtPopulationToSpawn())
+        if (unitData.PopulationUse > 0 && !HasEnoughtPopulationToSpawn())
         {
             if (logErrors)
             {
-                UIMessagesLogger.Instance.AddErrorMessage(string.Format("Build more house to create {0} unit.", entityID));
+                UIMessagesLogger.Instance.LogErrorFormat("Build more house to create {0} unit.", entityID);
             }
 
             return false;
@@ -273,7 +262,7 @@ public class GameManager : Singleton<GameManager>
         {
             if (logErrors)
             {
-                UIMessagesLogger.Instance.AddErrorMessage("You doesn't have enought resources to create " + entityID + ".");
+                UIMessagesLogger.Instance.LogError("You doesn't have enought resources to create " + entityID + ".");
             }
 
             return false;
@@ -300,3 +289,17 @@ public class GameManager : Singleton<GameManager>
     #endregion
     #endregion
 }
+
+#if UNITY_EDITOR
+public partial class GameManager : Singleton<GameManager>
+{
+    void OnDrawGizmos()
+    {
+        if (_debugDrawSnapGrid)
+            _grid?.DrawGizmos();
+
+        if (_debugDrawMapCells)
+            _mapCells?.DrawGizmos();
+    }
+}
+#endif

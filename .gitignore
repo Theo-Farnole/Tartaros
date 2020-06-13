@@ -1,12 +1,12 @@
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-MemoryCaptures/
-Assets/AssetStoreTools*
-Assets/3rd parties/AmplifyShaderEditor/
-Assets/3rd parties/AmplifyShaderEditor.meta
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/MemoryCaptures/
+/Assets/AssetStoreTools*
+/Assets/3rd parties/AmplifyShaderEditor/
+/Assets/3rd parties/AmplifyShaderEditor.meta
 
 # Visual Studio cache directory
 .vs/
@@ -37,6 +37,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.unitypackage.meta
 
 /Assets/__Addons/Odin/Demos
 /Assets/__Addons/Odin/Demos.meta
