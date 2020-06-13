@@ -2063,7 +2063,7 @@ MonoBehaviour:
   _material: {fileID: 2100000, guid: d3436779459561c45ba6769328dece8e, type: 2}
   _useThickness: 1
   thickness: 0.02
-  _frustumColor: {r: 1, g: 0, b: 0, a: 1}
+  _frustumColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!20 &337109477
 Camera:
   m_ObjectHideFlags: 0
@@ -10786,7 +10786,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 8704
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 82f9d79d75393ea499c69d19451b2c6a, type: 2}
   m_TargetDisplay: 0
