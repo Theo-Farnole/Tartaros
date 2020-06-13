@@ -122,7 +122,7 @@ namespace Game.Selection
             {
                 for (int i = 0; i < group.unitsSelected.Count; i++)
                 {
-                    var actionAttack = new ActionAttackEntity(group.unitsSelected[i], target);
+                    ActionAttackEntity actionAttack = new ActionAttackEntity(group.unitsSelected[i], target, true);
 
                     group.unitsSelected[i].SetAction(actionAttack, addToActionQueue);
                 }

@@ -16,13 +16,17 @@ namespace Game.Entities.Actions
         private readonly EntityDetection _entityDetection;
         private readonly EntityAttack _entityAttack;
 
-        public ActionAttackEntity(Entity owner, Entity target) : base(owner)
+        private readonly bool _onTargetDeathTryAutoAttack;
+
+        public ActionAttackEntity(Entity owner, Entity target, bool onTargetDeathTryAutoAttack) : base(owner)
         {
             _target = target;
 
             _entityMovement = entity.GetCharacterComponent<EntityMovement>();
             _entityDetection = entity.GetCharacterComponent<EntityDetection>();
             _entityAttack = entity.GetCharacterComponent<EntityAttack>();
+
+            _onTargetDeathTryAutoAttack = onTargetDeathTryAutoAttack;
         }
 
         public override void OnStateExit()
@@ -64,17 +68,23 @@ namespace Game.Entities.Actions
 
         private void TargetDeath()
         {
-            // try to auto attack nearest enemy
-            bool attacksANewEnemy = entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
-
-            // if not enemy nearest, stop current action
-            if (!attacksANewEnemy)
+            if (!_onTargetDeathTryAutoAttack)
             {
-                // WARNING:
-                // If we LeaveAction without checking if is attacking an enemy
-                // We'll overwrite 'attack nearest action'.
                 LeaveAction();
-            }            
+            }
+            else
+            {
+                // try to auto attack nearest enemy
+                bool attacksANewEnemy = entity.GetCharacterComponent<EntityAttack>().TryStartActionAttackNearestEnemy();
+
+                // if not enemy nearest, stop current action
+                if (!attacksANewEnemy)
+                {
+                    // WARNING:                    
+                    // Without the condition upper, calling LeaveAction() will stop the attacking of nearest enemy.
+                    LeaveAction();
+                }
+            }
         }
     }
 }
