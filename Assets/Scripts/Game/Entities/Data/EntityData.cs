@@ -90,7 +90,7 @@ namespace Game.Entities
 
         #region Vision Settings
         [BoxGroup("Vision Settings")]
-        [SerializeField, Range(1, 15)] private float _viewRadius = 3;        
+        [SerializeField, Range(1, 15)] private float _viewRadius = 3;
 
         [BoxGroup("Vision Settings")]
         [SerializeField] private bool _canDetectEntities = false;
@@ -98,7 +98,7 @@ namespace Game.Entities
 
         [BoxGroup("Construction")]
         [Tooltip("Is construction like a wall ?")]
-        [SerializeField] private bool _isConstructionChained;        
+        [SerializeField] private bool _isConstructionChained;
 
         #region Orders: MOVE, ATTACK, CREATE UNITS, CREATE RESOURCES
         #region Attack     
@@ -142,7 +142,7 @@ namespace Game.Entities
         [ToggleGroup(nameof(_canMove), movementSettingsHeaderName)]
         [Tooltip("Units per second")]
         [PositiveValueOnly]
-        [SerializeField] private float _speed = 3;        
+        [SerializeField] private float _speed = 3;
         #endregion
 
         #region Units Creation
@@ -150,7 +150,7 @@ namespace Game.Entities
         [SerializeField] private bool _canCreateUnit;
 
         [ToggleGroup(nameof(_canCreateUnit), createUnitSettingsHeaderName)]
-        [SerializeField] private UnitSpawnCondition[] _unitsSpawnConditions;        
+        [SerializeField] private UnitSpawnCondition[] _unitsSpawnConditions;
         #endregion
 
         #region Resources Generation
@@ -182,7 +182,7 @@ namespace Game.Entities
         [SerializeField] private bool _increaseMaxPopulation;
 
         [ToggleGroup(nameof(_increaseMaxPopulation), headerNamePopulation)]
-        [SerializeField] private int _increaseMaxPopulationAmount;        
+        [SerializeField] private int _increaseMaxPopulationAmount;
         #endregion
 
         #region Can Turn in Another Building
@@ -255,6 +255,7 @@ namespace Game.Entities
         #endregion
 
         #region Methods
+        #region Public Methods
         public float GetRadius()
         {
             switch (_entityType)
@@ -280,20 +281,20 @@ namespace Game.Entities
         {
             switch (overallAction)
             {
+                case OverallAction.Attack:
+                    return CanAttack;
+
                 case OverallAction.Stop:
                     return CanMove && CanAttack;
 
                 case OverallAction.Move:
-                    return CanMove;
-
-                case OverallAction.Attack:
-                    return CanAttack;
-
                 case OverallAction.Patrol:
+                case OverallAction.MoveAggressively:
                     return CanMove;
-            }
 
-            return false;
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         void OnValidate()
@@ -308,18 +309,21 @@ namespace Game.Entities
                 .FirstOrDefault();
         }
 
-        public OrderContent[] GetAvailableOrders()
+
+        public OrderContent[] GetAvailableOrders(OverallAction ignoredOverallActions = OverallAction.None)
         {
             List<OrderContent> output = new List<OrderContent>();
 
             GetUnitsSpawnOrders(output);
             GetTurnIntoEntityOrders(output);
             GetToggleNavMeshObstacleOrder(output);
-            GetOverallActionsOrders(output);
+            GetOverallActionsOrders(output, ignoredOverallActions);
 
             return output.ToArray();
         }
+        #endregion
 
+        #region Private Methods
         private void GetToggleNavMeshObstacleOrder(List<OrderContent> output)
         {
             if (!_canToggleNavMeshObstacle)
@@ -333,7 +337,6 @@ namespace Game.Entities
             output.Add(_orderToggleNavMeshObstacle);
         }
 
-        #region Private Methods
         private void GetUnitsSpawnOrders(List<OrderContent> output)
         {
             if (!_canCreateUnit)
@@ -364,10 +367,13 @@ namespace Game.Entities
             }
         }
 
-        private void GetOverallActionsOrders(List<OrderContent> output)
+        private void GetOverallActionsOrders(List<OrderContent> output, OverallAction ignored = OverallAction.None)
         {
             foreach (OverallAction overallAction in Enum.GetValues(typeof(OverallAction)))
             {
+                if (ignored.HasFlag(overallAction))
+                    continue;
+
                 if (CanDoOverallAction(overallAction))
                 {
                     OverallActionData overallActionData = MainRegister.Instance.GetOverallActionData(overallAction);

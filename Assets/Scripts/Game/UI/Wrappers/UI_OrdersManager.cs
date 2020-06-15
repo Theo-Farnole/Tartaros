@@ -1,18 +1,19 @@
-﻿using Lortedo.Utilities.Inspector;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Game.UI.HoverPopup;
-using UnityEngine;
-using UnityEngine.Assertions;
-using Game.Selection;
-using Game.Entities;
-
-namespace Game.UI
+﻿namespace Game.UI
 {
+    using System;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+    using Game.Selection;
+    using Game.Entities;
+    using Sirenix.OdinInspector;
+
     public class UI_OrdersManager : MonoBehaviour
     {
         [SerializeField] private RectTransform[] _ordersLineParent;
+
+        // REFACTOR NOTE
+        // We could use a flag, but refactoring OverallAction as a flag could lead to bugs.
+        [SerializeField, EnumToggleButtons] private OverallAction _overallActionToIgnore = OverallAction.None;
 
         private OrderButton[][] _orders = null;
         private Entity _selectedEntity;
@@ -52,7 +53,7 @@ namespace Game.UI
             {
                 Assert.IsTrue(selectedGroups.IsIndexInsideBounds(highlightGroupIndex), "Highlight group index is out of bounds of selectedGroups");
 
-                _selectedEntity = selectedGroups[highlightGroupIndex].unitsSelected[0];                
+                _selectedEntity = selectedGroups[highlightGroupIndex].unitsSelected[0];
                 UpdateOrders(_selectedEntity);
             }
         }
@@ -94,7 +95,7 @@ namespace Game.UI
 
         private void SetAllOrders(Entity entity)
         {
-            OrderContent[] orders = entity.Data.GetAvailableOrders();
+            OrderContent[] orders = entity.Data.GetAvailableOrders(_overallActionToIgnore);
 
             foreach (OrderContent order in orders)
             {

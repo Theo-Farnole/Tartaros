@@ -4,12 +4,15 @@
     using Game.Selection;
     using System;
 
+    [Flags]
     public enum OverallAction
     {
-        Stop = 0,
-        Move = 1,
-        Attack = 2,
-        Patrol = 3
+        None = 0,
+        Stop = 1,
+        Move = 2,
+        Attack = 4,
+        Patrol = 8,
+        MoveAggressively = 16
     }
 
     public static class OverallActionExtension
@@ -29,6 +32,9 @@
 
                 case OverallAction.Patrol:
                     return () => SecondClickListener.Instance.ListenToPatrol();
+
+                case OverallAction.MoveAggressively:
+                    return () => SecondClickListener.Instance.ListenToMoveAggresively();
 
                 default:
                     throw new NotImplementedException(string.Format("Please, implement {0} enum.", overallAction));

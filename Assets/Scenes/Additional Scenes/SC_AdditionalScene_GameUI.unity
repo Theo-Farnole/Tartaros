@@ -11092,6 +11092,7 @@ MonoBehaviour:
   _ordersLineParent:
   - {fileID: 1398378419}
   - {fileID: 1888018411}
+  _overallActionToIgnore: 2
 --- !u!1 &1930926695
 GameObject:
   m_ObjectHideFlags: 0

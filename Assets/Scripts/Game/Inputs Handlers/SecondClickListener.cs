@@ -62,18 +62,33 @@ namespace Game.Inputs
 
             _actionOnClick = (RaycastHit hit) =>
             {
-            // do we hit terrain ?
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+                // do we hit terrain ?
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
                 {
                     SelectedGroupsActionsCaller.OrderMoveAggressively(hit.point);
                 }
                 else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Entity"))
                 {
-                // do we hit entity ?
-                if (hit.transform.TryGetComponent(out Entity clickedEntity))
+                    // do we hit entity ?
+                    if (hit.transform.TryGetComponent(out Entity clickedEntity))
                     {
                         SelectedGroupsActionsCaller.OrderAttackUnit(clickedEntity);
                     }
+                }
+            };
+        }
+
+        public void ListenToMoveAggresively()
+        {
+            _listenToClick = true;
+            _cursorOverride = CursorAspectManager.CursorState.OrderAttack;
+
+            _actionOnClick = (RaycastHit hit) =>
+            {
+                // do we hit terrain ?
+                if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+                {
+                    SelectedGroupsActionsCaller.OrderMoveAggressively(hit.point);
                 }
             };
         }
