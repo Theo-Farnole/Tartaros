@@ -1,13 +1,10 @@
-﻿using Game.Entities;
-using Lortedo.Utilities;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.EventSystems;
-
-namespace Game.Selection
+﻿namespace Game.Selection
 {
+    using Game.Entities;
+    using Lortedo.Utilities;
+    using System.Linq;
+    using UnityEngine;
+    using UnityEngine.EventSystems;
 
     /// <summary>
     /// It handle the input, the drawing and adding the entities to the selection manager.
@@ -126,7 +123,7 @@ namespace Game.Selection
             Entity[] entitiesInSelectionRect = unitsSelectable
                 .Where(x => IsWithinSelectionBounds(camera, viewportBounds, x.gameObject)) // is in rectangle
                 .Select(x => x.GetComponent<Entity>())
-                .Where(x => x != null)
+                .Where(x => x != null && x.Data.EntityType == EntityType.Unit)
                 .ToArray();
 
             SelectionManager.Instance.AddEntities(entitiesInSelectionRect);

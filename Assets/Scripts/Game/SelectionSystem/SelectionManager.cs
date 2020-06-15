@@ -1,18 +1,14 @@
-using Lortedo.Utilities.Pattern;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Game.UI;
-using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.EventSystems;
-using Sirenix.OdinInspector;
-using Lortedo.Utilities;
-using System.Text;
-using Game.Entities;
-
 namespace Game.Selection
 {
+    using Lortedo.Utilities.Pattern;
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+    using UnityEngine.EventSystems;
+    using Sirenix.OdinInspector;
+    using Lortedo.Utilities;
+    using Game.Entities;
 
     public delegate void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex);
 
