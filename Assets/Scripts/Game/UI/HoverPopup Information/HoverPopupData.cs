@@ -10,11 +10,15 @@ namespace Game.UI.HoverPopup
     [CreateAssetMenu(menuName = "Tartaros/UI/Hover Popup")]
     public class HoverPopupData : ScriptableObject
     {
+        #region Fields
         [SerializeField] private EntityData _entityData;
 
         [DisableIf(nameof(_entityData))]
         [SerializeField] private string _title;
 
+        [SerializeField] private bool _hasDescription = true;
+
+        [EnableIf(nameof(_hasDescription))]
         [SerializeField, TextArea(3, 10)] private string _description;
 
         [Header("Optional settings")]
@@ -41,12 +45,13 @@ namespace Game.UI.HoverPopup
         [EnableIf(nameof(_displayResources))]
         [DisableIf(nameof(_entityData))]
         [SerializeField] private ResourcesWrapper _resources;
+        #endregion
 
         #region Properties
         public bool HasTitle { get => _title != string.Empty; }
         public string Title { get => _title; }
 
-        public bool HasDescription { get => _description != string.Empty; }
+        public bool HasDescription { get => _hasDescription && (_description != string.Empty); }
         public string Description { get => _description; }
 
         public bool HotkeyEnabled { get => _displayHotkey; }
@@ -59,6 +64,7 @@ namespace Game.UI.HoverPopup
         public float CreationTime { get => _creationTime; }
         #endregion
 
+        #region Methods
         void OnValidate()
         {
             UpdateContent();
@@ -100,5 +106,6 @@ namespace Game.UI.HoverPopup
             hashCode += hashCode * -1521134295 + _creationTime.GetHashCode();
             return hashCode;
         }
+        #endregion
     }
 }
