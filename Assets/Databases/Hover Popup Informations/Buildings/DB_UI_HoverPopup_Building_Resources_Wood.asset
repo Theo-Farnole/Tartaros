@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 93171ad1c8caffe4dad11c9dcd3043f5, type: 2}
   _title: Lumber Camp
+  _hasDescription: 0
   _description: "Te g\xE9n\xE8re du boa"
   _displayHotkey: 1
   _hotkey: 119
-  _displayCreationTime: 1
+  _displayCreationTime: 0
   _creationTime: 0
   _displayResources: 1
   _resources:

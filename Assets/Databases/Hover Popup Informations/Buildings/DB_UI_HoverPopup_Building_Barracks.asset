@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: 6a1997c83280ffd478dffdae9191d1a8, type: 2}
   _title: Barracks
+  _hasDescription: 0
   _description: 
   _displayHotkey: 1
   _hotkey: 98
-  _displayCreationTime: 1
+  _displayCreationTime: 0
   _creationTime: 0
   _displayResources: 1
   _resources:

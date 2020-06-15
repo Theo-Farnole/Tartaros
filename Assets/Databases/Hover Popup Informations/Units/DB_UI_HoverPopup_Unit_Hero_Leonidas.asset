@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 11400000, guid: f0a7189b3c0e7b34781828d930cae163, type: 2}
   _title: Leonidas
+  _hasDescription: 0
   _description: "Salut, c moa L\xE9onidas (cc Jeje si tu vois \xE7a mdr)"
   _displayHotkey: 1
   _hotkey: 108
