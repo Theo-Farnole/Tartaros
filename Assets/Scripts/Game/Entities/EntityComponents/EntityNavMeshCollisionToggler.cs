@@ -88,7 +88,7 @@
             if (_navMeshObstacle == null)
                 return;
 
-            _navMeshObstacle.enabled = true;
+            //_navMeshObstacle.enabled = true;
 
             UpdateMeshAppereance();
         }
