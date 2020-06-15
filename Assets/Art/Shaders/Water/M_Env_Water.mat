@@ -35,6 +35,7 @@ Material:
     - _wavespeed: 0.38
     - _wavetile: 0.63
     m_Colors:
+    - _PanSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _Vector0: {r: 0.23, g: 0.01, b: 0, a: 0}
     - _topcolor: {r: 0.25787643, g: 0.48934394, b: 0.57547164, a: 0}
     - _watercolorpur: {r: 0.1624243, g: 0.36566135, b: 0.4716981, a: 0}
