@@ -216,5 +216,20 @@ namespace Game.Selection
             OnOrderGiven?.Invoke();
             OnOrder_TurnIntoEntities?.Invoke(entityID);
         }
+
+        public static void KillSelectedEntities()
+        {
+            SelectionManager.SelectionGroup[] playerSelectedEntities = SelectionManager.Instance.SpartanGroups;
+
+            SelectionManager.Instance.ClearSelection();
+
+            for (int i = 0; i < playerSelectedEntities.Length; i++)
+            {
+                for (int j = 0; j < playerSelectedEntities[i].unitsSelected.Count; j++)
+                {
+                    playerSelectedEntities[i].unitsSelected[j].Death();
+                }
+            }
+        }
     }
 }

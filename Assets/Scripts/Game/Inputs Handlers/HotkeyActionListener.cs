@@ -19,6 +19,8 @@ namespace Game.Inputs
             Attack = 2
         }
 
+        [SerializeField] private KeyCode _killEntityKeyCode = KeyCode.Delete;
+
         Dictionary<KeyCode, Action> _commands = new Dictionary<KeyCode, Action>();
 
         #region Methods
@@ -71,6 +73,11 @@ namespace Game.Inputs
                     // To avoid that, we return after one hotkey has been pressed.
                     return;
                 }
+            }
+
+            if (Input.GetKeyDown(_killEntityKeyCode))
+            {
+                SelectedGroupsActionsCaller.KillSelectedEntities();
             }
         }
         #endregion
