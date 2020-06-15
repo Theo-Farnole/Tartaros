@@ -92,30 +92,17 @@
         {
             Assert.IsNotNull(_building, "Building is null");
 
-            var fowEntity = _building.GetComponent<EntityFogVision>();
-            if (fowEntity) fowEntity.enabled = enabled;
+            _building.GetComponent<Entity>().enabled = enabled;
+            _building.GetComponent<Collider>().enabled = enabled;
+            _building.GetComponent<EntityFogVision>().enabled = enabled;
+            _building.GetComponent<EntityFogCoverable>().enabled = enabled;
+            _building.GetComponent<EntityResourcesGeneration>().enabled = enabled;
 
-            var collider = _building.GetComponent<Collider>();
-            if (collider) collider.enabled = enabled;
+            if (_building.TryGetComponent(out NavMeshAgent navMeshAgent)) navMeshAgent.enabled = enabled;
+            if (_building.TryGetComponent(out NavMeshObstacle navMeshObstacle)) navMeshObstacle.enabled = enabled;
 
-            var navMeshAgent = _building.GetComponent<NavMeshAgent>();
-            if (navMeshAgent) navMeshAgent.enabled = enabled;
-
-            var navMeshObstacle = _building.GetComponent<NavMeshObstacle>();
-            if (navMeshObstacle) navMeshObstacle.enabled = enabled;
-
-            if (_building.TryGetComponent(out EntityResourcesGeneration resourcesGeneration))
-                resourcesGeneration.EnableResourceProduction = enabled;
-
-            if (_building.TryGetComponent(out Entity entity))
-                entity.enabled = enabled; // disable OnSpawn call
-
-            if (_building.TryGetComponent(out EntityFogCoverable entityFogCoverable))
-                entityFogCoverable.enabled = enabled;
-
-            WallAppearance wallAppearence = _building.GetComponentInChildren<WallAppearance>();
-            if (wallAppearence)
-                wallAppearence.enabled = enabled;
+            WallAppearance wallAppearance = _building.GetComponentInChildren<WallAppearance>();
+            if (wallAppearance) wallAppearance.enabled = enabled;
         }
 
         public void SetConstructionAsFinish(Team teamToSet)
