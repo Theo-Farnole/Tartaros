@@ -46,7 +46,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: e29b69ffa6012444b9b584e60020bec2, type: 3}
     - {fileID: 2800000, guid: dc24548d7ed6935468d3f9906be21839, type: 3}
     - {fileID: 2800000, guid: 2041be3732e95984eb75bccb6ba8ab97, type: 3}
-    totalSpriteSurfaceArea: 625538
+    totalSpriteSurfaceArea: 569344
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -58,6 +58,6 @@ SpriteAtlas:
   - S_Icon_Hourglass
   - S_Icon_Food
   - S_Icon_Wood
-  - S_Icon_Gold
+  - S_Icon_Stone
   m_Tag: SA_Icons
   m_IsVariant: 0
