@@ -8,6 +8,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Game.TileSystem;
+using Game.GameState;
 
 public delegate void OnResourcesUpdate(ResourcesWrapper resources);
 public delegate void OnGameOver(GameManager gameManager);
@@ -124,12 +125,14 @@ public partial class GameManager : Singleton<GameManager>
     {
         Entity.OnDeath += Entity_OnDeath;
         WaveManager.OnFinalWaveClear += Victory;
+        GameState.OnGamePaused += GameState_OnGamePaused;
     }
 
     void OnDisable()
     {
         Entity.OnDeath -= Entity_OnDeath;
         WaveManager.OnFinalWaveClear -= Victory;
+        GameState.OnGamePaused -= GameState_OnGamePaused;
     }
     #endregion
 
@@ -146,6 +149,11 @@ public partial class GameManager : Singleton<GameManager>
                 GameOver();
             }
         }
+    }
+
+    private void GameState_OnGamePaused()
+    {
+        State = null;
     }
     #endregion
 
@@ -193,6 +201,9 @@ public partial class GameManager : Singleton<GameManager>
 
     public void StartBuilding(string buildingID)
     {
+        if (GameState.IsGamePaused())
+            return;
+
         EntityData buildingData = MainRegister.Instance.GetEntityData(buildingID);
 
         Assert.IsNotNull(buildingData,

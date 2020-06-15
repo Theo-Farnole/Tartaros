@@ -7,6 +7,7 @@ namespace Game.UI
     public class AbstractPanel : MonoBehaviour
     {
         [SerializeField] private Canvas _canvas;
+        [SerializeField] private bool _hideOnStart;
 
         protected virtual void Awake()
         {
@@ -14,6 +15,12 @@ namespace Game.UI
             // however, for performance reason, we just disable the Canvas component
             // so, we assert that our gameobject isn't disabled
             _canvas.gameObject.SetActive(true);
+        }
+
+        protected virtual void Start()
+        {
+            if (_hideOnStart) Hide();
+            else Show();
         }
 
         public bool IsPanelShowing() => _canvas.enabled;
