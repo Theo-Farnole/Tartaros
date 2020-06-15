@@ -117,7 +117,7 @@
             if (_navMeshObstacle.shape != NavMeshObstacleShape.Box)
                 throw new System.NotSupportedException("Can't set obstacle size with NavMeshObstacle's shape set as " + _navMeshObstacle.shape + ".");
 
-            Vector3 carveOffset = new Vector3(0.9f, 0, 0.9f);
+            Vector3 carveOffset = new Vector3(0.1f, 0, 0.1f);
 
             _navMeshObstacle.size = size - carveOffset;
             _navMeshObstacle.center = size.y / 2 * Vector3.up;
