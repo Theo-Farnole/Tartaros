@@ -33,7 +33,7 @@ Material:
     - _edhedistance: 108.32
     - _waveheight: 0.15
     - _wavespeed: 0.38
-    - _wavetile: 2.13
+    - _wavetile: 0.24
     m_Colors:
     - _PanSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _Vector0: {r: 0.23, g: 0.01, b: 0, a: 0}
