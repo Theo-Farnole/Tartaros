@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 4525459865806292518}
   - component: {fileID: 5038305241564417077}
   - component: {fileID: 8942491577002155834}
+  - component: {fileID: 4468661327360213610}
   m_Layer: 10
   m_Name: _PF_Entity_TEMPLATE
   m_TagString: Untagged
@@ -250,6 +251,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cab9bb67ff962546841ad5e579b5936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnPointLocal: {x: 0, y: 0, z: 0}
+  _spawnPointColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!114 &3143762813810147004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +350,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af5458d9c04f9de459a7fca9ea12fedf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDistanceFromDestinationToAllowStopping: -1
+--- !u!114 &4468661327360213610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927950564186908724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28c3298fc0231aa409517cdfbb06f48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9025644110156182020

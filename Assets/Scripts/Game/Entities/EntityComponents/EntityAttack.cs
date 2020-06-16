@@ -7,6 +7,8 @@ namespace Game.Entities
     using UnityEngine;
     using UnityEngine.Assertions;
 
+    public delegate void DelegateAttack(Entity attacker, Entity victim);
+
     /// <summary>
     /// This script manage the attack (smart classname isn't it ?).
     /// </summary>
@@ -14,6 +16,10 @@ namespace Game.Entities
     {
         #region Fields
         private float _attackTime = 0;
+        #endregion
+
+        #region Events
+        public event DelegateAttack OnAttack;
         #endregion
 
         #region Methods
@@ -93,7 +99,10 @@ namespace Game.Entities
                     Assert.IsNotNull(string.Format("Prefab projectile of {0} is missing Projectile component. Please, add one.", name));
 
                     projectile.Throw(target, Entity);
+
                 }
+
+                OnAttack?.Invoke(Entity, target);
             }
         }
 

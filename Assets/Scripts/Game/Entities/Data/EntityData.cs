@@ -96,6 +96,12 @@ namespace Game.Entities
         [SerializeField] private bool _canDetectEntities = false;
         #endregion
 
+        #region Sounds
+        [BoxGroup("Sounds")]
+        [EnableIf(nameof(_canAttack))]
+        [SerializeField] private AudioClip[] _soundAttack = new AudioClip[0];
+        #endregion
+
         [BoxGroup("Construction")]
         [Tooltip("Is construction like a wall ?")]
         [SerializeField] private bool _isConstructionChained;
@@ -256,6 +262,14 @@ namespace Game.Entities
 
         #region Methods
         #region Public Methods
+        public AudioClip GetRandomAttackSound()
+        {
+            if (_soundAttack.Length == 0)
+                Debug.LogWarningFormat("Entity Data : There is zero _soundAttack on '{0}'.", name);
+
+            return _soundAttack[UnityEngine.Random.Range(0, _soundAttack.Length)];
+        }
+
         public float GetRadius()
         {
             switch (_entityType)
