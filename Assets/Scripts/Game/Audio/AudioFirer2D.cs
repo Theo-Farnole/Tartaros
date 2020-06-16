@@ -29,6 +29,7 @@ namespace Game.Audio
             EntityUnitSpawner.OnUnitCreated += EntityUnitSpawner_OnUnitCreated;
             GameManager.OnBuildSuccessful += GameManager_OnBuildSuccessful;
             GameManager.OnVictory += GameManager_OnVictory;
+            GameManager.OnBuildSuccessful += GameManager_OnBuildSuccessful1;
 
             SelectionManager.OnSelectionUpdated += SelectionManager_OnSelectionUpdated;
             SelectedGroupsActionsCaller.OnOrderGiven += SelectedGroupsActionsCaller_OnOrderGiven;
@@ -39,11 +40,9 @@ namespace Game.Audio
             SelectedGroupsActionsCaller.OnOrder_Patrol += SelectedGroupsActionsCaller_OnOrder_Patrol;
         }
 
-        private void GameManager_HasNotEnoughtResources(GameManager gameManager, ResourcesWrapper cost)
-        {
-            Debug.Log("Not enough resources");
-            _audioManager.PlayOneShotRandomClip(Sound2D.NotEnoughResources);
-        }
+        private void GameManager_OnBuildSuccessful1(GameManager gameManager) => _audioManager.PlayOneShotRandomClip(Sound2D.SuccessfulBuilding);
+
+        private void GameManager_HasNotEnoughtResources(GameManager gameManager, ResourcesWrapper cost) => _audioManager.PlayOneShotRandomClip(Sound2D.NotEnoughResources);
 
         private void GameManager_OnVictory(GameManager gameManager) => _audioManager.PlayRandomClip(Sound2D.OnVictory);
 
@@ -71,7 +70,6 @@ namespace Game.Audio
                 return;
 
             // When we select entity with SelectionRectangle, OnSelectionUpdate is called one time per entity.
-            // 
             // So, to avoid the sound playing a lot of time, we prevent the sound to be playing one time maximum per frame
             if (_lastFrameOnSelectionPlayed == Time.frameCount)
                 return;
