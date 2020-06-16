@@ -25,7 +25,7 @@ namespace Game.Audio
         {
             WaveManager.OnWaveStart += WaveManager_OnWaveStart;
             WaveManager.OnWaveClear += WaveManager_OnWaveClear;
-            GameManager.OnGameResourcesUpdate += GameManager_OnGameResourcesUpdate;
+            GameManager.HasNotEnoughtResources += GameManager_HasNotEnoughtResources;
             EntityUnitSpawner.OnUnitCreated += EntityUnitSpawner_OnUnitCreated;
             GameManager.OnBuildSuccessful += GameManager_OnBuildSuccessful;
             GameManager.OnVictory += GameManager_OnVictory;
@@ -37,6 +37,12 @@ namespace Game.Audio
             SelectedGroupsActionsCaller.OnOrder_MoveToPosition += SelectedGroupsActionsCaller_OnOrder_MoveToPosition;
             SelectedGroupsActionsCaller.OnOrder_MoveAggressively += SelectedGroupsActionsCaller_OnOrder_MoveAggressively;
             SelectedGroupsActionsCaller.OnOrder_Patrol += SelectedGroupsActionsCaller_OnOrder_Patrol;
+        }
+
+        private void GameManager_HasNotEnoughtResources(GameManager gameManager, ResourcesWrapper cost)
+        {
+            Debug.Log("Not enough resources");
+            _audioManager.PlayOneShotRandomClip(Sound2D.NotEnoughResources);
         }
 
         private void GameManager_OnVictory(GameManager gameManager) => _audioManager.PlayRandomClip(Sound2D.OnVictory);
@@ -54,8 +60,6 @@ namespace Game.Audio
         private void SelectedGroupsActionsCaller_OnOrderGiven() => _audioManager.PlayOneShotRandomClip(Sound2D.OrderGiven);
 
         private void EntityUnitSpawner_OnUnitCreated(Entity creator, Entity spawned) => _audioManager.PlayOneShotRandomClip(Sound2D.UnitCreated);
-
-        private void GameManager_OnGameResourcesUpdate(ResourcesWrapper resources) => _audioManager.PlayOneShotRandomClip(Sound2D.NotEnoughResources);
 
         private void WaveManager_OnWaveClear(int waveCountCleared) => _audioManager.PlayRandomClip(Sound2D.WaveEnd);
 

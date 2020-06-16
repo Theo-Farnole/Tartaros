@@ -264,7 +264,7 @@ public partial class GameManager : Singleton<GameManager>
         {
             if (logErrors)
             {
-                UIMessagesLogger.Instance.LogErrorFormat("Build more house to create {0} unit.", entityID);
+                UIMessagesLogger.Instance.LogErrorFormat("Build more house to create {0} unit.", entityID);                
             }
 
             return false;
@@ -275,6 +275,7 @@ public partial class GameManager : Singleton<GameManager>
             if (logErrors)
             {
                 UIMessagesLogger.Instance.LogError("You doesn't have enought resources to create " + entityID + ".");
+                HasNotEnoughtResources?.Invoke(this, unitData.SpawningCost);
             }
 
             return false;
