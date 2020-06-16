@@ -33,10 +33,10 @@ Material:
     - _edhedistance: 108.32
     - _waveheight: 0.15
     - _wavespeed: 0.38
-    - _wavetile: 0.63
+    - _wavetile: 2.13
     m_Colors:
     - _PanSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _Vector0: {r: 0.23, g: 0.01, b: 0, a: 0}
-    - _topcolor: {r: 0.25787643, g: 0.48934394, b: 0.57547164, a: 0}
-    - _watercolorpur: {r: 0.1624243, g: 0.36566135, b: 0.4716981, a: 0}
+    - _topcolor: {r: 0.24029905, g: 0.5600253, b: 0.6792453, a: 0}
+    - _watercolorpur: {r: 0.21244211, g: 0.45760798, b: 0.5849056, a: 0}
     - _wavestretch: {r: 0.15, g: 0.02, b: 0, a: 0}
