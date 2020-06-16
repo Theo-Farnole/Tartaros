@@ -132,5 +132,11 @@ public partial class SnapGridDatabase : ScriptableObject
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(Vector3.zero, 0.15f);
     }
+    
+    public void SetGridLength(float length)
+    {
+        _gridLength = length;
+        OnValidate();
+    }
 }
 #endif

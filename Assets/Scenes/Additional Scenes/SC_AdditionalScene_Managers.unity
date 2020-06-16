@@ -121,7 +121,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 6ed2ea09b7dc75b4aad038bae031a34b, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 8da448c4bab10df4d86cf35975069732, type: 2}
 --- !u!1 &50587641
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,7 +952,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746630483}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 30, z: 0}
+  m_LocalPosition: {x: 500, y: 30, z: 500}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 50587642}
@@ -972,7 +972,7 @@ Projector:
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1
-  m_OrthographicSize: 90
+  m_OrthographicSize: 500
   m_Material: {fileID: 2100000, guid: 807e05b5f95f0ed4a9267e58c77de9a9, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
