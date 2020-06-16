@@ -91,6 +91,32 @@ MonoBehaviour:
   opacity:
     overrideState: 1
     value: 1
+--- !u!114 &-4480559563755331663
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6050e2d5de785ce4d931e4dbdbf2d755, type: 3}
+  m_Name: ChromaticAberration
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  spectralLut:
+    overrideState: 1
+    value: {fileID: 0}
+    defaultState: 1
+  intensity:
+    overrideState: 1
+    value: 0.101
+  fastMode:
+    overrideState: 1
+    value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,6 +134,7 @@ MonoBehaviour:
   - {fileID: -8733016978249832704}
   - {fileID: -9173428728389657945}
   - {fileID: 2857129905003200958}
+  - {fileID: -4480559563755331663}
 --- !u!114 &1326748530717338120
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -129,7 +156,7 @@ MonoBehaviour:
     value: 1
   intensity:
     overrideState: 1
-    value: 0.53
+    value: 0.7
   color:
     overrideState: 1
     value: {r: 0, g: 0, b: 0, a: 1}
@@ -147,7 +174,7 @@ MonoBehaviour:
     value: -12
   thicknessModifier:
     overrideState: 1
-    value: 2.57
+    value: 5.44
   directLightingStrength:
     overrideState: 1
     value: 0

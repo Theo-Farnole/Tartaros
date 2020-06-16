@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 479847001}
   - component: {fileID: 479847000}
   m_Layer: 0
-  m_Name: ee
+  m_Name: directional light 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -452,7 +452,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.12
+  m_Intensity: 0.72
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -508,13 +508,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479846999}
-  m_LocalRotation: {x: 0.34813178, y: 0.5138343, z: -0.2396052, w: 0.7465708}
+  m_LocalRotation: {x: 0.91932136, y: -0.22115892, z: -0.23418799, w: 0.22603743}
   m_LocalPosition: {x: -60, y: 148, z: 146}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 50.000004, y: 69.076004, z: 0}
+  m_LocalEulerAnglesHint: {x: 18.181002, y: -146.05101, z: -147.35501}
 --- !u!4 &514165119 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7475237624608698164, guid: 73007a6a36fb4bf48a25f902352883da,
@@ -707,8 +707,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.9811321, g: 0.7471265, b: 0.47668213, a: 1}
-  m_Intensity: 0.91
+  m_Color: {r: 1, g: 0.77254903, b: 0.63529414, a: 1}
+  m_Intensity: 1.04
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -764,13 +764,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 706335596}
-  m_LocalRotation: {x: 0.39593887, y: 0.25268146, z: -0.1257276, w: 0.87382895}
+  m_LocalRotation: {x: -0.8499282, y: 0.09029771, z: 0.44557503, w: -0.2663293}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1871127439}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 49.069004, y: 31.472002, z: -1.718}
+  m_LocalEulerAnglesHint: {x: 21.855001, y: -479.786, z: -155.09601}
 --- !u!1001 &764958034
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1186,6 +1186,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RenderingPath
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945280006497653800, guid: cd5fe956db519284ea0c6ce0065c27d4,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945280006497653800, guid: cd5fe956db519284ea0c6ce0065c27d4,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.254717
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945280006497653800, guid: cd5fe956db519284ea0c6ce0065c27d4,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.254717
+      objectReference: {fileID: 0}
+    - target: {fileID: 3945280006497653800, guid: cd5fe956db519284ea0c6ce0065c27d4,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.254717
       objectReference: {fileID: 0}
     - target: {fileID: 3945280006497653802, guid: cd5fe956db519284ea0c6ce0065c27d4,
         type: 3}
