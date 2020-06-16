@@ -16,8 +16,6 @@
         {
             if (Physics.Raycast(worldPosition + Vector3.up * 10, Vector3.down, out RaycastHit hit))
             {
-                Debug.Log("IsTerrainFlat returns " + hit.point.y + " equals ? " + Mathf.Approximately(hit.point.y, _isFlatTerrainYPosition));
-
                 // Flat terrain mean plane is at position '0'.
                 return Math.Approximately(hit.point.y, _isFlatTerrainYPosition, _isFlatApproximately_Delta);
             }
