@@ -65,7 +65,9 @@ MonoBehaviour:
   _creationDuration: 0
   _viewRadius: 10
   _canDetectEntities: 1
-  _soundsAttack: []
+  _soundsAttack:
+  - {fileID: 8300000, guid: 3effe3b3f417a814cb031283faa1d706, type: 3}
+  - {fileID: 8300000, guid: 51044e07216c86144bd65b172defc551, type: 3}
   _soundsDeath:
   - {fileID: 8300000, guid: 91628be1a46fd364f80b8d61ff2ed3c6, type: 3}
   _isConstructionChained: 0
