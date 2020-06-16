@@ -96,6 +96,15 @@ namespace Game.Entities
         [SerializeField] private bool _canDetectEntities = false;
         #endregion
 
+        #region Sounds
+        [BoxGroup("Sounds")]
+        [EnableIf(nameof(_canAttack))]
+        [SerializeField] private AudioClip[] _soundsAttack = new AudioClip[0];
+
+        [BoxGroup("Sounds")]
+        [SerializeField] private AudioClip[] _soundsDeath = new AudioClip[0];
+        #endregion
+
         [BoxGroup("Construction")]
         [Tooltip("Is construction like a wall ?")]
         [SerializeField] private bool _isConstructionChained;
@@ -256,6 +265,10 @@ namespace Game.Entities
 
         #region Methods
         #region Public Methods
+        public AudioClip GetRandomAttackSound() => GetRandomSounds(_soundsAttack, nameof(_soundsAttack));
+
+        public AudioClip GetRandomDeathSound() => GetRandomSounds(_soundsDeath, nameof(_soundsDeath));
+
         public float GetRadius()
         {
             switch (_entityType)
@@ -324,6 +337,20 @@ namespace Game.Entities
         #endregion
 
         #region Private Methods
+        private AudioClip GetRandomSounds(AudioClip[] audioClips, string fieldName)
+        {
+            if (audioClips == null)
+                return null;
+
+            if (audioClips.Length == 0)
+            {
+                Debug.LogWarningFormat("Entity Data : There is zero sounds in '{1}' of '{0}'.", name, fieldName);
+                return null;
+            }
+
+            return audioClips[UnityEngine.Random.Range(0, audioClips.Length)];
+        }
+
         private void GetToggleNavMeshObstacleOrder(List<OrderContent> output)
         {
             if (!_canToggleNavMeshObstacle)

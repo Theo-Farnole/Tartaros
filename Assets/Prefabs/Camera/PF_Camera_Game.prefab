@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3945280006497653807}
   - component: {fileID: 3945280006497653800}
-  - component: {fileID: 3945280006497653801}
   - component: {fileID: 3945280006497653806}
   - component: {fileID: 1811884443}
+  - component: {fileID: 7037148429821968164}
   m_Layer: 0
   m_Name: PF_Camera_Game
   m_TagString: MainCamera
@@ -30,7 +30,8 @@ Transform:
   m_LocalRotation: {x: 0.36098844, y: 0.35226196, z: -0.14952631, w: 0.8504357}
   m_LocalPosition: {x: 5.7, y: 22.93, z: 3.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1007802436400642798}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 46, y: 45, z: 0}
@@ -77,14 +78,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &3945280006497653801
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3945280006497653802}
-  m_Enabled: 0
 --- !u!114 &3945280006497653806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,6 +91,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: 18f72b6787b444e4395cc0e108601425, type: 2}
+  _enableMapLimit: 1
+  _mapLimitX:
+    min: -100
+    max: 100
+  _mapLimitZ:
+    min: -100
+    max: 100
 --- !u!114 &1811884443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,3 +158,70 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &7037148429821968164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3945280006497653802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc28a822d5cff2541b8d69195ab4e79b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transformToMove: {fileID: 1007802436400642798}
+  _maxDistance: 16.51
+--- !u!1 &5927157075362420071
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1007802436400642798}
+  - component: {fileID: 4824641392851258481}
+  - component: {fileID: 479730080630037395}
+  m_Layer: 0
+  m_Name: Audio Listener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1007802436400642798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5927157075362420071}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3945280006497653807}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &4824641392851258481
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5927157075362420071}
+  m_Enabled: 1
+--- !u!114 &479730080630037395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5927157075362420071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 580082f6a5d72a543badaba168de15e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _notes: We raycas
