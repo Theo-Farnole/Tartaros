@@ -16,7 +16,9 @@
     {
         None = 0,
         Free = 1,
-        Visible = 2
+        Visible = 2,
+        TerrainFlat = 4,
+        All = ~0
     }
 
     public enum BuildingChainOrientation
@@ -29,7 +31,7 @@
     /// <summary>
     /// This script used in building to know if a tile is free or not.
     /// </summary>
-    public class TileSystem : Singleton<TileSystem>
+    public partial class TileSystem : Singleton<TileSystem>
     {
         #region Fields
         private const string debugLogHeader = "Tile System : ";
@@ -184,6 +186,15 @@
                 if (!IsTileVisible(tileWorldPosition))
                 {
                     if (logBuildError) UIMessagesLogger.Instance.LogError("Can't on non-visible tile.");
+                    return false;
+                }
+            }
+
+            if (condition.HasFlag(TileFlag.TerrainFlat))
+            {
+                if (!IsTerrainFlat(tileCoords))
+                {
+                    if (logBuildError) UIMessagesLogger.Instance.LogError("You must build on flat terrain.");
                     return false;
                 }
             }
@@ -367,7 +378,7 @@
             => GameManager.Instance.Grid.CoordsToWorldPosition(coords);
         #endregion
 
-        #region Path Finding methods
+        #region Path Finding methods        
         public Vector2Int[] GetPath(Vector3 from, Vector3 to) => GetPath(WorldToCoords(from), WorldToCoords(to));
 
         public Vector2Int[] GetPath(Vector2Int from, Vector2Int to)
@@ -420,7 +431,7 @@
             return o;
         }
 
-        #endregion
+        #endregion        
         #endregion
         #endregion
     }

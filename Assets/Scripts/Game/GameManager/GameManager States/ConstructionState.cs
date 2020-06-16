@@ -44,7 +44,7 @@
         {
             GameObject building = _constructionBuilding.Building;
 
-            const TileFlag tileFlagCondition = TileFlag.Free | TileFlag.Visible;
+            const TileFlag tileFlagCondition = TileFlag.All;
 
             if (TileSystem.Instance.DoTilesFillConditions(building.transform.position, EntityData.TileSize, tileFlagCondition))
             {

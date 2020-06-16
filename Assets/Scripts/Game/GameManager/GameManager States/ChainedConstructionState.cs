@@ -179,7 +179,7 @@
                 if (tileSystem.GetTile(buildingPosition) != null && tileSystem.DoTileContainsEntityOfID(buildingPosition, EntityID))
                     continue;
 
-                if (tileSystem.DoTilesFillConditions(buildingPosition, EntityData.TileSize, TileFlag.Free | TileFlag.Visible))
+                if (tileSystem.DoTilesFillConditions(buildingPosition, EntityData.TileSize, TileFlag.All))
                     continue;
 
                 return false;
