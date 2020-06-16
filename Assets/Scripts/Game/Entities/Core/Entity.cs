@@ -101,10 +101,10 @@ namespace Game.Entities
 
             StopEveryActions();
 
+            OnDeath?.Invoke(this);
+
             Assert.IsNotNull(Data.Prefab, "Entity : Can't enqueue gameObject in ObjectPooler because Data.Prefab is null.");
             ObjectPooler.Instance.EnqueueGameObject(Data.Prefab, gameObject, true);
-
-            OnDeath?.Invoke(this);
         }
 
         /// <summary>
