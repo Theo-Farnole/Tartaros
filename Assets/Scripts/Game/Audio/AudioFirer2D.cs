@@ -13,6 +13,7 @@ namespace Game.Audio
     public class AudioFirer2D : MonoBehaviour
     {
         private AudioManager2D _audioManager;
+        private int _lastFrameOnSelectionPlayed = -1;
 
         void Awake()
         {
@@ -27,7 +28,7 @@ namespace Game.Audio
             GameManager.OnGameResourcesUpdate += GameManager_OnGameResourcesUpdate;
             EntityUnitSpawner.OnUnitCreated += EntityUnitSpawner_OnUnitCreated;
             GameManager.OnBuildSuccessful += GameManager_OnBuildSuccessful;
-            SelectionManager.OnSelectionUpdated += SelectionManager_OnSelectionUpdated;           
+            SelectionManager.OnSelectionUpdated += SelectionManager_OnSelectionUpdated;
             SelectedGroupsActionsCaller.OnOrderGiven += SelectedGroupsActionsCaller_OnOrderGiven;
             SelectedGroupsActionsCaller.OnOrder_SetAnchorPosition += SelectedGroupsActionsCaller_OnOrder_SetAnchorPosition;
 
@@ -61,6 +62,14 @@ namespace Game.Audio
         {
             if (selectedGroups.Length == 0)
                 return;
+
+            // When we select entity with SelectionRectangle, OnSelectionUpdate is called one time per entity.
+            // 
+            // So, to avoid the sound playing a lot of time, we prevent the sound to be playing one time maximum per frame
+            if (_lastFrameOnSelectionPlayed == Time.frameCount)
+                return;
+
+            _lastFrameOnSelectionPlayed = Time.frameCount;
 
             _audioManager.PlayOneShotRandomClip(Sound2D.OnSelection);
         }
