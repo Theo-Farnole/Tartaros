@@ -147,7 +147,7 @@
 
         private bool CanBeConstruct()
         {
-            TileFlag condition = TileFlag.Free | TileFlag.Visible;
+            const TileFlag condition = TileFlag.All;
             string idCondition = _isChainedBuilding ? _entityID : string.Empty;
 
             return TileSystem.Instance.DoTilesFillConditions(_building.transform.position, _buildingSize, condition, idCondition);
