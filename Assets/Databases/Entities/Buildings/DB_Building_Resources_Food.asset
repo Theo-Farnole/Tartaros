@@ -126,6 +126,7 @@ MonoBehaviour:
   _prefab: {fileID: 545007711727897807, guid: 991d5e0ade863b94c8911376e6dcb0f5, type: 3}
   _populationUse: 0
   _tileSize: {x: 3, y: 4}
+  _radius: 0.5
   _hoverPopupData: {fileID: 11400000, guid: 43b6de2db9833564a89bee0680bc5192, type: 2}
   _isInvincible: 0
   _hp: 10
@@ -135,6 +136,10 @@ MonoBehaviour:
     stone: 0
   _creationDuration: 0
   _viewRadius: 1
+  _canDetectEntities: 0
+  _soundsAttack: []
+  _soundsDeath:
+  - {fileID: 8300000, guid: 91628be1a46fd364f80b8d61ff2ed3c6, type: 3}
   _isConstructionChained: 0
   _canAttack: 0
   _isMelee: 1
@@ -146,7 +151,7 @@ MonoBehaviour:
   _canMove: 0
   _speed: 3
   _canCreateUnit: 0
-  _availableUnitsForCreation: []
+  _unitsSpawnConditions: []
   _canGenerateResources: 1
   _generationTick: 1
   _generationType: 1
@@ -159,3 +164,9 @@ MonoBehaviour:
   _increaseMaxPopulationAmount: 0
   _canTurnIntoAnotherEntity: 0
   _turnIntoAnotherEntityList: []
+  _canToggleNavMeshObstacle: 0
+  _orderToggleNavMeshObstacle:
+    _hotkey: 0
+    _portrait: {fileID: 0}
+    _hoverPopupData: {fileID: 0}
+    _linePosition: 0

@@ -54,6 +54,7 @@ MonoBehaviour:
   _prefab: {fileID: 545007711727897807, guid: f9cd4649e773d2e4199850a089ff5003, type: 3}
   _populationUse: 0
   _tileSize: {x: 5, y: 8}
+  _radius: 0.5
   _hoverPopupData: {fileID: 11400000, guid: 792246e03ecbdce458895a7da1944788, type: 2}
   _isInvincible: 0
   _hp: 10
@@ -64,6 +65,9 @@ MonoBehaviour:
   _creationDuration: 0
   _viewRadius: 12.93
   _canDetectEntities: 0
+  _soundsAttack: []
+  _soundsDeath:
+  - {fileID: 8300000, guid: 91628be1a46fd364f80b8d61ff2ed3c6, type: 3}
   _isConstructionChained: 0
   _canAttack: 0
   _isMelee: 1
