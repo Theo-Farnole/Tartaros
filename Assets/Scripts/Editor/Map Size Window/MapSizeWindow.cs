@@ -73,6 +73,8 @@
 
             _constructionGrid.SetGridLength(length);
             _fogGrid.SetGridLength(length);
+
+            AssetDatabase.SaveAssets();
         }
 
         #region Initialize Values
