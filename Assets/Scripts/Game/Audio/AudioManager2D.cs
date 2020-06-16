@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,10 +49,14 @@ namespace Game.Audio
         WaveEnd = 2,
         NotEnoughResources = 3,
         UnitCreated = 4, // we don't play sound in function of unit created
-        OrderGiven = 5, // we don't play sound in function of order given
+        [Obsolete] OrderGiven = 5, // we don't play sound in function of order given
         SuccessfulBuilding = 6,
         OnSelection = 7,
         OnButtonClick = 8,
-        OnSetAnchorPosition = 9
+        OnSetAnchorPosition = 9,
+        OrderAttack = 10,
+        OrderMove = 11,
+        OrderMoveAggressively = 12,
+        OrderPatrol = 13
     }
 }
