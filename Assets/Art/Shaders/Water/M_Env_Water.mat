@@ -37,6 +37,6 @@ Material:
     m_Colors:
     - _PanSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _Vector0: {r: 0.23, g: 0.01, b: 0, a: 0}
-    - _topcolor: {r: 0.24029905, g: 0.5600253, b: 0.6792453, a: 0}
-    - _watercolorpur: {r: 0.21244211, g: 0.45760798, b: 0.5849056, a: 0}
+    - _topcolor: {r: 0, g: 0.73195887, b: 1, a: 0}
+    - _watercolorpur: {r: 0.36912602, g: 0.78341955, b: 0.990566, a: 0}
     - _wavestretch: {r: 0.15, g: 0.02, b: 0, a: 0}
