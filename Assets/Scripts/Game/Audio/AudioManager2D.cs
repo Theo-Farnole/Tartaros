@@ -57,6 +57,7 @@ namespace Game.Audio
         OrderAttack = 10,
         OrderMove = 11,
         OrderMoveAggressively = 12,
-        OrderPatrol = 13
+        OrderPatrol = 13,
+        OnVictory = 14
     }
 }

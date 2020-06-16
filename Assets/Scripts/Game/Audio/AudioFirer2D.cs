@@ -28,15 +28,18 @@ namespace Game.Audio
             GameManager.OnGameResourcesUpdate += GameManager_OnGameResourcesUpdate;
             EntityUnitSpawner.OnUnitCreated += EntityUnitSpawner_OnUnitCreated;
             GameManager.OnBuildSuccessful += GameManager_OnBuildSuccessful;
+            GameManager.OnVictory += GameManager_OnVictory;
+
             SelectionManager.OnSelectionUpdated += SelectionManager_OnSelectionUpdated;
             SelectedGroupsActionsCaller.OnOrderGiven += SelectedGroupsActionsCaller_OnOrderGiven;
             SelectedGroupsActionsCaller.OnOrder_SetAnchorPosition += SelectedGroupsActionsCaller_OnOrder_SetAnchorPosition;
-
             SelectedGroupsActionsCaller.OnOrder_AttackUnit += SelectedGroupsActionsCaller_OnOrder_AttackUnit;
             SelectedGroupsActionsCaller.OnOrder_MoveToPosition += SelectedGroupsActionsCaller_OnOrder_MoveToPosition;
             SelectedGroupsActionsCaller.OnOrder_MoveAggressively += SelectedGroupsActionsCaller_OnOrder_MoveAggressively;
             SelectedGroupsActionsCaller.OnOrder_Patrol += SelectedGroupsActionsCaller_OnOrder_Patrol;
         }
+
+        private void GameManager_OnVictory(GameManager gameManager) => _audioManager.PlayRandomClip(Sound2D.OnVictory);
 
         private void SelectedGroupsActionsCaller_OnOrder_Patrol(Vector3 targetPosition) => _audioManager.PlayRandomClip(Sound2D.OrderPatrol);
 
