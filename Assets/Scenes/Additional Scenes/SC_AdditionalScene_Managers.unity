@@ -1895,6 +1895,7 @@ GameObject:
   - component: {fileID: 848056611}
   - component: {fileID: 848056610}
   - component: {fileID: 848056613}
+  - component: {fileID: 848056614}
   m_Layer: 0
   m_Name: Inputs Listener
   m_TagString: Untagged
@@ -1977,6 +1978,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: accf59b0a73dfb94a9f9631f1427c6c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &848056614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848056608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8c4a11a56be92444a6cd4f2a7d95cbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resumeKeyCode: 27
 --- !u!1 &900912191
 GameObject:
   m_ObjectHideFlags: 0
