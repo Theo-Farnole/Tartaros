@@ -1,4 +1,4 @@
-namespace Game.Entities
+﻿namespace Game.Entities
 {
     using Game.Entities.Actions;
     using System;
@@ -12,7 +12,7 @@ namespace Game.Entities
     {
         #region Fields
         private const string debugLogHeader = "Entity Movement : ";
-        private const float reachDestinationThreshold = 0.5f;
+        private const float reachDestinationThreshold = 0.5f;        
 
         private Vector3 _destination;
         private bool _hasReachedDestination = false;
@@ -56,11 +56,11 @@ namespace Game.Entities
             if (!Entity.Data.CanMove)
                 return;
 
-            var oldHasReachedDestination = _hasReachedDestination;
+            bool oldHasReachedDestination = _hasReachedDestination;
             _hasReachedDestination = HasReachedDestination();
 
             // has just reached destination ?
-            if (!oldHasReachedDestination && _hasReachedDestination)
+            if (_hasReachedDestination && !oldHasReachedDestination)
             {
                 DestinationReached?.Invoke(_destination);
                 MovementStopped?.Invoke();
@@ -97,7 +97,10 @@ namespace Game.Entities
             _navMeshAgent.isStopped = false;
             _navMeshAgent.SetDestination(position);
 
-            StartMove?.Invoke(position);
+            if (_navMeshAgent.isStopped || _hasReachedDestination)
+            {
+                StartMove?.Invoke(position);
+            }
         }
 
         public void StopMoving()
