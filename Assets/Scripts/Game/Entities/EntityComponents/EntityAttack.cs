@@ -38,19 +38,19 @@ namespace Game.Entities
 
         void OnEnable()
         {
-            Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += OnEnemyEnterAttackRange;
+            Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterViewRange += OnEnemyEnterViewRange;
             Entity.GetCharacterComponent<EntityHealth>().OnDamageReceived += OnDamageReceived;
         }
 
         void OnDisable()
         {
-            Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterAttackRange += OnEnemyEnterAttackRange;
+            Entity.GetCharacterComponent<EntityDetection>().OnOpponentEnterViewRange += OnEnemyEnterViewRange;
             Entity.GetCharacterComponent<EntityHealth>().OnDamageReceived -= OnDamageReceived;
         }
         #endregion
 
         #region Events Handlers
-        private void OnEnemyEnterAttackRange(Entity enemy)
+        private void OnEnemyEnterViewRange(Entity enemy)
         {
             if (Entity.IsIdle)
             {
