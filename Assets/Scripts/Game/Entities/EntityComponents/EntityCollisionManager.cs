@@ -24,6 +24,8 @@
         private float _originalAgentRadius = -1;
         private Size _currentSize = Size.NormalSize;
 
+        DG.Tweening.Core.TweenerCore<float, float, DG.Tweening.Plugins.Options.FloatOptions> _currentTweening = null;
+
         private NavMeshObstacle _navMeshObstacle = null;
         private NavMeshAgent _navMeshAgent = null;
         #endregion
@@ -76,7 +78,12 @@
 
             _currentSize = Size.Shrinking;
 
-            DOTween.To(() => _navMeshAgent.radius, x => _navMeshAgent.radius = x, _originalAgentRadius * _collisionScalerData.CollisionScaleDownPercent, _collisionScalerData.ReduceTime)
+            if (_currentTweening != null)
+            {
+                _currentTweening.Kill();
+            }
+
+            _currentTweening = DOTween.To(() => _navMeshAgent.radius, x => _navMeshAgent.radius = x, _originalAgentRadius * _collisionScalerData.CollisionScaleDownPercent, _collisionScalerData.ReduceTime)
                 .OnComplete(() => { _currentSize = Size.Shrinked; });
         }
 
@@ -90,12 +97,14 @@
 
             _currentSize = Size.Expanding;
 
-            DOTween.To(
-                () => _navMeshAgent.radius,
-                x => _navMeshAgent.radius = x,
-                _originalAgentRadius,
-                _collisionScalerData.IncreaseTime)
-            .OnComplete(() => { _currentSize = Size.NormalSize; });
+
+            if (_currentTweening != null)
+            {
+                _currentTweening.Kill();
+            }
+
+            _currentTweening = DOTween.To(() => _navMeshAgent.radius, x => _navMeshAgent.radius = x, _originalAgentRadius, _collisionScalerData.IncreaseTime)
+                 .OnComplete(() => { _currentSize = Size.NormalSize; });
         }
         #endregion
 
