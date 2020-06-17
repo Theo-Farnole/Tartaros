@@ -1,4 +1,4 @@
-namespace Game.Entities
+﻿namespace Game.Entities
 {
     using Game.Entities.Actions;
     using System;
@@ -33,7 +33,6 @@ namespace Game.Entities
         public event System.Action MovementStopped;
         #endregion
 
-
         #region Properties
         public Vector3 Destination { get => _destination; }
         #endregion
@@ -50,7 +49,7 @@ namespace Game.Entities
         {
             if (_navMeshAgent != null)
             {
-                SetupNavMeshAgent();
+                _navMeshAgent.speed = Entity.Data.Speed;
             }
         }
 
@@ -67,29 +66,6 @@ namespace Game.Entities
             {
                 DestinationReached?.Invoke(_destination);
                 MovementStopped?.Invoke();
-            }
-        }
-
-        void OnEnable()
-        {
-            Entity.GetCharacterComponent<EntityDetection>().OnAllyEnterShiftRange += EntityMovement_OnAllyEnterShiftRange;
-        }
-
-        void OnDisable()
-        {
-            Entity.GetCharacterComponent<EntityDetection>().OnAllyEnterShiftRange -= EntityMovement_OnAllyEnterShiftRange;
-
-            StopMoving();
-        }
-        #endregion
-
-        #region Events Handlers
-        private void EntityMovement_OnAllyEnterShiftRange(Entity ally)
-        {
-            // Make the entity shift to let the hitEntity walks throught the crowd
-            if (Entity.IsIdle && !ally.IsIdle)
-            {
-                Shift(ally);
             }
         }
         #endregion
@@ -147,22 +123,6 @@ namespace Game.Entities
                 return true;
 
             return Vector3.Distance(transform.position, _destination) <= _navMeshAgent.stoppingDistance + 0.1f;
-        }
-        #endregion
-
-        #region Private methods
-        private void SetupNavMeshAgent()
-        {
-            _navMeshAgent.speed = Entity.Data.Speed;            
-        }
-
-        private void Shift(Entity hitEntity)
-        {
-            Vector3 fleeHitEntityDirection = Quaternion.Euler(0, -90, 0) * -Lortedo.Utilities.Math.Direction(Entity.transform.position, hitEntity.transform.position);
-
-            var action = new ActionMoveToPosition(Entity, transform.position + fleeHitEntityDirection * _shiftData.ShiftLength);
-
-            Entity.SetAction(action, false);
         }
         #endregion
         #endregion
