@@ -24,8 +24,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private PanelVictory _panelVictory;
     #endregion
 
-
     #region Methods
+    #region MonoBehaviour Callbacks
     void Start()
     {
         _panelGameInformation.gameObject.SetActive(true);
@@ -46,33 +46,36 @@ public class UIManager : MonoBehaviour
     {
         GameManager.OnGameOver += GameManager_OnGameOver;
         GameManager.OnVictory += GameManager_OnVictory;
-        SelectionManager.OnSelectionUpdated += ManagePanelDisplay;
-
+        SelectionManager.OnSelectionUpdated += SelectionManager_OnSelectionUpdated;
+        SelectionManager.OnSelectionClear += SelectionManager_OnSelectionClear;
     }
 
     void OnDisable()
     {
         GameManager.OnGameOver -= GameManager_OnGameOver;
         GameManager.OnVictory -= GameManager_OnVictory;
-        SelectionManager.OnSelectionUpdated -= ManagePanelDisplay;
+        SelectionManager.OnSelectionUpdated -= SelectionManager_OnSelectionUpdated;
+        SelectionManager.OnSelectionClear -= SelectionManager_OnSelectionClear;
+    }
+    #endregion
+
+    #region Events Handlers
+    void SelectionManager_OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
+    {
+        // show selection panel
+        _panelConstruction.Hide();
+        _panelSelection.Show();
     }
 
-    void ManagePanelDisplay(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
+    private void SelectionManager_OnSelectionClear()
     {
-        if (selectedGroups.Length == 0)
-        {
-            _panelConstruction.Show();
-            _panelSelection.Hide();
-        }
-        else
-        {
-            _panelSelection.Show();
-            _panelConstruction.Hide();
-        }
+        // show construction panel
+        _panelConstruction.Show();
+        _panelSelection.Hide();
     }
 
     private void GameManager_OnGameOver(GameManager gameManager)
-    { 
+    {
         Assert.IsFalse(_panelVictory.IsPanelShowing(), debugLogHeader + "panel victory is show, but we just received a 'GameOver' from GameManager.");
 
         _panelGameOver.Show();
@@ -90,6 +93,7 @@ public class UIManager : MonoBehaviour
         _panelSelection.Hide();
         _panelConstruction.Hide();
     }
+    #endregion
     #endregion
 }
 

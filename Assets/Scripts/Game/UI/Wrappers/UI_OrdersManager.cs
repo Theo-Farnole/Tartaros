@@ -49,14 +49,10 @@
         #region Events Handlers
         private void SelectionManager_OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
         {
-            // is selecting something
-            if (highlightGroupIndex >= 0)
-            {
-                Assert.IsTrue(selectedGroups.IsIndexInsideBounds(highlightGroupIndex), "Highlight group index is out of bounds of selectedGroups");
+			Assert.IsTrue(selectedGroups.IsIndexInsideBounds(highlightGroupIndex), "Highlight group index is out of bounds of selectedGroups");
 
-                _selectedEntity = selectedGroups[highlightGroupIndex].unitsSelected[0];
-                UpdateOrders(_selectedEntity);
-            }
+			_selectedEntity = selectedGroups[highlightGroupIndex].unitsSelected[0];
+			UpdateOrders(_selectedEntity);            
         }
 
         private void GameManager_PendingCreationEntityAdded(string id) => UpdateOrdersWithSelectedEntity();

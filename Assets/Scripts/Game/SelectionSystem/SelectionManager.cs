@@ -12,6 +12,7 @@ namespace Game.Selection
     using Game.GameManagers;
 
     public delegate void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex);
+    public delegate void OnSelectionClear();
 
     // REFACTOR NOTE:
     // Split 'input' logic outside this class
@@ -38,6 +39,7 @@ namespace Game.Selection
 
         #region Fields
         public static event OnSelectionUpdated OnSelectionUpdated;
+        public static event OnSelectionClear OnSelectionClear;
 
         [Header("SETTINGS")]
         [SerializeField] private bool _forceSelectionToHaveOneType = false;
@@ -60,7 +62,7 @@ namespace Game.Selection
         #region Properties
         public bool HasSelection { get => _selectedGroups.Count > 0; }
         public SelectionGroup[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Team.Player select x).ToArray(); }
-        public List<SelectionGroup> SelectedGroups { get => _selectedGroups; }        
+        public List<SelectionGroup> SelectedGroups { get => _selectedGroups; }
         #endregion
 
         #region Methods
@@ -200,9 +202,15 @@ namespace Game.Selection
                 }
             }
 
-            if (_selectedGroups.Count == 0) _highlightGroupIndex = -1;
-
-            OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
+            if (_selectedGroups.Count == 0)
+            {
+                _highlightGroupIndex = -1;
+                OnSelectionClear?.Invoke();
+            }
+            else
+            {
+                OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
+            }
         }
 
         /// <summary>
@@ -235,7 +243,7 @@ namespace Game.Selection
             _selectedGroups.Clear();
             _highlightGroupIndex = -1;
 
-            OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
+            OnSelectionClear?.Invoke();
         }
 
         public Vector3[] GetSelectedEntitiesPositions()

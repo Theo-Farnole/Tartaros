@@ -40,10 +40,6 @@
 
         private void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
         {
-            // no selection
-            if (highlightGroupIndex == -1)
-                return;
-
             switch (selectedGroups[highlightGroupIndex].unitsSelected[0].Data.EntityType)
             {
                 case Entities.EntityType.Unit:

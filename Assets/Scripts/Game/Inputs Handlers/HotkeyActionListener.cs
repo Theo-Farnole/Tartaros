@@ -1,16 +1,13 @@
-﻿using Game.Entities;
-using Game.GameManagers;
-using Game.Selection;
-using Lortedo.Utilities.Pattern;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-namespace Game.Inputs
+﻿namespace Game.Inputs
 {
+    using Game.Entities;
+    using Game.GameManagers;
+    using Game.Selection;
+    using System;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
     public class HotkeyActionListener : MonoBehaviour
     {
         public enum AskCursor
@@ -20,9 +17,11 @@ namespace Game.Inputs
             Attack = 2
         }
 
+        #region Fields
         [SerializeField] private KeyCode _killEntityKeyCode = KeyCode.Delete;
 
         Dictionary<KeyCode, Action> _commands = new Dictionary<KeyCode, Action>();
+        #endregion
 
         #region Methods
         #region MonoBehaviour Callbacks
@@ -39,26 +38,21 @@ namespace Game.Inputs
         void OnEnable()
         {
             SelectionManager.OnSelectionUpdated += OnSelectionUpdated;
+            SelectionManager.OnSelectionClear += SelectionManager_OnSelectionClear;
         }
 
         void OnDisable()
         {
             SelectionManager.OnSelectionUpdated -= OnSelectionUpdated;
+            SelectionManager.OnSelectionClear -= SelectionManager_OnSelectionClear;
         }
         #endregion
 
         #region Events Handlers
-        private void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
-        {
-            if (selectedGroups.Length > 0 && selectedGroups[0] != null)
-            {
-                SetHotkeyFromEntityOrders(selectedGroups[highlightGroupIndex].entityID);
-            }
-            else
-            {
-                SetHotkeyFromConstructionOrders();
-            }
-        }
+        private void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex) => SetHotkeyFromEntityOrders(selectedGroups[highlightGroupIndex].entityID);
+
+
+        private void SelectionManager_OnSelectionClear() => SetHotkeyFromConstructionOrders();
         #endregion
 
         #region Inputs management

@@ -102,9 +102,6 @@ namespace Game.Audio
 
         private void SelectionManager_OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
         {
-            if (selectedGroups.Length == 0)
-                return;
-
             // When we select entity with SelectionRectangle, OnSelectionUpdate is called one time per entity.
             // So, to avoid the sound playing a lot of time, we prevent the sound to be playing one time maximum per frame
             if (_lastFrameOnSelectionPlayed == Time.frameCount)
