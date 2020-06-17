@@ -1,4 +1,4 @@
-﻿namespace Game.Entities
+namespace Game.Entities
 {
     using Game.Entities.Actions;
     using System;
@@ -13,8 +13,6 @@
         #region Fields
         private const string debugLogHeader = "Entity Movement : ";
         private const float reachDestinationThreshold = 0.5f;
-
-        [SerializeField] private EntityShiftData _shiftData;
 
         private Vector3 _destination;
         private bool _hasReachedDestination = false;

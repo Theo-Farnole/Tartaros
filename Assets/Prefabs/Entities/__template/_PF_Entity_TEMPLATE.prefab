@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 5038305241564417077}
   - component: {fileID: 8942491577002155834}
   - component: {fileID: 4468661327360213610}
+  - component: {fileID: 2877142800643964247}
   m_Layer: 10
   m_Name: _PF_Entity_TEMPLATE
   m_TagString: Untagged
@@ -186,7 +187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a481bbd335ece46994e99498e74332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shiftData: {fileID: 11400000, guid: adb318320016d9d47bd7315858864ef2, type: 2}
 --- !u!114 &1664664131638771059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b323339240d80f44b04620dd533eb72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _throwProjectileLocalPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1991522610364982485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,6 +366,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28c3298fc0231aa409517cdfbb06f48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2877142800643964247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927950564186908724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f38b4ef10615c01458b3be46417cb820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shiftData: {fileID: 11400000, guid: adb318320016d9d47bd7315858864ef2, type: 2}
 --- !u!1 &9025644110156182020
 GameObject:
   m_ObjectHideFlags: 0

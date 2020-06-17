@@ -5,6 +5,10 @@
 
     public class EntityShift : AbstractEntityComponent
     {
+        #region Fields
+        [SerializeField] private EntityShiftData _shiftData;
+        #endregion
+
         #region Methods
         #region MonoBehaviour Callbacks
         private void OnEnable()
