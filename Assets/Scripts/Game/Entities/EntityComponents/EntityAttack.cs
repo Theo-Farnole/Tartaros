@@ -12,14 +12,21 @@ namespace Game.Entities
     /// <summary>
     /// This script manage the attack (smart classname isn't it ?).
     /// </summary>
-    public class EntityAttack : AbstractEntityComponent
+    public partial class EntityAttack : AbstractEntityComponent
     {
         #region Fields
+        [Tooltip("Used only if is attacker is an a distance attacker.")]
+        [SerializeField] private Vector3 _throwProjectileLocalPosition = Vector3.zero;
+
         private float _attackTime = 0;
         #endregion
 
         #region Events
         public event DelegateAttack OnAttack;
+        #endregion
+
+        #region Properties
+        public Vector3 ThrowProjectilePosition { get => transform.position + _throwProjectileLocalPosition; }
         #endregion
 
         #region Methods
@@ -88,7 +95,7 @@ namespace Game.Entities
                     // prefab project not null
                     Assert.IsNotNull(Entity.Data.PrefabProjectile, string.Format("Entity Attack : Projectile set in EntityData is null for {0} of type {1}", name, Entity.EntityID));
 
-                    GameObject gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, transform.position, Quaternion.identity, true);
+                    GameObject gameObjectProjectile = ObjectPooler.Instance.SpawnFromPool(Entity.Data.PrefabProjectile, ThrowProjectilePosition, Quaternion.identity, true);
 
                     // projectile from pool not null
                     Assert.IsNotNull(gameObjectProjectile, string.Format("Entity Attack : Projectile '{0}' from object pooler is null.", Entity.Data.PrefabProjectile.name));
@@ -144,4 +151,21 @@ namespace Game.Entities
         #endregion
         #endregion
     }
+
+#if UNITY_EDITOR
+    public partial class EntityAttack : AbstractEntityComponent
+    {
+        void OnDrawGizmos()
+        {
+            if (Entity.EntityID == string.Empty)
+                return;
+
+            if (Entity.Data.CanAttack && !Entity.Data.IsMelee)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawWireSphere(ThrowProjectilePosition, 0.1f);
+            }
+        }
+    }
+#endif
 }

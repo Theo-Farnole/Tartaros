@@ -345,6 +345,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3371939488828076517, guid: 17f6498f739b0224e8b8470456c0c5ff,
+        type: 3}
+      propertyPath: _throwProjectileLocalPosition.x
+      value: 0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 3371939488828076517, guid: 17f6498f739b0224e8b8470456c0c5ff,
+        type: 3}
+      propertyPath: _throwProjectileLocalPosition.y
+      value: 1.69
+      objectReference: {fileID: 0}
     - target: {fileID: 4771539138824889505, guid: 17f6498f739b0224e8b8470456c0c5ff,
         type: 3}
       propertyPath: m_LocalPosition.x
