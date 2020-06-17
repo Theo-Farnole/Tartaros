@@ -8,17 +8,25 @@ using UnityEngine;
 namespace Game.Audio
 {
     /// <summary>
-    /// This script listen to game events to firer audio clip to AudioManager2D.    
+    /// This script listen to game events to firer audio clip to AudioManager2D & AudioMusicManager.    
     /// </summary>
     public class AudioFirer2D : MonoBehaviour
     {
-        private AudioManager2D _audioManager;
         private int _lastFrameOnSelectionPlayed = -1;
+
+        private AudioManager2D _audioManager;
+        private AudioMusicManager _audioMusicManager;
 
         void Awake()
         {
             // we use 'FindObjectOfType' to avoid use of a Singleton
             _audioManager = FindObjectOfType<AudioManager2D>();
+            _audioMusicManager = FindObjectOfType<AudioMusicManager>();
+        }
+
+        void Start()
+        {
+            _audioMusicManager.PlayMusic(MusicPhase.Construction);
         }
 
         void OnEnable()
@@ -38,6 +46,25 @@ namespace Game.Audio
             SelectedGroupsActionsCaller.OnOrder_MoveToPosition += SelectedGroupsActionsCaller_OnOrder_MoveToPosition;
             SelectedGroupsActionsCaller.OnOrder_MoveAggressively += SelectedGroupsActionsCaller_OnOrder_MoveAggressively;
             SelectedGroupsActionsCaller.OnOrder_Patrol += SelectedGroupsActionsCaller_OnOrder_Patrol;
+        }
+
+        void OnDisable()
+        {
+            WaveManager.OnWaveStart -= WaveManager_OnWaveStart;
+            WaveManager.OnWaveClear -= WaveManager_OnWaveClear;
+            GameManager.HasNotEnoughtResources -= GameManager_HasNotEnoughtResources;
+            EntityUnitSpawner.OnUnitCreated -= EntityUnitSpawner_OnUnitCreated;
+            GameManager.OnBuildSuccessful -= GameManager_OnBuildSuccessful;
+            GameManager.OnVictory -= GameManager_OnVictory;
+            GameManager.OnBuildSuccessful -= GameManager_OnBuildSuccessful1;
+
+            SelectionManager.OnSelectionUpdated -= SelectionManager_OnSelectionUpdated;
+            SelectedGroupsActionsCaller.OnOrderGiven -= SelectedGroupsActionsCaller_OnOrderGiven;
+            SelectedGroupsActionsCaller.OnOrder_SetAnchorPosition -= SelectedGroupsActionsCaller_OnOrder_SetAnchorPosition;
+            SelectedGroupsActionsCaller.OnOrder_AttackUnit -= SelectedGroupsActionsCaller_OnOrder_AttackUnit;
+            SelectedGroupsActionsCaller.OnOrder_MoveToPosition -= SelectedGroupsActionsCaller_OnOrder_MoveToPosition;
+            SelectedGroupsActionsCaller.OnOrder_MoveAggressively -= SelectedGroupsActionsCaller_OnOrder_MoveAggressively;
+            SelectedGroupsActionsCaller.OnOrder_Patrol -= SelectedGroupsActionsCaller_OnOrder_Patrol;
         }
 
         private void GameManager_OnBuildSuccessful1(GameManager gameManager) => _audioManager.PlayOneShotRandomClip(Sound2D.SuccessfulBuilding);
@@ -60,9 +87,17 @@ namespace Game.Audio
 
         private void EntityUnitSpawner_OnUnitCreated(Entity creator, Entity spawned) => _audioManager.PlayOneShotRandomClip(Sound2D.UnitCreated);
 
-        private void WaveManager_OnWaveClear(int waveCountCleared) => _audioManager.PlayRandomClip(Sound2D.WaveEnd);
+        private void WaveManager_OnWaveClear(int waveCountCleared)
+        {
+            _audioManager.PlayRandomClip(Sound2D.WaveEnd);
+            _audioMusicManager.PlayMusic(MusicPhase.Construction);
+        }
 
-        private void WaveManager_OnWaveStart(int waveCount) => _audioManager.PlayRandomClip(Sound2D.WaveStart);
+        private void WaveManager_OnWaveStart(int waveCount)
+        {
+            _audioManager.PlayRandomClip(Sound2D.WaveStart);
+            _audioMusicManager.PlayMusic(MusicPhase.Defend);
+        }
 
         private void SelectionManager_OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex)
         {
