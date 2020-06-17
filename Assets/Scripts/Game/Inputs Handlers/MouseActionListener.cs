@@ -21,8 +21,6 @@ namespace Game.Inputs
         [SerializeField] private GameObject _prefabMoveToOrderFeedback;
         [SerializeField] private Vector3 _orderMoveToInstanciatedOffset = Vector3.up;
 
-        private bool x = false;
-
         private GameObject _onclick;
         #endregion
 
@@ -47,15 +45,13 @@ namespace Game.Inputs
         #region Events Handlers
         private void MouseActionListener_OnDoubleClick()
         {
-            if (MouseInput.GetEntityUnderMouse(out Entity entity))
+            if (MouseInput.GetEntityUnderMouse(out Entity entity) && entity.GetCharacterComponent<EntitySelectable>().IsSelected)
             {
                 Entity[] entities = EntitiesGetter.GetEntitiesOfTypeInCamera(entity.EntityID);
                 SelectionManager.Instance.AddEntities(entities);
                 // REFACTOR NOTE:
                 // Remove this method, that's not very good wallah
                 SelectionManager.Instance.IgnoreNextMouseButtonUpInput();
-
-                x = true;
             }
         }
         #endregion
@@ -63,12 +59,6 @@ namespace Game.Inputs
         #region Private Methods
         void ManageOrdersExecuter()
         {
-            if (x)
-            {
-                x = false;
-                return;
-            }
-
             if (SecondClickListener.Instance.ListenToClick)
                 return;
 
