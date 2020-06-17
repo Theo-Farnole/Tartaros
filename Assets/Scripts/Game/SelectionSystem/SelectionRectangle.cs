@@ -113,27 +113,11 @@
         }
         #endregion
 
-        #region On SelectionRect Releasing
         void AddEntitiesInSelectionRect()
         {
-            var unitsSelectable = FindObjectsOfType<EntitySelectable>();
-            var camera = Camera.main;
-            var viewportBounds = GUIRectDrawer.GetViewportBounds(camera, _originPositionRect, Input.mousePosition);
-
-            Entity[] entitiesInSelectionRect = unitsSelectable
-                .Where(x => IsWithinSelectionBounds(camera, viewportBounds, x.gameObject)) // is in rectangle
-                .Select(x => x.GetComponent<Entity>())
-                .Where(x => x != null && x.Data.EntityType == EntityType.Unit)
-                .ToArray();
-
-            SelectionManager.Instance.AddEntities(entitiesInSelectionRect);
+            Entity[] entities = EntitiesGetter.GetUnitsInCameraViewport(_originPositionRect, Input.mousePosition);
+            SelectionManager.Instance.AddEntities(entities);
         }
-
-        bool IsWithinSelectionBounds(Camera camera, Bounds viewportBounds, GameObject gameObject)
-        {
-            return viewportBounds.Contains(camera.WorldToViewportPoint(gameObject.transform.position));
-        }
-        #endregion
         #endregion
     }
 }
