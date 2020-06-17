@@ -10,9 +10,6 @@
     /// </summary>
     public class BuildingMesh : MonoBehaviour, IPooledObject
     {
-        private static readonly int SHADERID_ISBUILDING = Shader.PropertyToID("_IsBuilding");
-        private static readonly int SHADERID_CANBUILD = Shader.PropertyToID("_CanBuild");
-
         public enum State
         {
             CanBuild,
@@ -20,15 +17,26 @@
             NotInBuildState
         }
 
+        #region Fields
+        private static readonly int SHADERID_ISBUILDING = Shader.PropertyToID("_IsBuilding");
+        private static readonly int SHADERID_CANBUILD = Shader.PropertyToID("_CanBuild");
+
         [SerializeField] private MeshRenderer[] _meshes = new MeshRenderer[0];
+        #endregion
 
+        #region Properties
         public string ObjectTag { get; set; }
+        #endregion
 
+        #region Methods
+        #region MonoBehaviour Callbacks
         void Start()
         {
             OnObjectSpawn();
         }
+        #endregion
 
+        #region Public Methods
         public void OnObjectSpawn()
         {
             CheckForColorsErrors();
@@ -41,11 +49,18 @@
 
             foreach (var mesh in _meshes)
             {
+                if (mesh == null)
+                {
+                    Debug.LogWarningFormat("BuildingMesh: '{0}' has empty mesh. Consider using button to refresh the MeshRenderer list.", name);
+                    continue;
+                }
                 mesh.material.SetFloat(SHADERID_ISBUILDING, isBuilding);
                 mesh.material.SetFloat(SHADERID_CANBUILD, canBuild);
             }
         }
+        #endregion
 
+        #region Private Methods
         private bool IsBuilding(State state)
         {
             switch (state)
@@ -91,5 +106,7 @@
                 Debug.LogWarningFormat("Building Mesh : " + "There is no mesh assigned to BuildingMesh {0}.", name);
             }
         }
+        #endregion
+        #endregion
     }
 }
