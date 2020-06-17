@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DB_Camera
   m_EditorClassIdentifier: 
   _useKeyboardInput: 1
-  _panSpeedKeyboard: 30
+  _panSpeedKeyboard: 80
   _keyPanForward: 122
   _keyPanBackward: 115
   _keyPanLeft: 113
@@ -23,13 +23,13 @@ MonoBehaviour:
   _keyPanLeftAlternative: 276
   _keyPanRightAlternative: 275
   _useScreenEdgeInput: 0
-  _panSpeedScreenEdge: 20
+  _panSpeedScreenEdge: 100
   _panBorderThickness: 10
   _canZoom: 1
-  _zoomSpeed: 99
+  _zoomSpeed: 50
   _zoomBounds:
     min: 10
-    max: 25
+    max: 40
   _inverseInput: 0
   _canCenterOnSelection: 1
   _centerKeyCode: 32
