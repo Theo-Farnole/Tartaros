@@ -92,7 +92,7 @@ namespace Game.ConstructionSystem
         #region Private methods
         private void ProcessInputs()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
             {
                 StopConstruction();
             }

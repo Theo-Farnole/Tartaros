@@ -1,6 +1,7 @@
 ﻿using Lortedo.Utilities.Pattern;
 using Sirenix.OdinInspector;
 using System;
+
 namespace Game.Entities
 {
     using System.Collections;
@@ -22,9 +23,6 @@ namespace Game.Entities
         public readonly static float DISTANCE_THRESHOLD = 0.3f;
         public readonly static int frameIntervalToCheckNearestEntities = 5;
 
-        public event OnEntityDetected OnAllyEnterShiftRange;
-        public event OnEntityDetected OnOpponentEnterAttackRange;
-
         [SerializeField] private EntityShiftData _shiftData;
 
         private Entity _nearestOpponentTeamEntity = null;
@@ -35,6 +33,12 @@ namespace Game.Entities
 
         private int _frameOffset = -1;
         private int _layerMaskEntity = -1;
+        #endregion
+
+        #region Events
+        public event OnEntityDetected OnAllyEnterShiftRange;
+        public event OnEntityDetected OnOpponentEnterAttackRange;
+        public event OnEntityDetected OnOpponentEnterViewRange;
         #endregion
 
         #region Methods
@@ -97,29 +101,22 @@ namespace Game.Entities
         #endregion
 
         #region Public methods
-        public bool IsEntityInAttackRange(Entity target)
+        public bool IsEntityInAttackRange(Entity target) => IsEntityInRange(target, Entity.Data.AttackRadius);
+
+        public bool IsEntityInViewRadius(Entity target) => IsEntityInRange(target, Entity.Data.ViewRadius);
+
+        public bool IsEntityInShiftRange(Entity target) => IsEntityInRange(target, _shiftData.ShiftCollisionRadius);
+
+        public bool IsNearFromEntity(Entity target) => IsEntityInRange(target, DISTANCE_THRESHOLD);
+
+        public bool IsEntityInRange(Entity target, float range)
         {
             Assert.IsNotNull(target);
             Assert.IsNotNull(target.Data);
             Assert.IsNotNull(Entity);
             Assert.IsNotNull(Entity.Data);
 
-            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.AttackRadius + (target.Data.GetRadius() + Entity.Data.GetRadius()) / 2;
-        }
-
-        public bool IsEntityInShiftRange(Entity target)
-        {
-            Assert.IsNotNull(target);
-            Assert.IsNotNull(target.Data);
-            Assert.IsNotNull(Entity);
-            Assert.IsNotNull(Entity.Data);
-
-            return Vector3.Distance(transform.position, target.transform.position) <= _shiftData.ShiftCollisionRadius + (target.Data.GetRadius() + Entity.Data.GetRadius()) / 2;
-        }
-
-        public bool IsNearFromEntity(Entity target)
-        {
-            return Vector3.Distance(transform.position, target.transform.position) <= DISTANCE_THRESHOLD + (target.Data.GetRadius() + Entity.Data.GetRadius()) / 2;
+            return Vector3.Distance(transform.position, target.transform.position) <= range + (target.Data.GetRadius() + Entity.Data.GetRadius()) / 2;
         }
 
         public bool IsNearFromPosition(Vector3 position)
@@ -143,7 +140,7 @@ namespace Game.Entities
         /// </summary>
         public Entity[] GetAlliesInRadius(float radius, out int arrayLength)
         {
-            int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);            
+            int collidersCount = Physics.OverlapSphereNonAlloc(transform.position, radius, _overlapSphereBuffer, _layerMaskEntity);
 
             for (int i = 0; i < collidersCount; i++)
             {
@@ -169,11 +166,6 @@ namespace Game.Entities
             return _nearestAllyTeamEntity;
         }
 
-        public bool IsEntityInViewRadius(Entity target)
-        {
-            return Vector3.Distance(transform.position, target.transform.position) <= Entity.Data.ViewRadius;
-        }
-
         #region Obsolete
         [Obsolete("Use GetNearestOpponent with 'IsInViewRadius' please.")]
         public Entity GetNearestOpponentInViewRadius()
@@ -196,9 +188,17 @@ namespace Game.Entities
         {
             _nearestOpponentTeamEntity = EntitiesNeightboorManager.GetClosestOpponentEntity(transform.position, Entity.Team);
 
-            if (_nearestOpponentTeamEntity != null && IsEntityInAttackRange(_nearestOpponentTeamEntity))
+            if (_nearestOpponentTeamEntity != null)
             {
-                OnOpponentEnterAttackRange?.Invoke(_nearestOpponentTeamEntity);
+                if (IsEntityInAttackRange(_nearestOpponentTeamEntity))
+                {
+                    OnOpponentEnterAttackRange?.Invoke(_nearestOpponentTeamEntity);
+                }
+
+                if (IsEntityInViewRadius(_nearestOpponentTeamEntity))
+                {
+                    OnOpponentEnterViewRange?.Invoke(_nearestOpponentTeamEntity);
+                }
             }
         }
 
@@ -210,7 +210,7 @@ namespace Game.Entities
             {
                 OnAllyEnterShiftRange?.Invoke(_nearestAllyTeamEntity);
             }
-        }        
+        }
         #endregion
         #endregion
     }
@@ -230,9 +230,13 @@ namespace Game.Entities
                 return;
 
             if (Entity.EntityID == string.Empty)
-                return;            
+                return;
 
-            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius + Entity.Data.GetRadius());
+            UnityEditor.Handles.color = Color.red;
+            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.AttackRadius);
+
+            UnityEditor.Handles.color = Color.green;
+            UnityEditor.Handles.DrawWireDisc(transform.position, transform.up, Entity.Data.ViewRadius);
 #endif
         }
     }

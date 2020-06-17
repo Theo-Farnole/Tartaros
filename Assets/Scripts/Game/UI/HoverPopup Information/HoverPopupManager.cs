@@ -26,6 +26,7 @@ namespace Game.UI.HoverPopup
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [Space]
         [SerializeField, Tooltip("In pixels")] private int _heightMargin = 25;
+        [SerializeField] private int _offsetY = 0;
 
         void Start()
         {
@@ -122,8 +123,15 @@ namespace Game.UI.HoverPopup
         {
             Assert.IsNotNull(hoverDisplayPopup, "The display popup passed in arg is null. Can't update popup position");
 
-            _hoverPopup.position = hoverDisplayPopup.position
-                + Vector3.up * _hoverPopup.rect.height / 4; // center vertically
+            Vector3 localPosition = new Vector3
+            (
+                hoverDisplayPopup.rect.center.x,
+                hoverDisplayPopup.rect.yMax + _offsetY
+            );
+
+
+            _hoverPopup.position = localPosition + hoverDisplayPopup.position;
+            //_hoverPopup.position = hoverDisplayPopup.position + Vector3.up * _hoverPopup.rect.height / 4 + _offsetY; // center vertically
         }
     }
 }
