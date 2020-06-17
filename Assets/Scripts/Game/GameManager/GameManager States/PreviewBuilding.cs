@@ -97,6 +97,7 @@
             _building.GetComponent<EntityFogVision>().enabled = enabled;
             _building.GetComponent<EntityFogCoverable>().enabled = enabled;
             _building.GetComponent<EntityResourcesGeneration>().enabled = enabled;
+            _building.GetComponent<EntitySound>().enabled = enabled;
 
             if (_building.TryGetComponent(out NavMeshAgent navMeshAgent)) navMeshAgent.enabled = enabled;
             if (_building.TryGetComponent(out NavMeshObstacle navMeshObstacle)) navMeshObstacle.enabled = enabled;
