@@ -227,7 +227,15 @@ namespace Game.Selection
             {
                 for (int j = 0; j < playerSelectedEntities[i].unitsSelected.Count; j++)
                 {
-                    playerSelectedEntities[i].unitsSelected[j].Death();
+                    Entity entity = playerSelectedEntities[i].unitsSelected[j];
+
+                    if (entity.EntityID == "building_temple")
+                    {
+                        UIMessagesLogger.Instance.LogErrorFormat("What are you trying to do ?! You can't destroy the temple you must defend.");
+                        continue;
+                    }
+                    
+                        entity.Death();
                 }
             }
         }
