@@ -4,7 +4,7 @@
     using UnityEngine.AI;
     using DG.Tweening;
 
-    public class EntitySizeSetter : AbstractEntityComponent
+    public class EntityCollisionManager : AbstractEntityComponent
     {
         private enum Size
         {
@@ -30,28 +30,16 @@
 
         #region Methods
         #region MonoBehaviour Callbacks
-        void Start()
+        void Awake()
         {
             _navMeshObstacle = GetComponent<NavMeshObstacle>();
             _navMeshAgent = GetComponent<NavMeshAgent>();
+        }
 
-            if (_navMeshAgent != null)
-            {
-                _navMeshAgent.radius = Entity.Data.GetRadius();
-                _originalAgentRadius = _navMeshAgent.radius;
-            }
-
-            Vector3 size = new Vector3
-            {
-                x = Entity.Data.TileSize.x,
-                y = 1,
-                z = Entity.Data.TileSize.y
-            };
-
-            _originalSizeObstacle = size;
-
-            SetSize_NavMeshObstacle(size);
-            SetSize_BoxCollider(size);
+        void Start()
+        {
+            SetupNavMeshAgent();
+            SetupBuildingCollision();
         }
 
         void OnEnable()
@@ -112,6 +100,21 @@
         #endregion
 
         #region Private Methods
+        private void SetupBuildingCollision()
+        {
+            Vector3 size = new Vector3
+            {
+                x = Entity.Data.TileSize.x,
+                y = 1,
+                z = Entity.Data.TileSize.y
+            };
+
+            _originalSizeObstacle = size;
+
+            SetSize_NavMeshObstacle(size);
+            SetSize_BoxCollider(size);
+        }
+
         private void SetSize_NavMeshObstacle(Vector3 size)
         {
             if (_navMeshObstacle == null)
@@ -136,6 +139,15 @@
                 boxCollider.size = size;
                 boxCollider.center = size.y / 2 * Vector3.up;
             }
+        }
+
+        private void SetupNavMeshAgent()
+        {
+            if (_navMeshAgent == null)
+                return;
+
+            _navMeshAgent.radius = Entity.Data.GetRadius();
+            _originalAgentRadius = _navMeshAgent.radius;
         }
         #endregion
         #endregion
