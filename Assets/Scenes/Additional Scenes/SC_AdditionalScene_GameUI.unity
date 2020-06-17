@@ -3506,6 +3506,7 @@ GameObject:
   - component: {fileID: 610003636}
   - component: {fileID: 610003635}
   - component: {fileID: 610003638}
+  - component: {fileID: 610003639}
   m_Layer: 5
   m_Name: Pause Button
   m_TagString: Untagged
@@ -3625,6 +3626,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8b7ff8a03ecbb4abde9ff4cbde12c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &610003639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610003633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0aa8e4964ab46244846eefde15e094e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundToPlayOnClick: 8
 --- !u!1 &622502819
 GameObject:
   m_ObjectHideFlags: 0
@@ -3706,6 +3720,7 @@ GameObject:
   - component: {fileID: 639497825}
   - component: {fileID: 639497824}
   - component: {fileID: 639497823}
+  - component: {fileID: 639497827}
   m_Layer: 5
   m_Name: Resume Button
   m_TagString: Untagged
@@ -3825,6 +3840,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639497821}
   m_CullTransparentMesh: 0
+--- !u!114 &639497827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639497821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0aa8e4964ab46244846eefde15e094e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundToPlayOnClick: 8
 --- !u!1 &662713450
 GameObject:
   m_ObjectHideFlags: 0
@@ -9702,6 +9730,7 @@ GameObject:
   - component: {fileID: 2038056159}
   - component: {fileID: 2038056158}
   - component: {fileID: 2038056157}
+  - component: {fileID: 2038056161}
   m_Layer: 5
   m_Name: Quit Button
   m_TagString: Untagged
@@ -9821,6 +9850,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038056155}
   m_CullTransparentMesh: 0
+--- !u!114 &2038056161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038056155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0aa8e4964ab46244846eefde15e094e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soundToPlayOnClick: 8
 --- !u!1 &2048595162
 GameObject:
   m_ObjectHideFlags: 0

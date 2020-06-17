@@ -1,15 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿namespace Game.Audio
+{    
+    using UnityEngine;
+    using DG.Tweening;
 
-namespace Game.Audio
-{
     [RequireComponent(typeof(AudioSource))]
     public class SoundGroup : MonoBehaviour
     {
-        [SerializeField] private AudioClip[] _audioClips;
+        [SerializeField] private AudioClip[] _audioClips = new AudioClip[0];
 
-        private AudioSource _audioSource;
+        private AudioSource _audioSource = null;
+        private float _originalVolume = 1;
 
         void Awake()
         {
@@ -29,6 +29,18 @@ namespace Game.Audio
             _audioSource.Stop();
             _audioSource.clip = GetRandomAudioClip();
             _audioSource.Play();
+        }
+
+        public void SmoothMute(float smooothDuration)
+        {
+            _originalVolume = _audioSource.volume;
+
+            _audioSource.DOFade(0, smooothDuration);
+        }
+
+        public void SmoothAmplify(float smoothDuration)
+        {
+            _audioSource.DOFade(_originalVolume, smoothDuration);
         }
 
         private AudioClip GetRandomAudioClip()
