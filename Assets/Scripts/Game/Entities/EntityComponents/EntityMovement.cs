@@ -1,4 +1,4 @@
-﻿namespace Game.Entities
+namespace Game.Entities
 {
     using Game.Entities.Actions;
     using System;
@@ -13,7 +13,6 @@
         #region Fields
         private const string debugLogHeader = "Entity Movement : ";
         private const float reachDestinationThreshold = 0.5f;
-        private const float radiusThreshold = 0.1f;
 
         [SerializeField] private EntityShiftData _shiftData;
 
@@ -155,7 +154,6 @@
         private void SetupNavMeshAgent()
         {
             _navMeshAgent.speed = Entity.Data.Speed;            
-            _navMeshAgent.radius = Entity.Data.GetRadius() - radiusThreshold;
         }
 
         private void Shift(Entity hitEntity)

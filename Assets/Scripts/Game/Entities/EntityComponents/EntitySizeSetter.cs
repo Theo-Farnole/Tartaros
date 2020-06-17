@@ -36,7 +36,10 @@
             _navMeshAgent = GetComponent<NavMeshAgent>();
 
             if (_navMeshAgent != null)
+            {
+                _navMeshAgent.radius = Entity.Data.GetRadius();
                 _originalAgentRadius = _navMeshAgent.radius;
+            }
 
             Vector3 size = new Vector3
             {
