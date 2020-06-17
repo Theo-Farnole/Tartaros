@@ -8,27 +8,67 @@ using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 
 namespace Game.Inputs
-{
+{    
     /// <summary>
     /// If mouse right click pressed, order attack or movement to Spartan selected groups.
     /// </summary>
     public class MouseActionListener : MonoBehaviour
     {
+        #region Fields
         public static readonly string debugLogHeader = "Mouse Action Listener : ";
 
         [Required]
         [SerializeField] private GameObject _prefabMoveToOrderFeedback;
         [SerializeField] private Vector3 _orderMoveToInstanciatedOffset = Vector3.up;
 
-        private GameObject _onclick;
+        private bool x = false;
 
+        private GameObject _onclick;
+        #endregion
+
+        #region Methods
+        #region MonoBehaviour Callbacks
         void Update()
         {
             ManageOrdersExecuter();
         }
 
+        void OnEnable()
+        {
+            this.GetOrAddComponent<DoubleClickDetector>().OnDoubleClick += MouseActionListener_OnDoubleClick;
+        }
+
+        void OnDisable()
+        {
+            this.GetOrAddComponent<DoubleClickDetector>().OnDoubleClick -= MouseActionListener_OnDoubleClick;
+        }
+        #endregion
+
+        #region Events Handlers
+        private void MouseActionListener_OnDoubleClick()
+        {
+            if (MouseInput.GetEntityUnderMouse(out Entity entity))
+            {
+                Entity[] entities = EntitiesGetter.GetEntitiesOfTypeInCamera(entity.EntityID);
+                SelectionManager.Instance.AddEntities(entities);
+                // REFACTOR NOTE:
+                // Remove this method, that's not very good wallah
+                SelectionManager.Instance.IgnoreNextMouseButtonUpInput();
+
+                x = true;
+            }
+        }
+        #endregion
+
+        #region Private Methods
         void ManageOrdersExecuter()
         {
+            if (x)
+            {
+                x = false;
+                return;
+            }
+
             if (SecondClickListener.Instance.ListenToClick)
                 return;
 
@@ -80,5 +120,7 @@ namespace Game.Inputs
             _onclick = Instantiate(_prefabMoveToOrderFeedback);
             _onclick.SetActive(false);
         }
+        #endregion
+        #endregion
     }
 }

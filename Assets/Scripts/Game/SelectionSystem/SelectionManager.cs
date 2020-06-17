@@ -12,6 +12,9 @@ namespace Game.Selection
 
     public delegate void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex);
 
+    // REFACTOR NOTE:
+    // Split 'input' logic outside this class
+
     /// <summary>
     /// Manage the player's selection.
     /// </summary>
@@ -49,12 +52,14 @@ namespace Game.Selection
 
         private bool _selectionEnable = true;
         private EntityType _selectionType;
+
+        private bool _ignoreNextMouseButtonUpInput = false;
         #endregion
 
         #region Properties
         public bool HasSelection { get => _selectedGroups.Count > 0; }
         public SelectionGroup[] SpartanGroups { get => (from x in _selectedGroups where x.owner == Team.Player select x).ToArray(); }
-        public List<SelectionGroup> SelectedGroups { get => _selectedGroups; }
+        public List<SelectionGroup> SelectedGroups { get => _selectedGroups; }        
         #endregion
 
         #region Methods
@@ -100,74 +105,9 @@ namespace Game.Selection
         }
         #endregion
 
-        #region Private methods
-        /// <summary>
-        /// Handle input when player click on non entity to CLEAR SELECTION.
-        /// </summary>
-        private void HandleInput_ClickOnEntity()
-        {
-            if (Input.GetMouseButtonUp(0))
-            {
-                // if player is selecting, don't clear selection
-                if (_selectionRectangle.IsSelecting)
-                    return;
+        #region Public methods        
+        public void IgnoreNextMouseButtonUpInput() => _ignoreNextMouseButtonUpInput = true;
 
-                // if player click on UI, don't clear selection
-                if (EventSystem.current.IsPointerOverGameObject(-1))
-                    return;
-
-                if (Input.GetKey(_keepSelectionKey) == false)
-                {
-                    ClearSelection();
-                }
-
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
-                {
-                    if (hit.transform.TryGetComponent(out Entity hitEntity))
-                    {
-                        SwitchEntity(hitEntity);
-                    }
-                }
-            }
-        }
-
-        private void HandleInput_SwitchHighlightGroup()
-        {
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                _highlightGroupIndex++;
-                if (_highlightGroupIndex >= _selectedGroups.Count) _highlightGroupIndex = 0;
-
-                OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
-            }
-        }
-
-        /// <summary>
-        /// Remove entities that haven't the same type
-        /// </summary>
-        private void TrimEntities(ref Entity[] selectedEntities)
-        {
-            bool selectedEntitiesHasUnit = selectedEntities
-                   .Where(x => x.Data.EntityType == _selectionPriority)
-                   .FirstOrDefault() != null;
-
-            // remove non EntityType.Unit
-            if (selectedEntitiesHasUnit)
-            {
-                selectedEntities = selectedEntities
-                    .Where(x => x.Data.EntityType == _selectionPriority)
-                    .ToArray();
-            }
-            else
-            {
-                // keep non EntityType.Unit
-            }
-        }
-        #endregion
-
-        #region Public methods
         public void AddEntities(Entity[] selectedEntities)
         {
             if (_forceSelectionToHaveOneType)
@@ -320,6 +260,79 @@ namespace Game.Selection
         public Vector3 GetSelectedEntitesCentroid()
         {
             return Math.GetCentroid(GetSelectedEntitiesPositions());
+        }
+        #endregion
+
+        #region Private methods        
+        /// <summary>
+        /// Handle input when player click on non entity to CLEAR SELECTION.
+        /// </summary>
+        private void HandleInput_ClickOnEntity()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (_ignoreNextMouseButtonUpInput)
+                {
+                    _ignoreNextMouseButtonUpInput = false;
+                    return;
+                }
+
+                // if player is selecting, don't clear selection
+                if (_selectionRectangle.IsSelecting)
+                    return;
+
+                // if player click on UI, don't clear selection
+                if (EventSystem.current.IsPointerOverGameObject(-1))
+                    return;
+
+                if (Input.GetKey(_keepSelectionKey) == false)
+                {
+                    ClearSelection();
+                }
+
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Entity")))
+                {
+                    if (hit.transform.TryGetComponent(out Entity hitEntity))
+                    {
+                        SwitchEntity(hitEntity);
+                    }
+                }
+            }
+        }
+
+        private void HandleInput_SwitchHighlightGroup()
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                _highlightGroupIndex++;
+                if (_highlightGroupIndex >= _selectedGroups.Count) _highlightGroupIndex = 0;
+
+                OnSelectionUpdated?.Invoke(_selectedGroups.ToArray(), _highlightGroupIndex);
+            }
+        }
+
+        /// <summary>
+        /// Remove entities that haven't the same type
+        /// </summary>
+        private void TrimEntities(ref Entity[] selectedEntities)
+        {
+            bool selectedEntitiesHasUnit = selectedEntities
+                   .Where(x => x.Data.EntityType == _selectionPriority)
+                   .FirstOrDefault() != null;
+
+            // remove non EntityType.Unit
+            if (selectedEntitiesHasUnit)
+            {
+                selectedEntities = selectedEntities
+                    .Where(x => x.Data.EntityType == _selectionPriority)
+                    .ToArray();
+            }
+            else
+            {
+                // keep non EntityType.Unit
+            }
         }
         #endregion
         #endregion

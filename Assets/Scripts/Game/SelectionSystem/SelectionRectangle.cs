@@ -42,7 +42,7 @@
         }
         #endregion
 
-        #region Managers
+        #region Private Methods
         void CurrentStateBehaviour()
         {
             switch (_state)
@@ -97,10 +97,6 @@
             }
         }
 
-
-        #endregion
-
-        #region SelectionRect drawer
         void DrawSelectionRect()
         {
             if (_state == State.InSelection)
@@ -111,13 +107,13 @@
                 GUIRectDrawer.DrawScreenRectBorder(rect, 2, new Color(0.8f, 0.8f, 0.95f));
             }
         }
-        #endregion
 
         void AddEntitiesInSelectionRect()
         {
             Entity[] entities = EntitiesGetter.GetUnitsInCameraViewport(_originPositionRect, Input.mousePosition);
             SelectionManager.Instance.AddEntities(entities);
         }
+        #endregion
         #endregion
     }
 }

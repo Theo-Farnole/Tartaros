@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Game.Entities;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,24 @@ namespace Game.Inputs
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             return Physics.Raycast(ray, out hit, distance, GetLayerMask(layerFlags));
+        }
+
+        public static bool GetEntityUnderMouse(out Entity entity, float distance = Mathf.Infinity)
+        {
+            // PERFORMANCE NOTE:
+            // Avoid usage of Camera.main
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, distance, layerMaskEntity))
+            {
+                entity = hit.collider.GetComponent<Entity>();
+                return true;
+            }
+            else
+            {
+                entity = null;
+                return false;
+            }
         }
 
         private static int GetLayerMask(MouseLayer layer)
