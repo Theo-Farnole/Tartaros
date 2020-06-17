@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using UnityEngine;
     using Game.GameState;
+    using Game.GameManagers;
 
     public class PauseToggleInputHandler : MonoBehaviour
     {

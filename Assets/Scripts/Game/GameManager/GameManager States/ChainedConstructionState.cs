@@ -7,6 +7,7 @@
     using System.Linq;
     using UnityEngine;
     using Game.TileSystem;
+    using Game.GameManagers;
 
     /// <summary>
     /// This state is managed by GameManager. 

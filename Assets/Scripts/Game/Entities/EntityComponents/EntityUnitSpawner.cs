@@ -1,6 +1,7 @@
 ﻿namespace Game.Entities
 {
     using Game.Entities.Actions;
+    using Game.GameManagers;
     using Lortedo.Utilities.Pattern;
     using System.Collections;
     using System.Collections.Generic;

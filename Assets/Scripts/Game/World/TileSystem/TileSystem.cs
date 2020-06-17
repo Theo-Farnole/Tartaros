@@ -2,6 +2,7 @@
 {
     using Game.Entities;
     using Game.FogOfWar;
+    using Game.GameManagers;
     using Lortedo.Utilities.Pattern;
     using System;
     using System.Collections.Generic;

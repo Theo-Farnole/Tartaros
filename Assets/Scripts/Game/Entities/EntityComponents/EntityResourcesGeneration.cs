@@ -3,6 +3,7 @@
     using Game.MapCellEditor;
     using UnityEngine;
     using Game.TileSystem;
+    using Game.GameManagers;
 
     /// <summary>
     /// This script create resources each tick setted in EntityData.

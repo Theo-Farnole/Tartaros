@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-namespace Game.MapCellEditor.Editor
+﻿namespace Game.MapCellEditor.Editor
 {
+    using Game.GameManagers;
+    using System;
+    using UnityEditor;
+    using UnityEngine;
+
     public class MapCellsEditorWindow : EditorWindow
     {
         #region Fields

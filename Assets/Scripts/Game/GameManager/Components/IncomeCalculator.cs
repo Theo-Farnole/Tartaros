@@ -1,12 +1,10 @@
-﻿using Game.Entities;
-using Lortedo.Utilities.Pattern;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Game
+﻿namespace Game.GameManagers
 {
+    using Game.Entities;
+    using System;
+    using System.Collections.Generic;
+    using UnityEngine;
+
     /// <summary>
     /// Used in PanelGameResources to display current income.
     /// </summary>

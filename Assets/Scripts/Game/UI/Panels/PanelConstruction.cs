@@ -1,15 +1,9 @@
-﻿using Lortedo.Utilities.Inspector;
-using Lortedo.Utilities.Managers;
-using System;
-using System.Collections.Generic;
-using TMPro;
-using Game.UI.HoverPopup;
-using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.UI;
-
-namespace Game.UI
+﻿namespace Game.UI
 {
+    using UnityEngine;
+    using UnityEngine.Assertions;
+    using Game.GameManagers;
+
     public class PanelConstruction : AbstractPanel
     {
         #region Fields

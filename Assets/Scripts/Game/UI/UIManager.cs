@@ -10,7 +10,7 @@ using Game.UI;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
-
+using Game.GameManagers;
 
 public class UIManager : MonoBehaviour
 {

@@ -17,7 +17,7 @@
         #region Fields
         private const string debugLogHeader = "Entity Obstacle : ";
 
-        [SerializeField] private CollisionScalerData _collisionScalerData;
+        [SerializeField] private EntityDynamicSizeData _collisionScalerData;
         [SerializeField] private bool _reduceCollisionOnMove = true;
 
         private Vector3 _originalSizeObstacle = Vector3.zero;

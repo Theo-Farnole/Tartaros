@@ -9,6 +9,7 @@ namespace Game.Selection
     using Sirenix.OdinInspector;
     using Lortedo.Utilities;
     using Game.Entities;
+    using Game.GameManagers;
 
     public delegate void OnSelectionUpdated(SelectionManager.SelectionGroup[] selectedGroups, int highlightGroupIndex);
 

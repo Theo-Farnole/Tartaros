@@ -1,14 +1,10 @@
-﻿using Game.WaveSystem;
-using Lortedo.Utilities.Inspector;
-using Lortedo.Utilities.Managers;
-using Sirenix.OdinInspector;
-using System;
-using TMPro;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-namespace Game.UI
+﻿namespace Game.UI
 {
+    using Game.GameManagers;
+    using TMPro;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
     public class PanelGameResources : AbstractPanel
     {
         #region Fields
@@ -26,8 +22,10 @@ namespace Game.UI
 
         #region Methods
         #region MonoBehaviour Callbacks
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             UpdateIncomeLabel(0, 0, 0);
         }
 

@@ -1,5 +1,6 @@
 ﻿namespace Game.Entities
 {
+    using Game.GameManagers;
     using Sirenix.OdinInspector;
     using System;
     using System.Linq;

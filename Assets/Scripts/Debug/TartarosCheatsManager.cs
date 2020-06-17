@@ -1,15 +1,14 @@
-﻿using Game.FogOfWar;
-using Game.WaveSystem;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using TF.Cheats;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-namespace Game.Cheats
+﻿namespace Game.Cheats
 {
+    using Game.FogOfWar;
+    using Game.GameManagers;
+    using Game.WaveSystem;
+    using System;
+    using System.Reflection;
+    using TF.Cheats;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
     public class TartarosCheatsManager : MonoBehaviour
     {
         #region Fields
@@ -77,7 +76,7 @@ namespace Game.Cheats
                     if (key == CheatsKey.keyDisableFog)
                         ManageActive_FogOfWar();
 
-                        break;
+                    break;
                 default:
                     throw new NotImplementedException();
             }

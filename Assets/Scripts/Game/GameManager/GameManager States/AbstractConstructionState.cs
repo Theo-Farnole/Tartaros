@@ -1,15 +1,12 @@
-﻿using Game.Entities;
-using Lortedo.Utilities.Debugging;
-using Lortedo.Utilities.Pattern;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.Assertions;
-using UnityEngine.EventSystems;
-
-namespace Game.ConstructionSystem
+﻿namespace Game.ConstructionSystem
 {
+    using Game.Entities;
+    using Game.GameManagers;
+    using Lortedo.Utilities.Pattern;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+    using UnityEngine.EventSystems;
+
     public abstract class AbstractConstructionState : OwnedState<GameManager>
     {
         #region Fields
