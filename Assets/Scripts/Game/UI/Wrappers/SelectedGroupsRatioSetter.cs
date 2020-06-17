@@ -8,8 +8,8 @@
     public class SelectedGroupsRatioSetter : MonoBehaviour
     {
         #region Fields
-        [SerializeField] private Vector2Int _unitsCellSize = new Vector2Int(80, 210);
-        [SerializeField] private Vector2Int _buildingsCellSize = new Vector2Int(80, 80);
+        [SerializeField] private Vector2 _unitsCellSize = new Vector2(88.42F, 210);
+        [SerializeField] private Vector2 _buildingsCellSize = new Vector2(80, 80);
 
         private GridLayoutGroup _gridLayoutGroup;
         #endregion
