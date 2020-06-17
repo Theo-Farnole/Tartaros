@@ -111,7 +111,19 @@ namespace Game.Audio
 
             _lastFrameOnSelectionPlayed = Time.frameCount;
 
-            _audioManager.PlayOneShotRandomClip(Sound2D.OnSelection);
+            switch (selectedGroups[0].unitsSelected[0].Data.EntityType)
+            {
+                case EntityType.Unit:
+                    _audioManager.PlayOneShotRandomClip(Sound2D.OnUnitSelection);
+                    break;
+
+                case EntityType.Building:
+                    _audioManager.PlayOneShotRandomClip(Sound2D.OnBuildingSelection);
+                    break;
+
+                default:
+                    throw new System.NotImplementedException("EntityType = " + selectedGroups[0].unitsSelected[0].Data.EntityType);
+            }            
         }
 
         // NOTE:
