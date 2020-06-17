@@ -86,6 +86,8 @@ namespace Game.Entities
             {
                 CalculateNewAttackTimer();
 
+                LookAtEntity(target);
+
                 if (Entity.Data.IsMelee)
                 {
                     target.GetCharacterComponent<EntityHealth>().GetDamage(Entity.Data.Damage, Entity);
@@ -147,6 +149,16 @@ namespace Game.Entities
         void CalculateNewAttackTimer()
         {
             _attackTime = Time.time + 1 / Entity.Data.AttackPerSecond;
+        }
+
+        // REFACTOR NOTE:
+        // Set this method into another EntityComponent (or create another)
+        private void LookAtEntity(Entity target)
+        {
+            Vector3 lookPos = target.transform.position - transform.position;
+            lookPos.y = 0;
+            Quaternion rotation = Quaternion.LookRotation(lookPos);
+            transform.rotation = rotation;
         }
         #endregion
         #endregion
