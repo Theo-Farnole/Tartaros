@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5919795766228051481}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 6633508734492762088}
   - {fileID: 5919795768037503401}
@@ -44,7 +44,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5919795766228051481}
   serializedVersion: 6
-  lengthInSec: 0.5
+  lengthInSec: 0.8
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -119,7 +119,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.8
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4893,6 +4893,16 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a658a4a11164d4ab7e00d5b29355ca, type: 3}
 --- !u!4 &888977174925273620 stripped
@@ -4967,6 +4977,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a658a4a11164d4ab7e00d5b29355ca, type: 3}
@@ -5053,6 +5078,16 @@ PrefabInstance:
       propertyPath: looping
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a658a4a11164d4ab7e00d5b29355ca, type: 3}
 --- !u!4 &5919795768037503401 stripped
@@ -5137,6 +5172,16 @@ PrefabInstance:
         type: 3}
       propertyPath: looping
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020527036841666795, guid: c1a658a4a11164d4ab7e00d5b29355ca,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1a658a4a11164d4ab7e00d5b29355ca, type: 3}
