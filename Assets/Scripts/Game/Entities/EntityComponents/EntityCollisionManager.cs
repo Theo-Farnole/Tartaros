@@ -76,15 +76,16 @@
             if (_currentSize == Size.Shrinking && _currentSize == Size.Shrinked)
                 return;
 
-            _currentSize = Size.Shrinking;
-
             if (_currentTweening != null)
             {
                 _currentTweening.Kill();
             }
 
+            _currentSize = Size.Shrinking;
+
             _currentTweening = DOTween.To(() => _navMeshAgent.radius, x => _navMeshAgent.radius = x, _originalAgentRadius * _collisionScalerData.CollisionScaleDownPercent, _collisionScalerData.ReduceTime)
-                .OnComplete(() => { _currentSize = Size.Shrinked; });
+                .OnComplete(() => { _currentSize = Size.Shrinked; })
+                .OnKill(() => { _currentSize = Size.Shrinked; });
         }
 
         public void StartGrowCollision()
@@ -95,16 +96,16 @@
             if (_currentSize == Size.NormalSize && _currentSize == Size.Expanding)
                 return;
 
-            _currentSize = Size.Expanding;
-
-
             if (_currentTweening != null)
             {
                 _currentTweening.Kill();
             }
 
+            _currentSize = Size.Expanding;
+
             _currentTweening = DOTween.To(() => _navMeshAgent.radius, x => _navMeshAgent.radius = x, _originalAgentRadius, _collisionScalerData.IncreaseTime)
-                 .OnComplete(() => { _currentSize = Size.NormalSize; });
+                 .OnComplete(() => { _currentSize = Size.NormalSize; })
+                 .OnKill(() => { _currentSize = Size.NormalSize; });
         }
         #endregion
 
