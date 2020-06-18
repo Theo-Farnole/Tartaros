@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1857,7 +1857,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 140
+  orthographic size: 160
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1881,7 +1881,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 821102620}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 110, y: 30, z: 110}
+  m_LocalPosition: {x: 130, y: 30, z: 130}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 50587642}
@@ -3341,7 +3341,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746630483}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 110, y: 30, z: 110}
+  m_LocalPosition: {x: 130, y: 30, z: 130}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 50587642}
@@ -3361,7 +3361,7 @@ Projector:
   m_FieldOfView: 60
   m_AspectRatio: 1
   m_Orthographic: 1
-  m_OrthographicSize: 140
+  m_OrthographicSize: 160
   m_Material: {fileID: 2100000, guid: 807e05b5f95f0ed4a9267e58c77de9a9, type: 2}
   m_IgnoreLayers:
     serializedVersion: 2
@@ -3895,7 +3895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isFlatTerrainYPosition: 0
-  _isFlatApproximately_Delta: 0.08
+  _isFlatApproximately_Delta: 0.1
 --- !u!114 &5682737043787708820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3935,7 +3935,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 140
+  orthographic size: 160
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3959,7 +3959,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2015743204205206266}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 110, y: 30, z: 110}
+  m_LocalPosition: {x: 130, y: 30, z: 130}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 50587642}
