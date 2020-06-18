@@ -10,7 +10,7 @@
         [SerializeField] private float _isFlatTerrainYPosition = 0f;
         [SerializeField] private float _isFlatApproximately_Delta = 0.08f;
 
-        public bool IsTerrainFlat(Vector2Int originCoords) => IsTerrainFlat(CoordsToWorld(originCoords));
+        public bool IsTileFlat(Vector2Int originCoords) => IsTerrainFlat(CoordsToWorld(originCoords));
 
         public bool IsTerrainFlat(Vector3 worldPosition)
         {
@@ -38,7 +38,7 @@
                 {
                     Vector2Int currentCoords = originCoords + new Vector2Int(x, y);
 
-                    if (!IsTerrainFlat(currentCoords))
+                    if (!IsTileFlat(currentCoords))
                         return false;
                 }
             }

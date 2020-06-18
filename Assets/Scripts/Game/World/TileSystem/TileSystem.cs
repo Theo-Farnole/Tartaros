@@ -49,7 +49,7 @@
         #region MonoBehaviour Callbacks
         void Awake()
         {
-            _layerMaskTerrain = LayerMask.GetMask("Terrain");            
+            _layerMaskTerrain = LayerMask.GetMask("Terrain");
         }
 
         void Start()
@@ -199,7 +199,7 @@
 
             if (condition.HasFlag(TileFlag.TerrainFlat))
             {
-                if (!IsTerrainFlat(tileCoords))
+                if (!IsTileFlat(tileCoords))
                 {
                     if (logBuildError) UIMessagesLogger.Instance.LogError("You must build on flat terrain.");
                     return false;
@@ -452,8 +452,40 @@
 
                 SetTile(entities[i].gameObject, entities[i].Data.TileSize);
             }
-        }                   
+        }
         #endregion
         #endregion
     }
+
+#if UNITY_EDITOR
+    public partial class TileSystem : Singleton<TileSystem>
+    {
+        [SerializeField] private bool _debugDrawFlatness = true;
+
+        void OnDrawGizmos()
+        {
+            DrawFlatness();
+        }
+
+        private void DrawFlatness()
+        {
+            if (!_debugDrawFlatness)            
+                return;            
+
+            int cellCount = GameManager.Instance.Grid.CellCount;
+
+            for (int x = 0; x <= cellCount; x++)
+            {
+                for (int y = 0; y <= cellCount; y++)
+                {
+                    Vector2Int coords = new Vector2Int(x, y);
+                    Color color = IsTileFlat(coords) ? Color.green : Color.red;
+
+                    Gizmos.color = color;
+                    Gizmos.DrawWireSphere(CoordsToWorld(coords), 0.1f);
+                }
+            }
+        }
+    }
+#endif
 }
