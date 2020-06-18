@@ -53,7 +53,7 @@ MonoBehaviour:
   _portrait: {fileID: 21300000, guid: 8af4e1eee318d5e4183616fa3ba14b58, type: 3}
   _prefab: {fileID: 545007711727897807, guid: f9cd4649e773d2e4199850a089ff5003, type: 3}
   _populationUse: 0
-  _tileSize: {x: 5, y: 7}
+  _tileSize: {x: 5, y: 8}
   _radius: 0.5
   _hoverPopupData: {fileID: 11400000, guid: 792246e03ecbdce458895a7da1944788, type: 2}
   _isInvincible: 0
