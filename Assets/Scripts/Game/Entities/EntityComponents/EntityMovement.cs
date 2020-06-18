@@ -40,13 +40,14 @@
         void Awake()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
-            _collider = GetComponent<CapsuleCollider>();
+            _collider = GetComponent<CapsuleCollider>();            
         }
 
         void Start()
         {
             if (_navMeshAgent != null)
             {
+                _navMeshAgent.isStopped = true; // without this line, first StartMove event invoke doesn't happen
                 _navMeshAgent.speed = Entity.Data.Speed;
             }
         }
