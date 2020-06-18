@@ -93,7 +93,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
-    - _AlbedoColor: {r: 1, g: 1, b: 1, a: 0}
+    - _AlbedoColor: {r: 0.8962264, g: 0.8461584, b: 0.8074493, a: 1}
     - _AllowBuildingColor: {r: 0.6262445, g: 1, b: 0, a: 0}
     - _CannotBuildingColor: {r: 1, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
