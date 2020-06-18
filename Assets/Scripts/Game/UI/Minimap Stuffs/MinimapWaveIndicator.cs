@@ -99,8 +99,6 @@ namespace Game.UI
             Vector3 lookPosition = enemiesTarget.transform.position - _waveSpawnPoint.transform.position;
             lookPosition.y = 0; // only rotation on Y axis
 
-            Debug.DrawLine(_waveSpawnPoint.transform.position, enemiesTarget.transform.position, Color.green, 9999f);
-
             Quaternion rotation = Quaternion.LookRotation(lookPosition);
 
             Vector3 eulerAngles = rotation.eulerAngles;

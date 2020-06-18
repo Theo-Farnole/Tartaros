@@ -3165,7 +3165,6 @@ GameObject:
   - component: {fileID: 1580668140}
   - component: {fileID: 1580668138}
   - component: {fileID: 1580668139}
-  - component: {fileID: 1580668141}
   m_Layer: 0
   m_Name: Construction Phase
   m_TagString: Untagged
@@ -3302,20 +3301,6 @@ Transform:
   m_Father: {fileID: 1232580221}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1580668141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1580668137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3b96afcc907fb54a84536c8825ce38a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ignoreListenerPause: 1
-  _destroyScripAfterIgnoring: 1
 --- !u!1 &1746630483
 GameObject:
   m_ObjectHideFlags: 0
@@ -3535,7 +3520,6 @@ GameObject:
   - component: {fileID: 1835240225}
   - component: {fileID: 1835240223}
   - component: {fileID: 1835240224}
-  - component: {fileID: 1835240226}
   m_Layer: 0
   m_Name: Defend Phase
   m_TagString: Untagged
@@ -3672,20 +3656,6 @@ Transform:
   m_Father: {fileID: 1232580221}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1835240226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835240222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3b96afcc907fb54a84536c8825ce38a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _ignoreListenerPause: 1
-  _destroyScripAfterIgnoring: 1
 --- !u!1 &1974868137
 GameObject:
   m_ObjectHideFlags: 0
