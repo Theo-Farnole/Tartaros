@@ -34,7 +34,7 @@
         void Awake()
         {
             Assert.IsNotNull(_snapGrid, "Fog of War : Please assign a snapgrid in inspector.");
-            
+
             _fogMap = new FogMap(_snapGrid.CellCount);
         }
 
@@ -73,6 +73,8 @@
 
         public Vector3 CoordsToWorld(Vector2Int coords) => _snapGrid.CoordsToWorldPosition(coords);
 
+        public bool TryGetTile(Vector3 worldPosition, out FogState fogState) => TryGetTile(_snapGrid.WorldToCoords(worldPosition), out fogState);
+
         public bool AreTilesVisible(Vector2Int coords, Vector2Int size)
         {
             Vector2Int uncenteredCoords = CoordsToUncenteredCoords(coords, size);
@@ -94,8 +96,6 @@
 
             return true;
         }
-
-        public bool TryGetTile(Vector3 worldPosition, out FogState fogState) => TryGetTile(_snapGrid.WorldToCoords(worldPosition), out fogState);
         #endregion
 
         #region Private Methods
@@ -164,7 +164,6 @@
             return uncenteredCoords;
         }
 
-
         private bool TryGetTile(Vector2Int coords, out FogState fogState)
         {
             if (coords.x < 0 || coords.x >= _fogMap.Size || coords.y < 0 || coords.y >= _fogMap.Size)
@@ -191,7 +190,17 @@
         void OnDrawGizmos()
         {
             if (_debugDrawSnapGrid)
+            {
                 _snapGrid?.DrawGizmos();
+            }
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            foreach (var viewer in _viewers)
+            {
+                UnityEditor.Handles.DrawWireDisc(viewer.Position, Vector3.up, viewer.ViewRadius);
+            }
         }
     }
 #endif
