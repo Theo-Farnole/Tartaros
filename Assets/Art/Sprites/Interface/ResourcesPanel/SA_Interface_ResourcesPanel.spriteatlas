@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SA_Interface_ResourcesPanel
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: f6e0b7eb230e46c4e87d1f39a0073d98, type: 3}
+    - {fileID: 2800000, guid: d480525e2c571c8489fe14b48e985d9b, type: 3}
+    - {fileID: 2800000, guid: cfb55371d469df748a811d1e8675900f, type: 3}
+    - {fileID: 2800000, guid: b81ec16da6e12984f9b875c846070667, type: 3}
+    - {fileID: 2800000, guid: 8636c7338454ae5449455da17f894a12, type: 3}
+    - {fileID: 2800000, guid: b33846c4320a20e48b95a6975ba07eb7, type: 3}
+    totalSpriteSurfaceArea: 133949
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: cfb55371d469df748a811d1e8675900f, type: 3}
+  - {fileID: 21300000, guid: 8636c7338454ae5449455da17f894a12, type: 3}
+  - {fileID: 21300000, guid: b33846c4320a20e48b95a6975ba07eb7, type: 3}
+  - {fileID: 21300000, guid: f6e0b7eb230e46c4e87d1f39a0073d98, type: 3}
+  - {fileID: 21300000, guid: b81ec16da6e12984f9b875c846070667, type: 3}
+  - {fileID: 21300000, guid: d480525e2c571c8489fe14b48e985d9b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - S_RessourcesPanel_Population
+  - S_RessourcesPanel_TextEmplacement
+  - S_RessourcesPanel_Wood
+  - S_RessourcesPanel_Background
+  - S_RessourcesPanel_Stone
+  - S_RessourcesPanel_Food
+  m_Tag: SA_Interface_ResourcesPanel
+  m_IsVariant: 0
