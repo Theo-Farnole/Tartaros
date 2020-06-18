@@ -12,7 +12,7 @@
     {
         #region Fields
         private const string debugLogHeader = "Entity Movement : ";
-        private const float reachDestinationThreshold = 0.5f;        
+        private const float reachDestinationThreshold = 0.5f;
 
         private Vector3 _destination;
         private bool _hasReachedDestination = false;
@@ -56,12 +56,17 @@
             if (!Entity.Data.CanMove)
                 return;
 
+            if (_navMeshAgent.isStopped)
+                return;
+
             bool oldHasReachedDestination = _hasReachedDestination;
             _hasReachedDestination = HasReachedDestination();
 
             // has just reached destination ?
             if (_hasReachedDestination && !oldHasReachedDestination)
             {
+                _navMeshAgent.isStopped = true;
+
                 DestinationReached?.Invoke(_destination);
                 MovementStopped?.Invoke();
             }
@@ -94,13 +99,13 @@
 
             SetAvoidance(Avoidance.Move);
 
-            _navMeshAgent.isStopped = false;
-            _navMeshAgent.SetDestination(position);
-
-            if (_navMeshAgent.isStopped || _hasReachedDestination)
+            if (_navMeshAgent.isStopped)
             {
                 StartMove?.Invoke(position);
             }
+
+            _navMeshAgent.isStopped = false;
+            _navMeshAgent.SetDestination(position);
         }
 
         public void StopMoving()
@@ -110,8 +115,12 @@
 
             SetAvoidance(Avoidance.Idle);
 
+            if (!_navMeshAgent.isStopped)
+            {
+                MovementStopped?.Invoke();
+            }
+
             _navMeshAgent.isStopped = true;
-            MovementStopped?.Invoke();
         }
 
 
