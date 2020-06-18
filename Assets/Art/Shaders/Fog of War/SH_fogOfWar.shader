@@ -6,59 +6,104 @@ Shader "Leonidas Legacy/SH_fogOfWar"
 	{
 		_VisibleRenderTexture("Visible Render Texture", 2D) = "white" {}
 		_ReavaledRenderTexture("Reavaled Render Texture", 2D) = "white" {}
-		_Cutoff( "Mask Clip Value", Float ) = 0.5
 		_VisibleFogColor("Visible Fog Color", Color) = (0,0,0,0)
-		[HideInInspector] __dirty( "", Int ) = 1
 	}
-
+	
 	SubShader
 	{
-		Tags{ "RenderType" = "TransparentCutout"  "Queue" = "AlphaTest+0" "IgnoreProjector" = "True" "IsEmissive" = "true"  }
-		Cull Back
-		CGPROGRAM
-		#include "UnityShaderVariables.cginc"
-		#pragma target 4.6
-		#pragma surface surf Unlit keepalpha noshadow exclude_path:deferred noambient novertexlights nolightmap  nodynlightmap nodirlightmap vertex:vertexDataFunc 
-		struct Input
-		{
-			float4 vertexToFrag88;
-		};
+		
+		
+		Tags { "RenderType"="Opaque" }
+		LOD 100
 
-		uniform float4 _VisibleFogColor;
-		uniform sampler2D _ReavaledRenderTexture;
-		float4x4 unity_Projector;
-		uniform sampler2D _VisibleRenderTexture;
-		uniform float _Cutoff = 0.5;
-
-		void vertexDataFunc( inout appdata_full v, out Input o )
-		{
-			UNITY_INITIALIZE_OUTPUT( Input, o );
-			float4 ase_vertex4Pos = v.vertex;
-			o.vertexToFrag88 = mul( unity_Projector, ase_vertex4Pos );
-		}
-
-		inline half4 LightingUnlit( SurfaceOutput s, half3 lightDir, half atten )
-		{
-			return half4 ( 0, 0, 0, s.Alpha );
-		}
-
-		void surf( Input i , inout SurfaceOutput o )
-		{
-			float2 UV92 = ( (i.vertexToFrag88).xy / (i.vertexToFrag88).w );
-			float2 temp_output_17_0_g6 = UV92;
-			float temp_output_112_0 = ( 1.0 - ( tex2D( _ReavaledRenderTexture, temp_output_17_0_g6 ).r + (tex2D( _VisibleRenderTexture, temp_output_17_0_g6 ).r*0.5 + 0.0) ) );
-			o.Emission = ( _VisibleFogColor * temp_output_112_0 ).rgb;
-			o.Alpha = 1;
-			clip( temp_output_112_0 - _Cutoff );
-		}
-
+		CGINCLUDE
+		#pragma target 3.0
 		ENDCG
+		Blend SrcAlpha OneMinusSrcAlpha , SrcAlpha OneMinusSrcAlpha
+		Cull Back
+		ColorMask RGBA
+		ZWrite On
+		ZTest LEqual
+		Offset 0 , 0
+		
+		
+		
+		Pass
+		{
+			Name "Unlit"
+			
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
+			#pragma multi_compile_instancing
+			#include "UnityCG.cginc"
+			#include "UnityShaderVariables.cginc"
+
+
+			struct appdata
+			{
+				float4 vertex : POSITION;
+				float4 color : COLOR;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				
+			};
+			
+			struct v2f
+			{
+				float4 vertex : SV_POSITION;
+				UNITY_VERTEX_INPUT_INSTANCE_ID
+				UNITY_VERTEX_OUTPUT_STEREO
+				float4 ase_texcoord : TEXCOORD0;
+			};
+
+			uniform float4 _VisibleFogColor;
+			uniform sampler2D _ReavaledRenderTexture;
+			float4x4 unity_Projector;
+			uniform sampler2D _VisibleRenderTexture;
+			
+			v2f vert ( appdata v )
+			{
+				v2f o;
+				UNITY_SETUP_INSTANCE_ID(v);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				UNITY_TRANSFER_INSTANCE_ID(v, o);
+
+				float4 vertexToFrag88 = mul( unity_Projector, v.vertex );
+				o.ase_texcoord = vertexToFrag88;
+				
+				float3 vertexValue =  float3(0,0,0) ;
+				#if ASE_ABSOLUTE_VERTEX_POS
+				v.vertex.xyz = vertexValue;
+				#else
+				v.vertex.xyz += vertexValue;
+				#endif
+				o.vertex = UnityObjectToClipPos(v.vertex);
+				return o;
+			}
+			
+			fixed4 frag (v2f i ) : SV_Target
+			{
+				UNITY_SETUP_INSTANCE_ID(i);
+				fixed4 finalColor;
+				float4 vertexToFrag88 = i.ase_texcoord;
+				float2 UV92 = ( (vertexToFrag88).xy / (vertexToFrag88).w );
+				float2 temp_output_17_0_g6 = UV92;
+				float4 appendResult114 = (float4(_VisibleFogColor.rgb , ( 1.0 - ( tex2D( _ReavaledRenderTexture, temp_output_17_0_g6 ).r + (tex2D( _VisibleRenderTexture, temp_output_17_0_g6 ).r*0.5 + 0.0) ) )));
+				
+				
+				finalColor = appendResult114;
+				return finalColor;
+			}
+			ENDCG
+		}
 	}
 	CustomEditor "ASEMaterialInspector"
+	
+	
 }
 /*ASEBEGIN
 Version=16400
-0;0;1920;1019;1993.924;135.5148;1.442568;True;False
+869;364;822;784;586.0635;205.8607;1;True;False
 Node;AmplifyShaderEditor.PosVertexDataNode;86;-1165.384,-1084.507;Float;False;1;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.UnityProjectorMatrixNode;85;-1165.384,-1164.507;Float;False;0;1;FLOAT4x4;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;87;-957.384,-1164.507;Float;False;2;2;0;FLOAT4x4;0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1;False;1;FLOAT4;0,0,0,0;False;1;FLOAT4;0
@@ -72,8 +117,8 @@ Node;AmplifyShaderEditor.GetLocalVarNode;93;-1248.199,381.4355;Float;False;92;UV
 Node;AmplifyShaderEditor.TexturePropertyNode;1;-1457.896,-224.8671;Float;True;Property;_VisibleRenderTexture;Visible Render Texture;0;0;Create;True;0;0;False;0;415db34ea95895944a90477051d7f3f7;415db34ea95895944a90477051d7f3f7;False;white;Auto;Texture2D;0;1;SAMPLER2D;0
 Node;AmplifyShaderEditor.ColorNode;5;-359.6971,-170.224;Float;False;Property;_VisibleFogColor;Visible Fog Color;3;0;Create;True;0;0;False;0;0,0,0,0;0,0,0,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.FunctionNode;112;-885.8787,102.3848;Float;True;SH_FogOfWar_MergedRenderTextures;-1;;6;262719dec9990b343ac98842b2b6281c;0;3;18;SAMPLER2D;;False;13;SAMPLER2D;0;False;17;FLOAT2;0,0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;105;-129.6808,-37.19012;Float;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.StandardSurfaceOutputNode;16;216.9362,-52.58637;Float;False;True;6;Float;ASEMaterialInspector;0;0;Unlit;Leonidas Legacy/SH_fogOfWar;False;False;False;False;True;True;True;True;True;False;False;False;False;False;True;False;False;False;False;False;False;Back;0;False;-1;0;False;-1;False;0;False;-1;0;False;-1;False;0;Masked;0.5;True;False;0;True;TransparentCutout;;AlphaTest;ForwardOnly;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;True;0;False;-1;False;0;False;-1;255;False;-1;255;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;-1;False;2;15;10;25;False;0.5;False;0;5;False;-1;10;False;-1;0;0;False;-1;0;False;-1;0;False;-1;0;False;-1;0;False;0;0,0,0,0;VertexOffset;True;False;Cylindrical;False;Relative;0;;2;-1;-1;-1;0;False;0;0;False;-1;-1;0;False;-1;0;0;0;False;0.1;False;-1;0;False;-1;15;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;0,0,0;False;3;FLOAT;0;False;4;FLOAT;0;False;6;FLOAT3;0,0,0;False;7;FLOAT3;0,0,0;False;8;FLOAT;0;False;9;FLOAT;0;False;10;FLOAT;0;False;13;FLOAT3;0,0,0;False;11;FLOAT3;0,0,0;False;12;FLOAT3;0,0,0;False;14;FLOAT4;0,0,0,0;False;15;FLOAT3;0,0,0;False;0
+Node;AmplifyShaderEditor.DynamicAppendNode;114;-101.9856,3.075256;Float;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;113;102.9362,15.41363;Float;False;True;2;Float;ASEMaterialInspector;0;1;Leonidas Legacy/SH_fogOfWar;0770190933193b94aaa3065e307002fa;True;Unlit;0;0;Unlit;2;True;2;5;False;-1;10;False;-1;2;5;False;-1;10;False;-1;True;0;False;-1;0;False;-1;True;False;True;0;False;-1;True;True;True;True;True;0;False;-1;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;RenderType=Opaque=RenderType;True;2;0;False;False;False;False;False;False;False;False;False;True;0;False;0;;0;0;Standard;1;Vertex Position,InvertActionOnDeselection;1;0;1;True;False;2;0;FLOAT4;0,0,0,0;False;1;FLOAT3;0,0,0;False;0
 WireConnection;87;0;85;0
 WireConnection;87;1;86;0
 WireConnection;88;0;87;0
@@ -85,9 +130,8 @@ WireConnection;92;0;91;0
 WireConnection;112;18;1;0
 WireConnection;112;13;22;0
 WireConnection;112;17;93;0
-WireConnection;105;0;5;0
-WireConnection;105;1;112;0
-WireConnection;16;2;105;0
-WireConnection;16;10;112;0
+WireConnection;114;0;5;0
+WireConnection;114;3;112;0
+WireConnection;113;0;114;0
 ASEEND*/
-//CHKSM=E1AEF332E976B879EB61B45BCADBEF1B741A99F9
+//CHKSM=F7D6813F2E12DDD2E6FFEDECF1E0379A6C80899D
