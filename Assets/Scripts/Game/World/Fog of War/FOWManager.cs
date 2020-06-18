@@ -46,22 +46,22 @@
         #endregion
 
         #region Public Methods
-        public void AddViewer(EntityFogVision entity)
+        public void AddViewer(IFogVision entity)
         {
             _viewers.Add(entity);
         }
 
-        public void RemoveViewer(EntityFogVision entity)
+        public void RemoveViewer(IFogVision entity)
         {
             _viewers.Remove(entity);
         }
 
-        public void RemoveCoverable(EntityFogCoverable entity)
+        public void RemoveCoverable(IFogCoverable entity)
         {
             _coverables.Remove(entity);
         }
 
-        public void AddCoverable(EntityFogCoverable entity)
+        public void AddCoverable(IFogCoverable entity)
         {
             _coverables.Add(entity);
         }
