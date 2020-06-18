@@ -14,7 +14,9 @@
 
         public bool IsTerrainFlat(Vector3 worldPosition)
         {
-            if (Physics.Raycast(worldPosition + Vector3.up * 10, Vector3.down, out RaycastHit hit))
+            Ray ray = new Ray(worldPosition + Vector3.up * 10, Vector3.down);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _layerMaskTerrain))
             {
                 // Flat terrain mean plane is at position '0'.
                 return Math.Approximately(hit.point.y, _isFlatTerrainYPosition, _isFlatApproximately_Delta);
@@ -36,14 +38,8 @@
                 {
                     Vector2Int currentCoords = originCoords + new Vector2Int(x, y);
 
-                    if (IsTerrainFlat(currentCoords))
-                    {
-                        continue;
-                    }
-                    else
-                    {
+                    if (!IsTerrainFlat(currentCoords))
                         return false;
-                    }
                 }
             }
 

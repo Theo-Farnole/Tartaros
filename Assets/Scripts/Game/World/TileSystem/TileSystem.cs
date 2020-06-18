@@ -1,4 +1,4 @@
-﻿namespace Game.TileSystem
+namespace Game.TileSystem
 {
     using Game.Entities;
     using Game.FogOfWar;
@@ -38,6 +38,7 @@
         private const string debugLogHeader = "Tile System : ";
 
         private Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>();
+        private int _layerMaskTerrain = -1;
         #endregion
 
         #region Events
@@ -46,7 +47,12 @@
 
         #region Methods
         #region MonoBehaviour Callbacks
-        private void Start()
+        void Awake()
+        {
+            _layerMaskTerrain = LayerMask.GetMask("Terrain");            
+        }
+
+        void Start()
         {
             ResetAllTiles();
         }
