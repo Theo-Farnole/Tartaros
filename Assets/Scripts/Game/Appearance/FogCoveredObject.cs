@@ -4,31 +4,34 @@
 
     public class FogCoveredObject : MonoBehaviour, IFogCoverable
     {
+        #region Fields
         [SerializeField] private MeshRenderer[] _meshRenderers = null;
         [SerializeField] private bool _dontHideOnRecover = true;
 
         private bool _isCover = false;
         private int _coveredCount = 0;
+        #endregion        
 
-        public bool IsCover
+        #region IFogCoverable Interfaces
+        bool IFogCoverable.IsCover
         {
             get => _isCover;
 
             set
-            {
-                _isCover = value;
-                
-                if (_isCover == true)
-                {
-                    _coveredCount++;
-                }
+            {                
+                if (value && value != _isCover)                
+                    _coveredCount++;                
+
+                _isCover = value;     
 
                 UpdateMeshRenderers();
             }
         }
 
-        public Vector3 Position => transform.position;
+        Vector3 IFogCoverable.Position => transform.position;
+        #endregion
 
+        #region Private Methods
         void OnEnable()
         {
             FOWManager.Instance.AddCoverable(this);
@@ -41,7 +44,7 @@
 
         void UpdateMeshRenderers()
         {
-            if (_dontHideOnRecover && _isCover && _coveredCount > 1)            
+            if (_dontHideOnRecover && IsRecover())            
                 return;            
 
             for (int i = 0; i < _meshRenderers.Length; i++)
@@ -49,5 +52,8 @@
                 _meshRenderers[i].enabled = !_isCover;
             }
         }
+
+        bool IsRecover() => _isCover && _coveredCount > 1;
+        #endregion
     }
 }
