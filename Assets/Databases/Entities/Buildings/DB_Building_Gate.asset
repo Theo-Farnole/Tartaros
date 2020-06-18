@@ -63,7 +63,7 @@ MonoBehaviour:
     wood: 5
     stone: 0
   _creationDuration: 0
-  _viewRadius: 2
+  _viewRadius: 24
   _canDetectEntities: 0
   _soundsAttack: []
   _soundsDeath:
