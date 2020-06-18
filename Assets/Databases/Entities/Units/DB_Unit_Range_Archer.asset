@@ -81,7 +81,7 @@ MonoBehaviour:
   _attackRadius: 5
   _damagePerSecond: 1
   _canMove: 1
-  _speed: 3
+  _speed: 5
   _canCreateUnit: 0
   _unitsSpawnConditions: []
   _canGenerateResources: 0
