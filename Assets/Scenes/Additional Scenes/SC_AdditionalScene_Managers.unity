@@ -3894,6 +3894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f1d6bd4358eff04183f18c0d04356cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _debugDrawFlatness: 0
   _isFlatTerrainYPosition: 0
   _isFlatApproximately_Delta: 0.1
 --- !u!114 &5682737043787708820
