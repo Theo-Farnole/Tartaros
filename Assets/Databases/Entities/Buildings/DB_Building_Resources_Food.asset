@@ -122,7 +122,7 @@ MonoBehaviour:
   _entityName: Mill
   _entityType: 1
   _hotkey: 102
-  _portrait: {fileID: 21300000, guid: 611dc461b85e6b74a90d20260a2b768f, type: 3}
+  _portrait: {fileID: 21300000, guid: 03fd023692f05e941bf5ef1480eaee36, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 991d5e0ade863b94c8911376e6dcb0f5, type: 3}
   _populationUse: 0
   _tileSize: {x: 3, y: 3}

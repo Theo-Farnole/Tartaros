@@ -50,7 +50,7 @@ MonoBehaviour:
   _entityName: Leonidas
   _entityType: 0
   _hotkey: 108
-  _portrait: {fileID: 21300000, guid: 9cdff1d878a982245a2658b6df36892b, type: 3}
+  _portrait: {fileID: 21300000, guid: e33cce16972b56742bf258c05a9ca7e2, type: 3}
   _prefab: {fileID: 7475237624608698167, guid: 1330bb067e85b654a9d2a3ee5c9a7463, type: 3}
   _populationUse: 5
   _tileSize: {x: 1, y: 1}

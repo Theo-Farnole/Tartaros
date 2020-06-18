@@ -50,7 +50,7 @@ MonoBehaviour:
   _entityName: Wall
   _entityType: 1
   _hotkey: 97
-  _portrait: {fileID: 21300000, guid: b3561439d7ce3ef4ea00592343b8c42c, type: 3}
+  _portrait: {fileID: 21300000, guid: b59e4951b4ef05749987321c45f8090b, type: 3}
   _prefab: {fileID: 545007711727897807, guid: c42319024a50f144ba0a082d69f98a98, type: 3}
   _populationUse: 0
   _tileSize: {x: 1, y: 1}

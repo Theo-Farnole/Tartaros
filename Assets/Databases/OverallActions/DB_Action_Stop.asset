@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 767c740e702facb40b97e03ca64db6fa, type: 3}
   m_Name: DB_Action_Stop
   m_EditorClassIdentifier: 
-  _portrait: {fileID: 21300000, guid: 62890810e2858b84da1ce60f5a074504, type: 3}
+  _portrait: {fileID: 21300000, guid: 7ee88aa2dd81f50479c6c901a50683d4, type: 3}
   _hotkey: 101
   _hoverPopupData: {fileID: 11400000, guid: 2736dcfcf2e27244e949f3b313adb7ed, type: 2}

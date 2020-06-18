@@ -50,7 +50,7 @@ MonoBehaviour:
   _entityName: House
   _entityType: 1
   _hotkey: 104
-  _portrait: {fileID: 21300000, guid: 04beb25e868cb264791c0ba773f4fff5, type: 3}
+  _portrait: {fileID: 21300000, guid: d92753ab036250f4eab68656308a5271, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 07c235988da8f0d449a461fff451a456, type: 3}
   _populationUse: 0
   _tileSize: {x: 2, y: 2}

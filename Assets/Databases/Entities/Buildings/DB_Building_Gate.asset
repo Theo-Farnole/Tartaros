@@ -50,7 +50,7 @@ MonoBehaviour:
   _entityName: Gate
   _entityType: 1
   _hotkey: 103
-  _portrait: {fileID: 21300000, guid: 223210f0a157f6c4d9cff1d660682a7b, type: 3}
+  _portrait: {fileID: 21300000, guid: 6377de5f68bdde545857084573da1e13, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 7bc73da1b04cc36458eee7a8a1f17524, type: 3}
   _populationUse: 0
   _tileSize: {x: 1, y: 1}

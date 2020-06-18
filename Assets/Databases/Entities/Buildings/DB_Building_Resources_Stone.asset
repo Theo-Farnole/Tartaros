@@ -122,7 +122,7 @@ MonoBehaviour:
   _entityName: Stone Quarry
   _entityType: 1
   _hotkey: 101
-  _portrait: {fileID: 21300000, guid: 93a414e17a0a5a442b69689d1e1e32d0, type: 3}
+  _portrait: {fileID: 21300000, guid: abe1ef612bbdc6446ac86df9b2139440, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 4674cbd969209d842b37a07f98b29a30, type: 3}
   _populationUse: 0
   _tileSize: {x: 3, y: 3}

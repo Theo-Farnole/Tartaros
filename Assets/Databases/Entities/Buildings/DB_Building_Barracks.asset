@@ -50,7 +50,7 @@ MonoBehaviour:
   _entityName: Barracks
   _entityType: 1
   _hotkey: 98
-  _portrait: {fileID: 21300000, guid: ddf698dc9dd26684997c886677289a04, type: 3}
+  _portrait: {fileID: 21300000, guid: 15d4aebe988fd774dbcd550ff5e6a544, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 5223a26d9e803f04ab7c98100babab8f, type: 3}
   _populationUse: 0
   _tileSize: {x: 3, y: 3}

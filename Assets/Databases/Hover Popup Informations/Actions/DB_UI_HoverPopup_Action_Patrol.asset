@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd9c0a64af2b68743b0b98edb6531dd6, type: 3}
   m_Name: DB_UI_HoverPopup_Action_Patrol
   m_EditorClassIdentifier: 
+  _entityData: {fileID: 0}
   _title: Patrol
+  _hasDescription: 0
   _description: Make the entity patrol between 2 points.
   _displayHotkey: 1
   _hotkey: 112
@@ -22,4 +24,4 @@ MonoBehaviour:
   _resources:
     food: 0
     wood: 0
-    gold: 0
+    stone: 0

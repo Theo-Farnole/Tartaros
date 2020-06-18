@@ -50,7 +50,7 @@ MonoBehaviour:
   _entityName: Tower
   _entityType: 1
   _hotkey: 116
-  _portrait: {fileID: 21300000, guid: aeb8eb04ee5722144bd09be71e8c8fed, type: 3}
+  _portrait: {fileID: 21300000, guid: 034e287e6e0aae14ab13c9e0aaa23f1a, type: 3}
   _prefab: {fileID: 545007711727897807, guid: fa53652c0a36fce4d9ba000f1028598a, type: 3}
   _populationUse: 0
   _tileSize: {x: 1, y: 1}

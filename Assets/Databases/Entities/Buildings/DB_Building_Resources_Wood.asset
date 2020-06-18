@@ -122,7 +122,7 @@ MonoBehaviour:
   _entityName: Lumber Camp
   _entityType: 1
   _hotkey: 119
-  _portrait: {fileID: 21300000, guid: 43fe52d9956ed774db76a055704aa826, type: 3}
+  _portrait: {fileID: 21300000, guid: 3260c46ced13dae4e93cd111a429a574, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 302af1b49b0739d4fbdc498d874c6adb, type: 3}
   _populationUse: 0
   _tileSize: {x: 3, y: 3}

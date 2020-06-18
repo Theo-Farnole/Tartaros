@@ -81,6 +81,8 @@
                 _currentTweening.Kill();
             }
 
+            Debug.Log("StartReduceCollision");
+
             _currentSize = Size.Shrinking;
 
             _currentTweening = DOTween.To(() => _navMeshAgent.radius, x => _navMeshAgent.radius = x, _originalAgentRadius * _collisionScalerData.CollisionScaleDownPercent, _collisionScalerData.ReduceTime)
@@ -100,6 +102,8 @@
             {
                 _currentTweening.Kill();
             }
+
+            Debug.Log("StartGrowCollision");
 
             _currentSize = Size.Expanding;
 

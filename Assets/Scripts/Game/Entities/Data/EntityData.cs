@@ -41,7 +41,7 @@ namespace Game.Entities
         private const string headerTurnIntoAnotherEntity = "Can Turn into Another Building'";
         private const string headerToggleNavmesh = "Can Toggle Nav Mesh Obstacle";
 
-        #region Misc
+        #region core
         [VerticalGroup(portraitAndPrefabGroupName + "/Info"), LabelWidth(90)]
         [SerializeField] private string _entityName;
 

@@ -50,7 +50,7 @@ MonoBehaviour:
   _entityName: Archer
   _entityType: 0
   _hotkey: 97
-  _portrait: {fileID: 21300000, guid: 9cdff1d878a982245a2658b6df36892b, type: 3}
+  _portrait: {fileID: 21300000, guid: b2a31bcbd12dbb247bd21621458eda22, type: 3}
   _prefab: {fileID: 1376740259545295656, guid: e9ffbe40135a83043ab3db7dde8680d9, type: 3}
   _populationUse: 1
   _tileSize: {x: 1, y: 1}

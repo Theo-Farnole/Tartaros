@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData: {fileID: 0}
   _title: Move Aggressively
-  _hasDescription: 1
+  _hasDescription: 0
   _description: The entity move to the destination and attacks every opponent it
     found in his way.
   _displayHotkey: 1
