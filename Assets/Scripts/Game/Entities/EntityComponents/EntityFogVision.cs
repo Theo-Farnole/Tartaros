@@ -20,7 +20,11 @@
         #region Methods
         void Start()
         {
+            Transform parent = transform.parent;
+
+            _fogOfWarVision.transform.SetParent(null);
             _fogOfWarVision.transform.localScale = Vector3.one * Entity.Data.ViewRadius * 2;
+            _fogOfWarVision.transform.SetParent(null, true);
         }
 
         void OnEnable()
