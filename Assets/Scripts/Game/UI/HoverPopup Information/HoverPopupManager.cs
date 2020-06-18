@@ -25,7 +25,6 @@ namespace Game.UI.HoverPopup
         [SerializeField] private TextMeshProUGUI _creationTimeText;
         [SerializeField] private TextMeshProUGUI _descriptionText;
         [Space]
-        [SerializeField, Tooltip("In pixels")] private int _heightMargin = 25;
         [SerializeField] private int _offsetY = 0;
 
         void Start()
@@ -33,7 +32,7 @@ namespace Game.UI.HoverPopup
             HidePopUp();    
         }
 
-        public void DisplayHoverPopup(RectTransform hoverDisplayPopup, HoverPopupData hoverPopupData)
+        public void DisplayHoverPopup(RectTransform positionTarget, HoverPopupData hoverPopupData)
         {
             if (hoverPopupData == null)
             {
@@ -44,7 +43,7 @@ namespace Game.UI.HoverPopup
             _hoverPopupCanvas.SetActive(true);
 
             UpdateContent(hoverPopupData);
-            UpdatePosition(hoverDisplayPopup);
+            UpdatePosition(positionTarget);
         }
 
         public void HidePopUp()
@@ -119,19 +118,17 @@ namespace Game.UI.HoverPopup
             }
         }
 
-        private void UpdatePosition(RectTransform hoverDisplayPopup)
+        private void UpdatePosition(RectTransform positionTarget)
         {
-            Assert.IsNotNull(hoverDisplayPopup, "The display popup passed in arg is null. Can't update popup position");
+            Assert.IsNotNull(positionTarget, "The display popup passed in arg is null. Can't update popup position");
 
             Vector3 localPosition = new Vector3
             (
-                hoverDisplayPopup.rect.center.x,
-                hoverDisplayPopup.rect.yMax + _offsetY
+                0,
+                positionTarget.rect.max.y + _offsetY
             );
 
-
-            _hoverPopup.position = localPosition + hoverDisplayPopup.position;
-            //_hoverPopup.position = hoverDisplayPopup.position + Vector3.up * _hoverPopup.rect.height / 4 + _offsetY; // center vertically
+            _hoverPopup.position = localPosition + positionTarget.position;
         }
     }
 }
