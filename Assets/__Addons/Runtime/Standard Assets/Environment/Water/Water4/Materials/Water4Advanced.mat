@@ -149,7 +149,7 @@ Material:
     - _HorizonColor: {r: 0.052907113, g: 0.24486735, b: 0.2835821, a: 1}
     - _InvFadeParemeter: {r: 0.21896552, g: 0.15944828, b: 0.04310345, a: 0}
     - _MainTex_ST: {r: 1, g: 1, b: 0, a: 0}
-    - _ReflectionColor: {r: 0.5794164, g: 0.6849238, b: 0.761194, a: 0.43137255}
+    - _ReflectionColor: {r: 0.5794164, g: 0.6849238, b: 0.761194, a: 0.69411767}
     - _ReflectionTex_ST: {r: 1, g: 1, b: 0, a: 0}
     - _ReflectiveColorCube_ST: {r: 1, g: 1, b: 0, a: 0}
     - _ReflectiveColor_ST: {r: 1, g: 1, b: 0, a: 0}
