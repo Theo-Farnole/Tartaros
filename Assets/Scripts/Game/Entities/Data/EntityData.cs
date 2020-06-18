@@ -90,7 +90,7 @@ namespace Game.Entities
 
         #region Vision Settings
         [BoxGroup("Vision Settings")]
-        [SerializeField, Range(1, 15)] private float _viewRadius = 3;
+        [SerializeField, Range(1, 50)] private float _viewRadius = 3;
 
         [BoxGroup("Vision Settings")]
         [SerializeField] private bool _canDetectEntities = false;
