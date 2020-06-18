@@ -1,4 +1,4 @@
-namespace Game.TileSystem
+﻿namespace Game.TileSystem
 {
     using Game.Entities;
     using Game.FogOfWar;
@@ -351,20 +351,6 @@ namespace Game.TileSystem
 
             return true;
         }
-
-        private void ResetAllTiles()
-        {
-            int midCellCount = GameManager.Instance.Grid.CellCount / 2;
-            int cellCount = GameManager.Instance.Grid.CellCount;
-
-            for (int x = 0; x <= cellCount; x++)
-            {
-                for (int y = 0; y <= cellCount; y++)
-                {
-                    _tiles.Add(new Vector2Int(x, y), null);
-                }
-            }
-        }
         #endregion
 
         #region Conversion methods
@@ -438,7 +424,35 @@ namespace Game.TileSystem
             return o;
         }
 
-        #endregion        
+        #endregion
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// Set all tiles to null, then get all entities.
+        /// </summary>
+        private void ResetAllTiles()
+        {
+            int cellCount = GameManager.Instance.Grid.CellCount;
+
+            for (int x = 0; x <= cellCount; x++)
+            {
+                for (int y = 0; y <= cellCount; y++)
+                {
+                    _tiles.Add(new Vector2Int(x, y), null);
+                }
+            }
+
+            Entity[] entities = FindObjectsOfType<Entity>();
+
+            for (int i = 0; i < entities.Length; i++)
+            {
+                if (entities[i].Data.EntityType == EntityType.Unit)
+                    continue;
+
+                SetTile(entities[i].gameObject, entities[i].Data.TileSize);
+            }
+        }                   
         #endregion
         #endregion
     }
