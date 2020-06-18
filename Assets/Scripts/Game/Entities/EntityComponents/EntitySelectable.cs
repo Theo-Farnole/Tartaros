@@ -113,7 +113,7 @@ namespace Game.Entities
             );
 
             Vector3 pos = Physics.Raycast(ray, out RaycastHit hit, layerMaskTerrain) ?
-                hit.point + Vector3.up * 0.01f :
+                hit.point + Vector3.up * 0.1f :
                 transform.position;
             Quaternion rot = Quaternion.Euler(90, 0, 0);
 

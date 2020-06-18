@@ -8,14 +8,14 @@ namespace Game.UI
     public struct MinimapWaveIndicator
     {
         #region Fields
-        private readonly WaveSpawnPoint _waveSpawnPoint;
+        private readonly WaveIndicatorUIWorldPosition _waveSpawnPoint;
         private readonly RectTransform _waveIndicatorUI;
         private readonly PanelMiniMap _panelMiniMap;
                 
         private readonly MinimapPositionConverter _minimapPositionConverter;
         #endregion
 
-        public MinimapWaveIndicator(WaveSpawnPoint waveSpawnPoint, RectTransform waveIndicator, PanelMiniMap panelMiniMap)
+        public MinimapWaveIndicator(WaveIndicatorUIWorldPosition waveSpawnPoint, RectTransform waveIndicator, PanelMiniMap panelMiniMap)
         {
             _waveSpawnPoint = waveSpawnPoint;
             _waveIndicatorUI = waveIndicator;
@@ -64,7 +64,7 @@ namespace Game.UI
         #region Private methods
         private void ManageDisplay(int waveCount)
         {
-            bool displayWaveIndicator = !_waveSpawnPoint.WavesData.IsWaveEmpty(waveCount);
+            bool displayWaveIndicator = !_waveSpawnPoint.IsWaveEmpty(waveCount);
 
             // PERFORMANCE:            
             // Should we just disable Image component, or SetActive(false) whole object ?
@@ -88,11 +88,11 @@ namespace Game.UI
 
         private void LookAtEnemiesTarget()
         {
-            Transform enemiesTarget = _waveSpawnPoint.WavesData.GetWaveAttackTarget();
+            Transform enemiesTarget = _waveSpawnPoint.GetWavesAttackTarget();
 
             if (enemiesTarget == null)
             {
-                Debug.LogErrorFormat("Panel Mini Map : Missing entity {0} to look at.", _waveSpawnPoint.WavesData.EntityIDToAttack);
+                Debug.LogErrorFormat("Panel Mini Map : Missing entity {0} to look at.", _waveSpawnPoint.GetEntityIDToAttack());
                 return;
             }
 

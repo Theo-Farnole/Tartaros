@@ -1,18 +1,14 @@
-﻿using Lortedo.Utilities.Pattern;
-using Sirenix.OdinInspector;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-namespace Game.WaveSystem
+﻿namespace Game.WaveSystem
 {
+    using Sirenix.OdinInspector;
+    using UnityEngine;
+    using UnityEngine.Assertions;
+
     /// <summary>
     /// This script start wave sequence when order received from WaveManager.
     /// It spawn every mob from its position.
     /// </summary>
-    public class WaveSpawnPoint : MonoBehaviour
+    public partial class WaveSpawnPoint : MonoBehaviour
     {
         [Required]
         [SerializeField] private WavesData _wavesData;        
@@ -42,4 +38,19 @@ namespace Game.WaveSystem
             _currentCoroutine = StartCoroutine(_wavesData.WaveSequence(waveCount, transform.position));
         }
     }
+
+#if UNITY_EDITOR
+    public partial class WaveSpawnPoint : MonoBehaviour
+    {
+        [Header("DEBUGS")]
+        [SerializeField] private Color _gizmosColor = Color.red;
+        [SerializeField] private float _gizmosWireSphereRadius = 1.5f;
+
+        void OnDrawGizmos()
+        {
+            Gizmos.color = _gizmosColor;
+            Gizmos.DrawWireSphere(transform.position, _gizmosWireSphereRadius);
+        }
+    }
+#endif
 }

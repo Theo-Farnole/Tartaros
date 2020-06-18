@@ -58,7 +58,7 @@ namespace Game.UI
         {
             Assert.IsNull(_wavesIndicators, "You shouldn't call CreateWaveIndicators() if _wavesIndicators is already initialized.");
 
-            var waveSpawnPoints = FindObjectsOfType<WaveSpawnPoint>();
+            var waveSpawnPoints = FindObjectsOfType<WaveIndicatorUIWorldPosition>();
 
             if (waveSpawnPoints.Length == 0)
                 Debug.LogWarningFormat("Panel Mini Map: Found 0 WaveSpawnPoint on scene. There might be problems on the scene.");
