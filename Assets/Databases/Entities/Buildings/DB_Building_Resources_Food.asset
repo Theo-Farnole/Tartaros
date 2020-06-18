@@ -125,7 +125,7 @@ MonoBehaviour:
   _portrait: {fileID: 21300000, guid: 611dc461b85e6b74a90d20260a2b768f, type: 3}
   _prefab: {fileID: 545007711727897807, guid: 991d5e0ade863b94c8911376e6dcb0f5, type: 3}
   _populationUse: 0
-  _tileSize: {x: 3, y: 4}
+  _tileSize: {x: 3, y: 3}
   _radius: 0.5
   _hoverPopupData: {fileID: 11400000, guid: 43b6de2db9833564a89bee0680bc5192, type: 2}
   _isInvincible: 0
