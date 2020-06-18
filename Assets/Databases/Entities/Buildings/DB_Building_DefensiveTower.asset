@@ -63,7 +63,7 @@ MonoBehaviour:
     wood: 5
     stone: 0
   _creationDuration: 0
-  _viewRadius: 28.9
+  _viewRadius: 50
   _canDetectEntities: 1
   _soundsAttack:
   - {fileID: 8300000, guid: 3effe3b3f417a814cb031283faa1d706, type: 3}
