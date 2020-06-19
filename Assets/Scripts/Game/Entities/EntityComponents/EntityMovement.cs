@@ -81,7 +81,10 @@
 
         void OnDisable()
         {
-            _navMeshAgent.isStopped = true;
+            if (_navMeshAgent != null)
+            {
+                _navMeshAgent.isStopped = true;
+            }
         }
         #endregion
 
