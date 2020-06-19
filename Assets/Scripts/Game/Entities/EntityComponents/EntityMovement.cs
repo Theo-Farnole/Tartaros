@@ -49,6 +49,8 @@
                 // without this line, first StartMove event invoke doesn't happen
                 _navMeshAgent.isStopped = true;
             }
+
+            NavMesh.pathfindingIterationsPerFrame = int.MaxValue;
         }
 
         void Start()
