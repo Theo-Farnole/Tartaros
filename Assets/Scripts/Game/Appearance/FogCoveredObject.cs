@@ -39,7 +39,10 @@
 
         void OnDisable()
         {
-            FOWManager.Instance.RemoveCoverable(this);    
+            if (FOWManager.Instance != null)
+            {
+                FOWManager.Instance.RemoveCoverable(this);
+            }
         }
 
         void UpdateMeshRenderers()
