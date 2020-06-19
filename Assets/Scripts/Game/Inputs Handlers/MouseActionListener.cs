@@ -63,7 +63,7 @@ namespace Game.Inputs
                 return;
 
             // over UI
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
                 return;
 
             if (Input.GetMouseButtonDown(1))

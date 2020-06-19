@@ -94,7 +94,7 @@ namespace Game.Appearance.Cursor
             }
 
             // is over UI
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
                 SetCursorSprite(CursorState.Default);
             }
