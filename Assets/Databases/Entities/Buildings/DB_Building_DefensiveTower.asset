@@ -75,6 +75,7 @@ MonoBehaviour:
   _isMelee: 0
   _prefabProjectile: {fileID: 8418848710559131281, guid: f3ec0de2dfe737c4ca7686fc500e6fb6,
     type: 3}
+  _lookAtEntityOnAttack: 0
   _damage: 3
   _attackPerSecond: 1
   _attackRadius: 10

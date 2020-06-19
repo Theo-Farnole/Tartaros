@@ -86,7 +86,10 @@ namespace Game.Entities
             {
                 CalculateNewAttackTimer();
 
-                LookAtEntity(target);
+                if (Entity.Data.LookAtEntityOnAttack)
+                {
+                    LookAtEntity(target);
+                }
 
                 if (Entity.Data.IsMelee)
                 {

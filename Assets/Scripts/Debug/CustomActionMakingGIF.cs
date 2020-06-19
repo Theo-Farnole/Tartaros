@@ -28,7 +28,7 @@ public class CustomActionMakingGIF : MonoBehaviour
 
     private void MakeEntitiesGreatAgain()
     {
-        Debug.Log("MakeEntitiesGreatAgain, attack'll work at " + System.DateTime.Now.AddSeconds(ActionMoveToPositionAggressively.DELAY).ToLongTimeString());
+        //Debug.Log("MakeEntitiesGreatAgain, attack'll work at " + System.DateTime.Now.AddSeconds(ActionMoveToPositionAggressively.DELAY).ToLongTimeString());
 
         Entity[] entities = FindObjectsOfType<Entity>();
 

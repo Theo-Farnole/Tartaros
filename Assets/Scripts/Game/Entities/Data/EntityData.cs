@@ -121,6 +121,9 @@ namespace Game.Entities
         [DisableIf(nameof(_isMelee))]
         [SerializeField] private GameObject _prefabProjectile;
 
+        [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
+        [SerializeField] private bool _lookAtEntityOnAttack = true;
+
         [Space]
         [ToggleGroup(nameof(_canAttack), attackSettingsHeaderName)]
         [PositiveValueOnly]
@@ -261,6 +264,7 @@ namespace Game.Entities
 
         public bool CanTurnIntoAnotherBuilding { get => _canTurnIntoAnotherEntity; }
         public string[] TurnIntoAnotherBuildingsList { get => _canTurnIntoAnotherEntity ? _turnIntoAnotherEntityList : null; }
+        public bool LookAtEntityOnAttack { get => _lookAtEntityOnAttack; }
         #endregion
 
         #region Methods
