@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridLength: 300
   _cellSize: 1.5
-  _cellsTotalCount: 441
+  _cellsTotalCount: 40401
