@@ -44,6 +44,21 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6926094039869507215, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6860961830843091074, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6338865460652273448, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -5970152316307963376, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReceiveShadows
@@ -64,6 +79,16 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5970152316307963376, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5421104734658976763, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4584141467972674908, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReceiveShadows
@@ -82,6 +107,11 @@ PrefabInstance:
     - target: {fileID: -4584141467972674908, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4584141467972674908, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 06c005456c378f74087745ba8b692859,
@@ -159,6 +189,16 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4105516256266295597, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2279269046276848331, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -1580573497515179640, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReceiveShadows
@@ -177,6 +217,11 @@ PrefabInstance:
     - target: {fileID: -1580573497515179640, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1580573497515179640, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 06c005456c378f74087745ba8b692859,
@@ -184,6 +229,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Unit_Archer
       objectReference: {fileID: 0}
+    - target: {fileID: -883284603429793665, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 610718887107535413, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1265348821192188282, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReceiveShadows
@@ -202,6 +257,16 @@ PrefabInstance:
     - target: {fileID: 1265348821192188282, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1265348821192188282, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1806438414139579011, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2120539623906046279, guid: 06c005456c378f74087745ba8b692859,
@@ -224,6 +289,11 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2120539623906046279, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2852340186071546153, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReceiveShadows
@@ -242,6 +312,11 @@ PrefabInstance:
     - target: {fileID: 2852340186071546153, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2852340186071546153, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3061514662589243326, guid: 06c005456c378f74087745ba8b692859,
@@ -264,6 +339,21 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3061514662589243326, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289387721146644219, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4731053639312837888, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7670320639272876543, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReceiveShadows
@@ -284,6 +374,21 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7670320639272876543, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149821039361591234, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394997780995056367, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8540133093017649952, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReceiveShadows
@@ -304,6 +409,11 @@ PrefabInstance:
       propertyPath: m_ReflectionProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8540133093017649952, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8601924564638673395, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReceiveShadows
@@ -322,6 +432,16 @@ PrefabInstance:
     - target: {fileID: 8601924564638673395, guid: 06c005456c378f74087745ba8b692859,
         type: 3}
       propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8601924564638673395, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8993239400576610394, guid: 06c005456c378f74087745ba8b692859,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -22,7 +22,7 @@ MonoBehaviour:
   _keyPanBackwardAlternative: 274
   _keyPanLeftAlternative: 276
   _keyPanRightAlternative: 275
-  _useScreenEdgeInput: 0
+  _useScreenEdgeInput: 1
   _panSpeedScreenEdge: 100
   _panBorderThickness: 10
   _canZoom: 1

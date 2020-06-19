@@ -17,6 +17,8 @@ public partial class CameraController : MonoBehaviour
     [SerializeField] private bool _enableMapLimit = true;
     [SerializeField] private Bounds2D _mapLimitX = new Bounds2D(-100, 100);
     [SerializeField] private Bounds2D _mapLimitZ = new Bounds2D(-100, 100);
+    [Space]
+    [SerializeField] private bool _useScreenEdgeInputInEditor = false;
     #endregion
 
     #region Methods
@@ -97,6 +99,11 @@ public partial class CameraController : MonoBehaviour
 
     private void ProcessInput_Movement_ScreenEdge(float deltaTime, ref Vector3 deltaPosition)
     {
+#if UNITY_EDITOR
+        if (!_useScreenEdgeInputInEditor)
+            return;
+#endif
+
         if (!_data.UseScreenEdgeInput)
             return;
 
