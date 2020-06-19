@@ -40,14 +40,21 @@
         void Awake()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
-            _collider = GetComponent<CapsuleCollider>();            
+            _collider = GetComponent<CapsuleCollider>();
+
+            // if we set this line in Start,
+            // MoveToAnchorDoesn'tWork
+            if (_navMeshAgent != null)
+            {
+                // without this line, first StartMove event invoke doesn't happen
+                _navMeshAgent.isStopped = true;
+            }
         }
 
         void Start()
         {
             if (_navMeshAgent != null)
             {
-                _navMeshAgent.isStopped = true; // without this line, first StartMove event invoke doesn't happen
                 _navMeshAgent.speed = Entity.Data.Speed;
             }
         }
@@ -55,9 +62,6 @@
         void Update()
         {
             if (!Entity.Data.CanMove)
-                return;
-
-            if (_navMeshAgent.isStopped)
                 return;
 
             bool oldHasReachedDestination = _hasReachedDestination;
@@ -70,7 +74,14 @@
 
                 DestinationReached?.Invoke(_destination);
                 MovementStopped?.Invoke();
+
+                Debug.Log("Movement stopped");
             }
+        }
+
+        void OnDisable()
+        {
+            _navMeshAgent.isStopped = true;
         }
         #endregion
 
@@ -96,6 +107,8 @@
             if (!Entity.Data.CanMove)
                 return;
 
+            Debug.LogFormat("{0} moves to {1}", name, position);
+
             _destination = position;
 
             SetAvoidance(Avoidance.Move);
@@ -106,6 +119,8 @@
             }
 
             _navMeshAgent.isStopped = false;
+            _hasReachedDestination = false;
+
             _navMeshAgent.SetDestination(position);
         }
 
@@ -128,9 +143,6 @@
         public bool HasReachedDestination()
         {
             if (!Entity.Data.CanMove)
-                return true;
-
-            if (_navMeshAgent.isStopped)
                 return true;
 
             return Vector3.Distance(transform.position, _destination) <= _navMeshAgent.stoppingDistance + 0.1f;
