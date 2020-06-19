@@ -72,6 +72,7 @@ MonoBehaviour:
   _canAttack: 0
   _isMelee: 1
   _prefabProjectile: {fileID: 0}
+  _lookAtEntityOnAttack: 1
   _damage: 3
   _attackPerSecond: 1
   _attackRadius: 3
@@ -83,13 +84,13 @@ MonoBehaviour:
   - _entityIDToSpawn: unit_hero_leonidas
     _hasSpawnCondition: 1
     _maxAlliesOfSameIDAlive: 1
-  _canGenerateResources: 0
-  _generationTick: 1
-  _generationType: 0
+  _canGenerateResources: 1
+  _generationTick: 6
+  _generationType: 1
   _radiusToReachCells: 5
   _constantResourcesGeneration:
-    food: 0
-    wood: 0
+    food: 2
+    wood: 1
     stone: 0
   _increaseMaxPopulation: 0
   _increaseMaxPopulationAmount: 0
