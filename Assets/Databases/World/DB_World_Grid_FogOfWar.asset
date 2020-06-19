@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 829c3e03a8cc47a4ab644dbb598ecaf3, type: 3}
   m_Name: DB_World_Grid_FogOfWar
   m_EditorClassIdentifier: 
-  _gridLength: 180
+  _gridLength: 300
   _cellSize: 1.5
-  _cellsTotalCount: 32761
+  _cellsTotalCount: 441

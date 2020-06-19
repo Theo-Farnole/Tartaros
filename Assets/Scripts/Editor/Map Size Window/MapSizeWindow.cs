@@ -74,6 +74,9 @@
             _constructionGrid.SetGridLength(length);
             _fogGrid.SetGridLength(length);
 
+            EditorUtility.SetDirty(_constructionGrid);
+            EditorUtility.SetDirty(_fogGrid);
+
             AssetDatabase.SaveAssets();
         }
 
