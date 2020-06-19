@@ -15,11 +15,11 @@ MonoBehaviour:
   _waves:
   - _unitSequences:
     - _waitTimeBeforeSequence: 0
-      _waitTimeAfterSequence: 1
+      _waitTimeAfterSequence: 135
       _spawnUnits: 1
       _entityID: unit_melee_hoplite_wave
       _unitCount: 100
-      _timeAfterUnitSpawn: 0.1
+      _timeAfterUnitSpawn: 0.4
   - _unitSequences: []
   - _unitSequences: []
   _entityIDToAttack: building_temple
