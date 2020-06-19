@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Assertions;
 
 namespace Game.WaveSystem
@@ -76,7 +77,7 @@ namespace Game.WaveSystem
         {
             Assert.IsNotNull(prefab, debugLogHeader + " prefab of " + _entityID + " should be not null. Aborting unit sequence.");
 
-            var instanciatedPrefab = ObjectPooler.Instance.SpawnFromPool(prefab, position, Quaternion.identity, true);
+            var instanciatedPrefab = ObjectPooler.Instance.SpawnFromPool(prefab, RandomNavmeshLocation(position, 8f), Quaternion.identity, true);
             var instanciatedPrefabEntity = instanciatedPrefab.GetComponent<Entity>();
 
             Assert.IsNotNull(instanciatedPrefabEntity, string.Format("Unit {0} misses the Entity component", prefab.name));
@@ -95,6 +96,19 @@ namespace Game.WaveSystem
             }
 
             EntitySpawnFromWave?.Invoke(instanciatedPrefabEntity);
+        }
+
+        public Vector3 RandomNavmeshLocation(Vector3 origin, float radius)
+        {
+            Vector3 randomDirection = Random.insideUnitSphere * radius;
+            randomDirection += origin;
+            NavMeshHit hit;
+            Vector3 finalPosition = Vector3.zero;
+            if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+            {
+                finalPosition = hit.position;
+            }
+            return finalPosition;
         }
     }
 }
