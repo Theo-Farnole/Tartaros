@@ -25,8 +25,10 @@ namespace Game.UI
 
         #region Methods
         #region MonoBehaviour Callbacks
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             CreationSelectionPortraitUI();
 
             SelectionManager.OnSelectionUpdated += OnSelectionUpdated;

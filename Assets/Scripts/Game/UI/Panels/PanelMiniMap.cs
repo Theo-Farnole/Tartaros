@@ -22,18 +22,20 @@ namespace Game.UI
 
         #region Methods
         #region MonoBehaviour Callbacks
-        void Awake()
+        protected override void Awake()
         {
             var minimapPositionConverter = this.GetOrAddComponent<MinimapPositionConverter>();
             minimapPositionConverter.Initialize(_miniMapCamera, _minimapRoot);
         }
         
-        void Start()
-        {
+        protected override void Start()
+		{
+            base.Start();
+
             // We set 'CreateWaveIndicators' in Start, and not Awake:
             // In Awake, FindGameObject used in this method would find no WaveSpawnPoint.
             CreateWaveIndicators();
-        }
+		}
 
         void OnEnable()
         {

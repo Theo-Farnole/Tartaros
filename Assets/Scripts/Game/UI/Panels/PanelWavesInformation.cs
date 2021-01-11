@@ -15,8 +15,10 @@ namespace Game.UI
 
         #region Methods
         #region MonoBehaviour Callbcks
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             _cachedFinalWave = GetFinalWave();
             UpdateWaveLabel(1, _cachedFinalWave);    
         }
